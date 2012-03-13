@@ -1,7 +1,7 @@
 ﻿@model MvcFront.Models.UserAccountEditViewModel
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Новый пользователь";
 }
 
 <h2>Create</h2>
@@ -10,7 +10,7 @@
 <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
 
 @using (Html.BeginForm()) {
-    @Html.ValidationSummary(true)
+    @Html.ValidationSummary()
     <fieldset>
         <legend>Новый пользователь</legend>
 

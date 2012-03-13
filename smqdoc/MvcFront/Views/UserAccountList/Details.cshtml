@@ -31,12 +31,21 @@
 
     <div class="display-label">Статус</div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.UserStatusText)
+            @Html.DisplayFor(model => model.UserStatusText)
     </div>
 
     <div class="display-label">Последний вход</div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.LastAccess)
+    @{
+        if(Model.LastAccess == null)
+        {
+            <text>Никогда</text>
+        }
+        else
+        {
+            @Html.DisplayFor(model => model.LastAccess)
+        }
+    }
     </div>
 
     <div class="display-label">Администратор?</div>

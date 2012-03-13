@@ -55,25 +55,22 @@ namespace MvcFront.Controllers
                 {
                     var user = _userRepository.GetById(0);
                     user = model.Update(user);
-                    if (_userRepository.Save(user))
-                        return RedirectToAction("Index");
-                    else
+                    if (!_userRepository.Save(user))
                     {
-                        ModelState.AddModelError("Ошибка","Ошибка создания пользователя.");
-                        return View(model);
+                        throw new Exception("Ошибка сохранения пользователя");
                     }
                 }
                 else
                 {
-                    return View(model);
+                    throw new Exception("Проверьте введенные данные"); 
                 }
-
+                return RedirectToAction("Index");
             }
             catch(Exception ex)
             {
-                ModelState.AddModelError("Ошибка при сохранении",ex.InnerException.Message);
-                return View(model);
+                ModelState.AddModelError("Ошибка при сохранении", ex.InnerException != null ? ex.InnerException.Message : ex.Message);
             }
+            return View();
         }
         
         //
@@ -96,25 +93,22 @@ namespace MvcFront.Controllers
                 {
                     var user = _userRepository.GetById(model.UserId);
                     model.Update(user);
-                    if (_userRepository.Save(user))
-                        return RedirectToAction("Index");
-                    else
+                    if (!_userRepository.Save(user))
                     {
-                        ModelState.AddModelError("Ошибка", "Ошибка создания пользователя.");
-                        return View(model);
+                        throw new Exception("Ошибка сохранения пользователя");
                     }
                 }
                 else
                 {
-                    return View(model);
+                    throw new Exception("Проверьте введенные данные");
                 }
-                
+                return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("Ошибка при сохранении", ex.InnerException.Message);
-                return View(model);
+                ModelState.AddModelError("Ошибка при сохранении", ex.InnerException != null ? ex.InnerException.Message : ex.Message);
             }
+            return View();
         }
 
         //
@@ -137,8 +131,9 @@ namespace MvcFront.Controllers
  
                 return RedirectToAction("Index");
             }
-            catch
+            catch(Exception ex)
             {
+                ModelState.AddModelError("Ошибка", ex.Message);
                 return View();
             }
         }
@@ -157,8 +152,9 @@ namespace MvcFront.Controllers
 
                 return RedirectToAction("Index");
             }
-            catch
+            catch (Exception ex)
             {
+                ModelState.AddModelError("Ошибка", ex.Message);
                 return View();
             }
         }
