@@ -1,0 +1,55 @@
+﻿@model MvcFront.DB.UserAccount
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Детальный просмотр</h2>
+
+<fieldset>
+    <legend>@Html.DisplayFor(model => model.FullName)</legend>
+
+    <div class="display-label">Логин</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Login)
+    </div>
+
+    <div class="display-label">Имя</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.FirstName)
+    </div>
+
+    <div class="display-label">Фамилия</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SecondName)
+    </div>
+
+    <div class="display-label">Отчество</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.LastName)
+    </div>
+
+    <div class="display-label">Статус</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.UserStatusText)
+    </div>
+
+    <div class="display-label">Последний вход</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.LastAccess)
+    </div>
+
+    <div class="display-label">Администратор?</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IsAdmin)
+    </div>
+
+    <div class="display-label">Email</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Email)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Редактировать", "Edit", new { id=Model.userid }) |
+    @Html.ActionLink("Отмена", "Index")
+</p>
