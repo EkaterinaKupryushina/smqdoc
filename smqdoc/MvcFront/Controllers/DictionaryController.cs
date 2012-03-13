@@ -27,9 +27,10 @@ namespace MvcFront.Controllers
             var data = _userRepository.GetAll();
             if (!String.IsNullOrEmpty(text))
             {
-                data = data.Where(p => p.Login != null && p.Login.ToLower().Contains(text.ToLower())).Take(20);
+                data = data.Where(p => p.Login != null && p.Login.ToLower().Contains(text.ToLower()) 
+                    || p.FirstName.Contains(text.ToLower()) || p.LastName.Contains(text.ToLower()) || p.SecondName.Contains(text.ToLower())).Take(20);
             }
-            return new JsonResult { Data = new SelectList(data.ToList(), "Id", "Login") };
+            return new JsonResult { Data = new SelectList(data.ToList().Select(x => new { Id = x.userid,Name = x.FullName + " ("+x.Login+")"}), "Id", "Name") };
         }
 
         #endregion

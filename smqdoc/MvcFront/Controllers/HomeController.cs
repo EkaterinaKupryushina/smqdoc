@@ -17,6 +17,7 @@ namespace MvcFront.Controllers
         }
         public ActionResult Index()
         {
+            ViewBag.Users = _userRepository.GetAll().ToList();
             return View();
         }
 
