@@ -1,11 +1,9 @@
 ﻿@using Telerik;
 @using Telerik.Web.Mvc.UI
 
-@model MvcFront.DB.UserAccount
-           
 
 @(Html.Telerik().ComboBox()
-  .Name(ViewData.TemplateInfo.GetFullHtmlFieldName("User"))
+  .Name("User")
       .DataBinding(binding => binding.Ajax().Select("AjaxUserAccountList", "Dictionary").Cache(true))
   .HtmlAttributes(new { style = "width:100%" })
   .Filterable(filtering => filtering.FilterMode(AutoCompleteFilterMode.Contains).MinimumChars(2))
