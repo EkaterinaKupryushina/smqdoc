@@ -10,12 +10,12 @@ namespace MvcFront.Interfaces
     public interface IUserAccountRepository
     {
         IQueryable<UserAccount> GetAll();
-        UserAccount GetById(Int64 id);
+        UserAccount GetById(Int32 id);
         UserAccount GetByLogin(string login);
         UserAccount GetByEmail(string email);
         bool Login(string userLogin, string password);
         bool Save(UserAccount entity);
-        void Delete(Int64 id);
-        void ChangeState(Int64 id);
+        void Delete(Int32 id);
+        void ChangeState(Int32 id);
     }
 }

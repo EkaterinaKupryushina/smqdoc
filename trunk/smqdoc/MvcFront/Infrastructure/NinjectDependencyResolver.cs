@@ -48,6 +48,7 @@ namespace MvcFront.Infrastructure
         {
             //Bind<IUnitOfWork>().To<UnitOfWork>().InTransientScope().OnDeactivation(u => u.Dispose());
             Bind<IUserAccountRepository>().To<UserAccountRepository>();
+            Bind<IUserGroupRepository>().To<UserGroupRepository>();
             Bind<IUnitOfWork>().To<UnitOfWork>();
         }
     }

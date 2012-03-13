@@ -1,0 +1,57 @@
+﻿@using Telerik
+@using MvcFront.DB
+@using Telerik.Web.Mvc.UI
+@using MvcFront.Models
+
+@model MvcFront.DB.UserGroup
+
+@{
+    ViewBag.Title = "Details";
+    var UserList = Model.Members.Select(x => new UserAccountListViewModel() { UserId = x.userid, Login = x.Login, FullName = x.FirstName, LastLogin = x.LastAccess }).ToList();
+}
+
+<h2>Информация</h2>
+
+<fieldset>
+    <legend>Группа @Html.DisplayFor(model => model.FullGroupName)</legend>
+
+    <div class="display-label">Полное имя группы</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.FullGroupName)
+    </div>
+
+    <div class="display-label">Имя группы</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.GroupName)
+    </div>
+
+    <div class="display-label">Менеджер группы</div>
+    <div class="display-field">
+        @string.Format("{1} {0} {2} ({3})", Model.Manager.FirstName, Model.Manager.SecondName, Model.Manager.LastName, Model.Manager.Login)
+    </div>
+
+    <div class="display-label">Статус</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.GroupStatusText)
+    </div>
+    <div class="display-label">Пользователи</div>
+    @(Html.Telerik().Grid(UserList)
+        .Name("UserAccountListGrid")
+                   .Columns(columns =>
+                   {
+                       columns.AutoGenerate(column =>
+                       {
+                           column.Width = "150px";
+                           if (column.Member == "UserId" )
+                               column.Visible = false;
+                       });
+                   })
+                 .Sortable()
+                .Pageable()
+
+    ) 
+</fieldset>
+<p>
+    @Html.ActionLink("Редактировать", "Edit", new { id=Model.usergroupid }) |
+    @Html.ActionLink("Отмена", "Index")
+</p>

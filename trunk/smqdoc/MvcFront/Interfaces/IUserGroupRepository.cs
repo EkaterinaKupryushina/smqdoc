@@ -1,0 +1,19 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using MvcFront;
+using MvcFront.DB;
+
+namespace MvcFront.Interfaces
+{
+    public interface IUserGroupRepository
+    {
+        IQueryable<UserGroup> GetAll();
+        UserGroup GetById(Int32 id);
+        UserGroup GetByGroupName(string groupName);
+        bool Save(UserGroup entity);
+        void Delete(Int32 id);
+        void ChangeState(Int32 id);
+    }
+}

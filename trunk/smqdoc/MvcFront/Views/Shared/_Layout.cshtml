@@ -37,6 +37,7 @@
                     @if (User.Identity.IsAuthenticated)
                     {
                         <li>@Html.ActionLink("Пользователи", "Index", "UserAccountList")</li>
+                        <li>@Html.ActionLink("Группы", "Index", "UserGroupList")</li>
                     }
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                 </ul>

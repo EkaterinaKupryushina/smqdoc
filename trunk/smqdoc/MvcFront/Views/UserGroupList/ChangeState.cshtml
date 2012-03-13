@@ -1,0 +1,41 @@
+﻿@model MvcFront.DB.UserGroup
+
+@{
+    ViewBag.Title = "ChangeState";
+}
+
+<h2>Включение/Отключение</h2>
+@{
+    var newStatusText = Model.GroupStatus == MvcFront.DB.UserGroupStatus.Active ? "Неактивный" : "Активный";    
+}
+<h3>Вы действительно желаете сменить статус @Html.DisplayFor(model => model.GroupName) c @Model.GroupStatusText на @newStatusText?</h3>
+<fieldset>
+    <legend>Группа @Html.DisplayFor(model => model.FullGroupName)</legend>
+
+    <div class="display-label">Полное имя группы</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.FullGroupName)
+    </div>
+
+    <div class="display-label">Имя группы</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.GroupName)
+    </div>
+
+    <div class="display-label">Менеджер группы</div>
+    <div class="display-field">
+        @string.Format("{1} {0} {2} ({3})", Model.Manager.FirstName, Model.Manager.SecondName, Model.Manager.LastName, Model.Manager.Login)
+    </div>
+
+    <div class="display-label">Статус</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.GroupStatusText)
+    </div>
+</fieldset>
+@using (Html.BeginForm())
+{
+    <p>
+        <input type="submit" value="Выполнить " /> |
+        @Html.ActionLink("Отмена", "Index")
+    </p>
+}
