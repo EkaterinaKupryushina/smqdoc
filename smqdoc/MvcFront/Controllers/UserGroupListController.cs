@@ -40,25 +40,37 @@ namespace MvcFront.Controllers
 
         public ActionResult Create()
         {
-            return View();
+            return View(new UserGroupEditViewModel(_groupRepository.GetById(0)));
         } 
 
         //
         // POST: /UserGroup/Create
 
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(UserGroupEditViewModel model)
         {
             try
             {
-                // TODO: Add insert logic here
-
+                if (ModelState.IsValid)
+                {
+                    var group = _groupRepository.GetById(0);
+                    group = model.Update(group);
+                    if (!_groupRepository.Save(group))
+                    {
+                        throw new Exception("Ошибка сохранения группы");
+                    }
+                }
+                else
+                {
+                    throw new Exception("Проверьте введенные данные");
+                }
                 return RedirectToAction("Index");
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                ModelState.AddModelError("Ошибка при сохранении", ex.InnerException != null ? ex.InnerException.Message : ex.Message);
             }
+            return View();
         }
         
         //
@@ -66,25 +78,37 @@ namespace MvcFront.Controllers
  
         public ActionResult Edit(int id)
         {
-            return View();
+            return View(new UserGroupEditViewModel(_groupRepository.GetById(id)));
         }
 
         //
         // POST: /UserGroup/Edit/5
 
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(UserGroupEditViewModel model)
         {
             try
             {
-                // TODO: Add update logic here
- 
+                if (ModelState.IsValid)
+                {
+                    var group = _groupRepository.GetById(model.GroupId);
+                    group = model.Update(group);
+                    if (!_groupRepository.Save(group))
+                    {
+                        throw new Exception("Ошибка сохранения группы");
+                    }
+                }
+                else
+                {
+                    throw new Exception("Проверьте введенные данные");
+                }
                 return RedirectToAction("Index");
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                ModelState.AddModelError("Ошибка при сохранении", ex.InnerException != null ? ex.InnerException.Message : ex.Message);
             }
+            return View();
         }
 
         //

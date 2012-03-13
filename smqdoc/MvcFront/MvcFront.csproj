@@ -847,6 +847,8 @@
     <Content Include="Views\UserGroupList\Delete.cshtml" />
     <Content Include="Views\UserGroupList\ChangeState.cshtml" />
     <Content Include="Views\UserGroupList\Details.cshtml" />
+    <Content Include="Views\UserGroupList\Create.cshtml" />
+    <Content Include="Views\UserGroupList\Edit.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
