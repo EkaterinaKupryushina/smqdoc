@@ -1,0 +1,54 @@
+﻿@model MvcFront.DB.UserAccount
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Включение/Отключение</h2>
+
+<h3>Вы действительно желаете сменить статус @Html.DisplayFor(model => model.FullName)?</h3>
+<fieldset>
+    <legend>Пользователь</legend>
+
+    <div class="display-label">Логин</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Login)
+    </div>
+
+    <div class="display-label">Имя</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.FirstName)
+    </div>
+
+    <div class="display-label">Фамилия</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SecondName)
+    </div>
+
+    <div class="display-label">Отчество</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.LastName)
+    </div>
+
+    <div class="display-label">Последний вход</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.LastAccess)
+    </div>
+
+    <div class="display-label">Администратор</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.IsAdmin)
+    </div>
+
+    <div class="display-label">Email</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Email)
+    </div>
+
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" value="Сменить статус" /> |
+        @Html.ActionLink("Отмена", "Index")
+    </p>
+}
