@@ -5,8 +5,10 @@
 }
 
 <h2>Включение/Отключение</h2>
-
-<h3>Вы действительно желаете сменить статус @Html.DisplayFor(model => model.FullName)?</h3>
+@{
+    var newStatusText = Model.UserStatus == MvcFront.DB.UserAccountStatus.Active ? "Неактивный" : "Активный";    
+}
+<h3>Вы действительно желаете сменить статус @Html.DisplayFor(model => model.FullName) c @Model.UserStatusText на @newStatusText?</h3>
 <fieldset>
     <legend>Пользователь</legend>
 
@@ -29,10 +31,24 @@
     <div class="display-field">
         @Html.DisplayFor(model => model.LastName)
     </div>
-
+    
+    <div class="display-label">Статус</div>
+    <div class="display-field">
+            @Html.DisplayFor(model => model.UserStatusText)
+    </div>
+    
     <div class="display-label">Последний вход</div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.LastAccess)
+         @{
+             if (Model.LastAccess == null)
+             {
+            <text>Никогда</text>
+             }
+             else
+             {
+            @Html.DisplayFor(model => model.LastAccess)
+             }
+    }
     </div>
 
     <div class="display-label">Администратор</div>
@@ -46,9 +62,10 @@
     </div>
 
 </fieldset>
-@using (Html.BeginForm()) {
+@using (Html.BeginForm())
+{
     <p>
-        <input type="submit" value="Сменить статус" /> |
+        <input type="submit" value="Выполнить " /> |
         @Html.ActionLink("Отмена", "Index")
     </p>
 }

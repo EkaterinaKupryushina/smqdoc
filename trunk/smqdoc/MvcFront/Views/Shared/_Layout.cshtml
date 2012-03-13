@@ -27,7 +27,10 @@
             <div id="menucontainer">
                 <ul id="menu">
                     <li>@Html.ActionLink("Домой", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Пользователи", "Index", "UserAccountList")</li>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li>@Html.ActionLink("Пользователи", "Index", "UserAccountList")</li>
+                    }
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                 </ul>
             </div>

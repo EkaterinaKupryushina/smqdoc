@@ -32,7 +32,21 @@
 
     <div class="display-label">Последний вход</div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.LastAccess)
+        @{
+            if (Model.LastAccess == null)
+            {
+            <text>Никогда</text>
+            }
+            else
+            {
+            @Html.DisplayFor(model => model.LastAccess)
+            }
+    }
+    </div>
+
+    <div class="display-label">Статус</div>
+    <div class="display-field">
+            @Html.DisplayFor(model => model.UserStatusText)
     </div>
 
     <div class="display-label">Администратор</div>
@@ -46,7 +60,8 @@
     </div>
 
 </fieldset>
-@using (Html.BeginForm()) {
+@using (Html.BeginForm())
+{
     <p>
         <input type="submit" value="Удалить" /> |
         @Html.ActionLink("Отмена", "Index")

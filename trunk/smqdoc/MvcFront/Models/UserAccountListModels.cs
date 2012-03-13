@@ -17,6 +17,7 @@ namespace MvcFront.Models
         [Display(Name = "Имя")]
         public string FullName { get; set; }
         [Display(Name = "Последний вход")]
+        [UIHint("DateTime")]
         public DateTime? LastLogin { get; set; }
 
         public UserAccountListViewModel()
