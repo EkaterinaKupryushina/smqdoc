@@ -1,0 +1,47 @@
+﻿@using Telerik
+@using MvcFront.DB
+@using Telerik.Web.Mvc.UI
+@using MvcFront.Models
+@model IEnumerable<UserGroupListViewModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Группы пользователей системы</h2>
+
+@Html.ActionLink("Добавить группу", "Create")
+@(Html.Telerik().Grid(Model)
+        .Name("UserGroupListGrid")
+                   .Columns(columns =>
+                   {
+                       columns.AutoGenerate(column =>
+                       {
+                           column.Width = "150px";
+                           if (column.Member == "GroupId" )
+                               column.Visible = false;
+                       });
+                       columns.Command(command =>
+                       {
+                           command.Custom("viewDetails").Text("Информация")
+                            .DataRouteValues(route => route.Add(o => o.GroupId).RouteKey("id"))
+                            .Action("Details", "UserGroupList")
+                            .HtmlAttributes(new { style = "text-align: center" });
+                           command.Custom("EditDetails").Text("Редактировать")
+                            .DataRouteValues(route => route.Add(o => o.GroupId).RouteKey("id"))
+                            .Action("Edit", "UserGroupList")
+                            .HtmlAttributes(new { style = "text-align: center" });
+                           command.Custom("DeleteDetails").Text("Удалить")
+                            .DataRouteValues(route => route.Add(o => o.GroupId).RouteKey("id"))
+                            .Action("Delete", "UserGroupList")
+                            .HtmlAttributes(new { style = "text-align: center" });
+                           command.Custom("ChangeStatusDetails").Text("Включить/Выключить")
+                            .DataRouteValues(route => route.Add(o => o.GroupId).RouteKey("id"))
+                            .Action("ChangeState", "UserGroupList")
+                            .HtmlAttributes(new { style = "text-align: center" });
+                       }).Width(50);
+                   })
+                 .Sortable()
+                .Pageable()
+
+    ) 

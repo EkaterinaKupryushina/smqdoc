@@ -16,6 +16,12 @@ using System.Xml.Serialization;
 using System.Runtime.Serialization;
 
 [assembly: EdmSchemaAttribute()]
+#region EDM Relationship Metadata
+
+[assembly: EdmRelationshipAttribute("smqdocModel", "GroupManager", "UserGroup", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.UserGroup), "UserAccount", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.UserAccount), true)]
+[assembly: EdmRelationshipAttribute("smqdocModel", "GroupUsers", "UserGroup", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.UserGroup), "UserAccount", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.UserAccount))]
+
+#endregion
 
 namespace MvcFront.DB
 {
@@ -80,6 +86,22 @@ namespace MvcFront.DB
             }
         }
         private ObjectSet<UserAccount> _UserAccounts;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<UserGroup> UserGroups
+        {
+            get
+            {
+                if ((_UserGroups == null))
+                {
+                    _UserGroups = base.CreateObjectSet<UserGroup>("UserGroups");
+                }
+                return _UserGroups;
+            }
+        }
+        private ObjectSet<UserGroup> _UserGroups;
 
         #endregion
         #region AddTo Methods
@@ -90,6 +112,14 @@ namespace MvcFront.DB
         public void AddToUserAccounts(UserAccount userAccount)
         {
             base.AddObject("UserAccounts", userAccount);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the UserGroups EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToUserGroups(UserGroup userGroup)
+        {
+            base.AddObject("UserGroups", userGroup);
         }
 
         #endregion
@@ -385,6 +415,275 @@ namespace MvcFront.DB
 
         #endregion
     
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "GroupManager", "UserGroup")]
+        public EntityCollection<UserGroup> ManagedGroups
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<UserGroup>("smqdocModel.GroupManager", "UserGroup");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<UserGroup>("smqdocModel.GroupManager", "UserGroup", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "GroupUsers", "UserGroup")]
+        public EntityCollection<UserGroup> MemberGroups
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<UserGroup>("smqdocModel.GroupUsers", "UserGroup");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<UserGroup>("smqdocModel.GroupUsers", "UserGroup", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="smqdocModel", Name="UserGroup")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class UserGroup : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new UserGroup object.
+        /// </summary>
+        /// <param name="usergroupid">Initial value of the usergroupid property.</param>
+        /// <param name="fullGroupName">Initial value of the FullGroupName property.</param>
+        /// <param name="groupName">Initial value of the GroupName property.</param>
+        /// <param name="managerid">Initial value of the Managerid property.</param>
+        /// <param name="status">Initial value of the Status property.</param>
+        public static UserGroup CreateUserGroup(global::System.Int32 usergroupid, global::System.String fullGroupName, global::System.String groupName, global::System.Int32 managerid, global::System.Int32 status)
+        {
+            UserGroup userGroup = new UserGroup();
+            userGroup.usergroupid = usergroupid;
+            userGroup.FullGroupName = fullGroupName;
+            userGroup.GroupName = groupName;
+            userGroup.Managerid = managerid;
+            userGroup.Status = status;
+            return userGroup;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 usergroupid
+        {
+            get
+            {
+                return _usergroupid;
+            }
+            set
+            {
+                if (_usergroupid != value)
+                {
+                    OnusergroupidChanging(value);
+                    ReportPropertyChanging("usergroupid");
+                    _usergroupid = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("usergroupid");
+                    OnusergroupidChanged();
+                }
+            }
+        }
+        private global::System.Int32 _usergroupid;
+        partial void OnusergroupidChanging(global::System.Int32 value);
+        partial void OnusergroupidChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String FullGroupName
+        {
+            get
+            {
+                return _FullGroupName;
+            }
+            set
+            {
+                OnFullGroupNameChanging(value);
+                ReportPropertyChanging("FullGroupName");
+                _FullGroupName = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("FullGroupName");
+                OnFullGroupNameChanged();
+            }
+        }
+        private global::System.String _FullGroupName;
+        partial void OnFullGroupNameChanging(global::System.String value);
+        partial void OnFullGroupNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String GroupName
+        {
+            get
+            {
+                return _GroupName;
+            }
+            set
+            {
+                OnGroupNameChanging(value);
+                ReportPropertyChanging("GroupName");
+                _GroupName = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("GroupName");
+                OnGroupNameChanged();
+            }
+        }
+        private global::System.String _GroupName;
+        partial void OnGroupNameChanging(global::System.String value);
+        partial void OnGroupNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Managerid
+        {
+            get
+            {
+                return _Managerid;
+            }
+            set
+            {
+                OnManageridChanging(value);
+                ReportPropertyChanging("Managerid");
+                _Managerid = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Managerid");
+                OnManageridChanged();
+            }
+        }
+        private global::System.Int32 _Managerid;
+        partial void OnManageridChanging(global::System.Int32 value);
+        partial void OnManageridChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Status
+        {
+            get
+            {
+                return _Status;
+            }
+            set
+            {
+                OnStatusChanging(value);
+                ReportPropertyChanging("Status");
+                _Status = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Status");
+                OnStatusChanged();
+            }
+        }
+        private global::System.Int32 _Status;
+        partial void OnStatusChanging(global::System.Int32 value);
+        partial void OnStatusChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "GroupManager", "UserAccount")]
+        public UserAccount Manager
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<UserAccount>("smqdocModel.GroupManager", "UserAccount").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<UserAccount>("smqdocModel.GroupManager", "UserAccount").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<UserAccount> ManagerReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<UserAccount>("smqdocModel.GroupManager", "UserAccount");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<UserAccount>("smqdocModel.GroupManager", "UserAccount", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "GroupUsers", "UserAccount")]
+        public EntityCollection<UserAccount> Members
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<UserAccount>("smqdocModel.GroupUsers", "UserAccount");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<UserAccount>("smqdocModel.GroupUsers", "UserAccount", value);
+                }
+            }
+        }
+
+        #endregion
     }
 
     #endregion

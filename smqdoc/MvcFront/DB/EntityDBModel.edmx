@@ -5,30 +5,107 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="smqdocModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
-        <EntityContainer Name="smqdocModelStoreContainer">
-          <EntitySet Name="UserAccounts" EntityType="smqdocModel.Store.UserAccounts" store:Type="Tables" Schema="dbo" />
-        </EntityContainer>
-        <EntityType Name="UserAccounts">
-          <Key>
-            <PropertyRef Name="userid" />
-          </Key>
-          <Property Name="userid" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Login" Type="varchar" Nullable="false" MaxLength="50" />
-          <Property Name="FirstName" Type="varchar" Nullable="false" MaxLength="50" />
-          <Property Name="SecondName" Type="varchar" Nullable="false" MaxLength="50" />
-          <Property Name="LastName" Type="varchar" Nullable="false" MaxLength="50" />
-          <Property Name="Status" Type="int" Nullable="false" />
-          <Property Name="LastAccess" Type="datetime" />
-          <Property Name="IsAdmin" Type="bit" Nullable="false" />
-          <Property Name="Password" Type="varchar" Nullable="false" MaxLength="50" />
-          <Property Name="Email" Type="varchar" Nullable="false" MaxLength="50" />
-        </EntityType>
-      </Schema></edmx:StorageModels>
+  <EntityContainer Name="smqdocModelStoreContainer">
+    <EntitySet Name="UserAccounts" EntityType="smqdocModel.Store.UserAccounts" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="UserGroups" EntityType="smqdocModel.Store.UserGroups" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="GroupUsers" EntityType="smqdocModel.Store.GroupUsers" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="GroupManager" Association="smqdocModel.Store.GroupManager">
+      <End Role="UserGroup" EntitySet="UserGroups" />
+      <End Role="UserAccount" EntitySet="UserAccounts" />
+    </AssociationSet>
+    <AssociationSet Name="FK_GroupUsers_UserGroup" Association="smqdocModel.Store.FK_GroupUsers_UserGroup">
+      <End Role="UserGroup" EntitySet="UserGroups" />
+      <End Role="GroupUsers" EntitySet="GroupUsers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_GroupUsers_UserAccount" Association="smqdocModel.Store.FK_GroupUsers_UserAccount">
+      <End Role="UserAccount" EntitySet="UserAccounts" />
+      <End Role="GroupUsers" EntitySet="GroupUsers" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="UserAccounts">
+    <Key>
+      <PropertyRef Name="userid" />
+    </Key>
+    <Property Name="userid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Login" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="FirstName" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="SecondName" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="LastName" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="Status" Type="int" Nullable="false" />
+    <Property Name="LastAccess" Type="datetime" Nullable="true" />
+    <Property Name="IsAdmin" Type="bit" Nullable="false" />
+    <Property Name="Password" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="Email" Type="nvarchar" Nullable="false" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="UserGroups">
+    <Key>
+      <PropertyRef Name="usergroupid" />
+    </Key>
+    <Property Name="usergroupid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FullGroupName" Type="nvarchar" Nullable="false" MaxLength="100" />
+    <Property Name="GroupName" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="Managerid" Type="int" Nullable="false" />
+    <Property Name="Status" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="GroupUsers">
+    <Key>
+      <PropertyRef Name="MemberGroups_usergroupid" />
+      <PropertyRef Name="Members_userid" />
+    </Key>
+    <Property Name="MemberGroups_usergroupid" Type="int" Nullable="false" />
+    <Property Name="Members_userid" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="GroupManager">
+    <End Role="UserGroup" Type="smqdocModel.Store.UserGroups" Multiplicity="*" />
+    <End Role="UserAccount" Type="smqdocModel.Store.UserAccounts" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="UserAccount">
+        <PropertyRef Name="userid" />
+      </Principal>
+      <Dependent Role="UserGroup">
+        <PropertyRef Name="Managerid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_GroupUsers_UserGroup">
+    <End Role="UserGroup" Type="smqdocModel.Store.UserGroups" Multiplicity="1" />
+    <End Role="GroupUsers" Type="smqdocModel.Store.GroupUsers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserGroup">
+        <PropertyRef Name="usergroupid" />
+      </Principal>
+      <Dependent Role="GroupUsers">
+        <PropertyRef Name="MemberGroups_usergroupid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_GroupUsers_UserAccount">
+    <End Role="GroupUsers" Type="smqdocModel.Store.GroupUsers" Multiplicity="*" />
+    <End Role="UserAccount" Type="smqdocModel.Store.UserAccounts" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="UserAccount">
+        <PropertyRef Name="userid" />
+      </Principal>
+      <Dependent Role="GroupUsers">
+        <PropertyRef Name="Members_userid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="smqdocModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
         <EntityContainer Name="smqdocEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="UserAccounts" EntityType="smqdocModel.UserAccount" />
+          <EntitySet Name="UserGroups" EntityType="smqdocModel.UserGroup" />
+          <AssociationSet Name="GroupManager" Association="smqdocModel.GroupManager">
+            <End Role="UserGroup" EntitySet="UserGroups" />
+            <End Role="UserAccount" EntitySet="UserAccounts" />
+          </AssociationSet>
+          <AssociationSet Name="GroupUsers" Association="smqdocModel.GroupUsers">
+            <End Role="UserGroup" EntitySet="UserGroups" />
+            <End Role="UserAccount" EntitySet="UserAccounts" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="UserAccount">
           <Key>
@@ -44,28 +121,80 @@
           <Property Name="IsAdmin" Type="Boolean" Nullable="false" />
           <Property Type="String" Name="Password" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Email" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ManagedGroups" Relationship="smqdocModel.GroupManager" FromRole="UserAccount" ToRole="UserGroup" />
+          <NavigationProperty Name="MemberGroups" Relationship="smqdocModel.GroupUsers" FromRole="UserAccount" ToRole="UserGroup" />
         </EntityType>
+        <EntityType Name="UserGroup">
+          <Key>
+            <PropertyRef Name="usergroupid" />
+          </Key>
+          <Property Type="Int32" Name="usergroupid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="FullGroupName" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="GroupName" Nullable="false" Unicode="true" FixedLength="false" MaxLength="50" />
+          <NavigationProperty Name="Manager" Relationship="smqdocModel.GroupManager" FromRole="UserGroup" ToRole="UserAccount" />
+          <Property Type="Int32" Name="Managerid" Nullable="false" />
+          <NavigationProperty Name="Members" Relationship="smqdocModel.GroupUsers" FromRole="UserGroup" ToRole="UserAccount" />
+          <Property Type="Int32" Name="Status" Nullable="false" />
+        </EntityType>
+        <Association Name="GroupManager">
+          <End Type="smqdocModel.UserGroup" Role="UserGroup" Multiplicity="*" />
+          <End Type="smqdocModel.UserAccount" Role="UserAccount" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="UserAccount">
+              <PropertyRef Name="userid" />
+            </Principal>
+            <Dependent Role="UserGroup">
+              <PropertyRef Name="Managerid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="GroupUsers">
+          <End Type="smqdocModel.UserGroup" Role="UserGroup" Multiplicity="*" />
+          <End Type="smqdocModel.UserAccount" Role="UserAccount" Multiplicity="*" />
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
-      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="smqdocModelStoreContainer" CdmEntityContainer="smqdocEntities">
-          <EntitySetMapping Name="UserAccounts"><EntityTypeMapping TypeName="smqdocModel.UserAccount"><MappingFragment StoreEntitySet="UserAccounts">
-            <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="userid" ColumnName="userid" />
-            <ScalarProperty Name="Login" ColumnName="Login" />
-            <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-            <ScalarProperty Name="SecondName" ColumnName="SecondName" />
-            <ScalarProperty Name="LastName" ColumnName="LastName" />
-            <ScalarProperty Name="Status" ColumnName="Status" />
-            <ScalarProperty Name="LastAccess" ColumnName="LastAccess" />
-            <ScalarProperty Name="IsAdmin" ColumnName="IsAdmin" />
-          </MappingFragment></EntityTypeMapping></EntitySetMapping>
-        </EntityContainerMapping>
-      </Mapping>
-    </edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="smqdocModelStoreContainer" CdmEntityContainer="smqdocEntities">
+    <EntitySetMapping Name="UserAccounts">
+      <EntityTypeMapping TypeName="IsTypeOf(smqdocModel.UserAccount)">
+        <MappingFragment StoreEntitySet="UserAccounts">
+          <ScalarProperty Name="userid" ColumnName="userid" />
+          <ScalarProperty Name="Login" ColumnName="Login" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="SecondName" ColumnName="SecondName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="LastAccess" ColumnName="LastAccess" />
+          <ScalarProperty Name="IsAdmin" ColumnName="IsAdmin" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserGroups">
+      <EntityTypeMapping TypeName="IsTypeOf(smqdocModel.UserGroup)">
+        <MappingFragment StoreEntitySet="UserGroups">
+          <ScalarProperty Name="usergroupid" ColumnName="usergroupid" />
+          <ScalarProperty Name="FullGroupName" ColumnName="FullGroupName" />
+          <ScalarProperty Name="GroupName" ColumnName="GroupName" />
+          <ScalarProperty Name="Managerid" ColumnName="Managerid" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="GroupUsers" TypeName="smqdocModel.GroupUsers" StoreEntitySet="GroupUsers">
+      <EndProperty Name="UserGroup">
+        <ScalarProperty Name="usergroupid" ColumnName="MemberGroups_usergroupid" />
+      </EndProperty>
+      <EndProperty Name="UserAccount">
+        <ScalarProperty Name="userid" ColumnName="Members_userid" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
   </edmx:Runtime>
   <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
   <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
@@ -85,6 +214,15 @@
     <Diagrams>
       <Diagram Name="EntityDBModel">
         <EntityTypeShape EntityType="smqdocModel.UserAccount" Width="1.5" PointX="0.75" PointY="0.75" Height="2.5571907552083335" IsExpanded="true" />
+        <EntityTypeShape EntityType="smqdocModel.UserGroup" Width="1.5" PointX="4.5" PointY="1" Height="2.3648893229166661" />
+        <AssociationConnector Association="smqdocModel.GroupManager">
+          <ConnectorPoint PointX="4.5" PointY="2.5549645996093746" />
+          <ConnectorPoint PointX="2.25" PointY="2.5549645996093746" />
+        </AssociationConnector>
+        <AssociationConnector Association="smqdocModel.GroupUsers">
+          <ConnectorPoint PointX="4.5" PointY="1.7149822998046873" />
+          <ConnectorPoint PointX="2.25" PointY="1.7149822998046873" />
+        </AssociationConnector>
       </Diagram>
     </Diagrams>
   </Designer>

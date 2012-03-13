@@ -19,7 +19,7 @@ namespace MvcFront.Repositories
             return _unitOfWork.DbModel.UserAccounts.AsQueryable<UserAccount>();
         }
 
-        public UserAccount GetById(long id)
+        public UserAccount GetById(Int32 id)
         {
             if (id == 0)
                 return new UserAccount();
@@ -84,17 +84,16 @@ namespace MvcFront.Repositories
             return true;
         }
 
-        public void Delete(long id)
+        public void Delete(Int32 id)
         {
             var item = _unitOfWork.DbModel.UserAccounts.SingleOrDefault(x => x.userid == id);
             if (item != null)
             {
                 item.UserStatus = UserAccountStatus.Deleted;
-                //_unitOfWork.DbModel.UserAccounts.DeleteObject(item);
                 _unitOfWork.DbModel.SaveChanges();
             }
         }
-        public void ChangeState(long id)
+        public void ChangeState(Int32 id)
         {
             var item = _unitOfWork.DbModel.UserAccounts.SingleOrDefault(x => x.userid == id);
             if (item != null)
@@ -103,7 +102,6 @@ namespace MvcFront.Repositories
                     item.UserStatus = UserAccountStatus.Unactive;
                 else
                     item.UserStatus = UserAccountStatus.Active;
-                //_unitOfWork.DbModel.UserAccounts.DeleteObject(item);
                 _unitOfWork.DbModel.SaveChanges();
             }
         }

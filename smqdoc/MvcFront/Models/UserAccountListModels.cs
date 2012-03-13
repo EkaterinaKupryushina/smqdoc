@@ -11,7 +11,7 @@ namespace MvcFront.Models
     {
         [Display(Name = "ID")]
         [UIHint("Hidden")]
-        public long UserId { get; set; }
+        public Int32 UserId { get; set; }
         [Display(Name = "Логин")]
         public string Login { get; set; }
         [Display(Name = "Имя")]
@@ -34,7 +34,7 @@ namespace MvcFront.Models
     {
         [Display(Name = "ID")]
         [UIHint("Hidden")]
-        public long UserId { get; set; }
+        public Int32 UserId { get; set; }
         [Required]
         [Display(Name = "Логин")]
         public string Login { get; set; }
@@ -62,6 +62,7 @@ namespace MvcFront.Models
         }
         public UserAccountEditViewModel(UserAccount acc)
         {
+            UserId = acc.userid;
             Login = acc.Login;
             FirstName = acc.FirstName;
             SecondName = acc.SecondName;
@@ -79,6 +80,7 @@ namespace MvcFront.Models
             acc.IsAdmin = IsAdmin;
             acc.Email = Email;
             acc.Password = Password;
+            acc.userid = UserId;
             return acc;
         }
     }
