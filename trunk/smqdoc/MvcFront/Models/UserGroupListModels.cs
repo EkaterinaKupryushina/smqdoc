@@ -27,4 +27,43 @@ namespace MvcFront.Models
             GroupName = grr.GroupName;
         }
     }
+    public class UserGroupEditViewModel
+    {
+        [Display(Name = "ID")]
+        [UIHint("Hidden")]
+        public Int32 GroupId { get; set; }
+        [Required]
+        [Display(Name = "Имя группы")]
+        public string GroupName { get; set; }
+        [Required]
+        [Display(Name = "Полное имя группы")]
+        public string FullGroupName { get; set; }
+        //[Required]
+        //[Display(Name = "Менеджер")]
+        //[UIHint("UserAccountFilter")]
+        //public int? Managerid { get; set; }
+        [Required]
+        [Display(Name = "Менеджер")]
+        [UIHint("UserAccountFilter")]
+        public UserAccount Manager { get; set; }
+
+        public UserGroupEditViewModel()
+        {
+        }
+        public UserGroupEditViewModel(UserGroup grr)
+        {
+            GroupId = grr.usergroupid;
+            GroupName = grr.GroupName;
+            FullGroupName = grr.FullGroupName;
+            Manager = grr.Manager;
+        }
+        public UserGroup Update(UserGroup grr)
+        {
+             grr.usergroupid = GroupId;
+             grr.GroupName = GroupName;
+             grr.FullGroupName = FullGroupName;
+             grr.Managerid = Manager.userid;
+            return grr;
+        }
+    }
 }
