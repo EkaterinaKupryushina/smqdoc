@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using MvcFront.Interfaces;
 using MvcFront.DB;
 using MvcFront.Models;
+using Telerik.Web.Mvc;
 
 namespace MvcFront.Controllers
 {
@@ -26,7 +27,13 @@ namespace MvcFront.Controllers
             return View(_groupRepository.GetAll().Where(x => x.Status != (int)UserGroupStatus.Deleted)
                 .Select(x => new UserGroupListViewModel() { GroupId = x.usergroupid, Manager =  x.Manager.SecondName +" "+ x.Manager.FirstName +" " + x.Manager.LastName + " ("+ x.Manager.Login+")", GroupName = x.GroupName }).ToList());
         }
-
+        //Возращает список пользователей группы
+        [GridAction]
+        public ActionResult _GroupUsersList(int groupId)
+        {
+            var data = _groupRepository.GetById(groupId).Members.Select(x => new UserAccountListViewModel() { UserId = x.userid, Login = x.Login, FullName = x.FirstName, LastLogin = x.LastAccess,CompositeId = x.userid+":"+groupId }).ToList();
+            return View(new GridModel<UserAccountListViewModel> { Data = data });
+        }
         //
         // GET: /UserGroup/Details/5
 
@@ -156,6 +163,23 @@ namespace MvcFront.Controllers
                 ModelState.AddModelError("Ошибка", ex.Message);
                 return View();
             }
+        }
+        public ActionResult GroupUsersManagment(int id)
+        {
+            return View(_groupRepository.GetById(id));
+        }
+        public JsonResult DeleteUser(string CompositeId)
+        {
+            int userId = int.Parse(CompositeId.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries)[0].ToString());
+            int groupId = int.Parse(CompositeId.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries)[1].ToString());
+            return Json(new { result = _groupRepository.RemoveMember(groupId, userId) });
+        }
+
+        public JsonResult AddUser(int groupId, int userId)
+        {
+            //int userId = int.Parse(CompositeId.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries)[0].ToString());
+            //int groupId = int.Parse(CompositeId.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries)[1].ToString());
+            return Json(new { result = _groupRepository.AddMember(groupId, userId) });
         }
     }
 }
