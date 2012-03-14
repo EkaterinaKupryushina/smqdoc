@@ -515,6 +515,7 @@
     <Content Include="Content\themes\base\jquery.ui.tabs.css" />
     <Content Include="Content\themes\base\jquery.ui.theme.css" />
     <Content Include="DB\EntityDBModel.edmx.sql" />
+    <Content Include="DB\FillData.sql" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\2012.1.214\jquery-1.7.1.min.js" />
     <Content Include="Scripts\2012.1.214\jquery.validate.min.js" />

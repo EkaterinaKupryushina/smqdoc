@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 03/13/2012 21:14:46
--- Generated from EDMX file: D:\Work\smqDoc\smqdoc.net\smqdoc\MvcFront\DB\EntityDBModel.edmx
+-- Date Created: 03/14/2012 09:59:25
+-- Generated from EDMX file: D:\Work\smqdoc.net\MvcFront\DB\EntityDBModel.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -17,6 +17,15 @@ GO
 -- Dropping existing FOREIGN KEY constraints
 -- --------------------------------------------------
 
+IF OBJECT_ID(N'[dbo].[FK_GroupManager]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[UserGroups] DROP CONSTRAINT [FK_GroupManager];
+GO
+IF OBJECT_ID(N'[dbo].[FK_GroupUsers_UserGroup]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[GroupUsers] DROP CONSTRAINT [FK_GroupUsers_UserGroup];
+GO
+IF OBJECT_ID(N'[dbo].[FK_GroupUsers_UserAccount]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[GroupUsers] DROP CONSTRAINT [FK_GroupUsers_UserAccount];
+GO
 
 -- --------------------------------------------------
 -- Dropping existing tables
@@ -24,6 +33,12 @@ GO
 
 IF OBJECT_ID(N'[dbo].[UserAccounts]', 'U') IS NOT NULL
     DROP TABLE [dbo].[UserAccounts];
+GO
+IF OBJECT_ID(N'[dbo].[UserGroups]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[UserGroups];
+GO
+IF OBJECT_ID(N'[dbo].[GroupUsers]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[GroupUsers];
 GO
 
 -- --------------------------------------------------
