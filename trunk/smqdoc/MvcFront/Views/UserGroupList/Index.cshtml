@@ -31,6 +31,10 @@
                             .DataRouteValues(route => route.Add(o => o.GroupId).RouteKey("id"))
                             .Action("Edit", "UserGroupList")
                             .HtmlAttributes(new { style = "text-align: center" });
+                           command.Custom("GroupUsersManagment").Text("Редактировать пользователей")
+                            .DataRouteValues(route => route.Add(o => o.GroupId).RouteKey("id"))
+                            .Action("GroupUsersManagment", "UserGroupList")
+                            .HtmlAttributes(new { style = "text-align: center" });
                            command.Custom("DeleteDetails").Text("Удалить")
                             .DataRouteValues(route => route.Add(o => o.GroupId).RouteKey("id"))
                             .Action("Delete", "UserGroupList")

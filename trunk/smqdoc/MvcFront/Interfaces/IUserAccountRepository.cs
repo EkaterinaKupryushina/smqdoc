@@ -17,5 +17,6 @@ namespace MvcFront.Interfaces
         bool Save(UserAccount entity);
         void Delete(Int32 id);
         void ChangeState(Int32 id);
+        UserAccount Copy(IUnitOfWork uw, int userid);
     }
 }

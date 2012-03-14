@@ -15,5 +15,8 @@ namespace MvcFront.Interfaces
         bool Save(UserGroup entity);
         void Delete(Int32 id);
         void ChangeState(Int32 id);
+        UserGroup Copy(IUnitOfWork uw, int usergroupid);
+        bool RemoveMember(int groupId,int userId);
+        bool AddMember(int groupId, int userId);
     }
 }

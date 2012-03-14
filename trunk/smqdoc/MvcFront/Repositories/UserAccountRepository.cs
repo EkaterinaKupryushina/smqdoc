@@ -105,5 +105,12 @@ namespace MvcFront.Repositories
                 _unitOfWork.DbModel.SaveChanges();
             }
         }
+        public UserAccount Copy(IUnitOfWork uw, int userid)
+        {
+            if (userid == 0)
+                return new UserAccount();
+            else
+                return uw.DbModel.UserAccounts.SingleOrDefault(x => x.userid == userid);
+        }
     }
 }

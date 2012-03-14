@@ -18,7 +18,7 @@
                        columns.AutoGenerate(column =>
                        {
                            column.Width = "150px";
-                           if (column.Member == "UserId" )
+                           if (column.Member == "UserId" || column.Member == "CompositeId")
                                column.Visible = false;
                        });
                        columns.Command(command =>

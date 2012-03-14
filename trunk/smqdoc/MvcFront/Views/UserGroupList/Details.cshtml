@@ -35,20 +35,18 @@
         @Html.DisplayFor(model => model.GroupStatusText)
     </div>
     <div class="display-label">Пользователи</div>
-    @(Html.Telerik().Grid(UserList)
+    @(Html.Telerik().Grid<UserAccountListViewModel>()
+        .DataBinding(dataBinding => dataBinding.Ajax().Select("_GroupUsersList", "UserGroupList", new { groupId = Model.usergroupid }))
         .Name("UserAccountListGrid")
                    .Columns(columns =>
                    {
                        columns.AutoGenerate(column =>
                        {
                            column.Width = "150px";
-                           if (column.Member == "UserId" )
+                           if (column.Member == "UserId" || column.Member == "CompositeId")
                                column.Visible = false;
                        });
                    })
-                 .Sortable()
-                .Pageable()
-
     ) 
 </fieldset>
 <p>

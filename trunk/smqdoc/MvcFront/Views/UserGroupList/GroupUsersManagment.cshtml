@@ -1,0 +1,115 @@
+﻿@using Telerik
+@using MvcFront.DB
+@using Telerik.Web.Mvc.UI
+@using MvcFront.Models
+
+@model MvcFront.DB.UserGroup
+
+@{
+    ViewBag.Title = "GroupUsersManagment";
+    UserAccount addingUser = new UserAccount();
+}
+
+<h2>Управление пользователями</h2>
+
+<fieldset>
+    <legend>Группа @Html.DisplayFor(model => model.FullGroupName)</legend>
+
+    <div class="display-label">Полное имя группы</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.FullGroupName)
+    </div>
+
+    <div class="display-label">Имя группы</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.GroupName)
+    </div>
+
+    <div class="display-label">Менеджер группы</div>
+    <div class="display-field">
+        @string.Format("{1} {0} {2} ({3})", Model.Manager.FirstName, Model.Manager.SecondName, Model.Manager.LastName, Model.Manager.Login)
+    </div>
+
+    <div class="display-label">Статус</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.GroupStatusText)
+    </div>
+    <div class="display-label">Пользователи</div>
+    <a href="#" onclick="ShowAddUserWindow()">Добавить пользователя</a>
+    @(Html.Telerik().Grid<UserAccountListViewModel>()
+        .DataBinding(dataBinding => dataBinding.Ajax().Select("_GroupUsersList", "UserGroupList", new { groupId = Model.usergroupid }))
+        .Name("UserAccountListGrid")
+                .ClientEvents(events => events.OnComplete("onComplete"))
+                   .Columns(columns =>
+                   {
+                       columns.AutoGenerate(column =>
+                       {
+                           column.Width = "150px";
+                           if (column.Member == "UserId" || column.Member == "CompositeId")
+                               column.Visible = false;
+                       });
+                       columns.Command(command =>
+                       {
+                           command.Custom("DeleteDetails")
+                            .Text("Удалить пользователя")
+                            .DataRouteValues(route => route.Add(o => o.CompositeId).RouteKey("CompositeId"))
+                            .Ajax(true)
+                            .Action("DeleteUser", "UserGroupList")
+                            .HtmlAttributes(new { style = "text-align: center" });
+                       }).Width(40);
+                   })
+    ) 
+    @(Html.Telerik().Window()
+    .Name("AddUserWindow")
+    .Visible(false)
+    .Title("Добавить пользователя")
+    .Modal(true)
+    .Width(400)
+    .Height(100)
+    .Content(@<text>
+                @Html.Editor("addingUser", "UserAccountFilter")
+        <center>
+         <input type="button" value="Добавить" onclick="SendRequest()"/> 
+         </center>
+    </text>)
+)
+</fieldset>
+
+<script type="text/javascript">
+function onComplete(e) {
+    if (e.name == "DeleteDetails") {
+        if (e.response.result) {
+            alert("Пользователь удален из группы");
+        } else {
+            alert("Пользователь НЕ удален из группы. Произошла ошибка.");
+        }
+        var grid = $('#UserAccountListGrid').data("tGrid");
+        if (grid != null) {
+            grid.rebind();
+        }
+    }
+
+}
+function ShowAddUserWindow() {
+    var addWindow = $("#AddUserWindow").data("tWindow");
+    addWindow.center().open();
+}
+function SendRequest() {
+    var userid = $("#addingUser").data('tComboBox').value();
+    if(isNaN( parseInt( userid ) ))
+        {alert("Стоит выбрать пользователя!"); return;}
+    $.ajax({
+        type: "POST",
+        url: "../AddUser",
+        data: "groupId="+@Model.usergroupid+"&userId="+userid,
+        success: function () {
+           var grid = $('#UserAccountListGrid').data("tGrid");
+        if (grid != null) {
+            grid.rebind();
+        }
+        var addWindow = $("#AddUserWindow").data("tWindow");
+        addWindow.center().close();
+        }
+    });
+}
+</script>

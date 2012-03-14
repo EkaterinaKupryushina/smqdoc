@@ -19,6 +19,9 @@ namespace MvcFront.Models
         [Display(Name = "Последний вход")]
         [UIHint("DateTime")]
         public DateTime? LastLogin { get; set; }
+        [Display(Name = "CompositeId")]
+        [UIHint("Hidden")]
+        public string CompositeId { get; set; }
 
         public UserAccountListViewModel()
         {

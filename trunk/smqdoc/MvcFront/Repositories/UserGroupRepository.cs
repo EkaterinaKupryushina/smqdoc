@@ -11,9 +11,11 @@ namespace MvcFront.Repositories
     public class UserGroupRepository :IUserGroupRepository
     {
         private readonly IUnitOfWork _unitOfWork = null;
-        public UserGroupRepository(IUnitOfWork unitOfWork)
+        private readonly IUserAccountRepository _userRepository;
+        public UserGroupRepository(IUnitOfWork unitOfWork,IUserAccountRepository userRepository)
         {
             _unitOfWork = unitOfWork;
+            _userRepository = userRepository;
         }
         public IQueryable<UserGroup> GetAll()
         {
@@ -31,6 +33,12 @@ namespace MvcFront.Repositories
         {
             return _unitOfWork.DbModel.UserGroups.SingleOrDefault(x => x.GroupName == groupName.Trim());
         }
+
+        /// <summary>
+        /// Сохраняет сущность в базу !! Не использовать при работе с пользователями
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
         public bool Save(UserGroup entity)
         {
             if (entity.usergroupid == 0)
@@ -48,7 +56,6 @@ namespace MvcFront.Repositories
                     item.FullGroupName = entity.FullGroupName;
                     item.GroupName = entity.GroupName;
                     item.Managerid = entity.Managerid;
-                    item.Members = entity.Members;
                     item.Status = entity.Status;
                     item.usergroupid = entity.usergroupid;
                 }
@@ -66,7 +73,32 @@ namespace MvcFront.Repositories
                 _unitOfWork.DbModel.SaveChanges();
             }
         }
-
+        public bool AddMember(int groupId, int userId)
+        {
+            var group = this.GetById(groupId);
+            var user = group.Members.FirstOrDefault(x => x.userid == userId);
+            if (user == null)
+            {
+                user = _userRepository.Copy(_unitOfWork,userId);
+                if (user == null)
+                    return false;
+                group.Members.Add(user);
+                _unitOfWork.DbModel.SaveChanges();
+            }
+                
+            return true;
+        }
+        public bool RemoveMember(int groupId, int userId)
+        {
+            var group = this.GetById(groupId);
+            var user = group.Members.FirstOrDefault(x => x.userid == userId);
+            if (user != null) 
+                group.Members.Remove(user);
+            else 
+                return false;
+            _unitOfWork.DbModel.SaveChanges();
+            return true;
+        }
         public void ChangeState(int id)
         {
             var item = _unitOfWork.DbModel.UserGroups.SingleOrDefault(x => x.usergroupid == id);
@@ -78,6 +110,13 @@ namespace MvcFront.Repositories
                     item.GroupStatus = UserGroupStatus.Active;
                 _unitOfWork.DbModel.SaveChanges();
             }
+        }
+        public UserGroup Copy(IUnitOfWork uw, int usergroupid)
+        {
+            if (usergroupid == 0)
+                return new UserGroup();
+            else
+                return uw.DbModel.UserGroups.SingleOrDefault(x => x.usergroupid == usergroupid);
         }
     }
 }
