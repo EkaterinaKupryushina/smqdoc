@@ -259,16 +259,18 @@
     </Compile>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DictionaryController.cs" />
+    <Compile Include="Controllers\DocTemplateController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UserAccountListController.cs" />
     <Compile Include="Controllers\UserGroupListController.cs" />
+    <Compile Include="DB\DocTemplate.cs" />
     <Compile Include="DB\EntityDBModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>EntityDBModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="DB\UserAccount.cs" />
-    <Compile Include="DB\UserGroups.cs" />
+    <Compile Include="DB\UserGroup.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -276,6 +278,7 @@
     <Compile Include="App_Data\SmqMembershipProvider.cs" />
     <Compile Include="Infrastructure\SmqSettings.cs" />
     <Compile Include="Infrastructure\UnitOfWork.cs" />
+    <Compile Include="Interfaces\IDocTeplateRepository.cs" />
     <Compile Include="Interfaces\IUnitOfWork.cs" />
     <Compile Include="Interfaces\IUserAccountRepository.cs" />
     <Compile Include="Interfaces\IUserGroupRepository.cs" />
@@ -283,6 +286,7 @@
     <Compile Include="Models\UserAccountListModels.cs" />
     <Compile Include="Models\UserGroupListModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\DocTeplateRepository.cs" />
     <Compile Include="Repositories\UserAccountRepository.cs" />
     <Compile Include="Repositories\UserGroupRepository.cs" />
   </ItemGroup>
