@@ -8,6 +8,8 @@
   <EntityContainer Name="smqdocModelStoreContainer">
     <EntitySet Name="UserAccounts" EntityType="smqdocModel.Store.UserAccounts" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="UserGroups" EntityType="smqdocModel.Store.UserGroups" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="DocTemplates" EntityType="smqdocModel.Store.DocTemplates" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="FieldTeplates" EntityType="smqdocModel.Store.FieldTeplates" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="GroupUsers" EntityType="smqdocModel.Store.GroupUsers" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="GroupManager" Association="smqdocModel.Store.GroupManager">
       <End Role="UserGroup" EntitySet="UserGroups" />
@@ -20,6 +22,10 @@
     <AssociationSet Name="FK_GroupUsers_UserAccount" Association="smqdocModel.Store.FK_GroupUsers_UserAccount">
       <End Role="UserAccount" EntitySet="UserAccounts" />
       <End Role="GroupUsers" EntitySet="GroupUsers" />
+    </AssociationSet>
+    <AssociationSet Name="FieldTeplateDocTemplate" Association="smqdocModel.Store.FieldTeplateDocTemplate">
+      <End Role="FieldTeplate" EntitySet="FieldTeplates" />
+      <End Role="DocTemplate" EntitySet="DocTemplates" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="UserAccounts">
@@ -47,6 +53,30 @@
     <Property Name="Managerid" Type="int" Nullable="false" />
     <Property Name="Status" Type="int" Nullable="false" />
   </EntityType>
+  <EntityType Name="DocTemplates">
+    <Key>
+      <PropertyRef Name="docteplateid" />
+    </Key>
+    <Property Name="docteplateid" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TemplateName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Status" Type="int" Nullable="false" />
+    <Property Name="Comment" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="LastEditDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="FieldTeplates">
+    <Key>
+      <PropertyRef Name="fieldteplateid" />
+    </Key>
+    <Property Name="fieldteplateid" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FieldUserName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="FiledType" Type="int" Nullable="false" />
+    <Property Name="Restricted" Type="bit" Nullable="false" />
+    <Property Name="MaxVal" Type="int" Nullable="false" />
+    <Property Name="MinVal" Type="int" Nullable="false" />
+    <Property Name="DocTemplate_docteplateid" Type="bigint" Nullable="false" />
+    <Property Name="OrderNumber" Type="int" Nullable="false" />
+    <Property Name="Status" Type="int" Nullable="false" />
+  </EntityType>
   <EntityType Name="GroupUsers">
     <Key>
       <PropertyRef Name="MemberGroups_usergroupid" />
@@ -64,6 +94,18 @@
       </Principal>
       <Dependent Role="UserGroup">
         <PropertyRef Name="Managerid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FieldTeplateDocTemplate">
+    <End Role="FieldTeplate" Type="smqdocModel.Store.FieldTeplates" Multiplicity="*" />
+    <End Role="DocTemplate" Type="smqdocModel.Store.DocTemplates" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="DocTemplate">
+        <PropertyRef Name="docteplateid" />
+      </Principal>
+      <Dependent Role="FieldTeplate">
+        <PropertyRef Name="DocTemplate_docteplateid" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -105,6 +147,12 @@
           <AssociationSet Name="GroupUsers" Association="smqdocModel.GroupUsers">
             <End Role="UserGroup" EntitySet="UserGroups" />
             <End Role="UserAccount" EntitySet="UserAccounts" />
+          </AssociationSet>
+          <EntitySet Name="DocTemplates" EntityType="smqdocModel.DocTemplate" />
+          <EntitySet Name="FieldTeplates" EntityType="smqdocModel.FieldTeplate" />
+          <AssociationSet Name="FieldTeplateDocTemplate" Association="smqdocModel.FieldTeplateDocTemplate">
+            <End Role="FieldTeplate" EntitySet="FieldTeplates" />
+            <End Role="DocTemplate" EntitySet="DocTemplates" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="UserAccount">
@@ -152,6 +200,44 @@
           <End Type="smqdocModel.UserGroup" Role="UserGroup" Multiplicity="*" />
           <End Type="smqdocModel.UserAccount" Role="UserAccount" Multiplicity="*" />
         </Association>
+        <EntityType Name="DocTemplate">
+          <Key>
+            <PropertyRef Name="docteplateid" />
+          </Key>
+          <Property Type="Int64" Name="docteplateid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="TemplateName" Nullable="false" FixedLength="false" Unicode="true" MaxLength="Max" />
+          <Property Type="Int32" Name="Status" Nullable="false" />
+          <Property Type="String" Name="Comment" Nullable="false" FixedLength="false" MaxLength="Max" Unicode="true" />
+          <NavigationProperty Name="FieldTeplates" Relationship="smqdocModel.FieldTeplateDocTemplate" FromRole="DocTemplate" ToRole="FieldTeplate" />
+          <Property Type="DateTime" Name="LastEditDate" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FieldTeplate">
+          <Key>
+            <PropertyRef Name="fieldteplateid" />
+          </Key>
+          <Property Type="Int64" Name="fieldteplateid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="FieldName" Nullable="false" FixedLength="false" MaxLength="Max" Unicode="true" />
+          <Property Type="Int32" Name="FiledType" Nullable="false" />
+          <Property Type="Boolean" Name="Restricted" Nullable="false" />
+          <Property Type="Int32" Name="MaxVal" Nullable="false" />
+          <Property Type="Int32" Name="MinVal" Nullable="false" />
+          <NavigationProperty Name="DocTemplate" Relationship="smqdocModel.FieldTeplateDocTemplate" FromRole="FieldTeplate" ToRole="DocTemplate" />
+          <Property Type="Int64" Name="DocTemplate_docteplateid" Nullable="false" />
+          <Property Type="Int32" Name="OrderNumber" Nullable="false" />
+          <Property Type="Int32" Name="Status" Nullable="false" />
+        </EntityType>
+        <Association Name="FieldTeplateDocTemplate">
+          <End Type="smqdocModel.FieldTeplate" Role="FieldTeplate" Multiplicity="*" />
+          <End Type="smqdocModel.DocTemplate" Role="DocTemplate" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="DocTemplate">
+              <PropertyRef Name="docteplateid" />
+            </Principal>
+            <Dependent Role="FieldTeplate">
+              <PropertyRef Name="DocTemplate_docteplateid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -181,6 +267,32 @@
           <ScalarProperty Name="FullGroupName" ColumnName="FullGroupName" />
           <ScalarProperty Name="GroupName" ColumnName="GroupName" />
           <ScalarProperty Name="Managerid" ColumnName="Managerid" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DocTemplates">
+      <EntityTypeMapping TypeName="IsTypeOf(smqdocModel.DocTemplate)">
+        <MappingFragment StoreEntitySet="DocTemplates">
+          <ScalarProperty Name="docteplateid" ColumnName="docteplateid" />
+          <ScalarProperty Name="TemplateName" ColumnName="TemplateName" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Comment" ColumnName="Comment" />
+          <ScalarProperty Name="LastEditDate" ColumnName="LastEditDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FieldTeplates">
+      <EntityTypeMapping TypeName="IsTypeOf(smqdocModel.FieldTeplate)">
+        <MappingFragment StoreEntitySet="FieldTeplates">
+          <ScalarProperty Name="fieldteplateid" ColumnName="fieldteplateid" />
+          <ScalarProperty Name="FieldName" ColumnName="FieldUserName" />
+          <ScalarProperty Name="FiledType" ColumnName="FiledType" />
+          <ScalarProperty Name="Restricted" ColumnName="Restricted" />
+          <ScalarProperty Name="MaxVal" ColumnName="MaxVal" />
+          <ScalarProperty Name="MinVal" ColumnName="MinVal" />
+          <ScalarProperty Name="DocTemplate_docteplateid" ColumnName="DocTemplate_docteplateid" />
+          <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
           <ScalarProperty Name="Status" ColumnName="Status" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -222,6 +334,12 @@
         <AssociationConnector Association="smqdocModel.GroupUsers">
           <ConnectorPoint PointX="4.5" PointY="1.7149822998046873" />
           <ConnectorPoint PointX="2.25" PointY="1.7149822998046873" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="smqdocModel.DocTemplate" Width="1.5" PointX="0.75" PointY="4.625" Height="2.1725878906249996" />
+        <EntityTypeShape EntityType="smqdocModel.FieldTeplate" Width="1.5" PointX="4.75" PointY="4.625" Height="2.9417936197916656" />
+        <AssociationConnector Association="smqdocModel.FieldTeplateDocTemplate">
+          <ConnectorPoint PointX="4.75" PointY="5.7112939453125" />
+          <ConnectorPoint PointX="2.25" PointY="5.7112939453125" />
         </AssociationConnector>
       </Diagram>
     </Diagrams>

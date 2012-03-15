@@ -20,6 +20,7 @@ using System.Runtime.Serialization;
 
 [assembly: EdmRelationshipAttribute("smqdocModel", "GroupManager", "UserGroup", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.UserGroup), "UserAccount", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.UserAccount), true)]
 [assembly: EdmRelationshipAttribute("smqdocModel", "GroupUsers", "UserGroup", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.UserGroup), "UserAccount", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.UserAccount))]
+[assembly: EdmRelationshipAttribute("smqdocModel", "FieldTeplateDocTemplate", "FieldTeplate", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.FieldTeplate), "DocTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.DocTemplate), true)]
 
 #endregion
 
@@ -102,6 +103,38 @@ namespace MvcFront.DB
             }
         }
         private ObjectSet<UserGroup> _UserGroups;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<DocTemplate> DocTemplates
+        {
+            get
+            {
+                if ((_DocTemplates == null))
+                {
+                    _DocTemplates = base.CreateObjectSet<DocTemplate>("DocTemplates");
+                }
+                return _DocTemplates;
+            }
+        }
+        private ObjectSet<DocTemplate> _DocTemplates;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<FieldTeplate> FieldTeplates
+        {
+            get
+            {
+                if ((_FieldTeplates == null))
+                {
+                    _FieldTeplates = base.CreateObjectSet<FieldTeplate>("FieldTeplates");
+                }
+                return _FieldTeplates;
+            }
+        }
+        private ObjectSet<FieldTeplate> _FieldTeplates;
 
         #endregion
         #region AddTo Methods
@@ -121,6 +154,22 @@ namespace MvcFront.DB
         {
             base.AddObject("UserGroups", userGroup);
         }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the DocTemplates EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToDocTemplates(DocTemplate docTemplate)
+        {
+            base.AddObject("DocTemplates", docTemplate);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the FieldTeplates EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToFieldTeplates(FieldTeplate fieldTeplate)
+        {
+            base.AddObject("FieldTeplates", fieldTeplate);
+        }
 
         #endregion
     }
@@ -129,6 +178,494 @@ namespace MvcFront.DB
     #endregion
     
     #region Entities
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="smqdocModel", Name="DocTemplate")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class DocTemplate : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new DocTemplate object.
+        /// </summary>
+        /// <param name="docteplateid">Initial value of the docteplateid property.</param>
+        /// <param name="templateName">Initial value of the TemplateName property.</param>
+        /// <param name="status">Initial value of the Status property.</param>
+        /// <param name="comment">Initial value of the Comment property.</param>
+        /// <param name="lastEditDate">Initial value of the LastEditDate property.</param>
+        public static DocTemplate CreateDocTemplate(global::System.Int64 docteplateid, global::System.String templateName, global::System.Int32 status, global::System.String comment, global::System.DateTime lastEditDate)
+        {
+            DocTemplate docTemplate = new DocTemplate();
+            docTemplate.docteplateid = docteplateid;
+            docTemplate.TemplateName = templateName;
+            docTemplate.Status = status;
+            docTemplate.Comment = comment;
+            docTemplate.LastEditDate = lastEditDate;
+            return docTemplate;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int64 docteplateid
+        {
+            get
+            {
+                return _docteplateid;
+            }
+            set
+            {
+                if (_docteplateid != value)
+                {
+                    OndocteplateidChanging(value);
+                    ReportPropertyChanging("docteplateid");
+                    _docteplateid = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("docteplateid");
+                    OndocteplateidChanged();
+                }
+            }
+        }
+        private global::System.Int64 _docteplateid;
+        partial void OndocteplateidChanging(global::System.Int64 value);
+        partial void OndocteplateidChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String TemplateName
+        {
+            get
+            {
+                return _TemplateName;
+            }
+            set
+            {
+                OnTemplateNameChanging(value);
+                ReportPropertyChanging("TemplateName");
+                _TemplateName = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("TemplateName");
+                OnTemplateNameChanged();
+            }
+        }
+        private global::System.String _TemplateName;
+        partial void OnTemplateNameChanging(global::System.String value);
+        partial void OnTemplateNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Status
+        {
+            get
+            {
+                return _Status;
+            }
+            set
+            {
+                OnStatusChanging(value);
+                ReportPropertyChanging("Status");
+                _Status = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Status");
+                OnStatusChanged();
+            }
+        }
+        private global::System.Int32 _Status;
+        partial void OnStatusChanging(global::System.Int32 value);
+        partial void OnStatusChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Comment
+        {
+            get
+            {
+                return _Comment;
+            }
+            set
+            {
+                OnCommentChanging(value);
+                ReportPropertyChanging("Comment");
+                _Comment = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Comment");
+                OnCommentChanged();
+            }
+        }
+        private global::System.String _Comment;
+        partial void OnCommentChanging(global::System.String value);
+        partial void OnCommentChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime LastEditDate
+        {
+            get
+            {
+                return _LastEditDate;
+            }
+            set
+            {
+                OnLastEditDateChanging(value);
+                ReportPropertyChanging("LastEditDate");
+                _LastEditDate = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("LastEditDate");
+                OnLastEditDateChanged();
+            }
+        }
+        private global::System.DateTime _LastEditDate;
+        partial void OnLastEditDateChanging(global::System.DateTime value);
+        partial void OnLastEditDateChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "FieldTeplateDocTemplate", "FieldTeplate")]
+        public EntityCollection<FieldTeplate> FieldTeplates
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<FieldTeplate>("smqdocModel.FieldTeplateDocTemplate", "FieldTeplate");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<FieldTeplate>("smqdocModel.FieldTeplateDocTemplate", "FieldTeplate", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="smqdocModel", Name="FieldTeplate")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class FieldTeplate : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new FieldTeplate object.
+        /// </summary>
+        /// <param name="fieldteplateid">Initial value of the fieldteplateid property.</param>
+        /// <param name="fieldName">Initial value of the FieldName property.</param>
+        /// <param name="filedType">Initial value of the FiledType property.</param>
+        /// <param name="restricted">Initial value of the Restricted property.</param>
+        /// <param name="maxVal">Initial value of the MaxVal property.</param>
+        /// <param name="minVal">Initial value of the MinVal property.</param>
+        /// <param name="docTemplate_docteplateid">Initial value of the DocTemplate_docteplateid property.</param>
+        /// <param name="orderNumber">Initial value of the OrderNumber property.</param>
+        /// <param name="status">Initial value of the Status property.</param>
+        public static FieldTeplate CreateFieldTeplate(global::System.Int64 fieldteplateid, global::System.String fieldName, global::System.Int32 filedType, global::System.Boolean restricted, global::System.Int32 maxVal, global::System.Int32 minVal, global::System.Int64 docTemplate_docteplateid, global::System.Int32 orderNumber, global::System.Int32 status)
+        {
+            FieldTeplate fieldTeplate = new FieldTeplate();
+            fieldTeplate.fieldteplateid = fieldteplateid;
+            fieldTeplate.FieldName = fieldName;
+            fieldTeplate.FiledType = filedType;
+            fieldTeplate.Restricted = restricted;
+            fieldTeplate.MaxVal = maxVal;
+            fieldTeplate.MinVal = minVal;
+            fieldTeplate.DocTemplate_docteplateid = docTemplate_docteplateid;
+            fieldTeplate.OrderNumber = orderNumber;
+            fieldTeplate.Status = status;
+            return fieldTeplate;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int64 fieldteplateid
+        {
+            get
+            {
+                return _fieldteplateid;
+            }
+            set
+            {
+                if (_fieldteplateid != value)
+                {
+                    OnfieldteplateidChanging(value);
+                    ReportPropertyChanging("fieldteplateid");
+                    _fieldteplateid = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("fieldteplateid");
+                    OnfieldteplateidChanged();
+                }
+            }
+        }
+        private global::System.Int64 _fieldteplateid;
+        partial void OnfieldteplateidChanging(global::System.Int64 value);
+        partial void OnfieldteplateidChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String FieldName
+        {
+            get
+            {
+                return _FieldName;
+            }
+            set
+            {
+                OnFieldNameChanging(value);
+                ReportPropertyChanging("FieldName");
+                _FieldName = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("FieldName");
+                OnFieldNameChanged();
+            }
+        }
+        private global::System.String _FieldName;
+        partial void OnFieldNameChanging(global::System.String value);
+        partial void OnFieldNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 FiledType
+        {
+            get
+            {
+                return _FiledType;
+            }
+            set
+            {
+                OnFiledTypeChanging(value);
+                ReportPropertyChanging("FiledType");
+                _FiledType = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("FiledType");
+                OnFiledTypeChanged();
+            }
+        }
+        private global::System.Int32 _FiledType;
+        partial void OnFiledTypeChanging(global::System.Int32 value);
+        partial void OnFiledTypeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean Restricted
+        {
+            get
+            {
+                return _Restricted;
+            }
+            set
+            {
+                OnRestrictedChanging(value);
+                ReportPropertyChanging("Restricted");
+                _Restricted = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Restricted");
+                OnRestrictedChanged();
+            }
+        }
+        private global::System.Boolean _Restricted;
+        partial void OnRestrictedChanging(global::System.Boolean value);
+        partial void OnRestrictedChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 MaxVal
+        {
+            get
+            {
+                return _MaxVal;
+            }
+            set
+            {
+                OnMaxValChanging(value);
+                ReportPropertyChanging("MaxVal");
+                _MaxVal = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("MaxVal");
+                OnMaxValChanged();
+            }
+        }
+        private global::System.Int32 _MaxVal;
+        partial void OnMaxValChanging(global::System.Int32 value);
+        partial void OnMaxValChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 MinVal
+        {
+            get
+            {
+                return _MinVal;
+            }
+            set
+            {
+                OnMinValChanging(value);
+                ReportPropertyChanging("MinVal");
+                _MinVal = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("MinVal");
+                OnMinValChanged();
+            }
+        }
+        private global::System.Int32 _MinVal;
+        partial void OnMinValChanging(global::System.Int32 value);
+        partial void OnMinValChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int64 DocTemplate_docteplateid
+        {
+            get
+            {
+                return _DocTemplate_docteplateid;
+            }
+            set
+            {
+                OnDocTemplate_docteplateidChanging(value);
+                ReportPropertyChanging("DocTemplate_docteplateid");
+                _DocTemplate_docteplateid = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DocTemplate_docteplateid");
+                OnDocTemplate_docteplateidChanged();
+            }
+        }
+        private global::System.Int64 _DocTemplate_docteplateid;
+        partial void OnDocTemplate_docteplateidChanging(global::System.Int64 value);
+        partial void OnDocTemplate_docteplateidChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 OrderNumber
+        {
+            get
+            {
+                return _OrderNumber;
+            }
+            set
+            {
+                OnOrderNumberChanging(value);
+                ReportPropertyChanging("OrderNumber");
+                _OrderNumber = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("OrderNumber");
+                OnOrderNumberChanged();
+            }
+        }
+        private global::System.Int32 _OrderNumber;
+        partial void OnOrderNumberChanging(global::System.Int32 value);
+        partial void OnOrderNumberChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Status
+        {
+            get
+            {
+                return _Status;
+            }
+            set
+            {
+                OnStatusChanging(value);
+                ReportPropertyChanging("Status");
+                _Status = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Status");
+                OnStatusChanged();
+            }
+        }
+        private global::System.Int32 _Status;
+        partial void OnStatusChanging(global::System.Int32 value);
+        partial void OnStatusChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "FieldTeplateDocTemplate", "DocTemplate")]
+        public DocTemplate DocTemplate
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<DocTemplate>("smqdocModel.FieldTeplateDocTemplate", "DocTemplate").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<DocTemplate>("smqdocModel.FieldTeplateDocTemplate", "DocTemplate").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<DocTemplate> DocTemplateReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<DocTemplate>("smqdocModel.FieldTeplateDocTemplate", "DocTemplate");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<DocTemplate>("smqdocModel.FieldTeplateDocTemplate", "DocTemplate", value);
+                }
+            }
+        }
+
+        #endregion
+    }
     
     /// <summary>
     /// No Metadata Documentation available.
