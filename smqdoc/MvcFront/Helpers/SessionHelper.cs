@@ -19,14 +19,14 @@ namespace MvcFront.Helpers
     /// Хранит информацию о текущем профиле пользователя
     /// </summary>
     [Serializable]
-    [XmlRoot]
     public class SmqUserSessionData
     {   
         public string UserName { get; set; }
         public int UserId { get; set; }
         public SmqUserProfileType UserType { get; set; }
-        public string UserGroup { get; set; }
+        public string UserGroupName { get; set; }
         public int UserGroupId { get; set; }
+        public string CurrentProfileName { get; set; }
     }
 
     public static class SessionHelper
