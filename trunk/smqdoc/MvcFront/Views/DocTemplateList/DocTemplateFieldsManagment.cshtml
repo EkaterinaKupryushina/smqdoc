@@ -1,6 +1,4 @@
-﻿@using Telerik
-@using MvcFront.DB
-@using Telerik.Web.Mvc.UI
+﻿@using Telerik.Web.Mvc.UI
 @using MvcFront.Models
 @model MvcFront.DB.DocTemplate
 
@@ -33,7 +31,7 @@
                             .HtmlAttributes(new { style = "text-align: center" });
                            command.Custom("DeleteDetails")
                             .Text("Удалить")
-                            .DataRouteValues(route => route.Add(o => o.FieldTemplateId).RouteKey("FieldTemplateId"))
+                            .DataRouteValues(route => route.Add(o => o.FieldTemplateId).RouteKey("fieldTemplateId"))
                             .Ajax(true)
                             .Action("DeleteField", "DocTemplateList")
                             .HtmlAttributes(new { style = "text-align: center" });

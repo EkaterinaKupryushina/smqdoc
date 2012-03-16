@@ -1,13 +1,11 @@
-﻿@using Telerik
-@using MvcFront.DB
+﻿@using MvcFront.DB
 @using Telerik.Web.Mvc.UI
 @using MvcFront.Models
 
-@model MvcFront.DB.UserGroup
+@model UserGroup
 
 @{
     ViewBag.Title = "GroupUsersManagment";
-    UserAccount addingUser = new UserAccount();
 }
 
 <h2>Управление пользователями</h2>
@@ -68,10 +66,10 @@
     .Height(100)
     .Content(@<text>
                 @Html.Editor("addingUser", "UserAccountFilter")
-        <center>
-         <input type="button" value="Добавить" onclick="SendRequest()"/> 
-         </center>
-    </text>)
+                  <div style="text-align: center;" >
+                      <input type="button" value="Добавить" onclick="SendRequest()"/> 
+                  </div>
+              </text>)
 )
 </fieldset>
 <script type="text/javascript">

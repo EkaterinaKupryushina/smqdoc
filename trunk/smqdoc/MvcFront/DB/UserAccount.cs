@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using MvcFront.Helpers;
+﻿using MvcFront.Helpers;
 
 namespace MvcFront.DB
 {
@@ -18,25 +14,25 @@ namespace MvcFront.DB
         {
             get
             {
-                return this.SecondName + " " + this.FirstName + " " + this.LastName;
+                return SecondName + " " + FirstName + " " + LastName;
             }
         }
         public UserAccountStatus UserStatus
         {
             get
             {
-                return (UserAccountStatus)this.Status;
+                return (UserAccountStatus)Status;
             }
             set
             {
-                this.Status = (int)value;
+                Status = (int)value;
             }
         }
         public string UserStatusText
         {
             get
             {
-                return DictionaryHelper.GetEnumText(typeof(UserAccountStatus),this.Status);
+                return DictionaryHelper.GetEnumText(typeof(UserAccountStatus),Status);
             }
         }
     }

@@ -278,7 +278,6 @@
     <Compile Include="Helpers\DictionaryHelper.cs" />
     <Compile Include="Helpers\SessionHelper.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
-    <Compile Include="App_Data\SmqMembershipProvider.cs" />
     <Compile Include="Infrastructure\SmqSettings.cs" />
     <Compile Include="Infrastructure\UnitOfWork.cs" />
     <Compile Include="Interfaces\IDocTemplateRepository.cs" />
@@ -597,6 +596,7 @@
     <Content Include="Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Data\" />
     <Folder Include="Entities\" />
   </ItemGroup>
   <ItemGroup>

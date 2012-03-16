@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using MvcFront.Interfaces;
 using MvcFront.DB;
@@ -22,7 +20,7 @@ namespace MvcFront.Controllers
 
         public ActionResult Index()
         {
-            return View(_templateRepository.GetAllDocTeplates().Where(x => x.Status != (int)DocTemplateStatus.Deleted).ToList().ConvertAll(new Converter<DocTemplate,DocTemplateListViewModel>(DocTemplateListViewModel.DocTemplateToModelConverter)).ToList());
+            return View(_templateRepository.GetAllDocTeplates().Where(x => x.Status != (int)DocTemplateStatus.Deleted).ToList().ConvertAll(DocTemplateListViewModel.DocTemplateToModelConverter).ToList());
         }
 
         //Возращает список полей шаблона
@@ -30,7 +28,7 @@ namespace MvcFront.Controllers
         public ActionResult _FieldTemplateList(long templId)
         {
             var data = _templateRepository.GetDocTemplateById(templId).FieldTeplates.Where(x => x.Status != (int)FieldTemplateStatus.Deleted).OrderBy(x=>x.OrderNumber).ToList()
-                .ConvertAll(new Converter<FieldTemplate, FieldTemplateListViewModel>(FieldTemplateListViewModel.FieldToModelConverter));
+                .ConvertAll(FieldTemplateListViewModel.FieldToModelConverter);
             return View(new GridModel<FieldTemplateListViewModel> { Data = data });
         }
 
@@ -150,9 +148,9 @@ namespace MvcFront.Controllers
             return View(_templateRepository.GetDocTemplateById(id));
         }
 
-        public JsonResult DeleteField(long id,long FieldTemplateId)
+        public JsonResult DeleteField(long id,long fieldTemplateId)
         {
-            _templateRepository.DeleteFieldTemplate(FieldTemplateId);
+            _templateRepository.DeleteFieldTemplate(fieldTemplateId);
             return Json(new { result = true });
         }
 

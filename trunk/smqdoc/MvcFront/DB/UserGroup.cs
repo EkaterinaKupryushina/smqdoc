@@ -1,9 +1,4 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using MvcFront.Helpers;
 
 namespace MvcFront.DB
@@ -22,18 +17,18 @@ namespace MvcFront.DB
         {
             get
             {
-                return (UserGroupStatus)this.Status;
+                return (UserGroupStatus)Status;
             }
             set
             {
-                this.Status = (int)value;
+                Status = (int)value;
             }
         }
         public string GroupStatusText
         {
             get
             {
-                return DictionaryHelper.GetEnumText(typeof(UserGroupStatus), this.Status);
+                return DictionaryHelper.GetEnumText(typeof(UserGroupStatus), Status);
             }
         }
     }

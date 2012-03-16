@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace MvcFront.Infrastructure
+﻿namespace MvcFront.Infrastructure
 {
     public class SmqSettings
     {
-        private static SmqSettings _instance = null;
+        private static SmqSettings _instance;
         private string _applicationName = "SmqDoc";
         private SmqSettings()
         {
@@ -15,12 +10,7 @@ namespace MvcFront.Infrastructure
 
         public static SmqSettings Instance
         {
-            get
-            {
-                if (_instance == null)
-                    _instance = new SmqSettings();
-                return _instance;
-            }
+            get { return _instance ?? (_instance = new SmqSettings()); }
         }
 
         public string ApplicationName { get { return _applicationName; } set { _applicationName = value; } }

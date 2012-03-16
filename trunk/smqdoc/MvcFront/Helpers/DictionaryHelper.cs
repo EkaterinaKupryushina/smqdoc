@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using MvcFront;
-using MvcFront.DB;
 
 
 namespace MvcFront.Helpers
@@ -131,6 +126,7 @@ namespace MvcFront.Helpers
             }
             catch (Exception)
             {
+                return retVal;
             }
             return retVal;
         }

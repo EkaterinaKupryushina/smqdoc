@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using MvcFront.Interfaces;
 using MvcFront.Models;
@@ -23,7 +21,7 @@ namespace MvcFront.Controllers
         public ActionResult Index()
         {
             return View(_userRepository.GetAll().Where(x=>x.Status != (int)UserAccountStatus.Deleted).ToList()
-                .ConvertAll(new Converter<UserAccount,UserAccountListViewModel>(UserAccountListViewModel.UserAccountToModelConverter)).ToList());
+                .ConvertAll(UserAccountListViewModel.UserAccountToModelConverter).ToList());
         }
 
         //
