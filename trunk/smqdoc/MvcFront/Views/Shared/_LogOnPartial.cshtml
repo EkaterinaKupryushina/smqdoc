@@ -1,7 +1,15 @@
-﻿@if(Request.IsAuthenticated) {
-    <text>Здравствуйте <strong>@User.Identity.Name</strong>!
-    [ @Html.ActionLink("Выход", "LogOff", "Account") ]</text>
-}
-else {
-    @:[ @Html.ActionLink("Вход", "LogOn", "Account") ]
+﻿@using MvcFront.Helpers
+
+@{
+    var smqUserSessionData = SessionHelper.GetUserSessionData(Session);
+    if (Request.IsAuthenticated && smqUserSessionData != null && @User.Identity.Name == smqUserSessionData.UserName)
+    {
+        <text>Здравствуйте <strong>@User.Identity.Name</strong>!
+            текущая роль <strong>@smqUserSessionData.CurrentProfileName</strong>
+            [ @Html.ActionLink("Выход", "LogOff", "Account") ]</text>
+    }
+    else
+    {
+        @:[ @Html.ActionLink("Вход", "LogOn", "Account") ]
+    }
 }

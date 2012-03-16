@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using MvcFront.DB;
 using MvcFront.Interfaces;
 
 namespace MvcFront.Controllers
@@ -30,7 +32,23 @@ namespace MvcFront.Controllers
             }
             return new JsonResult { Data = new SelectList(data.ToList().Select(x => new { Id = x.userid,Name = x.FullName + " ("+x.Login+")"}), "Id", "Name") };
         }
-
+        [HttpPost]
+        public ActionResult AjaxUserAccountProfiles(int userId)
+        {
+            var user = _userRepository.GetById(userId);
+            var profDicts = new Dictionary<string, string>();
+            if(user.IsAdmin) profDicts.Add("0","Администратор");
+            foreach (var mgroup in user.ManagedGroups.Where(x=>x.Status == (int)UserGroupStatus.Active))
+            {
+                profDicts.Add(mgroup.usergroupid+";0","Менеджер "+mgroup.GroupName);
+            }
+            foreach (var mgroup in user.MemberGroups.Where(x => x.Status == (int)UserGroupStatus.Active))
+            {
+                profDicts.Add(mgroup.usergroupid + ";1", "Участник " + mgroup.GroupName);
+            }
+            if(profDicts.Count == 0) profDicts.Add("1","Просто пользователь");
+            return new JsonResult { Data = new SelectList(profDicts.Select(x => new { Id = x.Key, Name = x.Value}), "Code", "Name")};
+        }
         #endregion
     }
 }
