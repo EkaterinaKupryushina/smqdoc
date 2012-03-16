@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using MvcFront.Helpers;
 using MvcFront.Interfaces;
 
 namespace MvcFront.Controllers
@@ -17,7 +18,6 @@ namespace MvcFront.Controllers
         }
         public ActionResult Index()
         {
-            ViewBag.Users = _userRepository.GetAll().ToList();
             return View();
         }
 

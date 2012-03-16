@@ -276,6 +276,7 @@
     </Compile>
     <Compile Include="Helpers\DataHelper.cs" />
     <Compile Include="Helpers\DictionaryHelper.cs" />
+    <Compile Include="Helpers\SessionHelper.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
     <Compile Include="App_Data\SmqMembershipProvider.cs" />
     <Compile Include="Infrastructure\SmqSettings.cs" />

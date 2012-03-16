@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using MvcFront.Interfaces;
 using MvcFront.DB;
@@ -12,11 +10,9 @@ namespace MvcFront.Controllers
 {
     public class UserGroupListController : Controller
     {
-        private readonly IUserAccountRepository _userRepository;
         private readonly IUserGroupRepository _groupRepository;
-        public UserGroupListController(IUserAccountRepository userRepository, IUserGroupRepository groupRepository)
+        public UserGroupListController( IUserGroupRepository groupRepository)
         {
-            _userRepository = userRepository;
             _groupRepository = groupRepository;
         }
         //
@@ -25,13 +21,13 @@ namespace MvcFront.Controllers
         public ActionResult Index()
         {
             return View(_groupRepository.GetAll().Where(x => x.Status != (int)UserGroupStatus.Deleted)
-                .Select(x => new UserGroupListViewModel() { GroupId = x.usergroupid, Manager =  x.Manager.SecondName +" "+ x.Manager.FirstName +" " + x.Manager.LastName + " ("+ x.Manager.Login+")", GroupName = x.GroupName }).ToList());
+                .Select(x => new UserGroupListViewModel { GroupId = x.usergroupid, Manager =  x.Manager.SecondName +" "+ x.Manager.FirstName +" " + x.Manager.LastName + " ("+ x.Manager.Login+")", GroupName = x.GroupName }).ToList());
         }
         //Возращает список пользователей группы
         [GridAction]
         public ActionResult _GroupUsersList(int groupId)
         {
-            var data = _groupRepository.GetById(groupId).Members.Select(x => new UserAccountListViewModel() { UserId = x.userid, Login = x.Login, FullName = x.FirstName, LastLogin = x.LastAccess,CompositeId = x.userid+":"+groupId }).ToList();
+            var data = _groupRepository.GetById(groupId).Members.Where(x=>x.Status != (int)UserAccountStatus.Deleted).Select(x => new UserAccountListViewModel { UserId = x.userid, Login = x.Login, FullName = x.FirstName, LastLogin = x.LastAccess,CompositeId = x.userid+":"+groupId }).ToList();
             return View(new GridModel<UserAccountListViewModel> { Data = data });
         }
         //
