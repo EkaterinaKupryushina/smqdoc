@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using MvcFront.Helpers;
 
 namespace MvcFront.DB
 {
@@ -35,25 +36,7 @@ namespace MvcFront.DB
         {
             get
             {
-                switch (this.Status)
-                {
-                    case 0:
-                        {
-                            return "Активный";
-                        }
-                    case 1:
-                        {
-                            return "Отключен";
-                        }
-                    case 2:
-                        {
-                            return "Удален";
-                        }
-                    default:
-                        {
-                            return "ХЗ";
-                        }
-                }
+                return DictionaryHelper.GetEnumText(typeof(UserAccountStatus),this.Status);
             }
         }
     }

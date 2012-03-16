@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 03/15/2012 21:23:31
--- Generated from EDMX file: D:\Work\smqDoc\smqdoc.net\smqdoc\MvcFront\DB\EntityDBModel.edmx
+-- Date Created: 03/16/2012 10:08:31
+-- Generated from EDMX file: D:\Work\smqdoc.net\smqdoc\MvcFront\DB\EntityDBModel.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -89,14 +89,14 @@ CREATE TABLE [dbo].[DocTemplates] (
 );
 GO
 
--- Creating table 'FieldTeplates'
-CREATE TABLE [dbo].[FieldTeplates] (
+-- Creating table 'FieldTemplates'
+CREATE TABLE [dbo].[FieldTemplates] (
     [fieldteplateid] bigint IDENTITY(1,1) NOT NULL,
-    [FieldUserName] nvarchar(max)  NOT NULL,
+    [FieldName] nvarchar(max)  NOT NULL,
     [FiledType] int  NOT NULL,
     [Restricted] bit  NOT NULL,
-    [MaxVal] int  NOT NULL,
-    [MinVal] int  NOT NULL,
+    [MaxVal] int  NULL,
+    [MinVal] int  NULL,
     [DocTemplate_docteplateid] bigint  NOT NULL,
     [OrderNumber] int  NOT NULL,
     [Status] int  NOT NULL
@@ -132,9 +132,9 @@ ADD CONSTRAINT [PK_DocTemplates]
     PRIMARY KEY CLUSTERED ([docteplateid] ASC);
 GO
 
--- Creating primary key on [fieldteplateid] in table 'FieldTeplates'
-ALTER TABLE [dbo].[FieldTeplates]
-ADD CONSTRAINT [PK_FieldTeplates]
+-- Creating primary key on [fieldteplateid] in table 'FieldTemplates'
+ALTER TABLE [dbo].[FieldTemplates]
+ADD CONSTRAINT [PK_FieldTemplates]
     PRIMARY KEY CLUSTERED ([fieldteplateid] ASC);
 GO
 
@@ -185,8 +185,8 @@ ON [dbo].[GroupUsers]
     ([Members_userid]);
 GO
 
--- Creating foreign key on [DocTemplate_docteplateid] in table 'FieldTeplates'
-ALTER TABLE [dbo].[FieldTeplates]
+-- Creating foreign key on [DocTemplate_docteplateid] in table 'FieldTemplates'
+ALTER TABLE [dbo].[FieldTemplates]
 ADD CONSTRAINT [FK_FieldTeplateDocTemplate]
     FOREIGN KEY ([DocTemplate_docteplateid])
     REFERENCES [dbo].[DocTemplates]
@@ -195,7 +195,7 @@ ADD CONSTRAINT [FK_FieldTeplateDocTemplate]
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_FieldTeplateDocTemplate'
 CREATE INDEX [IX_FK_FieldTeplateDocTemplate]
-ON [dbo].[FieldTeplates]
+ON [dbo].[FieldTemplates]
     ([DocTemplate_docteplateid]);
 GO
 

@@ -26,6 +26,10 @@ namespace MvcFront.Models
             Manager = string.Format("{1} {0} {2} ({3})", grr.Manager.FirstName, grr.Manager.SecondName, grr.Manager.LastName, grr.Manager.Login);
             GroupName = grr.GroupName;
         }
+        public static UserGroupListViewModel UserGroupToModelConverter(UserGroup templ)
+        {
+            return new UserGroupListViewModel(templ);
+        }
     }
     public class UserGroupEditViewModel
     {

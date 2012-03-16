@@ -26,7 +26,7 @@
     <div class="page">
         <div id="header">
             <div id="title">
-                <h1>СМК Гимназия 62</h1>
+                <h1>СМК</h1>
             </div>
             <div id="logindisplay">
                 @Html.Partial("_LogOnPartial")
@@ -38,6 +38,7 @@
                     {
                         <li>@Html.ActionLink("Пользователи", "Index", "UserAccountList")</li>
                         <li>@Html.ActionLink("Группы", "Index", "UserGroupList")</li>
+                        <li>@Html.ActionLink("Шаблоны", "Index", "DocTemplateList")</li>
                     }
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                 </ul>
