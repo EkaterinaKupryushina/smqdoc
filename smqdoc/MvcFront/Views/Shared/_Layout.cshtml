@@ -1,6 +1,7 @@
-﻿@using Telerik.Web.Mvc.UI
+﻿@using MvcFront.Helpers
+@using Telerik.Web.Mvc.UI
 @{
-  UICulture = "ru-RU";
+    UICulture = "ru-RU";
 }
 <!DOCTYPE html>
 <html>
@@ -26,7 +27,8 @@
     <div class="page">
         <div id="header">
             <div id="title">
-                <h1>СМК</h1>
+                <h1>
+                    СМК</h1>
             </div>
             <div id="logindisplay">
                 @Html.Partial("_LogOnPartial")
@@ -34,11 +36,27 @@
             <div id="menucontainer">
                 <ul id="menu">
                     <li>@Html.ActionLink("Домой", "Index", "Home")</li>
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <li>@Html.ActionLink("Пользователи", "Index", "UserAccountList")</li>
-                        <li>@Html.ActionLink("Группы", "Index", "UserGroupList")</li>
-                        <li>@Html.ActionLink("Шаблоны", "Index", "DocTemplateList")</li>
+                    @{
+                        var sessState = SessionHelper.GetUserSessionData(Session);
+                        if (sessState != null)
+                        {
+                            switch (sessState.UserType)
+                            {
+                                case SmqUserProfileType.SYSTEMADMIN:
+                                    <li>@Html.ActionLink("Пользователи", "Index", "UserAccountList")</li>
+                                    <li>@Html.ActionLink("Группы", "Index", "UserGroupList")</li>
+                                    <li>@Html.ActionLink("Шаблоны", "Index", "DocTemplateList")</li>
+                               break;
+                                case SmqUserProfileType.GROUPMANAGER:
+                               break;
+                                case SmqUserProfileType.GROUPUSER:
+                               break;
+                                case SmqUserProfileType.USER:
+                               break;
+                                default:
+                               throw new ArgumentOutOfRangeException();
+                            }
+                        }
                     }
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                 </ul>

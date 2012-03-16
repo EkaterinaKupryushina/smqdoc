@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Routing;
 using System.Web.Security;
+using MvcFront.Helpers;
 using MvcFront.Models;
 using MvcFront.Interfaces;
 
@@ -34,27 +31,22 @@ namespace MvcFront.Controllers
         {
             if (ModelState.IsValid)
             {
-                
-
-                if (_userRepository.Login(model.UserName,model.Password))
+                var user = _userRepository.Login(model.UserName, model.Password);
+                if (user != null)
                 {
+                    var sessionData = new SmqUserSessionData {UserName = model.UserName,UserId = user.userid,UserType = user.IsAdmin ? SmqUserProfileType.SYSTEMADMIN: SmqUserProfileType.USER};
+                    SessionHelper.SetUserSessionData(Session,sessionData);
+
                     FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
                     if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
                         && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
                     {
                         return Redirect(returnUrl);
                     }
-                    else
-                    {
-                        return RedirectToAction("Index", "Home");
-                    }
+                    return RedirectToAction("Index", "Home");
                 }
-                else
-                {
-                    ModelState.AddModelError("", "Не верный логин/Пароль");
-                }
+                ModelState.AddModelError("", "Не верный логин/Пароль");
             }
-
             // If we got this far, something failed, redisplay form
             return View(model);
         }
@@ -65,7 +57,7 @@ namespace MvcFront.Controllers
         public ActionResult LogOff()
         {
             FormsAuthentication.SignOut();
-
+            SessionHelper.ClearUserSessionData(Session);
             return RedirectToAction("Index", "Home");
         }
 
@@ -111,10 +103,7 @@ namespace MvcFront.Controllers
                 {
                     return RedirectToAction("ChangePasswordSuccess");
                 }
-                else
-                {
-                    ModelState.AddModelError("", "Ошибка при вводе пароля");
-                }
+                ModelState.AddModelError("", "Ошибка при вводе пароля");
             }
 
             // If we got this far, something failed, redisplay form
@@ -128,45 +117,5 @@ namespace MvcFront.Controllers
         {
             return View();
         }
-
-        #region Status Codes
-        private static string ErrorCodeToString(MembershipCreateStatus createStatus)
-        {
-            // See http://go.microsoft.com/fwlink/?LinkID=177550 for
-            // a full list of status codes.
-            switch (createStatus)
-            {
-                case MembershipCreateStatus.DuplicateUserName:
-                    return "Пользователь с заданным именем уже существует.";
-
-                case MembershipCreateStatus.DuplicateEmail:
-                    return "Пользователь с заданным e-mail уже существует.";
-
-                case MembershipCreateStatus.InvalidPassword:
-                    return "Не верный пароль.";
-
-                case MembershipCreateStatus.InvalidEmail:
-                    return "Не вырный e-mail.";
-
-                case MembershipCreateStatus.InvalidAnswer:
-                    return "The password retrieval answer provided is invalid. Please check the value and try again.";
-
-                case MembershipCreateStatus.InvalidQuestion:
-                    return "The password retrieval question provided is invalid. Please check the value and try again.";
-
-                case MembershipCreateStatus.InvalidUserName:
-                    return "Не верное имя пользователя";
-
-                case MembershipCreateStatus.ProviderError:
-                    return "Ошибка провадера авторизации.";
-
-                case MembershipCreateStatus.UserRejected:
-                    return "Обратитесь к разработчику.";
-
-                default:
-                    return "Неизвестаня ошибка, обратитесь к администратору.";
-            }
-        }
-        #endregion
     }
 }
