@@ -29,7 +29,7 @@ namespace MvcFront.Controllers
         [GridAction]
         public ActionResult _FieldTemplateList(long templId)
         {
-            var data = _templateRepository.GetDocTemplateById(templId).FieldTeplates.Where(x => x.Status != (int)FieldTemplateStatus.Deleted).ToList()
+            var data = _templateRepository.GetDocTemplateById(templId).FieldTeplates.Where(x => x.Status != (int)FieldTemplateStatus.Deleted).OrderBy(x=>x.OrderNumber).ToList()
                 .ConvertAll(new Converter<FieldTemplate, FieldTemplateListViewModel>(FieldTemplateListViewModel.FieldToModelConverter));
             return View(new GridModel<FieldTemplateListViewModel> { Data = data });
         }
@@ -156,6 +156,24 @@ namespace MvcFront.Controllers
             return Json(new { result = true });
         }
 
+        public JsonResult UpField(long id)
+        {
+            var entity = _templateRepository.GetFieldTemplateById(id);
+            if (entity.OrderNumber > 1)
+            {
+                _templateRepository.SetFieldTemplateNumber(entity.fieldteplateid, entity.OrderNumber - 1);
+            }
+            return Json(new { result = true });
+        }
+
+        public JsonResult DownField(long id)
+        {
+            var entity = _templateRepository.GetFieldTemplateById(id);
+
+            _templateRepository.SetFieldTemplateNumber(entity.fieldteplateid, entity.OrderNumber + 1);
+
+            return Json(new { result = true });
+        }
         [HttpGet]
         public ActionResult AddField(long id)
         {
@@ -183,7 +201,7 @@ namespace MvcFront.Controllers
                 {
                     throw new Exception("Проверьте введенные данные");
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction("DocTemplateFieldsManagment", new { id = model.DocTemplateID });
             }
             catch (Exception ex)
             {
@@ -217,7 +235,7 @@ namespace MvcFront.Controllers
                 {
                     throw new Exception("Проверьте введенные данные");
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction("DocTemplateFieldsManagment", new { id = model.DocTemplateID });
             }
             catch (Exception ex)
             {

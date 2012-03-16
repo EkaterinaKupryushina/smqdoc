@@ -1,0 +1,90 @@
+﻿@using Telerik;
+@using Telerik.Web.Mvc.UI
+@model MvcFront.Models.FieldTemplateListEditModel
+@{
+    ViewBag.Title = "FieldTemplateListEditModel";
+}
+@Html.ValidationSummary(true)
+@Html.HiddenFor(model => model.FieldTemplateId)
+@Html.HiddenFor(model => model.DocTemplateID)
+<div class="editor-label">
+    @Html.LabelFor(model => model.FieldTemplateName)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.FieldTemplateName)
+    @Html.ValidationMessageFor(model => model.FieldTemplateName)
+</div>
+<div class="editor-label">
+    @Html.LabelFor(model => model.FieldType)
+</div>
+<div class="editor-field">
+    @Html.Telerik().DropDownList().Name("FieldType").Items(item => 
+    {
+        item.Add().Text("Да/Нет").Value("0").Selected(@Model.FieldType == 0);
+        item.Add().Text("Число").Value("1").Selected(@Model.FieldType == 1);
+        item.Add().Text("Строка").Value("2").Selected(@Model.FieldType == 2);
+    }).ClientEvents(events => events.OnChange("FieldType_onChange"))
+    @Html.ValidationMessageFor(model => model.FieldType)
+</div>
+<div id="IntBlockId">
+    <div class="editor-label">
+        @Html.LabelFor(model => model.IsRestricted)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.IsRestricted)
+        @Html.ValidationMessageFor(model => model.IsRestricted)
+    </div>
+    <div id="RestictId">
+        <div class="editor-label">
+            @Html.LabelFor(model => model.MaxVal)
+        </div>
+        <div class="editor-field">
+            @Html.Telerik().IntegerTextBoxFor(model => model.MaxVal).EmptyMessage("Введите число")
+            @Html.ValidationMessageFor(model => model.MaxVal)
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.MinVal)
+        </div>
+        <div class="editor-field">
+            @Html.Telerik().IntegerTextBoxFor(model => model.MinVal).EmptyMessage("Введите число")
+            @Html.ValidationMessageFor(model => model.MinVal)
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#IntBlockId').hide();
+        $('#RestictId').hide();
+        FieldType_onChange();
+        //SHMinMax();
+        if ($('#IsRestricted').is(':checked')) {
+            $('#RestictId').show();
+        } else {
+            $('#RestictId').hide();
+        }
+        $('#IsRestricted').click(function () {
+            if ($('#IsRestricted').is(':checked')) {
+                $('#RestictId').show();
+            } else {
+                $('#RestictId').hide();
+            }
+        });
+    });
+   
+//    function SHMinMax() {
+//        if ($('#IsRestricted').is(':checked')) {
+//            $('#RestictId').show();
+//        } else {
+//            $('#RestictId').hide();
+//        }
+//    }
+    function FieldType_onChange() {
+        var ddl = $('#FieldType').data('tDropDownList');
+        if (ddl.value() == 1) {
+            $('#IntBlockId').show();
+        } else {
+            $('#IntBlockId').hide();
+        }
+    }
+</script>
