@@ -70,7 +70,7 @@
     <Property Name="fieldteplateid" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="FieldName" Type="nvarchar(max)" Nullable="false" />
     <Property Name="FiledType" Type="int" Nullable="false" />
-    <Property Name="Restricted" Type="bit" Nullable="false" />
+    <Property Name="Restricted" Type="bit" Nullable="true" />
     <Property Name="MaxVal" Type="int" Nullable="true" />
     <Property Name="MinVal" Type="int" Nullable="true" />
     <Property Name="DocTemplate_docteplateid" Type="bigint" Nullable="false" />
@@ -218,7 +218,7 @@
           <Property Type="Int64" Name="fieldteplateid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="String" Name="FieldName" Nullable="false" FixedLength="false" MaxLength="Max" Unicode="true" />
           <Property Type="Int32" Name="FiledType" Nullable="false" />
-          <Property Type="Boolean" Name="Restricted" Nullable="false" />
+          <Property Type="Boolean" Name="Restricted" Nullable="true" />
           <Property Type="Int32" Name="MaxVal" Nullable="true" />
           <Property Type="Int32" Name="MinVal" Nullable="true" />
           <NavigationProperty Name="DocTemplate" Relationship="smqdocModel.FieldTeplateDocTemplate" FromRole="FieldTeplate" ToRole="DocTemplate" />

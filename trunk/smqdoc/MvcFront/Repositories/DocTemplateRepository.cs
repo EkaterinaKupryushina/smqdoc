@@ -94,6 +94,12 @@ namespace MvcFront.Repositories
 
         public bool SaveFieldTemplate(FieldTemplate entity)
         {
+            if (entity.TemplateType != FieldTemplateType.INTEGER)
+            {
+                entity.Restricted = null;
+                entity.MaxVal = null;
+                entity.MinVal = null;
+            }
             if (entity.fieldteplateid == 0)
             {
                 _unitOfWork.DbModel.FieldTemplates.AddObject(entity);
