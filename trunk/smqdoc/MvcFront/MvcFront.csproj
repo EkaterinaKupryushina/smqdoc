@@ -274,6 +274,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\DataHelper.cs" />
     <Compile Include="Helpers\DictionaryHelper.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
     <Compile Include="App_Data\SmqMembershipProvider.cs" />
@@ -851,6 +852,11 @@
     <Content Include="Views\DocTemplateList\Index.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\DocTemplate.cshtml" />
     <Content Include="Views\DocTemplateList\Details.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\DocTemplateListEditModel.cshtml" />
+    <Content Include="Views\DocTemplateList\Create.cshtml" />
+    <Content Include="Views\DocTemplateList\Edit.cshtml" />
+    <Content Include="Views\DocTemplateList\Delete.cshtml" />
+    <Content Include="Views\DocTemplateList\DocTemplateFieldsManagment.cshtml" />
     <None Include="Views\UserAccountList\ChangeState.cshtml" />
     <Content Include="Views\UserGroupList\Index.cshtml" />
     <Content Include="Views\UserGroupList\Delete.cshtml" />

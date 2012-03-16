@@ -1,0 +1,18 @@
+﻿@model MvcFront.DB.DocTemplate
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Удаление</h2>
+
+<h3>Вы действиетльно желаете удалить данный шаблон?</h3>
+<fieldset>
+@Html.DisplayForModel()
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" value="Удалить" /> |
+        @Html.ActionLink("Отмена", "Index")
+    </p>
+}

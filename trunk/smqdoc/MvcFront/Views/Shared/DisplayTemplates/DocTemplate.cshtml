@@ -1,16 +1,16 @@
 ﻿@model MvcFront.DB.DocTemplate
 
 
-    <legend>Шаблон документа</legend>
+    <legend>@Html.DisplayFor(model => model.TemplateName)</legend>
 
     <div class="display-label">@Html.LabelFor(model => model.TemplateName)</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.TemplateName)
     </div>
 
-    <div class="display-label">@Html.LabelFor(model => model.Status)</div>
+    <div class="display-label">@Html.LabelFor(model => model.TemplateStatus)</div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Status)
+        @Html.DisplayFor(model => model.TemplateStatusText)
     </div>
 
     <div class="display-label">@Html.LabelFor(model => model.Comment)</div>

@@ -52,7 +52,7 @@
                        {
                            command.Custom("DeleteDetails")
                             .Text("Удалить пользователя")
-                            .DataRouteValues(route => route.Add(o => o.CompositeId).RouteKey("CompositeId"))
+                            .DataRouteValues(route => route.Add(o => o.UserId).RouteKey("UserId"))
                             .Ajax(true)
                             .Action("DeleteUser", "UserGroupList")
                             .HtmlAttributes(new { style = "text-align: center" });
@@ -74,7 +74,6 @@
     </text>)
 )
 </fieldset>
-
 <script type="text/javascript">
 function onComplete(e) {
     if (e.name == "DeleteDetails") {

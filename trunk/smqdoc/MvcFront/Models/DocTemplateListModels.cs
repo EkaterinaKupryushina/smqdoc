@@ -31,6 +31,7 @@ namespace MvcFront.Models
             return new DocTemplateListViewModel(templ);
         }
     }
+
     public class DocTemplateListEditModel
     {
         [Display(Name = "ID")]
@@ -39,6 +40,7 @@ namespace MvcFront.Models
         [Display(Name = "Названире шаблона")]
         public string DocTemplateName { get; set; }
         [Display(Name = "Описание шаблона")]
+        [DataType(DataType.MultilineText)]
         public string Comment { get; set; }
         public DocTemplateListEditModel()
         {

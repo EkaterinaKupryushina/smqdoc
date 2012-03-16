@@ -47,25 +47,37 @@ namespace MvcFront.Controllers
 
         public ActionResult Create()
         {
-            return View();
+            return View(new DocTemplateListEditModel(_templateRepository.GetDocTemplateById(0)));
         } 
 
         //
         // POST: /DocTemplate/Create
 
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(DocTemplateListEditModel model)
         {
             try
             {
-                // TODO: Add insert logic here
-
+                if (ModelState.IsValid)
+                {
+                    var templ = _templateRepository.GetDocTemplateById(0);
+                    templ = model.Update(templ);
+                    if (!_templateRepository.SaveDocTemplate(templ))
+                    {
+                        throw new Exception("Ошибка сохранения Шаблона");
+                    }
+                }
+                else
+                {
+                    throw new Exception("Проверьте введенные данные");
+                }
                 return RedirectToAction("Index");
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                ModelState.AddModelError("Ошибка при сохранении", ex.InnerException != null ? ex.InnerException.Message : ex.Message);
             }
+            return View();
         }
         
         //
@@ -73,25 +85,37 @@ namespace MvcFront.Controllers
  
         public ActionResult Edit(long id)
         {
-            return View();
+            return View(new DocTemplateListEditModel(_templateRepository.GetDocTemplateById(id)));
         }
 
         //
         // POST: /DocTemplate/Edit/5
 
         [HttpPost]
-        public ActionResult Edit(long id, FormCollection collection)
+        public ActionResult Edit(DocTemplateListEditModel model)
         {
             try
             {
-                // TODO: Add update logic here
- 
+                if (ModelState.IsValid)
+                {
+                    var templ = _templateRepository.GetDocTemplateById(model.DocTemplateId);
+                    templ = model.Update(templ);
+                    if (!_templateRepository.SaveDocTemplate(templ))
+                    {
+                        throw new Exception("Ошибка сохранения Шаблона");
+                    }
+                }
+                else
+                {
+                    throw new Exception("Проверьте введенные данные");
+                }
                 return RedirectToAction("Index");
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                ModelState.AddModelError("Ошибка при сохранении", ex.InnerException != null ? ex.InnerException.Message : ex.Message);
             }
+            return View();
         }
 
         //
@@ -99,7 +123,7 @@ namespace MvcFront.Controllers
  
         public ActionResult Delete(long id)
         {
-            return View();
+            return View(_templateRepository.GetDocTemplateById(id));
         }
 
         //
@@ -110,14 +134,26 @@ namespace MvcFront.Controllers
         {
             try
             {
-                // TODO: Add delete logic here
- 
+                _templateRepository.DeleteDocTemplate(id);
+
                 return RedirectToAction("Index");
             }
-            catch
+            catch (Exception ex)
             {
+                ModelState.AddModelError("Ошибка", ex.Message);
                 return View();
             }
+        }
+
+        public ActionResult DocTemplateFieldsManagment(long id)
+        {
+            return View(_templateRepository.GetDocTemplateById(id));
+        }
+
+        public JsonResult DeleteField(long id,long FieldTemplateId)
+        {
+            _templateRepository.DeleteFieldTemplate(FieldTemplateId);
+            return Json(new { result = true });
         }
     }
 }
