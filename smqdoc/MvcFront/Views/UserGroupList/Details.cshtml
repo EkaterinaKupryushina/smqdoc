@@ -1,13 +1,10 @@
-﻿@using Telerik
-@using MvcFront.DB
-@using Telerik.Web.Mvc.UI
+﻿@using Telerik.Web.Mvc.UI
 @using MvcFront.Models
 
 @model MvcFront.DB.UserGroup
 
 @{
     ViewBag.Title = "Details";
-    var UserList = Model.Members.Select(x => new UserAccountListViewModel() { UserId = x.userid, Login = x.Login, FullName = x.FirstName, LastLogin = x.LastAccess }).ToList();
 }
 
 <h2>Информация</h2>

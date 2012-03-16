@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.ComponentModel.DataAnnotations;
 using MvcFront.DB;
 using MvcFront.Helpers;
-using System.Web.Mvc;
 
 namespace MvcFront.Models
 {
@@ -124,7 +120,7 @@ namespace MvcFront.Models
             DocTemplateID = templ.DocTemplate_docteplateid;
             FieldTemplateName = templ.FieldName;
             FieldType = templ.FiledType;
-            IsRestricted = templ.Restricted.HasValue ? templ.Restricted.Value : false ;
+            IsRestricted = templ.Restricted.HasValue && templ.Restricted.Value ;
             MaxVal = templ.MaxVal;
             MinVal = templ.MinVal;
         }

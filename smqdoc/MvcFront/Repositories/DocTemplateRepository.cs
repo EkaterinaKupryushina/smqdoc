@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using MvcFront.Interfaces;
 using MvcFront.DB;
-using MvcFront.Infrastructure;
 
 namespace MvcFront.Repositories
 {
     public class DocTemplateRepository : IDocTemplateRepository
     {
-        IUnitOfWork _unitOfWork;
+        readonly IUnitOfWork _unitOfWork;
         public DocTemplateRepository(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
@@ -18,15 +15,14 @@ namespace MvcFront.Repositories
 
         public IQueryable<DocTemplate> GetAllDocTeplates()
         {
-            return _unitOfWork.DbModel.DocTemplates.AsQueryable<DocTemplate>();
+            return _unitOfWork.DbModel.DocTemplates.AsQueryable();
         }
 
         public DocTemplate GetDocTemplateById(long id)
         {
             if (id == 0)
                 return new DocTemplate();
-            else
-                return _unitOfWork.DbModel.DocTemplates.SingleOrDefault(x => x.docteplateid == id);
+            return _unitOfWork.DbModel.DocTemplates.SingleOrDefault(x => x.docteplateid == id);
         }
 
         public bool SaveDocTemplate(DocTemplate entity)
@@ -38,16 +34,19 @@ namespace MvcFront.Repositories
             }
             else
             {
-                var oldEntity = this.GetDocTemplateById(entity.docteplateid);
+                var oldEntity = GetDocTemplateById(entity.docteplateid);
                 if (oldEntity == null)
                 {
                     entity.docteplateid = 0;
-                    this.SaveDocTemplate(entity);
+                    SaveDocTemplate(entity);
                 }
-                oldEntity.Comment = entity.Comment;
-                oldEntity.LastEditDate = DateTime.Now;
-                oldEntity.Status = entity.Status;
-                oldEntity.TemplateName = entity.TemplateName;
+                if (oldEntity != null)
+                {
+                    oldEntity.Comment = entity.Comment;
+                    oldEntity.LastEditDate = DateTime.Now;
+                    oldEntity.Status = entity.Status;
+                    oldEntity.TemplateName = entity.TemplateName;
+                }
             }
             _unitOfWork.DbModel.SaveChanges();
             return true;
@@ -55,7 +54,7 @@ namespace MvcFront.Repositories
 
         public void DeleteDocTemplate(long id)
         {
-            var entity = this.GetDocTemplateById(id);
+            var entity = GetDocTemplateById(id);
             if (entity != null)
             {
                 entity.TemplateStatus = DocTemplateStatus.Deleted;
@@ -65,17 +64,10 @@ namespace MvcFront.Repositories
 
         public void ChangeDocTemplateState(long id)
         {
-            var entity = this.GetDocTemplateById(id);
+            var entity = GetDocTemplateById(id);
             if (entity != null)
             {
-                if (entity.TemplateStatus != DocTemplateStatus.Active)
-                {
-                    entity.TemplateStatus = DocTemplateStatus.Active;
-                }
-                else
-                {
-                    entity.TemplateStatus = DocTemplateStatus.Unactive;
-                }
+                entity.TemplateStatus = entity.TemplateStatus != DocTemplateStatus.Active ? DocTemplateStatus.Active : DocTemplateStatus.Unactive;
             }
             _unitOfWork.DbModel.SaveChanges();
         }
@@ -86,10 +78,7 @@ namespace MvcFront.Repositories
             {
                 return new FieldTemplate();
             }
-            else
-            {
-                return _unitOfWork.DbModel.FieldTemplates.SingleOrDefault(x => x.fieldteplateid == id);
-            }
+            return _unitOfWork.DbModel.FieldTemplates.SingleOrDefault(x => x.fieldteplateid == id);
         }
 
         public bool SaveFieldTemplate(FieldTemplate entity)
@@ -102,29 +91,32 @@ namespace MvcFront.Repositories
             }
             if (entity.fieldteplateid == 0)
             {
-                var docTempl = this.GetDocTemplateById(entity.DocTemplate_docteplateid);
+                var docTempl = GetDocTemplateById(entity.DocTemplate_docteplateid);
                 if (docTempl != null)
                 {
-                    entity.OrderNumber = docTempl.FieldTeplates.Where(x=>x.Status != (int)FieldTemplateStatus.Deleted).Count() + 1;
+                    entity.OrderNumber = docTempl.FieldTeplates.Count(x => x.Status != (int)FieldTemplateStatus.Deleted) + 1;
                     _unitOfWork.DbModel.FieldTemplates.AddObject(entity);
                 }
             }
             else
             {
-                var oldEntity = this.GetFieldTemplateById(entity.fieldteplateid);
+                var oldEntity = GetFieldTemplateById(entity.fieldteplateid);
                 if (oldEntity == null)
                 {
                     entity.fieldteplateid = 0;
-                    this.SaveFieldTemplate(entity);
+                    SaveFieldTemplate(entity);
                 }
-                oldEntity.DocTemplate_docteplateid = entity.DocTemplate_docteplateid;
-                oldEntity.FieldName = entity.FieldName;
-                oldEntity.FiledType = entity.FiledType;
-                oldEntity.MaxVal = entity.MaxVal;
-                oldEntity.MinVal = entity.MinVal;
-                oldEntity.OrderNumber = entity.OrderNumber;
-                oldEntity.Restricted = entity.Restricted;
-                oldEntity.Status = entity.Status;               
+                if (oldEntity != null)
+                {
+                    oldEntity.DocTemplate_docteplateid = entity.DocTemplate_docteplateid;
+                    oldEntity.FieldName = entity.FieldName;
+                    oldEntity.FiledType = entity.FiledType;
+                    oldEntity.MaxVal = entity.MaxVal;
+                    oldEntity.MinVal = entity.MinVal;
+                    oldEntity.OrderNumber = entity.OrderNumber;
+                    oldEntity.Restricted = entity.Restricted;
+                    oldEntity.Status = entity.Status;
+                }
             }
             _unitOfWork.DbModel.SaveChanges();
             return true;
@@ -132,17 +124,17 @@ namespace MvcFront.Repositories
 
         public void DeleteFieldTemplate(long TemplateFieldId)
         {
-            var entity = this.GetFieldTemplateById(TemplateFieldId);
+            var entity = GetFieldTemplateById(TemplateFieldId);
             if (entity != null)
             {
                 entity.TemplateStatus = FieldTemplateStatus.Deleted;
             }
             _unitOfWork.DbModel.SaveChanges();
-            ReoderFields(entity.DocTemplate_docteplateid);
+            if (entity != null) ReoderFields(entity.DocTemplate_docteplateid);
         }
         public void SetFieldTemplateNumber(long TemplateFieldId, int newNumber)
         {
-            var enFirst = this.GetFieldTemplateById(TemplateFieldId);
+            var enFirst = GetFieldTemplateById(TemplateFieldId);
             if (enFirst != null)
             {
                 int oldNumber = enFirst.OrderNumber;
@@ -164,7 +156,7 @@ namespace MvcFront.Repositories
         }
         private void ReoderFields(long docTemplId)
         {
-            var docTempl = this.GetDocTemplateById(docTemplId);
+            var docTempl = GetDocTemplateById(docTemplId);
             if (docTempl != null)
             {
                 var items = docTempl.FieldTeplates.Where(x => x.Status != (int)FieldTemplateStatus.Deleted).OrderBy(x => x.OrderNumber);

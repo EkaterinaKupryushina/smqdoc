@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using MvcFront.DB;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
@@ -60,7 +57,7 @@ namespace MvcFront.Models
         {
             if (value is string)
             {
-                return new UserAccountListViewModel() { UserId = Convert.ToInt32(value) };
+                return new UserAccountListViewModel { UserId = Convert.ToInt32(value) };
             }
             return base.ConvertFrom(context, culture, value);
         }

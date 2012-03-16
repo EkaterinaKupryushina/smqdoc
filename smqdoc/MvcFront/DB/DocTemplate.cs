@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Objects.DataClasses;
 using MvcFront.Helpers;
@@ -34,18 +31,18 @@ namespace MvcFront.DB
         {
             get
             {
-                return (DocTemplateStatus)this.Status;
+                return (DocTemplateStatus)Status;
             }
             set
             {
-                this.Status = (int)value;
+                Status = (int)value;
             }
         }
         public string TemplateStatusText
         {
             get
             {
-                return DictionaryHelper.GetEnumText(typeof(DocTemplateStatus), this.Status);
+                return DictionaryHelper.GetEnumText(typeof(DocTemplateStatus), Status);
             }
         }
     }
@@ -81,11 +78,11 @@ namespace MvcFront.DB
         {
             get
             {
-                return (FieldTemplateStatus)this.Status;
+                return (FieldTemplateStatus)Status;
             }
             set
             {
-                this.Status = (int)value;
+                Status = (int)value;
             }
         }
         [Display(Name = "Статус поля шаблона")]
@@ -93,7 +90,7 @@ namespace MvcFront.DB
         {
             get
             {
-                return DictionaryHelper.GetEnumText(typeof(FieldTemplateStatus), this.Status);
+                return DictionaryHelper.GetEnumText(typeof(FieldTemplateStatus), Status);
             }
         }
         [Display(Name = "Тип поля шаблона")]
@@ -101,11 +98,11 @@ namespace MvcFront.DB
         {
             get
             {
-                return (FieldTemplateType)this.FiledType;
+                return (FieldTemplateType)FiledType;
             }
             set
             {
-                this.FiledType = (int)value;
+                FiledType = (int)value;
             }
         }
         [Display(Name = "Тип поля шаблона")]
@@ -113,7 +110,7 @@ namespace MvcFront.DB
         {
             get
             {
-                return DictionaryHelper.GetEnumText(typeof(FieldTemplateType), this.Status);
+                return DictionaryHelper.GetEnumText(typeof(FieldTemplateType), Status);
             }
         }
     }
