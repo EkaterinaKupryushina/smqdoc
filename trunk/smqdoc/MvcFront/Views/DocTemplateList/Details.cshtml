@@ -1,0 +1,32 @@
+﻿@using Telerik
+@using MvcFront.DB
+@using Telerik.Web.Mvc.UI
+@using MvcFront.Models
+@model MvcFront.DB.DocTemplate
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Детальная информация</h2>
+<fieldset>
+@Html.DisplayForModel()
+<div class="display-label">Поля шаблона</div>
+ @(Html.Telerik().Grid<FieldTemplateListViewModel>()
+             .DataBinding(dataBinding => dataBinding.Ajax().Select("_FieldTemplateList", "DocTemplateList", new { templId = Model.docteplateid }))
+             .Name("FieldTeplateListGrid")
+                   .Columns(columns =>
+                   {
+                       columns.AutoGenerate(column =>
+                       {
+                           //column.Width = "150px";
+                           if (column.Member == "FieldTemplateId")
+                               column.Visible = false;
+                       });
+                   })
+    ) 
+</fieldset>
+<p>
+    @Html.ActionLink("Редактировать", "Edit", new { id=Model.docteplateid }) |
+    @Html.ActionLink("Отмена", "Index")
+</p>

@@ -1,0 +1,51 @@
+﻿@using Telerik
+@using MvcFront.DB
+@using Telerik.Web.Mvc.UI
+@using MvcFront.Models
+@model IEnumerable<DocTemplateListViewModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Шаблоны документов</h2>
+
+@Html.ActionLink("Добавить шаблон", "Create")
+@(Html.Telerik().Grid(Model)
+        .Name("DocTemplateListGrid")
+                   .Columns(columns =>
+                   {
+                       columns.AutoGenerate(column =>
+                       {
+                           column.Width = "150px";
+                           if (column.Member == "DocTemplateId")
+                               column.Visible = false;
+                       });
+                       columns.Command(command =>
+                       {
+                           command.Custom("viewDetails").Text("Информация")
+                            .DataRouteValues(route => route.Add(o => o.DocTemplateId).RouteKey("id"))
+                            .Action("Details", "DocTemplateList")
+                            .HtmlAttributes(new { style = "text-align: center" });
+                           command.Custom("EditDetails").Text("Редактировать")
+                            .DataRouteValues(route => route.Add(o => o.DocTemplateId).RouteKey("id"))
+                            .Action("Edit", "DocTemplateList")
+                            .HtmlAttributes(new { style = "text-align: center" });
+                           command.Custom("DocTemplateFieldsManagment").Text("Редактировать поля")
+                            .DataRouteValues(route => route.Add(o => o.DocTemplateId).RouteKey("id"))
+                            .Action("DocTemplateFieldsManagment", "DocTemplateList")
+                            .HtmlAttributes(new { style = "text-align: center" });
+                           command.Custom("DeleteDetails").Text("Удалить")
+                            .DataRouteValues(route => route.Add(o => o.DocTemplateId).RouteKey("id"))
+                            .Action("Delete", "UDocTemplateList")
+                            .HtmlAttributes(new { style = "text-align: center" });
+                           command.Custom("ChangeStatusDetails").Text("Включить/Выключить")
+                            .DataRouteValues(route => route.Add(o => o.DocTemplateId).RouteKey("id"))
+                            .Action("ChangeState", "DocTemplateList")
+                            .HtmlAttributes(new { style = "text-align: center" });
+                       }).Width(50);
+                   })
+                 .Sortable()
+                .Pageable()
+
+    ) 

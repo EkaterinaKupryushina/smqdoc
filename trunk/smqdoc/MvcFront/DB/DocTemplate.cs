@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Objects.DataClasses;
+using MvcFront.Helpers;
 
 namespace MvcFront.DB
 {
@@ -40,6 +41,13 @@ namespace MvcFront.DB
                 this.Status = (int)value;
             }
         }
+        public string TemplateStatusText
+        {
+            get
+            {
+                return DictionaryHelper.GetEnumText(typeof(DocTemplateStatus), this.Status);
+            }
+        }
     }
     public class DocTemplateMetadata
     {
@@ -61,11 +69,11 @@ namespace MvcFront.DB
         [Display(Name = "Статус шаблона")]
         public DocTemplateStatus TemplateStatus { get; set; }
         [Display(Name = "Список полей шаблона")]
-        public EntityCollection<FieldTeplate>  FieldTeplates { get; set; }
+        public EntityCollection<FieldTemplate>  FieldTeplates { get; set; }
     }
 
-    [MetadataType(typeof(FieldTeplateMetadata))]
-    public partial class FieldTeplate
+    [MetadataType(typeof(FieldTemplateMetadata))]
+    public partial class FieldTemplate
     {
         [Display(Name = "Статус поля шаблона")]
         public FieldTemplateStatus TemplateStatus
@@ -77,6 +85,14 @@ namespace MvcFront.DB
             set
             {
                 this.Status = (int)value;
+            }
+        }
+        [Display(Name = "Статус поля шаблона")]
+        public string TemplateStatusText
+        {
+            get
+            {
+                return DictionaryHelper.GetEnumText(typeof(FieldTemplateStatus), this.Status);
             }
         }
         [Display(Name = "Тип поля шаблона")]
@@ -91,8 +107,16 @@ namespace MvcFront.DB
                 this.FiledType = (int)value;
             }
         }
+        [Display(Name = "Тип поля шаблона")]
+        public string TemplateTypeText
+        {
+            get
+            {
+                return DictionaryHelper.GetEnumText(typeof(FieldTemplateType), this.Status);
+            }
+        }
     }
-    public class FieldTeplateMetadata
+    public class FieldTemplateMetadata
     {
         [Required]
         [UIHint("Hidden")]

@@ -46,9 +46,9 @@ namespace MvcFront.Infrastructure
 
         private void AddBindings()
         {
-            //Bind<IUnitOfWork>().To<UnitOfWork>().InTransientScope().OnDeactivation(u => u.Dispose());
             Bind<IUserAccountRepository>().To<UserAccountRepository>();
             Bind<IUserGroupRepository>().To<UserGroupRepository>();
+            Bind<IDocTemplateRepository>().To<DocTemplateRepository>();
             Bind<IUnitOfWork>().To<UnitOfWork>();
         }
     }

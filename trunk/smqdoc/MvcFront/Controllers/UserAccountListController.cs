@@ -22,9 +22,8 @@ namespace MvcFront.Controllers
 
         public ActionResult Index()
         {
-            return View(_userRepository.GetAll().Where(x=>x.Status != (int)UserAccountStatus.Deleted)
-                .Select(x => new UserAccountListViewModel() 
-                { UserId = x.userid, Login = x.Login,  FullName = x.FirstName, LastLogin = x.LastAccess}).ToList());
+            return View(_userRepository.GetAll().Where(x=>x.Status != (int)UserAccountStatus.Deleted).ToList()
+                .ConvertAll(new Converter<UserAccount,UserAccountListViewModel>(UserAccountListViewModel.UserAccountToModelConverter)).ToList());
         }
 
         //

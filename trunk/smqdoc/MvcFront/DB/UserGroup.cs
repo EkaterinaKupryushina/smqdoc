@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
+using MvcFront.Helpers;
 
 namespace MvcFront.DB
 {
@@ -28,30 +29,11 @@ namespace MvcFront.DB
                 this.Status = (int)value;
             }
         }
-        [Display(Name = "Статус")]
         public string GroupStatusText
         {
             get
             {
-                switch (this.Status)
-                {
-                    case 0:
-                        {
-                            return "Активная";
-                        }
-                    case 1:
-                        {
-                            return "Отключена";
-                        }
-                    case 2:
-                        {
-                            return "Удалена";
-                        }
-                    default:
-                        {
-                            return "ХЗ";
-                        }
-                }
+                return DictionaryHelper.GetEnumText(typeof(UserGroupStatus), this.Status);
             }
         }
     }

@@ -20,7 +20,7 @@ using System.Runtime.Serialization;
 
 [assembly: EdmRelationshipAttribute("smqdocModel", "GroupManager", "UserGroup", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.UserGroup), "UserAccount", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.UserAccount), true)]
 [assembly: EdmRelationshipAttribute("smqdocModel", "GroupUsers", "UserGroup", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.UserGroup), "UserAccount", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.UserAccount))]
-[assembly: EdmRelationshipAttribute("smqdocModel", "FieldTeplateDocTemplate", "FieldTeplate", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.FieldTeplate), "DocTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.DocTemplate), true)]
+[assembly: EdmRelationshipAttribute("smqdocModel", "FieldTeplateDocTemplate", "FieldTeplate", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.FieldTemplate), "DocTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.DocTemplate), true)]
 
 #endregion
 
@@ -123,18 +123,18 @@ namespace MvcFront.DB
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<FieldTeplate> FieldTeplates
+        public ObjectSet<FieldTemplate> FieldTemplates
         {
             get
             {
-                if ((_FieldTeplates == null))
+                if ((_FieldTemplates == null))
                 {
-                    _FieldTeplates = base.CreateObjectSet<FieldTeplate>("FieldTeplates");
+                    _FieldTemplates = base.CreateObjectSet<FieldTemplate>("FieldTemplates");
                 }
-                return _FieldTeplates;
+                return _FieldTemplates;
             }
         }
-        private ObjectSet<FieldTeplate> _FieldTeplates;
+        private ObjectSet<FieldTemplate> _FieldTemplates;
 
         #endregion
         #region AddTo Methods
@@ -164,11 +164,11 @@ namespace MvcFront.DB
         }
     
         /// <summary>
-        /// Deprecated Method for adding a new object to the FieldTeplates EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// Deprecated Method for adding a new object to the FieldTemplates EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
-        public void AddToFieldTeplates(FieldTeplate fieldTeplate)
+        public void AddToFieldTemplates(FieldTemplate fieldTemplate)
         {
-            base.AddObject("FieldTeplates", fieldTeplate);
+            base.AddObject("FieldTemplates", fieldTemplate);
         }
 
         #endregion
@@ -345,17 +345,17 @@ namespace MvcFront.DB
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
         [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "FieldTeplateDocTemplate", "FieldTeplate")]
-        public EntityCollection<FieldTeplate> FieldTeplates
+        public EntityCollection<FieldTemplate> FieldTeplates
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<FieldTeplate>("smqdocModel.FieldTeplateDocTemplate", "FieldTeplate");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<FieldTemplate>("smqdocModel.FieldTeplateDocTemplate", "FieldTeplate");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<FieldTeplate>("smqdocModel.FieldTeplateDocTemplate", "FieldTeplate", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<FieldTemplate>("smqdocModel.FieldTeplateDocTemplate", "FieldTeplate", value);
                 }
             }
         }
@@ -366,38 +366,34 @@ namespace MvcFront.DB
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
-    [EdmEntityTypeAttribute(NamespaceName="smqdocModel", Name="FieldTeplate")]
+    [EdmEntityTypeAttribute(NamespaceName="smqdocModel", Name="FieldTemplate")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
-    public partial class FieldTeplate : EntityObject
+    public partial class FieldTemplate : EntityObject
     {
         #region Factory Method
     
         /// <summary>
-        /// Create a new FieldTeplate object.
+        /// Create a new FieldTemplate object.
         /// </summary>
         /// <param name="fieldteplateid">Initial value of the fieldteplateid property.</param>
         /// <param name="fieldName">Initial value of the FieldName property.</param>
         /// <param name="filedType">Initial value of the FiledType property.</param>
         /// <param name="restricted">Initial value of the Restricted property.</param>
-        /// <param name="maxVal">Initial value of the MaxVal property.</param>
-        /// <param name="minVal">Initial value of the MinVal property.</param>
         /// <param name="docTemplate_docteplateid">Initial value of the DocTemplate_docteplateid property.</param>
         /// <param name="orderNumber">Initial value of the OrderNumber property.</param>
         /// <param name="status">Initial value of the Status property.</param>
-        public static FieldTeplate CreateFieldTeplate(global::System.Int64 fieldteplateid, global::System.String fieldName, global::System.Int32 filedType, global::System.Boolean restricted, global::System.Int32 maxVal, global::System.Int32 minVal, global::System.Int64 docTemplate_docteplateid, global::System.Int32 orderNumber, global::System.Int32 status)
+        public static FieldTemplate CreateFieldTemplate(global::System.Int64 fieldteplateid, global::System.String fieldName, global::System.Int32 filedType, global::System.Boolean restricted, global::System.Int64 docTemplate_docteplateid, global::System.Int32 orderNumber, global::System.Int32 status)
         {
-            FieldTeplate fieldTeplate = new FieldTeplate();
-            fieldTeplate.fieldteplateid = fieldteplateid;
-            fieldTeplate.FieldName = fieldName;
-            fieldTeplate.FiledType = filedType;
-            fieldTeplate.Restricted = restricted;
-            fieldTeplate.MaxVal = maxVal;
-            fieldTeplate.MinVal = minVal;
-            fieldTeplate.DocTemplate_docteplateid = docTemplate_docteplateid;
-            fieldTeplate.OrderNumber = orderNumber;
-            fieldTeplate.Status = status;
-            return fieldTeplate;
+            FieldTemplate fieldTemplate = new FieldTemplate();
+            fieldTemplate.fieldteplateid = fieldteplateid;
+            fieldTemplate.FieldName = fieldName;
+            fieldTemplate.FiledType = filedType;
+            fieldTemplate.Restricted = restricted;
+            fieldTemplate.DocTemplate_docteplateid = docTemplate_docteplateid;
+            fieldTemplate.OrderNumber = orderNumber;
+            fieldTemplate.Status = status;
+            return fieldTemplate;
         }
 
         #endregion
@@ -505,9 +501,9 @@ namespace MvcFront.DB
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.Int32 MaxVal
+        public Nullable<global::System.Int32> MaxVal
         {
             get
             {
@@ -522,16 +518,16 @@ namespace MvcFront.DB
                 OnMaxValChanged();
             }
         }
-        private global::System.Int32 _MaxVal;
-        partial void OnMaxValChanging(global::System.Int32 value);
+        private Nullable<global::System.Int32> _MaxVal;
+        partial void OnMaxValChanging(Nullable<global::System.Int32> value);
         partial void OnMaxValChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.Int32 MinVal
+        public Nullable<global::System.Int32> MinVal
         {
             get
             {
@@ -546,8 +542,8 @@ namespace MvcFront.DB
                 OnMinValChanged();
             }
         }
-        private global::System.Int32 _MinVal;
-        partial void OnMinValChanging(global::System.Int32 value);
+        private Nullable<global::System.Int32> _MinVal;
+        partial void OnMinValChanging(Nullable<global::System.Int32> value);
         partial void OnMinValChanged();
     
         /// <summary>

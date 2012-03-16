@@ -32,6 +32,10 @@ namespace MvcFront.Models
             FullName = acc.FullName;
             LastLogin = acc.LastAccess;
         }
+        public static UserAccountListViewModel UserAccountToModelConverter(UserAccount templ)
+        {
+            return new UserAccountListViewModel(templ);
+        }
     }
     public class UserAccountEditViewModel
     {
