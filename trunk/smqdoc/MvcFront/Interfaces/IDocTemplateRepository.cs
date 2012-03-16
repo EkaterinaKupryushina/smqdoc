@@ -19,5 +19,6 @@ namespace MvcFront.Interfaces
         FieldTemplate GetFieldTemplateById(Int64 id);
         bool SaveFieldTemplate(FieldTemplate entity);
         void DeleteFieldTemplate(Int64 TemplateFieldId);
+        void SetFieldTemplateNumber(Int64 TemplateFieldId, int newNumber);
     }
 }

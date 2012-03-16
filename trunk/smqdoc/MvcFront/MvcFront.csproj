@@ -857,6 +857,9 @@
     <Content Include="Views\DocTemplateList\Edit.cshtml" />
     <Content Include="Views\DocTemplateList\Delete.cshtml" />
     <Content Include="Views\DocTemplateList\DocTemplateFieldsManagment.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\FieldTemplateListEditModel.cshtml" />
+    <Content Include="Views\DocTemplateList\AddField.cshtml" />
+    <Content Include="Views\DocTemplateList\EditField.cshtml" />
     <None Include="Views\UserAccountList\ChangeState.cshtml" />
     <Content Include="Views\UserGroupList\Index.cshtml" />
     <Content Include="Views\UserGroupList\Delete.cshtml" />

@@ -5,6 +5,7 @@ using System.Web;
 using System.ComponentModel.DataAnnotations;
 using MvcFront.DB;
 using MvcFront.Helpers;
+using System.Web.Mvc;
 
 namespace MvcFront.Models
 {
@@ -106,9 +107,11 @@ namespace MvcFront.Models
         public int FieldType { get; set; }
 
         [Display(Name = "Поле ограничено?")]
-        bool? IsRestricted { get; set; }
+        public bool IsRestricted { get; set; }
         [Display(Name = "Максимальное значение")]
+        [DataType("Number")]
         public int? MaxVal { get; set; }
+        [DataType("Number")]
         [Display(Name = "Минимальное значение")]
         public int? MinVal { get; set; }
 
@@ -121,7 +124,7 @@ namespace MvcFront.Models
             DocTemplateID = templ.DocTemplate_docteplateid;
             FieldTemplateName = templ.FieldName;
             FieldType = templ.FiledType;
-            IsRestricted = templ.Restricted;
+            IsRestricted = templ.Restricted.HasValue ? templ.Restricted.Value : false ;
             MaxVal = templ.MaxVal;
             MinVal = templ.MinVal;
         }

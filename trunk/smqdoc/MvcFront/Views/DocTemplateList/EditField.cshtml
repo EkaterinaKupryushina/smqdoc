@@ -1,0 +1,23 @@
+﻿@model MvcFront.Models.FieldTemplateListEditModel
+
+@{
+    ViewBag.Title = "EditField";
+}
+
+<h2>Редактировать поле</h2>
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    
+    <fieldset>
+    @Html.EditorForModel()
+       
+    </fieldset>
+     <p>
+            <input type="submit" value="Сохранить" />|
+            @Html.ActionLink("Отмена", "DocTemplateFieldsManagment", new { id = Model.DocTemplateID })
+        </p>
+}

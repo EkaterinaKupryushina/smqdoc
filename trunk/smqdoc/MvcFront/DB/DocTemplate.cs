@@ -17,7 +17,7 @@ namespace MvcFront.DB
     public enum FieldTemplateType
     {
         BOOL,
-        INTEGER,
+        NUMBER,
         STRING
     }
     public enum FieldTemplateStatus
