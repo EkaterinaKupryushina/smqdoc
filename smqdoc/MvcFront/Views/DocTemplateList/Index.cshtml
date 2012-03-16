@@ -37,11 +37,7 @@
                             .HtmlAttributes(new { style = "text-align: center" });
                            command.Custom("DeleteDetails").Text("Удалить")
                             .DataRouteValues(route => route.Add(o => o.DocTemplateId).RouteKey("id"))
-                            .Action("Delete", "UDocTemplateList")
-                            .HtmlAttributes(new { style = "text-align: center" });
-                           command.Custom("ChangeStatusDetails").Text("Включить/Выключить")
-                            .DataRouteValues(route => route.Add(o => o.DocTemplateId).RouteKey("id"))
-                            .Action("ChangeState", "DocTemplateList")
+                            .Action("Delete", "DocTemplateList")
                             .HtmlAttributes(new { style = "text-align: center" });
                        }).Width(50);
                    })

@@ -49,7 +49,7 @@ namespace MvcFront.Models
         [Required]
         [Display(Name = "Менеджер")]
         [UIHint("UserAccountFilter")]
-        public UserAccount Manager { get; set; }
+        public UserAccountListViewModel Manager { get; set; }
 
         public UserGroupEditViewModel()
         {
@@ -59,14 +59,15 @@ namespace MvcFront.Models
             GroupId = grr.usergroupid;
             GroupName = grr.GroupName;
             FullGroupName = grr.FullGroupName;
-            Manager = grr.Manager;
+            if(grr.usergroupid != 0)
+                Manager = new UserAccountListViewModel(grr.Manager);
         }
         public UserGroup Update(UserGroup grr)
         {
              grr.usergroupid = GroupId;
              grr.GroupName = GroupName;
              grr.FullGroupName = FullGroupName;
-             grr.Managerid = Manager.userid;
+             grr.Managerid = Manager.UserId;
             return grr;
         }
     }

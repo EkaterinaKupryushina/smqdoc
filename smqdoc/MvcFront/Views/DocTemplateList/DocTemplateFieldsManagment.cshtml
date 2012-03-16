@@ -1,0 +1,50 @@
+﻿@using Telerik
+@using MvcFront.DB
+@using Telerik.Web.Mvc.UI
+@using MvcFront.Models
+@model MvcFront.DB.DocTemplate
+
+@{
+    ViewBag.Title = "DocTemplateFieldsManagment";
+}
+
+<h2>Управление полями</h2>
+<fieldset>
+@Html.DisplayForModel()
+<div class="display-label">Поля шаблона</div>
+<a href="#" >Добавить Поле</a>
+ @(Html.Telerik().Grid<FieldTemplateListViewModel>()
+             .DataBinding(dataBinding => dataBinding.Ajax().Select("_FieldTemplateList", "DocTemplateList", new { templId = Model.docteplateid }))
+             .Name("FieldTeplateListGrid")
+                  .ClientEvents(events => events.OnComplete("onComplete"))
+                   .Columns(columns =>
+                   {
+                       columns.AutoGenerate(column =>
+                       {
+                           //column.Width = "150px";
+                           if (column.Member == "FieldTemplateId")
+                               column.Visible = false;
+                       });
+                       columns.Command(command =>
+                       {
+                           command.Custom("DeleteDetails")
+                            .Text("Удалить")
+                            .DataRouteValues(route => route.Add(o => o.FieldTemplateId).RouteKey("FieldTemplateId"))
+                            .Ajax(true)
+                            .Action("DeleteField", "DocTemplateList")
+                            .HtmlAttributes(new { style = "text-align: center" });
+                       }).Width(40);
+                   })
+    ) 
+</fieldset>
+
+<script type="text/javascript">
+    function onComplete(e) {
+        if (e.name == "DeleteDetails") {
+            var grid = $('#FieldTeplateListGrid').data("tGrid");
+            if (grid != null) {
+                grid.rebind();
+            }
+        }
+    }
+</script>

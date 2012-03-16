@@ -1,0 +1,17 @@
+﻿@model MvcFront.Models.DocTemplateListEditModel
+
+
+    <legend>Шаблон документа</legend>
+
+    @Html.HiddenFor(model => model.DocTemplateId)
+
+    <div class="display-label">@Html.LabelFor(model => model.DocTemplateName)</div>
+    <div class="display-field">
+        @Html.EditorFor(model => model.DocTemplateName)
+    </div>
+
+    <div class="display-label">@Html.LabelFor(model => model.Comment)</div>
+    <div class="display-field">
+        @Html.EditorFor(model => model.Comment)
+    </div>
+

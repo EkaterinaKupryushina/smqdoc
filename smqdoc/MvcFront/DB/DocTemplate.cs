@@ -59,6 +59,7 @@ namespace MvcFront.DB
         public string TemplateName { get; set; }
         [Required]
         [Display(Name = "Описание шаблона")]
+        [DataType(DataType.MultilineText)]
         public string Comment { get; set; }
         [Required]
         [Display(Name = "Дата последнего редактирования")]

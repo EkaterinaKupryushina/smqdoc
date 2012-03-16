@@ -168,11 +168,11 @@ namespace MvcFront.Controllers
         {
             return View(_groupRepository.GetById(id));
         }
-        public JsonResult DeleteUser(string CompositeId)
+        public JsonResult DeleteUser(int id, int UserId)
         {
-            int userId = int.Parse(CompositeId.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries)[0].ToString());
-            int groupId = int.Parse(CompositeId.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries)[1].ToString());
-            return Json(new { result = _groupRepository.RemoveMember(groupId, userId) });
+            //int userId = int.Parse(CompositeId.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries)[0].ToString());
+            //int groupId = int.Parse(CompositeId.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries)[1].ToString());
+            return Json(new { result = _groupRepository.RemoveMember(id, UserId) });
         }
 
         public JsonResult AddUser(int groupId, int userId)
