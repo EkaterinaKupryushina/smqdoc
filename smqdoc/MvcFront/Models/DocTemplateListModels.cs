@@ -89,6 +89,59 @@ namespace MvcFront.Models
             return new FieldTemplateListViewModel(templ);
         }
     }
-    
+    public class FieldTemplateListEditModel
+    {
+        [Display(Name = "ID")]
+        [UIHint("Hidden")]
+        public long FieldTemplateId { get; set; }
+        [Display(Name = "DocTemplateID")]
+        [UIHint("Hidden")]
+        public long DocTemplateID { get; set; }
+
+        [Required]
+        [Display(Name = "Названире поля")]
+        public string FieldTemplateName { get; set; }
+        [Required]
+        [Display(Name = "Тип поля")]
+        public int FieldType { get; set; }
+
+        [Display(Name = "Поле ограничено?")]
+        bool? IsRestricted { get; set; }
+        [Display(Name = "Максимальное значение")]
+        public int? MaxVal { get; set; }
+        [Display(Name = "Минимальное значение")]
+        public int? MinVal { get; set; }
+
+        public FieldTemplateListEditModel()
+        {
+        }
+        public FieldTemplateListEditModel(FieldTemplate templ)
+        {
+            FieldTemplateId = templ.fieldteplateid;
+            DocTemplateID = templ.DocTemplate_docteplateid;
+            FieldTemplateName = templ.FieldName;
+            FieldType = templ.FiledType;
+            IsRestricted = templ.Restricted;
+            MaxVal = templ.MaxVal;
+            MinVal = templ.MinVal;
+        }
+        public FieldTemplate Update(FieldTemplate templ)
+        {
+            templ.fieldteplateid = FieldTemplateId;
+            templ.DocTemplate_docteplateid = DocTemplateID;
+            templ.FieldName = FieldTemplateName;
+            templ.FiledType = FieldType;
+
+            templ.Restricted = IsRestricted;
+            templ.MaxVal = MaxVal;
+            templ.MinVal = MinVal;
+
+            return templ;
+        }
+        public static FieldTemplateListEditModel FieldToModelConverter(FieldTemplate templ)
+        {
+            return new FieldTemplateListEditModel(templ);
+        }
+    }
 
 }

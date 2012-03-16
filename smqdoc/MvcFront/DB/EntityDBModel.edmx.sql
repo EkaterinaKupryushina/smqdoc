@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 03/16/2012 10:08:31
+-- Date Created: 03/16/2012 14:56:24
 -- Generated from EDMX file: D:\Work\smqdoc.net\smqdoc\MvcFront\DB\EntityDBModel.edmx
 -- --------------------------------------------------
 
@@ -27,7 +27,7 @@ IF OBJECT_ID(N'[dbo].[FK_GroupUsers_UserAccount]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[GroupUsers] DROP CONSTRAINT [FK_GroupUsers_UserAccount];
 GO
 IF OBJECT_ID(N'[dbo].[FK_FieldTeplateDocTemplate]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[FieldTeplates] DROP CONSTRAINT [FK_FieldTeplateDocTemplate];
+    ALTER TABLE [dbo].[FieldTemplates] DROP CONSTRAINT [FK_FieldTeplateDocTemplate];
 GO
 
 -- --------------------------------------------------
@@ -43,8 +43,8 @@ GO
 IF OBJECT_ID(N'[dbo].[DocTemplates]', 'U') IS NOT NULL
     DROP TABLE [dbo].[DocTemplates];
 GO
-IF OBJECT_ID(N'[dbo].[FieldTeplates]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[FieldTeplates];
+IF OBJECT_ID(N'[dbo].[FieldTemplates]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[FieldTemplates];
 GO
 IF OBJECT_ID(N'[dbo].[GroupUsers]', 'U') IS NOT NULL
     DROP TABLE [dbo].[GroupUsers];
@@ -94,7 +94,7 @@ CREATE TABLE [dbo].[FieldTemplates] (
     [fieldteplateid] bigint IDENTITY(1,1) NOT NULL,
     [FieldName] nvarchar(max)  NOT NULL,
     [FiledType] int  NOT NULL,
-    [Restricted] bit  NOT NULL,
+    [Restricted] bit  NULL,
     [MaxVal] int  NULL,
     [MinVal] int  NULL,
     [DocTemplate_docteplateid] bigint  NOT NULL,
