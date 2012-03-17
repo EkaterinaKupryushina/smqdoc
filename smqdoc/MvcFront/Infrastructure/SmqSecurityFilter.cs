@@ -30,6 +30,7 @@ namespace MvcFront.Infrastructure
                     return;
                 if (!filterContext.HttpContext.User.Identity.IsAuthenticated)
                 {
+                        SessionHelper.ClearUserSessionData(filterContext.HttpContext.Session);
                         filterContext.Result = new HttpUnauthorizedResult();
                 }
                 //Поулчаем данные из сессии
@@ -44,15 +45,24 @@ namespace MvcFront.Infrastructure
                         var userProfileType = SmqUserProfileType.User;
                         var userProfileName = "Пользователь";
                         string userProfileGroupName = null;
-                        int userProfileGroupId = 0;
-                        if(user.LastAccessProfileCode == "0" && user.IsAdmin)
-                        {
-                            userProfileType = SmqUserProfileType.Systemadmin;
-                            userProfileName = "Администратор";
-                        }
+                        var userProfileGroupId = 0;
                         int? groupId;
                         bool isManager;
                         SessionHelper.ParseUserProfileCode(user.LastAccessProfileCode,out groupId,out isManager);
+                        if (groupId == null && isManager)
+                        {
+                            userProfileGroupId = 0;
+                            userProfileType = SmqUserProfileType.Systemadmin;
+                            userProfileName = "Администратор";
+
+                        }
+                        if (groupId == null && !isManager)
+                        {
+                            userProfileGroupId = 0;
+                            userProfileType = SmqUserProfileType.User;
+                            userProfileName = "Пользователь";
+
+                        }
                         if(groupId != null && isManager)
                         {
                             var group = user.ManagedGroups.FirstOrDefault(x => x.usergroupid == groupId);
@@ -78,19 +88,23 @@ namespace MvcFront.Infrastructure
                         sessData = new SmqUserSessionData {UserName = user.Login,UserId = user.userid,UserType = userProfileType,
                             CurrentProfileName = userProfileName,UserGroupName = userProfileGroupName,UserGroupId = userProfileGroupId};
                         SessionHelper.SetUserSessionData(filterContext.HttpContext.Session,sessData);
+                        return;
                     }
+                    SessionHelper.ClearUserSessionData(filterContext.HttpContext.Session);
                     filterContext.Result = new HttpUnauthorizedResult();
                 }
                 else
                 {
                     if (sessData.UserName != filterContext.HttpContext.User.Identity.Name)
                     {
+                        SessionHelper.ClearUserSessionData(filterContext.HttpContext.Session);
                         filterContext.Result = new HttpUnauthorizedResult();
                     }
                 }
             }
             catch (Exception)
             {
+                SessionHelper.ClearUserSessionData(filterContext.HttpContext.Session);
                 filterContext.Result = new HttpUnauthorizedResult();
             }
         }

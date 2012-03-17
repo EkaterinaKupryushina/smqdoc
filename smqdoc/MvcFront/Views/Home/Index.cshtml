@@ -1,9 +1,20 @@
-﻿@{
+﻿@using Telerik.Web.Mvc.UI
+@{
     ViewBag.Title = "Домашняя";
 }
 
 <h2>@ViewBag.Message</h2>
-<p>
-    Привет =)<br />
+
     
-</p>
+    @using (Html.BeginForm("ChangeUserProfile", "Account"))
+    {
+        <fieldset>
+         <legend>Изменить текущую роль</legend>
+         @(Html.Telerik().DropDownList()
+           .Name("UserProfileCode")
+           .DataBinding(binding => binding.Select("AjaxUserAccountProfiles", "Dictionary"))
+               )
+     </fieldset>
+        <input type="submit" value="Изменить"/>
+    }
+

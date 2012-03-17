@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Objects;
 using System.Linq;
 using MvcFront.Interfaces;
 using MvcFront.DB;
@@ -14,6 +15,7 @@ namespace MvcFront.Repositories
         }
         public IQueryable<UserAccount> GetAll()
         {
+            _unitOfWork.DbModel.Refresh(RefreshMode.StoreWins, _unitOfWork.DbModel.UserAccounts.AsQueryable());
             return _unitOfWork.DbModel.UserAccounts.AsQueryable();
         }
 
@@ -21,17 +23,16 @@ namespace MvcFront.Repositories
         {
             if (id == 0)
                 return new UserAccount();
-            return _unitOfWork.DbModel.UserAccounts.SingleOrDefault(x => x.userid == id);
+            var user = _unitOfWork.DbModel.UserAccounts.SingleOrDefault(x => x.userid == id);
+            _unitOfWork.DbModel.Refresh(RefreshMode.StoreWins, user);
+            return user;
         }
 
         public UserAccount GetByLogin(string login)
         {
-            return _unitOfWork.DbModel.UserAccounts.SingleOrDefault(x => x.Login == login.Trim());
-        }
-
-        public UserAccount GetByEmail(string email)
-        {
-            return _unitOfWork.DbModel.UserAccounts.SingleOrDefault(x => x.Email == email.Trim());
+            var user = _unitOfWork.DbModel.UserAccounts.SingleOrDefault(x => x.Login == login.Trim());
+            _unitOfWork.DbModel.Refresh(RefreshMode.StoreWins, user);
+            return user;
         }
 
         public UserAccount Login(string userLogin, string password)
@@ -52,7 +53,12 @@ namespace MvcFront.Repositories
             if (entity.userid == 0)
             {
                 if (GetByLogin(entity.Login) == null && GetByLogin(entity.Email) == null)
+                {
                     _unitOfWork.DbModel.UserAccounts.AddObject(entity);
+                    _unitOfWork.DbModel.SaveChanges();
+                    _unitOfWork.DbModel.Refresh(RefreshMode.StoreWins, entity);
+                }
+                    
                 else
                     return false;
             }
@@ -72,10 +78,11 @@ namespace MvcFront.Repositories
                     item.Status = entity.Status;
                     item.userid = entity.userid;
                     item.LastAccessProfileCode = entity.LastAccessProfileCode;
-
+                    _unitOfWork.DbModel.SaveChanges();
+                    _unitOfWork.DbModel.Refresh(RefreshMode.StoreWins, item);
                 }
             }
-            _unitOfWork.DbModel.SaveChanges();
+            
             return true;
         }
 
@@ -86,6 +93,7 @@ namespace MvcFront.Repositories
             {
                 item.UserStatus = UserAccountStatus.Deleted;
                 _unitOfWork.DbModel.SaveChanges();
+                _unitOfWork.DbModel.Refresh(RefreshMode.StoreWins, item);
             }
         }
         public void ChangeState(Int32 id)
@@ -95,6 +103,7 @@ namespace MvcFront.Repositories
             {
                 item.UserStatus = item.UserStatus == UserAccountStatus.Active ? UserAccountStatus.Unactive : UserAccountStatus.Active;
                 _unitOfWork.DbModel.SaveChanges();
+                _unitOfWork.DbModel.Refresh(RefreshMode.StoreWins, item);
             }
         }
         public UserAccount Copy(IUnitOfWork uw, int userid)

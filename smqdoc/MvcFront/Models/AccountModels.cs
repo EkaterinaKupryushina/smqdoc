@@ -60,4 +60,10 @@ namespace MvcFront.Models
         [Compare("Password", ErrorMessage = "Пароли не совпадают.")]
         public string ConfirmPassword { get; set; }
     }
+    public class ChangeUserProfileModel
+    {
+        [Required]
+        [Display(Name = "Профиль пользователя")]
+        public string UserProfileCode { get; set; }
+    }
 }

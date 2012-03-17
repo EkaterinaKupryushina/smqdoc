@@ -9,7 +9,6 @@ namespace MvcFront.Interfaces
         IQueryable<UserAccount> GetAll();
         UserAccount GetById(Int32 id);
         UserAccount GetByLogin(string login);
-        UserAccount GetByEmail(string email);
         UserAccount Login(string userLogin, string password);
         bool Save(UserAccount entity);
         void Delete(Int32 id);
