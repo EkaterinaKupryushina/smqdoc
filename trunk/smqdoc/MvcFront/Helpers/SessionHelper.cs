@@ -2,6 +2,7 @@
 using System.Web;
 using System.Xml.Serialization;
 using System.IO;
+using MvcFront.DB;
 
 namespace MvcFront.Helpers
 {
@@ -10,10 +11,11 @@ namespace MvcFront.Helpers
     /// </summary>
     public enum SmqUserProfileType
     {
-        SYSTEMADMIN,//0
-        GROUPMANAGER,//1
-        GROUPUSER,//2
-        USER//3
+        Anonymous,
+        User,
+        Groupuser,
+        Groupmanager,
+        Systemadmin 
     }
     /// <summary>
     /// Хранит информацию о текущем профиле пользователя
@@ -63,5 +65,44 @@ namespace MvcFront.Helpers
         {
             ses[Smqsessiondatastore] = null;
         }
+        public static string GenerateUserProfileCode(int? groupId,bool isManager)
+        {
+            if (groupId == null)
+                if (isManager)
+                    return "0";
+                else
+                    return "1";
+            return groupId + ";" + (isManager ? "0" : "1");
+        }
+        public static void ParseUserProfileCode(string code, out int? groupId, out bool isManager)
+        {
+            
+            groupId = null;
+            isManager = false;
+            if (code == null)
+            {
+                return;
+            }
+            //Админ
+            if (code == "0")
+            {
+                groupId = null;
+                isManager = true;
+                return;
+            }
+            //Просто пользователь
+            if (code == "1")
+            {
+                groupId = null;
+                isManager = false;
+                return;
+            }
+            var ids = code.Split(';');
+            var parsedGId = 0;
+            if(int.TryParse(ids[0],out parsedGId))
+                groupId = parsedGId;
+            isManager = ids[1] == "0";
+        }
+
     }
 }

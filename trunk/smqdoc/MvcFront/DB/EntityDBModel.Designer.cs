@@ -943,6 +943,30 @@ namespace MvcFront.DB
         private global::System.String _Email;
         partial void OnEmailChanging(global::System.String value);
         partial void OnEmailChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String LastAccessProfileCode
+        {
+            get
+            {
+                return _LastAccessProfileCode;
+            }
+            set
+            {
+                OnLastAccessProfileCodeChanging(value);
+                ReportPropertyChanging("LastAccessProfileCode");
+                _LastAccessProfileCode = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("LastAccessProfileCode");
+                OnLastAccessProfileCodeChanged();
+            }
+        }
+        private global::System.String _LastAccessProfileCode;
+        partial void OnLastAccessProfileCodeChanging(global::System.String value);
+        partial void OnLastAccessProfileCodeChanged();
 
         #endregion
     

@@ -278,6 +278,7 @@
     <Compile Include="Helpers\DictionaryHelper.cs" />
     <Compile Include="Helpers\SessionHelper.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
+    <Compile Include="Infrastructure\SmqSecurityFilter.cs" />
     <Compile Include="Infrastructure\SmqSettings.cs" />
     <Compile Include="Infrastructure\UnitOfWork.cs" />
     <Compile Include="Interfaces\IDocTemplateRepository.cs" />

@@ -42,16 +42,18 @@
                         {
                             switch (sessState.UserType)
                             {
-                                case SmqUserProfileType.SYSTEMADMIN:
+                                case SmqUserProfileType.Systemadmin:
                                     <li>@Html.ActionLink("Пользователи", "Index", "UserAccountList")</li>
                                     <li>@Html.ActionLink("Группы", "Index", "UserGroupList")</li>
                                     <li>@Html.ActionLink("Шаблоны", "Index", "DocTemplateList")</li>
                                break;
-                                case SmqUserProfileType.GROUPMANAGER:
+                                case SmqUserProfileType.Groupmanager:
                                break;
-                                case SmqUserProfileType.GROUPUSER:
+                                case SmqUserProfileType.Groupuser:
                                break;
-                                case SmqUserProfileType.USER:
+                                case SmqUserProfileType.User:
+                               break;
+                                case SmqUserProfileType.Anonymous:
                                break;
                                 default:
                                throw new ArgumentOutOfRangeException();
