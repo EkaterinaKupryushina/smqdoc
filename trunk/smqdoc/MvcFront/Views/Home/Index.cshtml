@@ -4,17 +4,13 @@
 }
 
 <h2>@ViewBag.Message</h2>
-
-    
-    @using (Html.BeginForm("ChangeUserProfile", "Account"))
+    @using(Html.BeginForm("ChangeUserProfile","Account"))
     {
-        <fieldset>
-         <legend>Изменить текущую роль</legend>
-         @(Html.Telerik().DropDownList()
-           .Name("UserProfileCode")
-           .DataBinding(binding => binding.Select("AjaxUserAccountProfiles", "Dictionary"))
-               )
-     </fieldset>
-        <input type="submit" value="Изменить"/>
+        <text>Изменить профиль</text><br/>
+        @(Html.Telerik().DropDownList()
+                   .Name("UserProfileCode")
+                   .DataBinding(binding => binding.Ajax().Select("AjaxUserAccountProfiles", "Dictionary")))
+        <br/>
+        <input type="submit" value="Изменить"/>         
     }
 
