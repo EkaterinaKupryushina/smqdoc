@@ -42,6 +42,7 @@
     <Property Name="IsAdmin" Type="bit" Nullable="false" />
     <Property Name="Password" Type="nvarchar" Nullable="false" MaxLength="50" />
     <Property Name="Email" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="LastAccessProfileCode" Type="nvarchar(max)" Nullable="true" />
   </EntityType>
   <EntityType Name="UserGroups">
     <Key>
@@ -171,6 +172,7 @@
           <Property Type="String" Name="Email" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="ManagedGroups" Relationship="smqdocModel.GroupManager" FromRole="UserAccount" ToRole="UserGroup" />
           <NavigationProperty Name="MemberGroups" Relationship="smqdocModel.GroupUsers" FromRole="UserAccount" ToRole="UserGroup" />
+          <Property Type="String" Name="LastAccessProfileCode" Nullable="true" />
         </EntityType>
         <EntityType Name="UserGroup">
           <Key>
@@ -257,6 +259,7 @@
           <ScalarProperty Name="IsAdmin" ColumnName="IsAdmin" />
           <ScalarProperty Name="Password" ColumnName="Password" />
           <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="LastAccessProfileCode" ColumnName="LastAccessProfileCode" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -325,15 +328,15 @@
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
       <Diagram Name="EntityDBModel">
-        <EntityTypeShape EntityType="smqdocModel.UserAccount" Width="1.5" PointX="0.75" PointY="0.75" Height="2.5571907552083335" IsExpanded="true" />
+        <EntityTypeShape EntityType="smqdocModel.UserAccount" Width="1.5" PointX="0.75" PointY="0.75" Height="3.5186979166666656" IsExpanded="true" />
         <EntityTypeShape EntityType="smqdocModel.UserGroup" Width="1.5" PointX="4.5" PointY="1" Height="2.3648893229166661" />
         <AssociationConnector Association="smqdocModel.GroupManager">
-          <ConnectorPoint PointX="4.5" PointY="2.5549645996093746" />
-          <ConnectorPoint PointX="2.25" PointY="2.5549645996093746" />
+          <ConnectorPoint PointX="4.5" PointY="2.6143036142985019" />
+          <ConnectorPoint PointX="2.25" PointY="2.6143036142985019" />
         </AssociationConnector>
         <AssociationConnector Association="smqdocModel.GroupUsers">
-          <ConnectorPoint PointX="4.5" PointY="1.7149822998046873" />
-          <ConnectorPoint PointX="2.25" PointY="1.7149822998046873" />
+          <ConnectorPoint PointX="4.5" PointY="1.7446518071492509" />
+          <ConnectorPoint PointX="2.25" PointY="1.7446518071492509" />
         </AssociationConnector>
         <EntityTypeShape EntityType="smqdocModel.DocTemplate" Width="1.5" PointX="0.75" PointY="4.625" Height="2.1725878906249996" />
         <EntityTypeShape EntityType="smqdocModel.FieldTemplate" Width="1.5" PointX="4.75" PointY="4.625" Height="2.9417936197916656" />

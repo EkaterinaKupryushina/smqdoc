@@ -34,9 +34,9 @@ namespace MvcFront.Controllers
                 var user = _userRepository.Login(model.UserName, model.Password);
                 if (user != null)
                 {
-                    var sessionData = new SmqUserSessionData {UserName = model.UserName,UserId = user.userid,
-                        UserType = user.IsAdmin ? SmqUserProfileType.SYSTEMADMIN: SmqUserProfileType.USER,CurrentProfileName = user.IsAdmin ? "Администратор" : "Пользователь"};
-                    SessionHelper.SetUserSessionData(Session,sessionData);
+                    //var sessionData = new SmqUserSessionData {UserName = model.UserName,UserId = user.userid,
+                    //    UserType = user.IsAdmin ? SmqUserProfileType.Systemadmin: SmqUserProfileType.User,CurrentProfileName = user.IsAdmin ? "Администратор" : "Пользователь"};
+                    //SessionHelper.SetUserSessionData(Session,sessionData);
 
                     FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
                     if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")

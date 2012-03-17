@@ -12,6 +12,7 @@ namespace MvcFront
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
+            filters.Add(new SmqSecurityFilter());
         }
 
         public static void RegisterRoutes(RouteCollection routes)
@@ -30,6 +31,7 @@ namespace MvcFront
         {
             AreaRegistration.RegisterAllAreas();
             DependencyResolver.SetResolver(new NinjectDependencyResolver());
+            
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
         }

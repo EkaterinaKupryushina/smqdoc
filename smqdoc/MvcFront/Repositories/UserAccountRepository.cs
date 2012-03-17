@@ -71,6 +71,7 @@ namespace MvcFront.Repositories
                     item.SecondName = entity.SecondName;
                     item.Status = entity.Status;
                     item.userid = entity.userid;
+                    item.LastAccessProfileCode = entity.LastAccessProfileCode;
 
                 }
             }
