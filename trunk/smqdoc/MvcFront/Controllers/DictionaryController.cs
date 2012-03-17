@@ -34,9 +34,21 @@ namespace MvcFront.Controllers
             return new JsonResult { Data = new SelectList(data.ToList().Select(x => new { Id = x.userid,Name = x.FullName + " ("+x.Login+")"}), "Id", "Name") };
         }
         [HttpPost]
-        public ActionResult AjaxUserAccountProfiles(int userId)
+        public ActionResult AjaxUserAccountProfiles()
         {
-            var user = _userRepository.GetById(userId);
+            string curCode = "";
+            var sessData = SessionHelper.GetUserSessionData(Session);
+            if (sessData == null)
+                return new HttpUnauthorizedResult();
+            if (sessData.UserType == SmqUserProfileType.Systemadmin)
+                curCode = "0";
+            if (sessData.UserType == SmqUserProfileType.User)
+                curCode = "1";
+            if (sessData.UserType == SmqUserProfileType.Groupuser)
+                curCode = SessionHelper.GenerateUserProfileCode(sessData.UserGroupId, false);
+            if (sessData.UserType == SmqUserProfileType.Groupmanager)
+                curCode = SessionHelper.GenerateUserProfileCode(sessData.UserGroupId, true);
+            var user = _userRepository.GetById(sessData.UserId);
             var profDicts = new Dictionary<string, string>();
             if(user.IsAdmin) profDicts.Add(SessionHelper.GenerateUserProfileCode(null,true),"Администратор");
             foreach (var mgroup in user.ManagedGroups.Where(x=>x.Status == (int)UserGroupStatus.Active))
@@ -47,8 +59,9 @@ namespace MvcFront.Controllers
             {
                 profDicts.Add(SessionHelper.GenerateUserProfileCode(mgroup.usergroupid, false), "Участник " + mgroup.GroupName);
             }
-            if (profDicts.Count == 0) profDicts.Add(SessionHelper.GenerateUserProfileCode(null, false), "Просто пользователь");
-            return new JsonResult { Data = new SelectList(profDicts.Select(x => new { Id = x.Key, Name = x.Value}), "Code", "Name")};
+            if (profDicts.Count == 0) profDicts.Add(SessionHelper.GenerateUserProfileCode(null, false), "Пользователь");
+            var data = profDicts.Select(x => new {Id = x.Key, Name = x.Value}).ToList();
+            return new JsonResult { Data = new SelectList(data,"Id","Name",data.Find(x=>x.Id == curCode))};
         }
         #endregion
     }

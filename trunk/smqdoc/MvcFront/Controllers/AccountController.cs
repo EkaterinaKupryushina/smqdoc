@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Web.Mvc;
 using System.Web.Security;
 using MvcFront.Helpers;
@@ -34,10 +35,6 @@ namespace MvcFront.Controllers
                 var user = _userRepository.Login(model.UserName, model.Password);
                 if (user != null)
                 {
-                    //var sessionData = new SmqUserSessionData {UserName = model.UserName,UserId = user.userid,
-                    //    UserType = user.IsAdmin ? SmqUserProfileType.Systemadmin: SmqUserProfileType.User,CurrentProfileName = user.IsAdmin ? "Администратор" : "Пользователь"};
-                    //SessionHelper.SetUserSessionData(Session,sessionData);
-
                     FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
                     if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
                         && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
@@ -59,7 +56,7 @@ namespace MvcFront.Controllers
         {
             FormsAuthentication.SignOut();
             SessionHelper.ClearUserSessionData(Session);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("LogOn", "Account");
         }
 
         //
@@ -117,6 +114,60 @@ namespace MvcFront.Controllers
         public ActionResult ChangePasswordSuccess()
         {
             return View();
+        }
+        
+        [HttpPost]
+        public ActionResult ChangeUserProfile(ChangeUserProfileModel model)
+        {
+            if(ModelState.IsValid)
+            {
+                SmqUserSessionData sessData = SessionHelper.GetUserSessionData(Session);
+                var user = _userRepository.GetById(sessData.UserId);
+                
+                int? groupId;
+                bool isManager;
+                SessionHelper.ParseUserProfileCode(model.UserProfileCode,out groupId,out isManager);
+                if (groupId == null && isManager)
+                {
+                    sessData.UserGroupId = 0;
+                    sessData.UserGroupName = null;
+                    sessData.UserType = SmqUserProfileType.Systemadmin;
+                    sessData.CurrentProfileName = "Администратор";
+
+                }
+                if (groupId == null && !isManager)
+                {
+                    sessData.UserGroupId = 0;
+                    sessData.UserGroupName = null;
+                    sessData.UserType = SmqUserProfileType.User;
+                    sessData.CurrentProfileName = "Пользователь";
+
+                }
+                if (groupId != null && isManager)
+                {
+                    sessData.UserGroupId = groupId.Value;
+                    sessData.UserGroupName =
+                    user.ManagedGroups.First(
+                            x => x.usergroupid == groupId.Value).GroupName;
+                    sessData.UserType = SmqUserProfileType.Groupmanager;
+                    sessData.CurrentProfileName = "Менеджер " + sessData.UserGroupName;
+
+                }
+                if (groupId != null && !isManager)
+                {
+                    sessData.UserGroupId = groupId.Value;
+                    sessData.UserGroupName =
+                    user.MemberGroups.First(
+                            x => x.usergroupid == groupId.Value).GroupName;
+                    sessData.UserType = SmqUserProfileType.Groupuser;
+                    sessData.CurrentProfileName = "Участник " + sessData.UserGroupName;
+
+                }
+                SessionHelper.SetUserSessionData(Session,sessData);
+                user.LastAccessProfileCode = model.UserProfileCode;
+                _userRepository.Save(user);
+            }
+            return RedirectToAction("Index", "Home");
         }
     }
 }
