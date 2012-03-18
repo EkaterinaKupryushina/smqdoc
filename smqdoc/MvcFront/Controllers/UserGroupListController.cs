@@ -27,7 +27,8 @@ namespace MvcFront.Controllers
         [GridAction]
         public ActionResult _GroupUsersList(int groupId)
         {
-            var data = _groupRepository.GetById(groupId).Members.Where(x=>x.Status != (int)UserAccountStatus.Deleted).Select(x => new UserAccountListViewModel { UserId = x.userid, Login = x.Login, FullName = x.FirstName, LastLogin = x.LastAccess,CompositeId = x.userid+":"+groupId }).ToList();
+            var data = _groupRepository.GetById(groupId).Members.Where(x=>x.Status != (int)UserAccountStatus.Deleted).ToList()
+                .ConvertAll(UserAccountListViewModel.UserAccountToModelConverter).ToList();
             return View(new GridModel<UserAccountListViewModel> { Data = data });
         }
         //

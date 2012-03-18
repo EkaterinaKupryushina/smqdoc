@@ -13,25 +13,25 @@ namespace MvcFront.Repositories
         {
             _unitOfWork = unitOfWork;
         }
-        public IQueryable<UserAccount> GetAll()
+        public IQueryable<UserAccount> GetAll(bool refreshFromDb = false)
         {
-            _unitOfWork.DbModel.Refresh(RefreshMode.StoreWins, _unitOfWork.DbModel.UserAccounts.AsQueryable());
+            if (refreshFromDb) _unitOfWork.DbModel.Refresh(RefreshMode.StoreWins, _unitOfWork.DbModel.UserAccounts.AsQueryable());
             return _unitOfWork.DbModel.UserAccounts.AsQueryable();
         }
 
-        public UserAccount GetById(Int32 id)
+        public UserAccount GetById(Int32 id, bool refreshFromDb = false)
         {
             if (id == 0)
                 return new UserAccount();
             var user = _unitOfWork.DbModel.UserAccounts.SingleOrDefault(x => x.userid == id);
-            _unitOfWork.DbModel.Refresh(RefreshMode.StoreWins, user);
+            if (refreshFromDb) _unitOfWork.DbModel.Refresh(RefreshMode.StoreWins, user);
             return user;
         }
 
-        public UserAccount GetByLogin(string login)
+        public UserAccount GetByLogin(string login, bool refreshFromDb = false)
         {
             var user = _unitOfWork.DbModel.UserAccounts.SingleOrDefault(x => x.Login == login.Trim());
-            _unitOfWork.DbModel.Refresh(RefreshMode.StoreWins, user);
+            if(refreshFromDb) _unitOfWork.DbModel.Refresh(RefreshMode.StoreWins, user);
             return user;
         }
 
