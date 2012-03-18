@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 03/17/2012 18:34:39
+-- Date Created: 03/18/2012 14:44:06
 -- Generated from EDMX file: D:\Work\smqDoc\smqdoc.net\smqdoc\MvcFront\DB\EntityDBModel.edmx
 -- --------------------------------------------------
 
@@ -96,8 +96,8 @@ CREATE TABLE [dbo].[FieldTemplates] (
     [FieldName] nvarchar(max)  NOT NULL,
     [FiledType] int  NOT NULL,
     [Restricted] bit  NULL,
-    [MaxVal] int  NULL,
-    [MinVal] int  NULL,
+    [MaxVal] float  NULL,
+    [MinVal] float  NULL,
     [DocTemplate_docteplateid] bigint  NOT NULL,
     [OrderNumber] int  NOT NULL,
     [Status] int  NOT NULL

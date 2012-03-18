@@ -501,7 +501,7 @@ namespace MvcFront.DB
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Int32> MaxVal
+        public Nullable<global::System.Double> MaxVal
         {
             get
             {
@@ -516,8 +516,8 @@ namespace MvcFront.DB
                 OnMaxValChanged();
             }
         }
-        private Nullable<global::System.Int32> _MaxVal;
-        partial void OnMaxValChanging(Nullable<global::System.Int32> value);
+        private Nullable<global::System.Double> _MaxVal;
+        partial void OnMaxValChanging(Nullable<global::System.Double> value);
         partial void OnMaxValChanged();
     
         /// <summary>
@@ -525,7 +525,7 @@ namespace MvcFront.DB
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Int32> MinVal
+        public Nullable<global::System.Double> MinVal
         {
             get
             {
@@ -540,8 +540,8 @@ namespace MvcFront.DB
                 OnMinValChanged();
             }
         }
-        private Nullable<global::System.Int32> _MinVal;
-        partial void OnMinValChanging(Nullable<global::System.Int32> value);
+        private Nullable<global::System.Double> _MinVal;
+        partial void OnMinValChanging(Nullable<global::System.Double> value);
         partial void OnMinValChanged();
     
         /// <summary>

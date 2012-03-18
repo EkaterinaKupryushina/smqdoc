@@ -5,7 +5,7 @@
 }
 @Html.ValidationSummary(true)
 @Html.HiddenFor(model => model.FieldTemplateId)
-@Html.HiddenFor(model => model.DocTemplateID)
+@Html.HiddenFor(model => model.DocTemplateId)
 <div class="editor-label">
     @Html.LabelFor(model => model.FieldTemplateName)
 </div>
@@ -38,14 +38,14 @@
             @Html.LabelFor(model => model.MaxVal)
         </div>
         <div class="editor-field">
-            @Html.Telerik().IntegerTextBoxFor(model => model.MaxVal).EmptyMessage("Введите число")
+            @Html.Telerik().NumericTextBoxFor(model => model.MaxVal).EmptyMessage("Введите число")
             @Html.ValidationMessageFor(model => model.MaxVal)
         </div>
         <div class="editor-label">
             @Html.LabelFor(model => model.MinVal)
         </div>
         <div class="editor-field">
-            @Html.Telerik().IntegerTextBoxFor(model => model.MinVal).EmptyMessage("Введите число")
+            @Html.Telerik().NumericTextBoxFor(model => model.MinVal).EmptyMessage("Введите число")
             @Html.ValidationMessageFor(model => model.MinVal)
         </div>
     </div>
