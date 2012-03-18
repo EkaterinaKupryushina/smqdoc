@@ -30,7 +30,7 @@ namespace MvcFront.Models
             DocumentName = templ.DocumentName;
             LastEditDate = templ.LastEditDate;
             LastComment = templ.LastComment;
-            DocumentStatusText = DictionaryHelper.GetEnumText(typeof(DocumentStatus),templ.Status);
+            DocumentStatusText = templ.DocStatusText;
         }
         public static DocumentListViewModel DocumentToModelConverter(Document templ)
         {

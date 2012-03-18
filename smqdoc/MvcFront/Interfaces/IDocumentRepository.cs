@@ -13,6 +13,6 @@ namespace MvcFront.Interfaces
 
         Document SaveDocument(Document entity);
         Document DeleteDocument(long id);
-        Document ChangeStatus(long id, DocumentStatus state);
+        Document ChangeDocumentStatus(long id, DocumentStatus state);
     }
 }

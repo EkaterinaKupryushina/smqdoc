@@ -1,0 +1,30 @@
+﻿@model MvcFront.DB.Document
+
+<legend>@Html.DisplayFor(model => model.DocumentName)</legend>
+
+    <div class="display-label">@Html.LabelFor(model => model.DocumentName)</div>
+<div class="display-field">
+    @Html.DisplayFor(model => model.DocumentName)
+</div>
+
+<div class="display-label">@Html.LabelFor(model => model.CreationDate)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.CreationDate)
+    </div>
+
+    <div class="display-label">@Html.LabelFor(model => model.LastEditDate)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.LastEditDate)
+    </div>
+
+    <div class="display-label">@Html.LabelFor(model => model.DocStatusText)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DocStatusText)
+    </div>
+
+    <div class="display-label">@Html.LabelFor(model => model.LastComment)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.LastComment)
+    </div>
+
+

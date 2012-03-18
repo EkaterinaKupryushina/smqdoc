@@ -1,38 +1,13 @@
-﻿@model MvcFront.DB.Document
+﻿@using Telerik.Web.Mvc.UI
+@model MvcFront.DB.Document
 
 @{
     ViewBag.Title = "Details";
 }
 
-<h2>Информация</h2>
-
+<h2>Детальная информация</h2>
 <fieldset>
-    <legend>@Html.DisplayFor(model => model.DocumentName)</legend>
-
-    <div class="display-label">@Html.LabelFor(model => model.CreationDate)</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.CreationDate)
-    </div>
-
-    <div class="display-label">@Html.LabelFor(model => model.LastEditDate)</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.LastEditDate)
-    </div>
-
-    <div class="display-label">@Html.LabelFor(model => model.DocStatus)</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Status)
-    </div>
-
-    <div class="display-label">@Html.LabelFor(model => model.LastComment)</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.LastComment)
-    </div>
-
-    <div class="display-label">@Html.LabelFor(model => model.DocumentName)</div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.DocumentName)
-    </div>
+@Html.DisplayForModel()
 </fieldset>
 <p>
     @Html.ActionLink("Редактировать", "Edit", new { id=Model.documentid }) |
