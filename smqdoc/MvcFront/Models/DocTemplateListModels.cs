@@ -91,9 +91,9 @@ namespace MvcFront.Models
         [Display(Name = "ID")]
         [UIHint("Hidden")]
         public long FieldTemplateId { get; set; }
-        [Display(Name = "DocTemplateID")]
+        [Display(Name = "DocTemplateId")]
         [UIHint("Hidden")]
-        public long DocTemplateID { get; set; }
+        public long DocTemplateId { get; set; }
 
         [Required]
         [Display(Name = "Названире поля")]
@@ -106,10 +106,10 @@ namespace MvcFront.Models
         public bool IsRestricted { get; set; }
         [Display(Name = "Максимальное значение")]
         [DataType("Number")]
-        public int? MaxVal { get; set; }
+        public double? MaxVal { get; set; }
         [DataType("Number")]
         [Display(Name = "Минимальное значение")]
-        public int? MinVal { get; set; }
+        public double? MinVal { get; set; }
 
         public FieldTemplateListEditModel()
         {
@@ -117,7 +117,7 @@ namespace MvcFront.Models
         public FieldTemplateListEditModel(FieldTemplate templ)
         {
             FieldTemplateId = templ.fieldteplateid;
-            DocTemplateID = templ.DocTemplate_docteplateid;
+            DocTemplateId = templ.DocTemplate_docteplateid;
             FieldTemplateName = templ.FieldName;
             FieldType = templ.FiledType;
             IsRestricted = templ.Restricted.HasValue && templ.Restricted.Value ;
@@ -127,7 +127,7 @@ namespace MvcFront.Models
         public FieldTemplate Update(FieldTemplate templ)
         {
             templ.fieldteplateid = FieldTemplateId;
-            templ.DocTemplate_docteplateid = DocTemplateID;
+            templ.DocTemplate_docteplateid = DocTemplateId;
             templ.FieldName = FieldTemplateName;
             templ.FiledType = FieldType;
 
