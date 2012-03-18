@@ -55,7 +55,7 @@ namespace MvcFront.Repositories
             _unitOfWork.DbModel.SaveChanges();
             return entity;
         }
-        public Document ChangeStatus(long id, DocumentStatus state)
+        public Document ChangeDocumentStatus(long id, DocumentStatus state)
         {
             var doc = GetDocumentById(id);
             doc.DocStatus = state;

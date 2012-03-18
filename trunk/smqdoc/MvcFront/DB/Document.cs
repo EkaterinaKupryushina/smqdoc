@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using MvcFront.Helpers;
 
 namespace MvcFront.DB
 {
@@ -23,6 +24,11 @@ namespace MvcFront.DB
             get { return (DocumentStatus) Status; }
             set { Status = (int)value; }
         }
+        [Display(Name = "Статус документа")]
+        public string DocStatusText
+        {
+            get { return DictionaryHelper.GetEnumText(typeof(DocumentStatus), Status); }
+        }
     }
 
     public partial class DocumentMetadata
@@ -32,15 +38,17 @@ namespace MvcFront.DB
         public Int64 documentid { get; set; }
         [Display(Name = "Дата создания")]
         [Required]
-        private DateTime CreationDate { get; set; }
+        public DateTime CreationDate { get; set; }
         [Display(Name = "Дата последнего изменения")]
         [Required]
-        private DateTime LastEditDate { get; set; }
+        public DateTime LastEditDate { get; set; }
         [Display(Name = "Код статуса")]
         [Required]
-        private Int32 Status { get; set; }
+        public Int32 Status { get; set; }
         [Display(Name = "Послений коментарий")]
         [DataType(DataType.MultilineText)]
-        private String LastComment { get; set; }
+        public String LastComment { get; set; }
+        [Display(Name = "Название документа")]
+        public String DocumentName { get; set; }
     }
 }

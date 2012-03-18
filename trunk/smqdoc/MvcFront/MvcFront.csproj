@@ -869,6 +869,7 @@
     <Content Include="Views\DocTemplateList\EditField.cshtml" />
     <Content Include="Views\Account\Index.cshtml" />
     <Content Include="Views\UserDocument\Details.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\Document.cshtml" />
     <None Include="Views\UserAccountList\ChangeState.cshtml" />
     <Content Include="Views\UserGroupList\Index.cshtml" />
     <Content Include="Views\UserGroupList\Delete.cshtml" />
