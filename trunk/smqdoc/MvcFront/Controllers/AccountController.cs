@@ -19,6 +19,11 @@ namespace MvcFront.Controllers
         //
         // GET: /Account/LogOn
 
+        public ActionResult Index()
+        {
+            return View();
+        }
+
         public ActionResult LogOn()
         {
             return View();

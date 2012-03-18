@@ -46,15 +46,19 @@
                                     <li>@Html.ActionLink("Пользователи", "Index", "UserAccountList")</li>
                                     <li>@Html.ActionLink("Группы", "Index", "UserGroupList")</li>
                                     <li>@Html.ActionLink("Шаблоны", "Index", "DocTemplateList")</li>
-                               break;
+                                    <li>@Html.ActionLink("Профиль пользователя", "Index", "Account")</li>
+                                    break;
                                 case SmqUserProfileType.Groupmanager:
-                               break;
+                                    <li>@Html.ActionLink("Профиль пользователя", "Index", "Account")</li>
+                                break;
                                 case SmqUserProfileType.Groupuser:
-                               break;
+                                    <li>@Html.ActionLink("Профиль пользователя", "Index", "Account")</li>
+                                break;
                                 case SmqUserProfileType.User:
-                               break;
+                                    <li>@Html.ActionLink("Профиль пользователя", "Index", "Account")</li>
+                                break;
                                 case SmqUserProfileType.Anonymous:
-                               break;
+                                break;
                                 default:
                                throw new ArgumentOutOfRangeException();
                             }

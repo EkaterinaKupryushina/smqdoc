@@ -1,0 +1,28 @@
+﻿@using MvcFront.Helpers
+@using Telerik.Web.Mvc.UI
+@{
+    ViewBag.Title = "Index";
+    var sessData = SessionHelper.GetUserSessionData(Session);
+}
+
+<h2>Профиль пользователя</h2>
+
+<div class="display-label">Ваш Логин: </div>
+<div class="display-field">
+    @sessData.UserName
+</div>
+<div class="display-label">Текущий профиль:</div>
+<div class="display-field">
+    @sessData.CurrentProfileName
+</div>  
+@using(Html.BeginForm("ChangeUserProfile","Account"))
+{
+        <div class="display-label">Изменить профиль на: </div>
+        @(Html.Telerik().DropDownList()
+                   .Name("UserProfileCode")
+                   .DataBinding(binding => binding.Ajax().Select("AjaxUserAccountProfiles", "Dictionary")))
+        <br/>
+        <input type="submit" value="Изменить"/>         
+    }
+    <br/>
+    @Html.ActionLink("Смена пароля пользователя", "ChangePassword")

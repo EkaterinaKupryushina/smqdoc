@@ -16,6 +16,8 @@ namespace MvcFront.Models
         public string Login { get; set; }
         [Display(Name = "Имя")]
         public string FullName { get; set; }
+        [Display(Name = "Статус")]
+        public string StatusText { get; set; }
         [Display(Name = "Последний вход")]
         [UIHint("DateTime")]
         public DateTime? LastLogin { get; set; }
@@ -34,6 +36,7 @@ namespace MvcFront.Models
                 Login = acc.Login;
                 FullName = acc.FullName;
                 LastLogin = acc.LastAccess;
+                StatusText = acc.UserStatusText;
             }
         }
         public static UserAccountListViewModel UserAccountToModelConverter(UserAccount templ)

@@ -3,14 +3,5 @@
     ViewBag.Title = "Домашняя";
 }
 
-<h2>@ViewBag.Message</h2>
-    @using(Html.BeginForm("ChangeUserProfile","Account"))
-    {
-        <text>Изменить профиль</text><br/>
-        @(Html.Telerik().DropDownList()
-                   .Name("UserProfileCode")
-                   .DataBinding(binding => binding.Ajax().Select("AjaxUserAccountProfiles", "Dictionary")))
-        <br/>
-        <input type="submit" value="Изменить"/>         
-    }
+Здесь можно расзместить любой текст
 

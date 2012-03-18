@@ -6,9 +6,9 @@ namespace MvcFront.Interfaces
 {
     public interface IUserAccountRepository
     {
-        IQueryable<UserAccount> GetAll();
-        UserAccount GetById(Int32 id);
-        UserAccount GetByLogin(string login);
+        IQueryable<UserAccount> GetAll(bool refreshFromDb = false);
+        UserAccount GetById(Int32 id, bool refreshFromDb = false);
+        UserAccount GetByLogin(string login, bool refreshFromDb = false);
         UserAccount Login(string userLogin, string password);
         bool Save(UserAccount entity);
         void Delete(Int32 id);
