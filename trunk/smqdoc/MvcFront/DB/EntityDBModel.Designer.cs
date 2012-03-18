@@ -21,6 +21,8 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("smqdocModel", "GroupManager", "UserGroup", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.UserGroup), "UserAccount", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.UserAccount), true)]
 [assembly: EdmRelationshipAttribute("smqdocModel", "GroupUsers", "UserGroup", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.UserGroup), "UserAccount", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.UserAccount))]
 [assembly: EdmRelationshipAttribute("smqdocModel", "FieldTeplateDocTemplate", "FieldTeplate", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.FieldTemplate), "DocTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.DocTemplate), true)]
+[assembly: EdmRelationshipAttribute("smqdocModel", "DocumentDocTemplate", "Document", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.Document), "DocTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.DocTemplate), true)]
+[assembly: EdmRelationshipAttribute("smqdocModel", "DocumentUserAccount", "Document", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.Document), "UserAccount", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.UserAccount), true)]
 
 #endregion
 
@@ -135,6 +137,22 @@ namespace MvcFront.DB
             }
         }
         private ObjectSet<FieldTemplate> _FieldTemplates;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<Document> Documents
+        {
+            get
+            {
+                if ((_Documents == null))
+                {
+                    _Documents = base.CreateObjectSet<Document>("Documents");
+                }
+                return _Documents;
+            }
+        }
+        private ObjectSet<Document> _Documents;
 
         #endregion
         #region AddTo Methods
@@ -169,6 +187,14 @@ namespace MvcFront.DB
         public void AddToFieldTemplates(FieldTemplate fieldTemplate)
         {
             base.AddObject("FieldTemplates", fieldTemplate);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Documents EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToDocuments(Document document)
+        {
+            base.AddObject("Documents", document);
         }
 
         #endregion
@@ -356,6 +382,342 @@ namespace MvcFront.DB
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<FieldTemplate>("smqdocModel.FieldTeplateDocTemplate", "FieldTeplate", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "DocumentDocTemplate", "Document")]
+        public EntityCollection<Document> Documents
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Document>("smqdocModel.DocumentDocTemplate", "Document");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Document>("smqdocModel.DocumentDocTemplate", "Document", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="smqdocModel", Name="Document")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Document : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new Document object.
+        /// </summary>
+        /// <param name="documentid">Initial value of the documentid property.</param>
+        /// <param name="creationDate">Initial value of the CreationDate property.</param>
+        /// <param name="lastEditDate">Initial value of the LastEditDate property.</param>
+        /// <param name="status">Initial value of the Status property.</param>
+        /// <param name="docTemplate_docteplateid">Initial value of the DocTemplate_docteplateid property.</param>
+        /// <param name="documentName">Initial value of the DocumentName property.</param>
+        /// <param name="userAccount_userid">Initial value of the UserAccount_userid property.</param>
+        public static Document CreateDocument(global::System.Int64 documentid, global::System.DateTime creationDate, global::System.DateTime lastEditDate, global::System.Int32 status, global::System.Int64 docTemplate_docteplateid, global::System.String documentName, global::System.Int32 userAccount_userid)
+        {
+            Document document = new Document();
+            document.documentid = documentid;
+            document.CreationDate = creationDate;
+            document.LastEditDate = lastEditDate;
+            document.Status = status;
+            document.DocTemplate_docteplateid = docTemplate_docteplateid;
+            document.DocumentName = documentName;
+            document.UserAccount_userid = userAccount_userid;
+            return document;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int64 documentid
+        {
+            get
+            {
+                return _documentid;
+            }
+            set
+            {
+                if (_documentid != value)
+                {
+                    OndocumentidChanging(value);
+                    ReportPropertyChanging("documentid");
+                    _documentid = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("documentid");
+                    OndocumentidChanged();
+                }
+            }
+        }
+        private global::System.Int64 _documentid;
+        partial void OndocumentidChanging(global::System.Int64 value);
+        partial void OndocumentidChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime CreationDate
+        {
+            get
+            {
+                return _CreationDate;
+            }
+            set
+            {
+                OnCreationDateChanging(value);
+                ReportPropertyChanging("CreationDate");
+                _CreationDate = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("CreationDate");
+                OnCreationDateChanged();
+            }
+        }
+        private global::System.DateTime _CreationDate;
+        partial void OnCreationDateChanging(global::System.DateTime value);
+        partial void OnCreationDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime LastEditDate
+        {
+            get
+            {
+                return _LastEditDate;
+            }
+            set
+            {
+                OnLastEditDateChanging(value);
+                ReportPropertyChanging("LastEditDate");
+                _LastEditDate = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("LastEditDate");
+                OnLastEditDateChanged();
+            }
+        }
+        private global::System.DateTime _LastEditDate;
+        partial void OnLastEditDateChanging(global::System.DateTime value);
+        partial void OnLastEditDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Status
+        {
+            get
+            {
+                return _Status;
+            }
+            set
+            {
+                OnStatusChanging(value);
+                ReportPropertyChanging("Status");
+                _Status = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Status");
+                OnStatusChanged();
+            }
+        }
+        private global::System.Int32 _Status;
+        partial void OnStatusChanging(global::System.Int32 value);
+        partial void OnStatusChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String LastComment
+        {
+            get
+            {
+                return _LastComment;
+            }
+            set
+            {
+                OnLastCommentChanging(value);
+                ReportPropertyChanging("LastComment");
+                _LastComment = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("LastComment");
+                OnLastCommentChanged();
+            }
+        }
+        private global::System.String _LastComment;
+        partial void OnLastCommentChanging(global::System.String value);
+        partial void OnLastCommentChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int64 DocTemplate_docteplateid
+        {
+            get
+            {
+                return _DocTemplate_docteplateid;
+            }
+            set
+            {
+                OnDocTemplate_docteplateidChanging(value);
+                ReportPropertyChanging("DocTemplate_docteplateid");
+                _DocTemplate_docteplateid = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DocTemplate_docteplateid");
+                OnDocTemplate_docteplateidChanged();
+            }
+        }
+        private global::System.Int64 _DocTemplate_docteplateid;
+        partial void OnDocTemplate_docteplateidChanging(global::System.Int64 value);
+        partial void OnDocTemplate_docteplateidChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String DocumentName
+        {
+            get
+            {
+                return _DocumentName;
+            }
+            set
+            {
+                OnDocumentNameChanging(value);
+                ReportPropertyChanging("DocumentName");
+                _DocumentName = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("DocumentName");
+                OnDocumentNameChanged();
+            }
+        }
+        private global::System.String _DocumentName;
+        partial void OnDocumentNameChanging(global::System.String value);
+        partial void OnDocumentNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 UserAccount_userid
+        {
+            get
+            {
+                return _UserAccount_userid;
+            }
+            set
+            {
+                OnUserAccount_useridChanging(value);
+                ReportPropertyChanging("UserAccount_userid");
+                _UserAccount_userid = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("UserAccount_userid");
+                OnUserAccount_useridChanged();
+            }
+        }
+        private global::System.Int32 _UserAccount_userid;
+        partial void OnUserAccount_useridChanging(global::System.Int32 value);
+        partial void OnUserAccount_useridChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "DocumentDocTemplate", "DocTemplate")]
+        public DocTemplate DocTemplate
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<DocTemplate>("smqdocModel.DocumentDocTemplate", "DocTemplate").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<DocTemplate>("smqdocModel.DocumentDocTemplate", "DocTemplate").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<DocTemplate> DocTemplateReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<DocTemplate>("smqdocModel.DocumentDocTemplate", "DocTemplate");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<DocTemplate>("smqdocModel.DocumentDocTemplate", "DocTemplate", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "DocumentUserAccount", "UserAccount")]
+        public UserAccount UserAccount
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<UserAccount>("smqdocModel.DocumentUserAccount", "UserAccount").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<UserAccount>("smqdocModel.DocumentUserAccount", "UserAccount").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<UserAccount> UserAccountReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<UserAccount>("smqdocModel.DocumentUserAccount", "UserAccount");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<UserAccount>("smqdocModel.DocumentUserAccount", "UserAccount", value);
                 }
             }
         }
@@ -1012,6 +1374,28 @@ namespace MvcFront.DB
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<UserGroup>("smqdocModel.GroupUsers", "UserGroup", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "DocumentUserAccount", "Document")]
+        public EntityCollection<Document> Documents
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Document>("smqdocModel.DocumentUserAccount", "Document");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Document>("smqdocModel.DocumentUserAccount", "Document", value);
                 }
             }
         }

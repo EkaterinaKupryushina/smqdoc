@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 03/18/2012 14:44:06
+-- Date Created: 03/18/2012 16:15:02
 -- Generated from EDMX file: D:\Work\smqDoc\smqdoc.net\smqdoc\MvcFront\DB\EntityDBModel.edmx
 -- --------------------------------------------------
 
@@ -104,6 +104,19 @@ CREATE TABLE [dbo].[FieldTemplates] (
 );
 GO
 
+-- Creating table 'Documents'
+CREATE TABLE [dbo].[Documents] (
+    [documentid] bigint IDENTITY(1,1) NOT NULL,
+    [CreationDate] datetime  NOT NULL,
+    [LastEditDate] datetime  NOT NULL,
+    [Status] int  NOT NULL,
+    [LastComment] nvarchar(max)  NULL,
+    [DocTemplate_docteplateid] bigint  NOT NULL,
+    [DocumentName] nvarchar(max)  NOT NULL,
+    [UserAccount_userid] int  NOT NULL
+);
+GO
+
 -- Creating table 'GroupUsers'
 CREATE TABLE [dbo].[GroupUsers] (
     [MemberGroups_usergroupid] int  NOT NULL,
@@ -137,6 +150,12 @@ GO
 ALTER TABLE [dbo].[FieldTemplates]
 ADD CONSTRAINT [PK_FieldTemplates]
     PRIMARY KEY CLUSTERED ([fieldteplateid] ASC);
+GO
+
+-- Creating primary key on [documentid] in table 'Documents'
+ALTER TABLE [dbo].[Documents]
+ADD CONSTRAINT [PK_Documents]
+    PRIMARY KEY CLUSTERED ([documentid] ASC);
 GO
 
 -- Creating primary key on [MemberGroups_usergroupid], [Members_userid] in table 'GroupUsers'
@@ -198,6 +217,34 @@ ADD CONSTRAINT [FK_FieldTeplateDocTemplate]
 CREATE INDEX [IX_FK_FieldTeplateDocTemplate]
 ON [dbo].[FieldTemplates]
     ([DocTemplate_docteplateid]);
+GO
+
+-- Creating foreign key on [DocTemplate_docteplateid] in table 'Documents'
+ALTER TABLE [dbo].[Documents]
+ADD CONSTRAINT [FK_DocumentDocTemplate]
+    FOREIGN KEY ([DocTemplate_docteplateid])
+    REFERENCES [dbo].[DocTemplates]
+        ([docteplateid])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_DocumentDocTemplate'
+CREATE INDEX [IX_FK_DocumentDocTemplate]
+ON [dbo].[Documents]
+    ([DocTemplate_docteplateid]);
+GO
+
+-- Creating foreign key on [UserAccount_userid] in table 'Documents'
+ALTER TABLE [dbo].[Documents]
+ADD CONSTRAINT [FK_DocumentUserAccount]
+    FOREIGN KEY ([UserAccount_userid])
+    REFERENCES [dbo].[UserAccounts]
+        ([userid])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_DocumentUserAccount'
+CREATE INDEX [IX_FK_DocumentUserAccount]
+ON [dbo].[Documents]
+    ([UserAccount_userid]);
 GO
 
 -- --------------------------------------------------

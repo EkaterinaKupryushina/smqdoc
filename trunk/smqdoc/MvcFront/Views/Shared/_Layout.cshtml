@@ -53,14 +53,15 @@
                                 break;
                                 case SmqUserProfileType.Groupuser:
                                     <li>@Html.ActionLink("Профиль пользователя", "Index", "Account")</li>
+                                    <li>@Html.ActionLink("Документы", "Index", "UserDocument")</li>
                                 break;
                                 case SmqUserProfileType.User:
                                     <li>@Html.ActionLink("Профиль пользователя", "Index", "Account")</li>
-                                break;
+                                   break;
                                 case SmqUserProfileType.Anonymous:
-                                break;
+                                   break;
                                 default:
-                               throw new ArgumentOutOfRangeException();
+                                   throw new ArgumentOutOfRangeException();
                             }
                         }
                     }

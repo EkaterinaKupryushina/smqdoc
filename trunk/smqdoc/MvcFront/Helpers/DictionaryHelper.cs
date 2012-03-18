@@ -7,7 +7,7 @@ namespace MvcFront.Helpers
     {
         public static string GetEnumText(Type typeOfEnum, int item)
         {
-            string retVal = "";
+            var retVal = "";
             try
             {
                 switch (typeOfEnum.Name)
@@ -121,6 +121,34 @@ namespace MvcFront.Helpers
                                     }
                             }
                             break;
+                        }
+                    case "DocumentStatus":
+                        {
+                            switch (item)
+                            {
+                                case 0:
+                                    {
+                                        retVal = "Редактируемый";
+                                        break;
+                                    }
+                                case 1:
+                                    {
+                                        retVal = "Отправлен на рассмотрение";
+                                        break;
+                                    }
+                                case 2:
+                                    {
+                                        retVal = "Одобрен";
+                                        break;
+                                    }
+                                case 3:
+                                    {
+                                        retVal = "Удален";
+                                        break;
+                                    }
+                            }
+                            
+                         break;   
                         }
                 }
             }
