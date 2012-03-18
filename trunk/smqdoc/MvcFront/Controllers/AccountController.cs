@@ -174,5 +174,43 @@ namespace MvcFront.Controllers
             }
             return RedirectToAction("Index", "Home");
         }
+
+
+        [Authorize]
+        public ActionResult EditUserInfo()
+        {
+            var sessData = SessionHelper.GetUserSessionData(Session);
+            //return View(new EditUserInfoModel(_userRepository.GetAll().Where(x => x.userid == sessData.UserId).SingleOrDefault()));             
+            return View(new EditUserInfoModel(_userRepository.GetById(sessData.UserId)));
+        }
+
+        //
+        // POST: /Account/EditUserInfo
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult EditUserInfo(EditUserInfoModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var currentUser = _userRepository.GetByLogin(User.Identity.Name);
+
+                currentUser.FirstName = model.FirstName;
+                currentUser.SecondName = model.SecondName;
+                currentUser.LastName = model.LastName;
+                currentUser.Email = model.Email;
+
+                try
+                {
+                    _userRepository.Save(currentUser);
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", String.Format("Ошибка сохранения изменений пользователя: {0}", ex.Message));
+                    return View(model);
+                }
+            }
+            return RedirectToAction("Index");
+        }
     }
 }

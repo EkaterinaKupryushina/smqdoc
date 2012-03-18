@@ -870,6 +870,7 @@
     <Content Include="Views\Account\Index.cshtml" />
     <Content Include="Views\UserDocument\Details.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\Document.cshtml" />
+    <Content Include="Views\Account\EditUserInfo.cshtml" />
     <None Include="Views\UserAccountList\ChangeState.cshtml" />
     <Content Include="Views\UserGroupList\Index.cshtml" />
     <Content Include="Views\UserGroupList\Delete.cshtml" />
