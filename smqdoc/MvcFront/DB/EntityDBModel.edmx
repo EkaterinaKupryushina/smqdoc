@@ -437,7 +437,7 @@
     </Options>
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
-      <Diagram Name="EntityDBModel" ZoomLevel="139">
+      <Diagram Name="EntityDBModel" ZoomLevel="103">
         <EntityTypeShape EntityType="smqdocModel.UserAccount" Width="1.5" PointX="0.75" PointY="0.75" Height="3.5186979166666656" IsExpanded="true" />
         <EntityTypeShape EntityType="smqdocModel.UserGroup" Width="1.5" PointX="4.5" PointY="1" Height="2.3648893229166661" />
         <AssociationConnector Association="smqdocModel.GroupManager">
