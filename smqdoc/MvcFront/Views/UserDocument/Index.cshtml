@@ -1,0 +1,39 @@
+﻿@using Telerik.Web.Mvc.UI
+@using MvcFront.Models
+@model IEnumerable<DocumentListViewModel>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Список документов</h2>
+
+@(Html.Telerik().Grid(Model)
+        .Name("DocumentListGrid")
+                   .Columns(columns =>
+                   {
+                       columns.AutoGenerate(column =>
+                       {
+                           column.Width = "150px";
+                           if (column.Member == "DocumentId")
+                               column.Visible = false;
+                       });
+                       columns.Command(command =>
+                       {
+                           command.Custom("viewDetails").Text("Информация")
+                            .DataRouteValues(route => route.Add(o => o.DocumentId).RouteKey("id"))
+                            .Action("Details", "UserDocument")
+                            .HtmlAttributes(new { style = "text-align: center" });
+                           command.Custom("EditDetails").Text("Редактировать")
+                            .DataRouteValues(route => route.Add(o => o.DocumentId).RouteKey("id"))
+                            .Action("Edit", "UserDocument")
+                            .HtmlAttributes(new { style = "text-align: center" });
+                           command.Custom("DeleteDetails").Text("Удалить")
+                            .DataRouteValues(route => route.Add(o => o.DocumentId).RouteKey("id"))
+                            .Action("Delete", "UserDocument")
+                            .HtmlAttributes(new { style = "text-align: center" });
+                       }).Width(50);
+                   })
+                 .Sortable()
+                .Pageable()
+
+    ) 

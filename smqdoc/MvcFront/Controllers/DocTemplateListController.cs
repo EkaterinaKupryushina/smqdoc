@@ -199,7 +199,7 @@ namespace MvcFront.Controllers
                 {
                     throw new Exception("Проверьте введенные данные");
                 }
-                return RedirectToAction("DocTemplateFieldsManagment", new { id = model.DocTemplateID });
+                return RedirectToAction("DocTemplateFieldsManagment", new { id = model.DocTemplateId });
             }
             catch (Exception ex)
             {
@@ -233,7 +233,7 @@ namespace MvcFront.Controllers
                 {
                     throw new Exception("Проверьте введенные данные");
                 }
-                return RedirectToAction("DocTemplateFieldsManagment", new { id = model.DocTemplateID });
+                return RedirectToAction("DocTemplateFieldsManagment", new { id = model.DocTemplateId });
             }
             catch (Exception ex)
             {
