@@ -51,4 +51,22 @@ namespace MvcFront.DB
         [Display(Name = "Название документа")]
         public String DocumentName { get; set; }
     }
+
+    public partial class DocField
+    {
+        public string GetValueString()
+        {
+            switch(FieldTemplate.TemplateType)
+            {
+                case FieldTemplateType.BOOL:
+                    return BoolValue == null ? "" : BoolValue.Value ? "Да" : "Нет";
+                case FieldTemplateType.NUMBER:
+                    return DoubleValue == null ? "" : string.Format("{0}",DoubleValue);
+                case FieldTemplateType.STRING:
+                    return StringValue ?? "";
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+    }
 }

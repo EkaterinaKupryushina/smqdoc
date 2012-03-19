@@ -39,47 +39,53 @@ namespace MvcFront.Controllers
         //
         // GET: /Document/Create
 
-        public ActionResult Create()
+        public ActionResult Create(long id)
         {
             return View();
         } 
 
-        //
-        // POST: /Document/Create
+        ////
+        //// POST: /Document/Create
 
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
+        //[HttpPost]
+        //public ActionResult Create(FormCollection collection)
+        //{
+        //    try
+        //    {
+        //        // TODO: Add insert logic here
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        //        return RedirectToAction("Index");
+        //    }
+        //    catch
+        //    {
+        //        return View();
+        //    }
+        //}
         
         //
         // GET: /Document/Edit/5
  
         public ActionResult Edit(int id)
         {
-            return View();
+            return View(new DocumentEditModel(_documentRepository.GetDocumentById(id)));
         }
 
         //
         // POST: /Document/Edit/5
 
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(DocumentEditModel model)
         {
             try
             {
-                // TODO: Add update logic here
- 
+                var doc = _documentRepository.GetDocumentById(model.DocumentId);
+                foreach (var field in model.Fields)
+                {
+                    field.Update(doc.DocFields.Single(x => x.docfieldid == field.FieldId));
+                }
+                _documentRepository.SaveDocument(doc);
+                if (Request.Form["send"] != null)
+                    _documentRepository.ChangeDocumentStatus(doc.documentid, DocumentStatus.Sended);
                 return RedirectToAction("Index");
             }
             catch

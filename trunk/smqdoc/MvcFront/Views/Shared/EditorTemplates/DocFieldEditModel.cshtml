@@ -1,0 +1,23 @@
+﻿@using MvcFront.DB
+@using Telerik.Web.Mvc.UI
+@model MvcFront.Models.DocFieldEditModel
+
+@{
+    @Html.HiddenFor(x=>x.FieldId)
+    @Html.HiddenFor(x => x.FieldType)
+    @Html.HiddenFor(x => x.IsRestricted)
+    switch ((FieldTemplateType)Model.FieldType)
+    {
+        case FieldTemplateType.BOOL:
+            @Html.EditorFor(x => x.BoolValue);
+                                                                  break;
+        case FieldTemplateType.NUMBER:
+            @(Model.IsRestricted ? Html.Telerik().NumericTextBoxFor(x => x.DoubleValue).MaxValue(Model.MaxVal).MinValue(Model.MinVal).EmptyMessage("Введите число") : Html.Telerik().NumericTextBoxFor(x => x.DoubleValue).EmptyMessage("Введите число"))
+        break;
+        case FieldTemplateType.STRING:
+            @Html.EditorFor(x => x.StringValue,new {@class="stringfield"})
+       break;
+        default:
+            throw new ArgumentOutOfRangeException();
+    }
+}

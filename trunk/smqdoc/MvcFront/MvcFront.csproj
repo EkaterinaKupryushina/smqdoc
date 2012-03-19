@@ -876,7 +876,8 @@
     <Content Include="Views\UserDocument\Details.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\Document.cshtml" />
     <Content Include="Views\Account\EditUserInfo.cshtml" />
-    <Content Include="Views\GroupTemplateList\Index.cshtml" />
+	<Content Include="Views\GroupTemplateList\Index.cshtml" />	<Content Include="Views\Shared\EditorTemplates\DocumentEditModel.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\DocFieldEditModel.cshtml" />
     <None Include="Views\UserAccountList\ChangeState.cshtml" />
     <Content Include="Views\UserGroupList\Index.cshtml" />
     <Content Include="Views\UserGroupList\Delete.cshtml" />
@@ -886,6 +887,7 @@
     <Content Include="Views\UserGroupList\Edit.cshtml" />
     <Content Include="Views\UserGroupList\GroupUsersManagment.cshtml" />
     <Content Include="Views\UserDocument\Index.cshtml" />
+    <Content Include="Views\UserDocument\Edit.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
