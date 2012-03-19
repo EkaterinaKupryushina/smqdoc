@@ -11,6 +11,7 @@
     <EntitySet Name="DocTemplates" EntityType="smqdocModel.Store.DocTemplates" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="FieldTemplates" EntityType="smqdocModel.Store.FieldTemplates" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Documents" EntityType="smqdocModel.Store.Documents" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="DocFields" EntityType="smqdocModel.Store.DocFields" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="GroupUsers" EntityType="smqdocModel.Store.GroupUsers" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="GroupManager" Association="smqdocModel.Store.GroupManager">
       <End Role="UserGroup" EntitySet="UserGroups" />
@@ -35,6 +36,14 @@
     <AssociationSet Name="DocumentUserAccount" Association="smqdocModel.Store.DocumentUserAccount">
       <End Role="Document" EntitySet="Documents" />
       <End Role="UserAccount" EntitySet="UserAccounts" />
+    </AssociationSet>
+    <AssociationSet Name="DocFieldDocument" Association="smqdocModel.Store.DocFieldDocument">
+      <End Role="DocField" EntitySet="DocFields" />
+      <End Role="Document" EntitySet="Documents" />
+    </AssociationSet>
+    <AssociationSet Name="DocFieldFieldTemplate" Association="smqdocModel.Store.DocFieldFieldTemplate">
+      <End Role="DocField" EntitySet="DocFields" />
+      <End Role="FieldTemplate" EntitySet="FieldTemplates" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="UserAccounts">
@@ -100,6 +109,17 @@
     <Property Name="DocumentName" Type="nvarchar(max)" Nullable="false" />
     <Property Name="UserAccount_userid" Type="int" Nullable="false" />
   </EntityType>
+  <EntityType Name="DocFields">
+    <Key>
+      <PropertyRef Name="docfieldid" />
+    </Key>
+    <Property Name="docfieldid" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Document_documentid" Type="bigint" Nullable="false" />
+    <Property Name="FieldTemplate_fieldteplateid" Type="bigint" Nullable="false" />
+    <Property Name="StringValue" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="BoolValue" Type="bit" Nullable="true" />
+    <Property Name="DoubleValue" Type="float" Nullable="true" />
+  </EntityType>
   <EntityType Name="GroupUsers">
     <Key>
       <PropertyRef Name="MemberGroups_usergroupid" />
@@ -156,6 +176,30 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="DocFieldDocument">
+    <End Role="DocField" Type="smqdocModel.Store.DocFields" Multiplicity="*" />
+    <End Role="Document" Type="smqdocModel.Store.Documents" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Document">
+        <PropertyRef Name="documentid" />
+      </Principal>
+      <Dependent Role="DocField">
+        <PropertyRef Name="Document_documentid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="DocFieldFieldTemplate">
+    <End Role="DocField" Type="smqdocModel.Store.DocFields" Multiplicity="*" />
+    <End Role="FieldTemplate" Type="smqdocModel.Store.FieldTemplates" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="FieldTemplate">
+        <PropertyRef Name="fieldteplateid" />
+      </Principal>
+      <Dependent Role="DocField">
+        <PropertyRef Name="FieldTemplate_fieldteplateid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_GroupUsers_UserGroup">
     <End Role="UserGroup" Type="smqdocModel.Store.UserGroups" Multiplicity="1" />
     <End Role="GroupUsers" Type="smqdocModel.Store.GroupUsers" Multiplicity="*" />
@@ -209,6 +253,15 @@
           <AssociationSet Name="DocumentUserAccount" Association="smqdocModel.DocumentUserAccount">
             <End Role="Document" EntitySet="Documents" />
             <End Role="UserAccount" EntitySet="UserAccounts" />
+          </AssociationSet>
+          <EntitySet Name="DocFields" EntityType="smqdocModel.DocField" />
+          <AssociationSet Name="DocFieldDocument" Association="smqdocModel.DocFieldDocument">
+            <End Role="DocField" EntitySet="DocFields" />
+            <End Role="Document" EntitySet="Documents" />
+          </AssociationSet>
+          <AssociationSet Name="DocFieldFieldTemplate" Association="smqdocModel.DocFieldFieldTemplate">
+            <End Role="DocField" EntitySet="DocFields" />
+            <End Role="FieldTemplate" EntitySet="FieldTemplates" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="UserAccount">
@@ -284,6 +337,7 @@
           <Property Type="Int64" Name="DocTemplate_docteplateid" Nullable="false" />
           <Property Type="Int32" Name="OrderNumber" Nullable="false" />
           <Property Type="Int32" Name="Status" Nullable="false" />
+          <NavigationProperty Name="DocFields" Relationship="smqdocModel.DocFieldFieldTemplate" FromRole="FieldTemplate" ToRole="DocField" />
         </EntityType>
         <Association Name="FieldTeplateDocTemplate">
           <End Type="smqdocModel.FieldTemplate" Role="FieldTeplate" Multiplicity="*" />
@@ -311,6 +365,7 @@
           <Property Type="String" Name="DocumentName" Nullable="false" />
           <NavigationProperty Name="UserAccount" Relationship="smqdocModel.DocumentUserAccount" FromRole="Document" ToRole="UserAccount" />
           <Property Type="Int32" Name="UserAccount_userid" Nullable="false" />
+          <NavigationProperty Name="DocFields" Relationship="smqdocModel.DocFieldDocument" FromRole="Document" ToRole="DocField" />
         </EntityType>
         <Association Name="DocumentDocTemplate">
           <End Type="smqdocModel.Document" Role="Document" Multiplicity="*" />
@@ -333,6 +388,43 @@
             </Principal>
             <Dependent Role="Document">
               <PropertyRef Name="UserAccount_userid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="DocField">
+          <Key>
+            <PropertyRef Name="docfieldid" />
+          </Key>
+          <Property Type="Int64" Name="docfieldid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Document" Relationship="smqdocModel.DocFieldDocument" FromRole="DocField" ToRole="Document" />
+          <Property Type="Int64" Name="Document_documentid" Nullable="false" />
+          <NavigationProperty Name="FieldTemplate" Relationship="smqdocModel.DocFieldFieldTemplate" FromRole="DocField" ToRole="FieldTemplate" />
+          <Property Type="Int64" Name="FieldTemplate_fieldteplateid" Nullable="false" />
+          <Property Type="String" Name="StringValue" Nullable="true" />
+          <Property Type="Boolean" Name="BoolValue" Nullable="true" />
+          <Property Type="Double" Name="DoubleValue" Nullable="true" />
+        </EntityType>
+        <Association Name="DocFieldDocument">
+          <End Type="smqdocModel.DocField" Role="DocField" Multiplicity="*" />
+          <End Type="smqdocModel.Document" Role="Document" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="Document">
+              <PropertyRef Name="documentid" />
+            </Principal>
+            <Dependent Role="DocField">
+              <PropertyRef Name="Document_documentid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="DocFieldFieldTemplate">
+          <End Type="smqdocModel.DocField" Role="DocField" Multiplicity="*" />
+          <End Type="smqdocModel.FieldTemplate" Role="FieldTemplate" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="FieldTemplate">
+              <PropertyRef Name="fieldteplateid" />
+            </Principal>
+            <Dependent Role="DocField">
+              <PropertyRef Name="FieldTemplate_fieldteplateid" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -410,6 +502,18 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="DocFields">
+      <EntityTypeMapping TypeName="IsTypeOf(smqdocModel.DocField)">
+        <MappingFragment StoreEntitySet="DocFields">
+          <ScalarProperty Name="docfieldid" ColumnName="docfieldid" />
+          <ScalarProperty Name="Document_documentid" ColumnName="Document_documentid" />
+          <ScalarProperty Name="FieldTemplate_fieldteplateid" ColumnName="FieldTemplate_fieldteplateid" />
+          <ScalarProperty Name="StringValue" ColumnName="StringValue" />
+          <ScalarProperty Name="BoolValue" ColumnName="BoolValue" />
+          <ScalarProperty Name="DoubleValue" ColumnName="DoubleValue" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <AssociationSetMapping Name="GroupUsers" TypeName="smqdocModel.GroupUsers" StoreEntitySet="GroupUsers">
       <EndProperty Name="UserGroup">
         <ScalarProperty Name="usergroupid" ColumnName="MemberGroups_usergroupid" />
@@ -438,15 +542,15 @@
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
       <Diagram Name="EntityDBModel" ZoomLevel="103">
-        <EntityTypeShape EntityType="smqdocModel.UserAccount" Width="1.5" PointX="0.75" PointY="0.75" Height="3.5186979166666656" IsExpanded="true" />
+        <EntityTypeShape EntityType="smqdocModel.UserAccount" Width="1.5" PointX="1.625" PointY="0.625" Height="3.7109993489583326" IsExpanded="true" />
         <EntityTypeShape EntityType="smqdocModel.UserGroup" Width="1.5" PointX="4.5" PointY="1" Height="2.3648893229166661" />
         <AssociationConnector Association="smqdocModel.GroupManager">
-          <ConnectorPoint PointX="4.5" PointY="2.6143036142985019" />
-          <ConnectorPoint PointX="2.25" PointY="2.6143036142985019" />
+          <ConnectorPoint PointX="4.5" PointY="2.1824446614583328" />
+          <ConnectorPoint PointX="3.125" PointY="2.1824446614583328" />
         </AssociationConnector>
         <AssociationConnector Association="smqdocModel.GroupUsers">
-          <ConnectorPoint PointX="4.5" PointY="1.7446518071492509" />
-          <ConnectorPoint PointX="2.25" PointY="1.7446518071492509" />
+          <ConnectorPoint PointX="4.5" PointY="1.5287223307291664" />
+          <ConnectorPoint PointX="3.125" PointY="1.5287223307291664" />
         </AssociationConnector>
         <EntityTypeShape EntityType="smqdocModel.DocTemplate" Width="1.5" PointX="3.75" PointY="8.5" Height="2.3648893229166656" />
         <EntityTypeShape EntityType="smqdocModel.FieldTemplate" Width="1.5" PointX="0.875" PointY="8" Height="2.9417936197916656" />
@@ -460,9 +564,17 @@
           <ConnectorPoint PointX="4.4375" PointY="8.5" />
         </AssociationConnector>
         <AssociationConnector Association="smqdocModel.DocumentUserAccount">
-          <ConnectorPoint PointX="4.03125" PointY="5" />
-          <ConnectorPoint PointX="4.03125" PointY="3.9441943359374991" />
-          <ConnectorPoint PointX="2.25" PointY="3.9441943359374991" />
+          <ConnectorPoint PointX="3.625" PointY="5" />
+          <ConnectorPoint PointX="3.125" PointY="4.3359993489583326" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="smqdocModel.DocField" Width="1.5" PointX="0.875" PointY="4.875" Height="2.5571907552083326" />
+        <AssociationConnector Association="smqdocModel.DocFieldDocument">
+          <ConnectorPoint PointX="2.375" PointY="6.2473478776041667" />
+          <ConnectorPoint PointX="3.625" PointY="6.2473478776041667" />
+        </AssociationConnector>
+        <AssociationConnector Association="smqdocModel.DocFieldFieldTemplate">
+          <ConnectorPoint PointX="1.625" PointY="7.4321907552083326" />
+          <ConnectorPoint PointX="1.625" PointY="8" />
         </AssociationConnector>
       </Diagram>
     </Diagrams>

@@ -23,6 +23,8 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("smqdocModel", "FieldTeplateDocTemplate", "FieldTeplate", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.FieldTemplate), "DocTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.DocTemplate), true)]
 [assembly: EdmRelationshipAttribute("smqdocModel", "DocumentDocTemplate", "Document", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.Document), "DocTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.DocTemplate), true)]
 [assembly: EdmRelationshipAttribute("smqdocModel", "DocumentUserAccount", "Document", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.Document), "UserAccount", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.UserAccount), true)]
+[assembly: EdmRelationshipAttribute("smqdocModel", "DocFieldDocument", "DocField", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.DocField), "Document", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.Document), true)]
+[assembly: EdmRelationshipAttribute("smqdocModel", "DocFieldFieldTemplate", "DocField", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.DocField), "FieldTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.FieldTemplate), true)]
 
 #endregion
 
@@ -153,6 +155,22 @@ namespace MvcFront.DB
             }
         }
         private ObjectSet<Document> _Documents;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<DocField> DocFields
+        {
+            get
+            {
+                if ((_DocFields == null))
+                {
+                    _DocFields = base.CreateObjectSet<DocField>("DocFields");
+                }
+                return _DocFields;
+            }
+        }
+        private ObjectSet<DocField> _DocFields;
 
         #endregion
         #region AddTo Methods
@@ -196,6 +214,14 @@ namespace MvcFront.DB
         {
             base.AddObject("Documents", document);
         }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the DocFields EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToDocFields(DocField docField)
+        {
+            base.AddObject("DocFields", docField);
+        }
 
         #endregion
     }
@@ -204,6 +230,264 @@ namespace MvcFront.DB
     #endregion
     
     #region Entities
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="smqdocModel", Name="DocField")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class DocField : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new DocField object.
+        /// </summary>
+        /// <param name="docfieldid">Initial value of the docfieldid property.</param>
+        /// <param name="document_documentid">Initial value of the Document_documentid property.</param>
+        /// <param name="fieldTemplate_fieldteplateid">Initial value of the FieldTemplate_fieldteplateid property.</param>
+        public static DocField CreateDocField(global::System.Int64 docfieldid, global::System.Int64 document_documentid, global::System.Int64 fieldTemplate_fieldteplateid)
+        {
+            DocField docField = new DocField();
+            docField.docfieldid = docfieldid;
+            docField.Document_documentid = document_documentid;
+            docField.FieldTemplate_fieldteplateid = fieldTemplate_fieldteplateid;
+            return docField;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int64 docfieldid
+        {
+            get
+            {
+                return _docfieldid;
+            }
+            set
+            {
+                if (_docfieldid != value)
+                {
+                    OndocfieldidChanging(value);
+                    ReportPropertyChanging("docfieldid");
+                    _docfieldid = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("docfieldid");
+                    OndocfieldidChanged();
+                }
+            }
+        }
+        private global::System.Int64 _docfieldid;
+        partial void OndocfieldidChanging(global::System.Int64 value);
+        partial void OndocfieldidChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int64 Document_documentid
+        {
+            get
+            {
+                return _Document_documentid;
+            }
+            set
+            {
+                OnDocument_documentidChanging(value);
+                ReportPropertyChanging("Document_documentid");
+                _Document_documentid = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Document_documentid");
+                OnDocument_documentidChanged();
+            }
+        }
+        private global::System.Int64 _Document_documentid;
+        partial void OnDocument_documentidChanging(global::System.Int64 value);
+        partial void OnDocument_documentidChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int64 FieldTemplate_fieldteplateid
+        {
+            get
+            {
+                return _FieldTemplate_fieldteplateid;
+            }
+            set
+            {
+                OnFieldTemplate_fieldteplateidChanging(value);
+                ReportPropertyChanging("FieldTemplate_fieldteplateid");
+                _FieldTemplate_fieldteplateid = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("FieldTemplate_fieldteplateid");
+                OnFieldTemplate_fieldteplateidChanged();
+            }
+        }
+        private global::System.Int64 _FieldTemplate_fieldteplateid;
+        partial void OnFieldTemplate_fieldteplateidChanging(global::System.Int64 value);
+        partial void OnFieldTemplate_fieldteplateidChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String StringValue
+        {
+            get
+            {
+                return _StringValue;
+            }
+            set
+            {
+                OnStringValueChanging(value);
+                ReportPropertyChanging("StringValue");
+                _StringValue = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("StringValue");
+                OnStringValueChanged();
+            }
+        }
+        private global::System.String _StringValue;
+        partial void OnStringValueChanging(global::System.String value);
+        partial void OnStringValueChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Boolean> BoolValue
+        {
+            get
+            {
+                return _BoolValue;
+            }
+            set
+            {
+                OnBoolValueChanging(value);
+                ReportPropertyChanging("BoolValue");
+                _BoolValue = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("BoolValue");
+                OnBoolValueChanged();
+            }
+        }
+        private Nullable<global::System.Boolean> _BoolValue;
+        partial void OnBoolValueChanging(Nullable<global::System.Boolean> value);
+        partial void OnBoolValueChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Double> DoubleValue
+        {
+            get
+            {
+                return _DoubleValue;
+            }
+            set
+            {
+                OnDoubleValueChanging(value);
+                ReportPropertyChanging("DoubleValue");
+                _DoubleValue = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DoubleValue");
+                OnDoubleValueChanged();
+            }
+        }
+        private Nullable<global::System.Double> _DoubleValue;
+        partial void OnDoubleValueChanging(Nullable<global::System.Double> value);
+        partial void OnDoubleValueChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "DocFieldDocument", "Document")]
+        public Document Document
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Document>("smqdocModel.DocFieldDocument", "Document").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Document>("smqdocModel.DocFieldDocument", "Document").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Document> DocumentReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Document>("smqdocModel.DocFieldDocument", "Document");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Document>("smqdocModel.DocFieldDocument", "Document", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "DocFieldFieldTemplate", "FieldTemplate")]
+        public FieldTemplate FieldTemplate
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<FieldTemplate>("smqdocModel.DocFieldFieldTemplate", "FieldTemplate").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<FieldTemplate>("smqdocModel.DocFieldFieldTemplate", "FieldTemplate").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<FieldTemplate> FieldTemplateReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<FieldTemplate>("smqdocModel.DocFieldFieldTemplate", "FieldTemplate");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<FieldTemplate>("smqdocModel.DocFieldFieldTemplate", "FieldTemplate", value);
+                }
+            }
+        }
+
+        #endregion
+    }
     
     /// <summary>
     /// No Metadata Documentation available.
@@ -721,6 +1005,28 @@ namespace MvcFront.DB
                 }
             }
         }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "DocFieldDocument", "DocField")]
+        public EntityCollection<DocField> DocFields
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<DocField>("smqdocModel.DocFieldDocument", "DocField");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<DocField>("smqdocModel.DocFieldDocument", "DocField", value);
+                }
+            }
+        }
 
         #endregion
     }
@@ -1016,6 +1322,28 @@ namespace MvcFront.DB
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<DocTemplate>("smqdocModel.FieldTeplateDocTemplate", "DocTemplate", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "DocFieldFieldTemplate", "DocField")]
+        public EntityCollection<DocField> DocFields
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<DocField>("smqdocModel.DocFieldFieldTemplate", "DocField");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<DocField>("smqdocModel.DocFieldFieldTemplate", "DocField", value);
                 }
             }
         }

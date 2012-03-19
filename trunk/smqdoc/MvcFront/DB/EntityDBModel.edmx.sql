@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 03/18/2012 16:15:02
--- Generated from EDMX file: D:\Work\smqDoc\smqdoc.net\smqdoc\MvcFront\DB\EntityDBModel.edmx
+-- Date Created: 03/19/2012 15:15:04
+-- Generated from EDMX file: D:\Work\smqdoc.net\smqdoc\MvcFront\DB\EntityDBModel.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -29,6 +29,12 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_FieldTeplateDocTemplate]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[FieldTemplates] DROP CONSTRAINT [FK_FieldTeplateDocTemplate];
 GO
+IF OBJECT_ID(N'[dbo].[FK_DocumentDocTemplate]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Documents] DROP CONSTRAINT [FK_DocumentDocTemplate];
+GO
+IF OBJECT_ID(N'[dbo].[FK_DocumentUserAccount]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Documents] DROP CONSTRAINT [FK_DocumentUserAccount];
+GO
 
 -- --------------------------------------------------
 -- Dropping existing tables
@@ -45,6 +51,9 @@ IF OBJECT_ID(N'[dbo].[DocTemplates]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FieldTemplates]', 'U') IS NOT NULL
     DROP TABLE [dbo].[FieldTemplates];
+GO
+IF OBJECT_ID(N'[dbo].[Documents]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Documents];
 GO
 IF OBJECT_ID(N'[dbo].[GroupUsers]', 'U') IS NOT NULL
     DROP TABLE [dbo].[GroupUsers];
@@ -117,6 +126,17 @@ CREATE TABLE [dbo].[Documents] (
 );
 GO
 
+-- Creating table 'DocFields'
+CREATE TABLE [dbo].[DocFields] (
+    [docfieldid] bigint IDENTITY(1,1) NOT NULL,
+    [Document_documentid] bigint  NOT NULL,
+    [FieldTemplate_fieldteplateid] bigint  NOT NULL,
+    [StringValue] nvarchar(max)  NULL,
+    [BoolValue] bit  NULL,
+    [DoubleValue] float  NULL
+);
+GO
+
 -- Creating table 'GroupUsers'
 CREATE TABLE [dbo].[GroupUsers] (
     [MemberGroups_usergroupid] int  NOT NULL,
@@ -156,6 +176,12 @@ GO
 ALTER TABLE [dbo].[Documents]
 ADD CONSTRAINT [PK_Documents]
     PRIMARY KEY CLUSTERED ([documentid] ASC);
+GO
+
+-- Creating primary key on [docfieldid] in table 'DocFields'
+ALTER TABLE [dbo].[DocFields]
+ADD CONSTRAINT [PK_DocFields]
+    PRIMARY KEY CLUSTERED ([docfieldid] ASC);
 GO
 
 -- Creating primary key on [MemberGroups_usergroupid], [Members_userid] in table 'GroupUsers'
@@ -245,6 +271,34 @@ ADD CONSTRAINT [FK_DocumentUserAccount]
 CREATE INDEX [IX_FK_DocumentUserAccount]
 ON [dbo].[Documents]
     ([UserAccount_userid]);
+GO
+
+-- Creating foreign key on [Document_documentid] in table 'DocFields'
+ALTER TABLE [dbo].[DocFields]
+ADD CONSTRAINT [FK_DocFieldDocument]
+    FOREIGN KEY ([Document_documentid])
+    REFERENCES [dbo].[Documents]
+        ([documentid])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_DocFieldDocument'
+CREATE INDEX [IX_FK_DocFieldDocument]
+ON [dbo].[DocFields]
+    ([Document_documentid]);
+GO
+
+-- Creating foreign key on [FieldTemplate_fieldteplateid] in table 'DocFields'
+ALTER TABLE [dbo].[DocFields]
+ADD CONSTRAINT [FK_DocFieldFieldTemplate]
+    FOREIGN KEY ([FieldTemplate_fieldteplateid])
+    REFERENCES [dbo].[FieldTemplates]
+        ([fieldteplateid])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_DocFieldFieldTemplate'
+CREATE INDEX [IX_FK_DocFieldFieldTemplate]
+ON [dbo].[DocFields]
+    ([FieldTemplate_fieldteplateid]);
 GO
 
 -- --------------------------------------------------
