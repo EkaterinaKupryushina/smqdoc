@@ -1,0 +1,25 @@
+﻿@model MvcFront.Models.DocumentEditModel 
+@{
+    ViewBag.Title = "Edit";
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".multi-line").watermark("Введите текст");
+    });
+</script>
+<h2>
+    Редактор документа</h2>
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <fieldset>
+        @Html.EditorForModel()
+    </fieldset>
+<p>
+    <input type="submit" class="cancel" value="Сохранить" name="save" />|
+    <input type="submit" value="Отправить документ на проверку" name="send" />|
+    @Html.ActionLink("Отмена", "Index")
+</p>
+}
