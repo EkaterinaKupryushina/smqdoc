@@ -83,3 +83,36 @@ INSERT INTO [smqdoc].[dbo].[FieldTemplates]
 		   ('Поле номер шаблон номер 16',1,0,NULL,NULL,4,5,0),
 		   ('Поле номер шаблон номер 17',0,0,NULL,NULL,4,6,0)
 GO
+
+----заполняем таблицу документы
+INSERT INTO [smqdoc].[dbo].[Documents]
+           ([CreationDate]
+           ,[LastEditDate]
+           ,[Status]
+           ,[LastComment]
+           ,[DocTemplate_docteplateid]
+           ,[DocumentName]
+           ,[UserAccount_userid])
+     VALUES
+           ('2011-01-01','2011-01-01',0,'Comment',1,'Тестовый документ11',1),
+           ('2012-01-01','2012-01-01',0,null,1,'Тестовый документ21',1),
+           ('2012-01-01','2012-01-01',1,null,1,'Тестовый документ31',1),
+           ('2011-01-01','2011-01-01',0,'Comment',1,'Тестовый документ12',2),
+           ('2012-01-01','2012-01-01',0,null,1,'Тестовый документ22',2),
+           ('2012-01-01','2012-01-01',1,null,1,'Тестовый документ32',2)           
+GO
+----заполняем поля документа
+INSERT INTO [smqdoc].[dbo].[DocFields]
+           ([Document_documentid]
+           ,[FieldTemplate_fieldteplateid]
+           ,[StringValue]
+           ,[BoolValue]
+           ,[DoubleValue])
+     VALUES
+           (1,1,NULL,1,NULL),(1,2,'Значение',NULL,NULL),(1,3,NULL,NULL,3),(1,4,NULL,NULL,4),(1,5,NULL,NULL,5),(1,6,NULL,NULL,6),
+			(2,1,NULL,1,NULL),(2,2,'Значение',NULL,NULL),(2,3,NULL,NULL,3),(2,4,NULL,NULL,4),(2,5,NULL,NULL,5),(2,6,NULL,NULL,6),
+			(3,1,NULL,1,NULL),(3,2,'Значение',NULL,NULL),(3,3,NULL,NULL,3),(3,4,NULL,NULL,4),(3,5,NULL,NULL,5),(3,6,NULL,NULL,6),
+			(4,1,NULL,1,NULL),(4,2,'Значение',NULL,NULL),(4,3,NULL,NULL,3),(4,4,NULL,NULL,4),(4,5,NULL,NULL,5),(4,6,NULL,NULL,6),
+			(5,1,NULL,1,NULL),(5,2,'Значение',NULL,NULL),(5,3,NULL,NULL,3),(5,4,NULL,NULL,4),(5,5,NULL,NULL,5),(5,6,NULL,NULL,6),
+			(6,1,NULL,1,NULL),(6,2,'Значение',NULL,NULL),(6,3,NULL,NULL,3),(6,4,NULL,NULL,4),(6,5,NULL,NULL,5),(6,6,NULL,NULL,6)
+     GO
