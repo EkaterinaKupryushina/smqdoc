@@ -150,6 +150,29 @@ namespace MvcFront.Helpers
                             
                          break;   
                         }
+
+                    case "GroupTemplateStatus":
+                        {
+                            switch (item)
+                            {
+                                case 0:
+                                    {
+                                        retVal = "Активный";
+                                        break;
+                                    }
+                                case 1:
+                                    {
+                                        retVal = "Отключенный";
+                                        break;
+                                    }
+                                case 2:
+                                    {
+                                        retVal = "Удаленый";
+                                        break;
+                                    }
+                            }
+                            break;
+                        }
                 }
             }
             catch (Exception)
