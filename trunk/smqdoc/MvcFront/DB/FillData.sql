@@ -116,3 +116,18 @@ INSERT INTO [smqdoc].[dbo].[DocFields]
 			(5,1,NULL,1,NULL),(5,2,'Значение',NULL,NULL),(5,3,NULL,NULL,3),(5,4,NULL,NULL,4),(5,5,NULL,NULL,5),(5,6,NULL,NULL,6),
 			(6,1,NULL,1,NULL),(6,2,'Значение',NULL,NULL),(6,3,NULL,NULL,3),(6,4,NULL,NULL,4),(6,5,NULL,NULL,5),(6,6,NULL,NULL,6)
      GO
+
+	 --Добавляем связи шаблнов с группами
+INSERT INTO [smqdoc].[dbo].[GroupTemplates]
+           ([Name]
+           ,[DateStart]
+           ,[DateEnd]
+           ,[Status]
+           ,[UserGroup_usergroupid]
+           ,[DocTemplate_docteplateid])
+     VALUES
+           ('Связь между первым шаблоном и группой',GETDATE(),GETDATE(),0,1,1),
+           ('Связь между вторыми шаблоном и группой',GETDATE(),GETDATE(),0,2,2),
+           ('Связь между третьими шаблоном и группой',GETDATE(),GETDATE(),0,3,3),
+           ('Связь между четвертыми шаблоном и группой',GETDATE(),GETDATE(),0,4,4),
+           ('Связь между пятыми шаблоном и группой',GETDATE(),GETDATE(),0,5,5)
