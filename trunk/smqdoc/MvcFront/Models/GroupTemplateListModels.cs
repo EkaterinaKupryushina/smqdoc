@@ -17,13 +17,13 @@ namespace MvcFront.Models
         [UIHint("Hidden")]
         public long ID { get; set; }
         [Required]
-        [Display(Name = "Наименование назначения шаблона документа для группы")]
+        [Display(Name = "Наименование назначения ")]
         public string Name { get; set; }
         [Required]
-        [Display(Name = "Дата начала периода заполенния")]
+        [Display(Name = "Начала заполенния")]
         public DateTime DateStart { get; set; }
         [Required]
-        [Display(Name = "Дата окончания периода заполенния")]
+        [Display(Name = "Окончание заполенния")]
         public DateTime DateEnd { get; set; }
         [Required]
         [Display(Name = "Статус Связи")]

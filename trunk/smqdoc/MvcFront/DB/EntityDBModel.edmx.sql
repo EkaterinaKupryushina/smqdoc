@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 03/19/2012 22:01:15
--- Generated from EDMX file: G:\Works\smqDocNet\smqdoc\MvcFront\DB\EntityDBModel.edmx
+-- Date Created: 03/20/2012 09:34:24
+-- Generated from EDMX file: D:\Work\smqDoc\smqdoc.net\smqdoc\MvcFront\DB\EntityDBModel.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -29,9 +29,6 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_FieldTeplateDocTemplate]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[FieldTemplates] DROP CONSTRAINT [FK_FieldTeplateDocTemplate];
 GO
-IF OBJECT_ID(N'[dbo].[FK_DocumentDocTemplate]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Documents] DROP CONSTRAINT [FK_DocumentDocTemplate];
-GO
 IF OBJECT_ID(N'[dbo].[FK_DocumentUserAccount]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Documents] DROP CONSTRAINT [FK_DocumentUserAccount];
 GO
@@ -41,11 +38,14 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_DocFieldFieldTemplate]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[DocFields] DROP CONSTRAINT [FK_DocFieldFieldTemplate];
 GO
+IF OBJECT_ID(N'[dbo].[FK_GroupTemplateUserGroup]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[GroupTemplates] DROP CONSTRAINT [FK_GroupTemplateUserGroup];
+GO
 IF OBJECT_ID(N'[dbo].[FK_GroupTemplateDocTemplate]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[GroupTemplates] DROP CONSTRAINT [FK_GroupTemplateDocTemplate];
 GO
-IF OBJECT_ID(N'[dbo].[FK_GroupTemplateUserGroup]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[GroupTemplates] DROP CONSTRAINT [FK_GroupTemplateUserGroup];
+IF OBJECT_ID(N'[dbo].[FK_DocumentGroupTemplate]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Documents] DROP CONSTRAINT [FK_DocumentGroupTemplate];
 GO
 
 -- --------------------------------------------------
@@ -138,9 +138,9 @@ CREATE TABLE [dbo].[Documents] (
     [LastEditDate] datetime  NOT NULL,
     [Status] int  NOT NULL,
     [LastComment] nvarchar(max)  NULL,
-    [DocTemplate_docteplateid] bigint  NOT NULL,
     [DocumentName] nvarchar(max)  NOT NULL,
-    [UserAccount_userid] int  NOT NULL
+    [UserAccount_userid] int  NOT NULL,
+    [GroupTemplate_grouptemplateid] bigint  NOT NULL
 );
 GO
 
@@ -281,20 +281,6 @@ ON [dbo].[FieldTemplates]
     ([DocTemplate_docteplateid]);
 GO
 
--- Creating foreign key on [DocTemplate_docteplateid] in table 'Documents'
-ALTER TABLE [dbo].[Documents]
-ADD CONSTRAINT [FK_DocumentDocTemplate]
-    FOREIGN KEY ([DocTemplate_docteplateid])
-    REFERENCES [dbo].[DocTemplates]
-        ([docteplateid])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- Creating non-clustered index for FOREIGN KEY 'FK_DocumentDocTemplate'
-CREATE INDEX [IX_FK_DocumentDocTemplate]
-ON [dbo].[Documents]
-    ([DocTemplate_docteplateid]);
-GO
-
 -- Creating foreign key on [UserAccount_userid] in table 'Documents'
 ALTER TABLE [dbo].[Documents]
 ADD CONSTRAINT [FK_DocumentUserAccount]
@@ -363,6 +349,20 @@ ADD CONSTRAINT [FK_GroupTemplateDocTemplate]
 CREATE INDEX [IX_FK_GroupTemplateDocTemplate]
 ON [dbo].[GroupTemplates]
     ([DocTemplate_docteplateid]);
+GO
+
+-- Creating foreign key on [GroupTemplate_grouptemplateid] in table 'Documents'
+ALTER TABLE [dbo].[Documents]
+ADD CONSTRAINT [FK_DocumentGroupTemplate]
+    FOREIGN KEY ([GroupTemplate_grouptemplateid])
+    REFERENCES [dbo].[GroupTemplates]
+        ([grouptemplateid])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_DocumentGroupTemplate'
+CREATE INDEX [IX_FK_DocumentGroupTemplate]
+ON [dbo].[Documents]
+    ([GroupTemplate_grouptemplateid]);
 GO
 
 -- --------------------------------------------------

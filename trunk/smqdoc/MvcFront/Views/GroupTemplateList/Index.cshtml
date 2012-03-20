@@ -15,7 +15,6 @@
                    {
                        columns.AutoGenerate(column =>
                        {
-                           column.Width = "150px";
                            if (column.Member == "ID" )
                                column.Visible = false;
                        });
@@ -25,7 +24,7 @@
                             .DataRouteValues(route => route.Add(o => o.ID).RouteKey("id"))
                             .Action("Delete", " DocTemplateList")
                             .HtmlAttributes(new { style = "text-align: center" });                         
-                       }).Width(50);
+                       });
                    })
                  .Sortable()
                 .Pageable()
