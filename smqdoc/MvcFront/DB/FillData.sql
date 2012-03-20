@@ -83,6 +83,22 @@ INSERT INTO [smqdoc].[dbo].[FieldTemplates]
 		   ('Поле номер шаблон номер 16',1,0,NULL,NULL,4,5,0),
 		   ('Поле номер шаблон номер 17',0,0,NULL,NULL,4,6,0)
 GO
+	 --Добавляем связи шаблнов с группами
+INSERT INTO [smqdoc].[dbo].[GroupTemplates]
+           ([Name]
+           ,[DateStart]
+           ,[DateEnd]
+           ,[Status]
+           ,[UserGroup_usergroupid]
+           ,[DocTemplate_docteplateid])
+     VALUES
+           ('Связь между первым шаблоном и группой',GETDATE(),GETDATE(),0,1,1),
+           ('Связь между вторыми шаблоном и группой',GETDATE(),GETDATE(),0,2,1),
+           ('Связь между третьими шаблоном и группой',GETDATE(),GETDATE(),0,3,1),
+           ('Связь между четвертыми шаблоном и группой',GETDATE(),GETDATE(),0,4,2),
+           ('Связь между пятыми шаблоном и группой',GETDATE(),GETDATE(),0,5,3)
+
+GO
 
 ----заполняем таблицу документы
 INSERT INTO [smqdoc].[dbo].[Documents]
@@ -90,16 +106,16 @@ INSERT INTO [smqdoc].[dbo].[Documents]
            ,[LastEditDate]
            ,[Status]
            ,[LastComment]
-           ,[DocTemplate_docteplateid]
            ,[DocumentName]
-           ,[UserAccount_userid])
+           ,[UserAccount_userid]
+		   ,[GroupTemplate_grouptemplateid])
      VALUES
-           ('2011-01-01','2011-01-01',0,'Comment',1,'Тестовый документ11',1),
-           ('2012-01-01','2012-01-01',0,null,1,'Тестовый документ21',1),
-           ('2012-01-01','2012-01-01',1,null,1,'Тестовый документ31',1),
-           ('2011-01-01','2011-01-01',0,'Comment',1,'Тестовый документ12',2),
-           ('2012-01-01','2012-01-01',0,null,1,'Тестовый документ22',2),
-           ('2012-01-01','2012-01-01',1,null,1,'Тестовый документ32',2)           
+           ('2011-01-01','2011-01-01',0,'Comment','Тестовый документ11',1,1),
+           ('2012-01-01','2012-01-01',0,null,'Тестовый документ21',1,2),
+           ('2012-01-01','2012-01-01',1,null,'Тестовый документ31',1,3),
+           ('2011-01-01','2011-01-01',0,'Comment','Тестовый документ12',2,1),
+           ('2012-01-01','2012-01-01',0,null,'Тестовый документ22',2,2),
+           ('2012-01-01','2012-01-01',1,null,'Тестовый документ32',2,3)           
 GO
 ----заполняем поля документа
 INSERT INTO [smqdoc].[dbo].[DocFields]
@@ -117,17 +133,3 @@ INSERT INTO [smqdoc].[dbo].[DocFields]
 			(6,1,NULL,1,NULL),(6,2,NULL,NULL,10),(6,3,'Значение',NULL,NULL),(6,4,NULL,NULL,3),(6,5,NULL,NULL,4),(6,6,NULL,NULL,5),(6,7,NULL,NULL,6)
      GO
 
-	 --Добавляем связи шаблнов с группами
-INSERT INTO [smqdoc].[dbo].[GroupTemplates]
-           ([Name]
-           ,[DateStart]
-           ,[DateEnd]
-           ,[Status]
-           ,[UserGroup_usergroupid]
-           ,[DocTemplate_docteplateid])
-     VALUES
-           ('Связь между первым шаблоном и группой',GETDATE(),GETDATE(),0,1,1),
-           ('Связь между вторыми шаблоном и группой',GETDATE(),GETDATE(),0,2,2),
-           ('Связь между третьими шаблоном и группой',GETDATE(),GETDATE(),0,3,3),
-           ('Связь между четвертыми шаблоном и группой',GETDATE(),GETDATE(),0,4,4),
-           ('Связь между пятыми шаблоном и группой',GETDATE(),GETDATE(),0,5,5)
