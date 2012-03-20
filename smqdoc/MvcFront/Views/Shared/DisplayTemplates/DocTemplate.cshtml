@@ -1,0 +1,25 @@
+@model MvcFront.DB.DocTemplate
+
+
+    <legend>@Html.DisplayFor(model => model.TemplateName)</legend>
+
+    <div class="display-label">@Html.LabelFor(model => model.TemplateName)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.TemplateName)
+    </div>
+
+    <div class="display-label">@Html.LabelFor(model => model.TemplateStatus)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.TemplateStatusText)
+    </div>
+
+    <div class="display-label">@Html.LabelFor(model => model.Comment)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Comment)
+    </div>
+
+    <div class="display-label">@Html.LabelFor(model => model.LastEditDate)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.LastEditDate)
+    </div>
+
