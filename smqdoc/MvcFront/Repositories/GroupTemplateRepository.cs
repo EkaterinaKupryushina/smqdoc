@@ -23,14 +23,14 @@ namespace MvcFront.Repositories
         public DB.GroupTemplate GetGroupTemplateById(long id)
         {
             if (id == 0)
-                return new GroupTemplate();
+                return new GroupTemplate() { DateStart = DateTime.Now, DateEnd = DateTime.Now };
             return _unitOfWork.DbModel.GroupTemplates.SingleOrDefault(x=> x.grouptemplateid == id);
         }
 
         public bool SaveGroupTemplate(DB.GroupTemplate entity)
         {
             if (entity.grouptemplateid == 0)
-            {                
+            {                                
                 _unitOfWork.DbModel.GroupTemplates.AddObject(entity);
             }
             else

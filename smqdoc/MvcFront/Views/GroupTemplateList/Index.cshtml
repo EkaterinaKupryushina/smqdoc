@@ -7,10 +7,17 @@
 <h2>
     Связи групп пользователей системы и шаблонов документов</h2>
 @Html.ActionLink("Добавить связь", "Create")
-@(Html.Telerik().Grid(Model)
+@*@(Html.Telerik().Grid(Model)
         .Name("GroupTemplateGrid")
              .ClientEvents(events => events.OnComplete("onComplete"))
+                   .Columns(columns =>*@
+                   @(Html.Telerik().Grid<GroupTemplateListViewModel>()
+                             .DataBinding(dataBinding => dataBinding.Ajax().Select("_GroupTemplateList", "GroupTemplateList"))
+                     .Name("GroupTemplateGrid")
+                  .ClientEvents(events => events.OnComplete("onComplete"))
                    .Columns(columns =>
+                       
+ 
                    {
                        columns.AutoGenerate(column =>
                        {
@@ -20,18 +27,31 @@
                        columns.Command(command =>
                        {
                            command.Custom("Delete")
-                                  .Text("Удалить")                                  
-                                .DataRouteValues(route => route.Add(o => o.ID).RouteKey("id"))
-                                .Action("Delete", "GroupTemplateList")
-                                .HtmlAttributes(new { style = "text-align: center", onClick = "confirm('Вы действительно хотите удалить связь?')" });
+                          .Text("Удалить")
+                          .DataRouteValues(route => route.Add(o => o.ID).RouteKey("id"))
+                          .Ajax(true)
+                          .Action("DeleteLink", "GroupTemplateList")
+                          .HtmlAttributes(new { style = "text-align: center", onClick = "confirm('Вы действительно хотите удалить связь?')" });
+                           
+                           //command.Custom("Delete")
+                           //       .Text("Удалить")                                  
+                           //     .DataRouteValues(route => route.Add(o => o.ID).RouteKey("id"))
+                           //     .Action("Delete", "GroupTemplateList")
+                           //     .HtmlAttributes(new { style = "text-align: center", onClick = "confirm('Вы действительно хотите удалить связь?')" });
                        });
                    })
                  .Sortable()
                 .Pageable()
 
     )
-    
-@*<div>
-    <span style="color: Green;">@ViewBag.DeleteResult</span>
-</div>
-*@
+
+    <script type="text/javascript">
+        function onComplete(e) {
+            if (e.name == "Delete") {
+                var grid = $('#GroupTemplateGrid').data("tGrid");
+                if (grid != null) {
+                    grid.rebind();
+                }
+            }
+        }
+</script>

@@ -68,17 +68,17 @@ namespace MvcFront.Models
         [Display(Name = "Окончание заполнения")]
         public DateTime DateEnd { get; set; }
 
+        [Required]
         [Display(Name = "Родительский шаблон")]
         [UIHint("DocTemplateComboBox")]
-        public DocTemplateListViewModel DocTemplate { get; set; }
+        //public DocTemplateListViewModel DocTemplate { get; set; }
+        public long DocTemplateID { get; set; }
+        [Required]
         [Display(Name = "Родительская группа")]
         [UIHint("UserGroupComboBox")]
-        public UserGroupListViewModel UserGroup { get; set; }
-
-        
-        //public List<DocTemplateListViewModel> DocTemplateLst { get; set; }
-        
-        //public List<UserGroupListViewModel> UserGroupLst { get; set; }
+        //public UserGroupListViewModel UserGroup { get; set; }
+        public int UserGroupID { get; set; }
+                
 
         public GroupTemplateEditViewModel()
         {
@@ -92,13 +92,13 @@ namespace MvcFront.Models
             DateEnd = tpl.DateEnd;
             if (tpl.grouptemplateid != 0)
             {
-                UserGroup = new UserGroupListViewModel(tpl.UserGroup);
-                DocTemplate = new DocTemplateListViewModel(tpl.DocTemplate);
+                //UserGroup = new UserGroupListViewModel(tpl.UserGroup);
+                //DocTemplate = new DocTemplateListViewModel(tpl.DocTemplate);
+
+                UserGroupID = tpl.UserGroup_usergroupid;
+                DocTemplateID = tpl.DocTemplate_docteplateid;
             }
-            //if (tpl.DocTemplate_docteplateid != 0)
-            //    DocTemplate = new DocTemplateListViewModel(tpl.DocTemplate);
-            //if (tpl.UserGroup_usergroupid != 0)
-            //    UserGroup = new UserGroupListViewModel(tpl.UserGroup);
+            
         }
 
         public GroupTemplate Update(GroupTemplate tpl)
@@ -107,8 +107,11 @@ namespace MvcFront.Models
             tpl.Name = Name;
             tpl.DateStart = DateStart;
             tpl.DateEnd = DateEnd;
-            tpl.UserGroup_usergroupid = UserGroup.GroupId;
-            tpl.DocTemplate_docteplateid = DocTemplate.DocTemplateId;
+            tpl.UserGroup_usergroupid = UserGroupID;
+            tpl.DocTemplate_docteplateid = DocTemplateID;
+
+            //tpl.UserGroup_usergroupid = UserGroup.GroupId;
+            //tpl.DocTemplate_docteplateid = DocTemplate.DocTemplateId;
 
             return tpl;
         }        

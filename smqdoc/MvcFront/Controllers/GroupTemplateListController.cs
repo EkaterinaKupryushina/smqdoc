@@ -14,6 +14,7 @@ namespace MvcFront.Controllers
     public class GroupTemplateListController : Controller
     {
         private readonly IGroupTemplateRepository _groupTemplateRepository;
+
         public GroupTemplateListController(IGroupTemplateRepository groupTemplateRepository)
         {
             _groupTemplateRepository = groupTemplateRepository;
@@ -32,18 +33,15 @@ namespace MvcFront.Controllers
             return RedirectToAction("Index");
         }
 
-
+        public JsonResult DeleteLink(long id)
+        {
+            _groupTemplateRepository.DeleteGroupTemplate(id);      
+            return Json(new { result = true });
+        }
 
         public ActionResult Create()
         {
-            var model = new GroupTemplateEditViewModel(_groupTemplateRepository.GetGroupTemplateById(0));
-            //var repGroup = DependencyResolver.Current.GetService<IUserGroupRepository>();
-            //var repTemplates = DependencyResolver.Current.GetService<IDocTemplateRepository>();
-            
-            //model.DocTemplateLst = repTemplates.GetAllDocTeplates().Where(x => x.Status != (int)DocTemplateStatus.Deleted).ToList().ConvertAll(DocTemplateListViewModel.DocTemplateToModelConverter).ToList();
-            //model.UserGroupLst = repGroup.GetAll().Where(x => x.Status != (int)UserGroupStatus.Deleted)
-            //            .Select(x => new UserGroupListViewModel { GroupId = x.usergroupid, Manager = x.Manager.SecondName + " " + x.Manager.FirstName + " " + x.Manager.LastName + " (" + x.Manager.Login + ")", GroupName = x.GroupName }).ToList();
-
+            var model = new GroupTemplateEditViewModel(_groupTemplateRepository.GetGroupTemplateById(0));           
             return View(model);
         }
 
@@ -75,6 +73,17 @@ namespace MvcFront.Controllers
                 ModelState.AddModelError("Ошибка при сохранении", ex.InnerException != null ? ex.InnerException.Message : ex.Message);
             }
             return View();
-        }        
+        }
+
+
+        [GridAction]
+        public ActionResult _GroupTemplateList()
+        {
+            var data = _groupTemplateRepository.GetAllGroupTemplates().Where(x => x.Status != (int)GroupTemplateStatus.Deleted).ToList().ConvertAll(GroupTemplateListViewModel.GroupTemplateToModelConverter).ToList()
+                ;
+            //var data = _templateRepository.GetDocTemplateById(templId).FieldTeplates.Where(x => x.Status != (int)FieldTemplateStatus.Deleted).OrderBy(x => x.OrderNumber).ToList()
+            //    .ConvertAll(FieldTemplateListViewModel.FieldToModelConverter);
+            return View(new GridModel<GroupTemplateListViewModel> { Data = data });
+        }
     }
 }

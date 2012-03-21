@@ -2,6 +2,8 @@
 using System.ComponentModel.DataAnnotations;
 using MvcFront.DB;
 using MvcFront.Helpers;
+using System.ComponentModel;
+using System.Globalization;
 
 namespace MvcFront.Models
 {
@@ -28,6 +30,37 @@ namespace MvcFront.Models
             return new DocTemplateListViewModel(templ);
         }
     }
+
+    //public class DocTemplateListViewModelConverter : TypeConverter
+    //{
+    //    public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+    //    {
+
+    //        if (sourceType == typeof(string))
+    //        {
+    //            return true;
+    //        }
+    //        return base.CanConvertFrom(context, sourceType);
+    //    }
+    //    // Overrides the ConvertFrom method of TypeConverter.
+    //    public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+    //    {
+    //        if (value is string)
+    //        {
+    //            return new DocTemplateListViewModel { DocTemplateId = Convert.ToInt32(value) };
+    //        }
+    //        return base.ConvertFrom(context, culture, value);
+    //    }
+    //    // Overrides the ConvertTo method of TypeConverter.
+    //    public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+    //    {
+    //        if (destinationType == typeof(string))
+    //        {
+    //            return ((DocTemplateListViewModel)value).DocTemplateId;
+    //        }
+    //        return base.ConvertTo(context, culture, value, destinationType);
+    //    }
+    //}
 
     public class DocTemplateListEditModel
     {

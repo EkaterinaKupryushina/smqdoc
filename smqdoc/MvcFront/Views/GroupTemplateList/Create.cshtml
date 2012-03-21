@@ -40,19 +40,19 @@
         </div>
 
           <div class="editor-label">
-            @Html.LabelFor(model => model.UserGroup)
+            @Html.LabelFor(model => model.UserGroupID)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.UserGroup)
-            @Html.ValidationMessageFor(model => model.UserGroup)
+            @Html.EditorFor(model => model.UserGroupID)
+            @Html.ValidationMessageFor(model => model.UserGroupID)
         </div>
 
           <div class="editor-label">
-            @Html.LabelFor(model => model.DocTemplate)
+            @Html.LabelFor(model => model.DocTemplateID)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.DocTemplate)
-            @Html.ValidationMessageFor(model => model.DocTemplate)
+            @Html.EditorFor(model => model.DocTemplateID)
+            @Html.ValidationMessageFor(model => model.DocTemplateID)
         </div>
         <p>
             <input type="submit" value="Create" />
@@ -61,5 +61,5 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Назад к списку", "Index")
 </div>
