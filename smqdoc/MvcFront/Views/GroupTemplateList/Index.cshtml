@@ -1,32 +1,37 @@
 ﻿@using Telerik.Web.Mvc.UI
 @using MvcFront.Models
 @model IEnumerable<GroupTemplateListViewModel>
-
 @{
     ViewBag.Title = "Index";
 }
-
-<h2>Связи групп пользователей системы и шаблонов документов</h2>
-
+<h2>
+    Связи групп пользователей системы и шаблонов документов</h2>
 @Html.ActionLink("Добавить связь", "Create")
 @(Html.Telerik().Grid(Model)
         .Name("GroupTemplateGrid")
+             .ClientEvents(events => events.OnComplete("onComplete"))
                    .Columns(columns =>
                    {
                        columns.AutoGenerate(column =>
                        {
-                           if (column.Member == "ID" )
+                           if (column.Member == "ID")
                                column.Visible = false;
                        });
                        columns.Command(command =>
-                       {                           
-                           command.Custom("DeleteDetails").Text("Удалить")
-                            .DataRouteValues(route => route.Add(o => o.ID).RouteKey("id"))
-                            .Action("Delete", " DocTemplateList")
-                            .HtmlAttributes(new { style = "text-align: center" });                         
+                       {
+                           command.Custom("Delete")
+                                  .Text("Удалить")                                  
+                                .DataRouteValues(route => route.Add(o => o.ID).RouteKey("id"))
+                                .Action("Delete", "GroupTemplateList")
+                                .HtmlAttributes(new { style = "text-align: center", onClick = "confirm('Вы действительно хотите удалить связь?')" });
                        });
                    })
                  .Sortable()
                 .Pageable()
 
-    ) 
+    )
+    
+@*<div>
+    <span style="color: Green;">@ViewBag.DeleteResult</span>
+</div>
+*@

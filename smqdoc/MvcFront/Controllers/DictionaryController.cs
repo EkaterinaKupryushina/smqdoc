@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using MvcFront.DB;
 using MvcFront.Interfaces;
 using MvcFront.Helpers;
+using MvcFront.Models;
 
 namespace MvcFront.Controllers
 {
@@ -59,5 +60,25 @@ namespace MvcFront.Controllers
 
         }
         #endregion
+
+
+        [HttpPost]
+        public ActionResult AjaxUserGroupList()
+        {
+            var repGroup = DependencyResolver.Current.GetService<IUserGroupRepository>();
+            var model = repGroup.GetAll().Where(x => x.Status != (int)UserGroupStatus.Deleted)
+                        .Select(x => new UserGroupListViewModel { GroupId = x.usergroupid, Manager = x.Manager.SecondName + " " + x.Manager.FirstName + " " + x.Manager.LastName + " (" + x.Manager.Login + ")", GroupName = x.GroupName }).ToList();
+
+            return new JsonResult { Data = new SelectList(model, "GroupId", "GroupName") };            
+        }
+
+        [HttpPost]
+        public ActionResult AjaxDocTemplateList()
+        {
+            var repTemplates = DependencyResolver.Current.GetService<IDocTemplateRepository>();
+            var model = repTemplates.GetAllDocTeplates().Where(x => x.Status != (int)DocTemplateStatus.Deleted).ToList().ConvertAll(DocTemplateListViewModel.DocTemplateToModelConverter).ToList();
+
+            return new JsonResult { Data = new SelectList(model, "DocTemplateId", "DocTemplateName") };
+        }
     }
 }
