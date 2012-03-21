@@ -8,10 +8,12 @@ namespace MvcFront.Repositories
     public class DocumentRepository : IDocumentRepository
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IGroupTemplateRepository _groupTemplateRepository;
 
-        public DocumentRepository(IUnitOfWork unitOfWork)
+        public DocumentRepository(IUnitOfWork unitOfWork,IGroupTemplateRepository groupTemplateRepository)
         {
             _unitOfWork = unitOfWork;
+            _groupTemplateRepository = groupTemplateRepository;
         }
 
         public IQueryable<Document> GetAll()
@@ -69,6 +71,30 @@ namespace MvcFront.Repositories
             doc.DocStatus = DocumentStatus.Deleted;
             _unitOfWork.DbModel.SaveChanges();
             return doc;
+        }
+        public Document CreateDocumentFromGroupDocument(long groupTemplId,int userId)
+        {
+            var groupTempl = _groupTemplateRepository.GetGroupTemplateById(groupTemplId);
+            if(groupTempl != null)
+            {
+                var doc = new Document();
+                doc.DocumentName = groupTempl.Name;
+                doc.UserAccount_userid = userId;
+                doc.GroupTemplate_grouptemplateid = groupTemplId;
+                doc = SaveDocument(doc);
+                foreach (var fieldTempl in groupTempl.DocTemplate.FieldTeplates)
+                {
+                    var fld = new DocField
+                                  {
+                                      Document = doc,
+                                      FieldTemplate_fieldteplateid = fieldTempl.fieldteplateid
+                                  };
+                    _unitOfWork.DbModel.DocFields.AddObject(fld);
+                }
+                _unitOfWork.DbModel.SaveChanges();
+                return doc;
+            }
+            return null;
         }
     }
 }

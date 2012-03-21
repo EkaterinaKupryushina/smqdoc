@@ -14,5 +14,6 @@ namespace MvcFront.Interfaces
         Document SaveDocument(Document entity);
         Document DeleteDocument(long id);
         Document ChangeDocumentStatus(long id, DocumentStatus state);
+        Document CreateDocumentFromGroupDocument(long groupTemplId,int userId);
     }
 }

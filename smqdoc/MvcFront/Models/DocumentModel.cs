@@ -21,6 +21,9 @@ namespace MvcFront.Models
         public string LastComment { get; set; }
         [Display(Name = "Дата последнего изменения")]
         public DateTime LastEditDate { get; set; }
+
+        [Display(Name = "Status")] [UIHint("Hidden")] 
+        public bool IsReadOnly { get; set; }
         public DocumentListViewModel()
         {
         }
@@ -31,6 +34,7 @@ namespace MvcFront.Models
             LastEditDate = templ.LastEditDate;
             LastComment = templ.LastComment;
             DocumentStatusText = templ.DocStatusText;
+            IsReadOnly = templ.DocStatus != DocumentStatus.Editing;
         }
         public static DocumentListViewModel DocumentToModelConverter(Document templ)
         {

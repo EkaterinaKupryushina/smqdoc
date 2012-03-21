@@ -3,19 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using MvcFront.DB;
 using MvcFront.Helpers;
 using MvcFront.Interfaces;
 using MvcFront.Models;
+using Telerik.Web.Mvc;
 
 namespace MvcFront.Controllers
 {
     public class UserDocumentController : Controller
     {
         private readonly IDocumentRepository _documentRepository;
-        public UserDocumentController(IDocumentRepository documentRepository)
+        private readonly IGroupTemplateRepository _groupTemplateRepository;
+        public UserDocumentController(IDocumentRepository documentRepository,IGroupTemplateRepository groupTemplateRepository)
         {
             _documentRepository = documentRepository;
+            _groupTemplateRepository = groupTemplateRepository;
         }
 
         //
@@ -23,11 +27,31 @@ namespace MvcFront.Controllers
 
         public ActionResult Index()
         {
-            var sessData = SessionHelper.GetUserSessionData(Session);
-            return View(_documentRepository.GetAll().Where(x => x.Status != (int)DocumentStatus.Deleted && x.UserAccount_userid == sessData.UserId)
-                .ToList().ConvertAll(DocumentListViewModel.DocumentToModelConverter).ToList());
+            return View();
         }
+        [GridAction]
+        public ActionResult _UserDocumentsList()
+        {
+            var sessData = SessionHelper.GetUserSessionData(Session);
+            var data = _documentRepository.GetAll().Where(x => x.Status != (int)DocumentStatus.Deleted && x.UserAccount_userid == sessData.UserId)
+                .ToList().ConvertAll(DocumentListViewModel.DocumentToModelConverter).ToList();
 
+            return View(new GridModel<DocumentListViewModel> { Data = data });
+        }
+        
+        [GridAction]
+        public ActionResult _UserGroupTeplatesList()
+        {
+            var sessData = SessionHelper.GetUserSessionData(Session);
+            var allUserGroupDocs =
+                _documentRepository.GetAll().Where(x => x.UserAccount_userid == sessData.UserId && x.Status != (int) DocumentStatus.Deleted)
+                    .Select(x => x.GroupTemplate_grouptemplateid).ToList();
+
+            var data = _groupTemplateRepository.GetGroupTemplateByGroupId(sessData.UserGroupId).Where(x=>x.DateStart <= DateTime.Now 
+                && x.DocTemplate.Status == (int)DocTemplateStatus.Active && x.Status == (int)GroupTemplateStatus.Active && !allUserGroupDocs.Contains(x.grouptemplateid))
+                .ToList().ConvertAll(GroupTemplateListViewModel.GroupTemplateToModelConverter).ToList();
+            return View(new GridModel<GroupTemplateListViewModel> { Data = data });
+        }
         //
         // GET: /Document/Details/5
 
@@ -41,29 +65,21 @@ namespace MvcFront.Controllers
 
         public ActionResult Create(long id)
         {
-            return View();
+            try
+            {
+
+            var sessData = SessionHelper.GetUserSessionData(Session);
+            var doc = _documentRepository.CreateDocumentFromGroupDocument(id,sessData.UserId);
+            if (doc != null)
+                return RedirectToAction("Edit", new {id = doc.documentid});
+          }catch(Exception)
+          {
+              
+          }
+            return RedirectToAction("Index");
+                 
         } 
 
-        ////
-        //// POST: /Document/Create
-
-        //[HttpPost]
-        //public ActionResult Create(FormCollection collection)
-        //{
-        //    try
-        //    {
-        //        // TODO: Add insert logic here
-
-        //        return RedirectToAction("Index");
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
-        
-        //
-        // GET: /Document/Edit/5
  
         public ActionResult Edit(int id)
         {
@@ -86,32 +102,6 @@ namespace MvcFront.Controllers
                 _documentRepository.SaveDocument(doc);
                 if (Request.Form["send"] != null)
                     _documentRepository.ChangeDocumentStatus(doc.documentid, DocumentStatus.Sended);
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        //
-        // GET: /Document/Delete/5
- 
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        //
-        // POST: /Document/Delete/5
-
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
- 
                 return RedirectToAction("Index");
             }
             catch

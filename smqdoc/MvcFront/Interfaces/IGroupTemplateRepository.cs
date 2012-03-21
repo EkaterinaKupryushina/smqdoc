@@ -9,6 +9,7 @@ namespace MvcFront.Interfaces
     public interface IGroupTemplateRepository
     {
         IQueryable<GroupTemplate> GetAllGroupTemplates();
+        List<GroupTemplate> GetGroupTemplateByGroupId(Int64 id);
         GroupTemplate GetGroupTemplateById(Int64 id);
         bool SaveGroupTemplate(GroupTemplate entity);
         void DeleteGroupTemplate(Int64 id);
