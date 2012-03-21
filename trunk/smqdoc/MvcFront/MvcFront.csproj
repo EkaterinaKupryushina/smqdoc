@@ -876,8 +876,13 @@
     <Content Include="Views\UserDocument\Details.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\Document.cshtml" />
     <Content Include="Views\Account\EditUserInfo.cshtml" />
-	<Content Include="Views\GroupTemplateList\Index.cshtml" />	<Content Include="Views\Shared\EditorTemplates\DocumentEditModel.cshtml" />
+    <Content Include="Views\GroupTemplateList\Index.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\DocumentEditModel.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\DocFieldEditModel.cshtml" />
+    <Content Include="Views\GroupTemplateList\Delete.cshtml" />
+    <Content Include="Views\GroupTemplateList\Create.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\UserGroupComboBox.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\DocTemplateComboBox.cshtml" />
     <None Include="Views\UserAccountList\ChangeState.cshtml" />
     <Content Include="Views\UserGroupList\Index.cshtml" />
     <Content Include="Views\UserGroupList\Delete.cshtml" />

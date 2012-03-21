@@ -1,0 +1,12 @@
+﻿@using MvcFront.DB
+@using Telerik.Web.Mvc.UI
+@model MvcFront.Models.DocTemplateListViewModel
+
+@{
+       @(Html.Telerik().ComboBox()
+                             .Name(ViewData.TemplateInfo.GetFullHtmlFieldName("") ?? "DocTemplate_docteplateid")
+            .SelectedIndex(0)
+                    .DataBinding(binding => binding.Ajax().Select("AjaxDocTemplateList", "Dictionary").Cache(true)            
+            ))
+}
+

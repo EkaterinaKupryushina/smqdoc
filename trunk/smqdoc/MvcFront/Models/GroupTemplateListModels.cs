@@ -52,45 +52,65 @@ namespace MvcFront.Models
         }
     }
 
-    /*
-    public class UserGroupEditViewModel
-    {
-        [Display(Name = "ID")]
-        [UIHint("Hidden")]
-        public Int32 GroupId { get; set; }
-        [Required]
-        [Display(Name = "Имя группы")]
-        public string GroupName { get; set; }
-        [Required]
-        [Display(Name = "Полное имя группы")]
-        public string FullGroupName { get; set; }
-        //[Required]
-        //[Display(Name = "Менеджер")]
-        //[UIHint("UserAccountFilter")]
-        //public int? Managerid { get; set; }
-        [Required]
-        [Display(Name = "Менеджер")]
-        [UIHint("UserAccountFilter")]
-        public UserAccountListViewModel Manager { get; set; }
 
-        public UserGroupEditViewModel()
+    public class GroupTemplateEditViewModel
+    {
+        [Required]
+        [UIHint("Hidden")]
+        public long ID { get; set; }
+        [Required]
+        [Display(Name = "Наименование назначения ")]
+        public string Name { get; set; }
+        [Required]
+        [Display(Name = "Начала заполнения")]
+        public DateTime DateStart { get; set; }
+        [Required]
+        [Display(Name = "Окончание заполнения")]
+        public DateTime DateEnd { get; set; }
+
+        [Display(Name = "Родительский шаблон")]
+        [UIHint("DocTemplateComboBox")]
+        public DocTemplateListViewModel DocTemplate { get; set; }
+        [Display(Name = "Родительская группа")]
+        [UIHint("UserGroupComboBox")]
+        public UserGroupListViewModel UserGroup { get; set; }
+
+        
+        //public List<DocTemplateListViewModel> DocTemplateLst { get; set; }
+        
+        //public List<UserGroupListViewModel> UserGroupLst { get; set; }
+
+        public GroupTemplateEditViewModel()
         {
         }
-        public UserGroupEditViewModel(UserGroup grr)
+
+        public GroupTemplateEditViewModel(GroupTemplate tpl)
         {
-            GroupId = grr.usergroupid;
-            GroupName = grr.GroupName;
-            FullGroupName = grr.FullGroupName;
-            if (grr.usergroupid != 0)
-                Manager = new UserAccountListViewModel(grr.Manager);
+            ID = tpl.grouptemplateid;
+            Name = tpl.Name;
+            DateStart = tpl.DateStart;
+            DateEnd = tpl.DateEnd;
+            if (tpl.grouptemplateid != 0)
+            {
+                UserGroup = new UserGroupListViewModel(tpl.UserGroup);
+                DocTemplate = new DocTemplateListViewModel(tpl.DocTemplate);
+            }
+            //if (tpl.DocTemplate_docteplateid != 0)
+            //    DocTemplate = new DocTemplateListViewModel(tpl.DocTemplate);
+            //if (tpl.UserGroup_usergroupid != 0)
+            //    UserGroup = new UserGroupListViewModel(tpl.UserGroup);
         }
-        public UserGroup Update(UserGroup grr)
+
+        public GroupTemplate Update(GroupTemplate tpl)
         {
-            grr.usergroupid = GroupId;
-            grr.GroupName = GroupName;
-            grr.FullGroupName = FullGroupName;
-            grr.Managerid = Manager.UserId;
-            return grr;
-        }
-    }*/
+            tpl.grouptemplateid = ID;
+            tpl.Name = Name;
+            tpl.DateStart = DateStart;
+            tpl.DateEnd = DateEnd;
+            tpl.UserGroup_usergroupid = UserGroup.GroupId;
+            tpl.DocTemplate_docteplateid = DocTemplate.DocTemplateId;
+
+            return tpl;
+        }        
+    }    
 }
