@@ -15,6 +15,10 @@ namespace MvcFront.Repositories
             _unitOfWork = unitOfWork;
         }
 
+        public List<GroupTemplate> GetGroupTemplateByGroupId(Int64 id)
+        {
+            return GetAllGroupTemplates().Where(x => x.UserGroup_usergroupid == id).ToList();
+        }
         public IQueryable<DB.GroupTemplate> GetAllGroupTemplates()
         {
             return _unitOfWork.DbModel.GroupTemplates.AsQueryable();            
