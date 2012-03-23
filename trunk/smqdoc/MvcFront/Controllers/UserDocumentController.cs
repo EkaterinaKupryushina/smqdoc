@@ -72,7 +72,7 @@ namespace MvcFront.Controllers
             var doc = _documentRepository.CreateDocumentFromGroupDocument(id,sessData.UserId);
             if (doc != null)
                 return RedirectToAction("Edit", new {id = doc.documentid});
-          }catch(Exception)
+          }catch
           {
               
           }
