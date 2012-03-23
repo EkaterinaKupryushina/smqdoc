@@ -7,9 +7,6 @@ using MvcFront.DB;
 
 namespace MvcFront.Models
 {
-    public class GroupTemplateListModels
-    {
-    }
 
     public class GroupTemplateListViewModel
     {
@@ -59,13 +56,16 @@ namespace MvcFront.Models
         [UIHint("Hidden")]
         public long ID { get; set; }
         [Required]
-        [Display(Name = "Наименование назначения ")]
+        [Display(Name = "Наименование назначения")]
+        [DataType(DataType.MultilineText)]
         public string Name { get; set; }
         [Required]
         [Display(Name = "Начала заполнения")]
+        [DataType(DataType.DateTime)]
         public DateTime DateStart { get; set; }
         [Required]
         [Display(Name = "Окончание заполнения")]
+        [DataType(DataType.DateTime)]
         public DateTime DateEnd { get; set; }
 
         [Required]
