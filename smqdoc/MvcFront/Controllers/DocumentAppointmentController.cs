@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Routing;
 using MvcFront.DB;
 using MvcFront.Helpers;
 using MvcFront.Interfaces;
@@ -38,7 +35,6 @@ namespace MvcFront.Controllers
 
         public ActionResult Details(int id)
         {
-            var sessData = SessionHelper.GetUserSessionData(Session);
             return View(_groupTemplateRepository.GetGroupTemplateById(id).Documents.Where(x => x.Status != (int)DocumentStatus.Deleted).ToList()
                 .ConvertAll(UserDocumentListViewModel.DocumentToModelConverter));
         }
@@ -55,19 +51,21 @@ namespace MvcFront.Controllers
             {
                 var sesData = SessionHelper.GetUserSessionData(Session);
                var templ = _docTemplateRepository.GetDocTemplateById(id);
-                var groupTempl = new GroupTemplate();
-                groupTempl.DocTemplate_docteplateid = templ.docteplateid;
-                groupTempl.Name = templ.TemplateName;
-                groupTempl.Status = (int) GroupTemplateStatus.Unactive;
-                groupTempl.DateStart = DateTime.Now;
-                groupTempl.DateEnd = DateTime.Now + new TimeSpan(7, 0, 0, 0);
-                groupTempl.UserGroup_usergroupid = sesData.UserGroupId;
+                var groupTempl = new GroupTemplate
+                                     {
+                                         DocTemplate_docteplateid = templ.docteplateid,
+                                         Name = templ.TemplateName,
+                                         Status = (int) GroupTemplateStatus.Unactive,
+                                         DateStart = DateTime.Now,
+                                         DateEnd = DateTime.Now + new TimeSpan(7, 0, 0, 0),
+                                         UserGroup_usergroupid = sesData.UserGroupId
+                                     };
                 _groupTemplateRepository.SaveGroupTemplate(groupTempl);
 
                 return RedirectToAction("Edit",new {id = groupTempl.grouptemplateid});
             }
             catch
-            {;
+            {
                 return RedirectToAction("Index");
             }
         }
