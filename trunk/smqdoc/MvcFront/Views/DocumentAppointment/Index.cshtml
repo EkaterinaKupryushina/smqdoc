@@ -1,0 +1,46 @@
+﻿@using Telerik.Web.Mvc.UI
+@using MvcFront.Models
+@model IEnumerable<DocumentAppointmentListViewModel>
+@{
+    ViewBag.Title = "Index";
+}
+<h2>Назначенные шаблоны документов</h2>
+@Html.ActionLink("Добавить документ", "Create")
+@(Html.Telerik().Grid(Model)
+        .Name("GroupTemplateGrid")
+                   .Columns(columns =>
+                   {
+                       columns.AutoGenerate(column =>
+                       {
+                           if (column.Member == "ID")
+                               column.Visible = false;
+                       });
+                       columns.Command(command =>
+                       {
+                           command.Custom("ViewDocuments").Text("Документы")
+                          .DataRouteValues(route => route.Add(o => o.ID).RouteKey("id"))
+                          .Action("Details", "DocumentAppointment")
+                          .HtmlAttributes(new { style = "text-align: center" });
+                           
+                           command.Custom("Edit").Text("Редактировать")
+                         .DataRouteValues(route => route.Add(o => o.ID).RouteKey("id"))
+                         .Action("Edit", "DocumentAppointment")
+                         .HtmlAttributes(new { style = "text-align: center" });
+                           
+                           command.Custom("DeleteDetails").Text("Удалить")
+                          .DataRouteValues(route => route.Add(o => o.ID).RouteKey("id"))
+                          .Action("Delete", "DocumentAppointment")
+                          .HtmlAttributes(new { style = "text-align: center"});
+                           
+                           command.Custom("DisableTemplate").Text("Отключить/Включить")                                  
+                           .DataRouteValues(route => route.Add(o => o.ID).RouteKey("id"))
+                           .Action("ChangeState", "DocumentAppointment")
+                           .HtmlAttributes(new { style = "text-align: center" });
+                           
+                          
+                       });
+                   })
+                 .Sortable()
+                .Pageable()
+
+    )

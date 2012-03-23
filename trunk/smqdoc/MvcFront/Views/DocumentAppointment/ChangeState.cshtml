@@ -1,0 +1,43 @@
+﻿@model MvcFront.DB.GroupTemplate
+
+@{
+    ViewBag.Title = "ChangeState";
+}
+
+<h2>Включение/Отключение</h2>
+
+<h3>Вы действительно желаете изменить состояние?</h3>
+<fieldset>
+    <legend>Тип документы</legend>
+
+    <div class="display-label">@Html.LabelFor(model => model.Name)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Name)
+    </div>
+
+    <div class="display-label">@Html.LabelFor(model => model.DateStart)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DateStart)
+    </div>
+
+    <div class="display-label">@Html.LabelFor(model => model.DateEnd)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DateEnd)
+    </div>
+
+    <div class="display-label">@Html.LabelFor(model => model.DocTemplate.TemplateName)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DocTemplate.TemplateName)
+    </div>
+
+    <div class="display-label">@Html.LabelFor(model => model.GroupTemplateStatusText)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.GroupTemplateStatusText)
+    </div>
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" value="Выполнить" /> |
+        @Html.ActionLink("Отмена", "Index")
+    </p>
+}

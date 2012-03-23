@@ -27,6 +27,7 @@ namespace MvcFront.DB
                 Status = (int)value;
             }
         }
+        [Display(Name = "Статус Связи")]
         public string GroupTemplateStatusText
         {
             get
@@ -52,8 +53,6 @@ namespace MvcFront.DB
         [Required]
         [Display(Name = "Код статуса")]
         public int Status { get; set; }
-        [Display(Name = "Статус Связи")]
-        public GroupTemplateStatus TemplateStatus { get; set; }
         [Display(Name = "Родительский шаблон")]
         public DocTemplate DocTemplate { get; set; }
         [Display(Name = "Родительская группа")]

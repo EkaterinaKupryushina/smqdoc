@@ -4,7 +4,7 @@
     UICulture = "ru-RU";
 }
 <!DOCTYPE html>
-<html>
+<html lang="en-US">
 <head>
     <title>@ViewBag.Title</title>
     <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
@@ -19,7 +19,8 @@
     @(Html.Telerik().ScriptRegistrar()
                      .DefaultGroup(group => group
                      .Add("telerik.all.min.js")
-                     .Compress(true))
+                             .Compress(true))
+                             .Globalization(true)
     )
     <script src="@Url.Content("~/Scripts/jquery.watermark.min.js")" type="text/javascript"> </script>
 </head>
@@ -46,15 +47,16 @@
                                     <li>@Html.ActionLink("Пользователи", "Index", "UserAccountList")</li>
                                     <li>@Html.ActionLink("Группы", "Index", "UserGroupList")</li>
                                     <li>@Html.ActionLink("Шаблоны", "Index", "DocTemplateList")</li>
-                                    <li>@Html.ActionLink("Профиль пользователя", "Index", "Account")</li>
                                     <li>@Html.ActionLink("Связи шаблонов и групп", "Index", "GroupTemplateList")</li>
+                                    <li>@Html.ActionLink("Профиль пользователя", "Index", "Account")</li>
                                    break;
                                 case SmqUserProfileType.Groupmanager:
+                                    <li>@Html.ActionLink("Типы документов группы", "Index", "DocumentAppointment")</li>
                                     <li>@Html.ActionLink("Профиль пользователя", "Index", "Account")</li>
                                 break;
                                 case SmqUserProfileType.Groupuser:
-                                    <li>@Html.ActionLink("Профиль пользователя", "Index", "Account")</li>
                                     <li>@Html.ActionLink("Документы", "Index", "UserDocument")</li>
+                                    <li>@Html.ActionLink("Профиль пользователя", "Index", "Account")</li>
                                 break;
                                 case SmqUserProfileType.User:
                                     <li>@Html.ActionLink("Профиль пользователя", "Index", "Account")</li>
