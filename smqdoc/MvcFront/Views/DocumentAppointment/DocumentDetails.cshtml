@@ -11,8 +11,17 @@
 @Html.DisplayForModel()
 </fieldset>
 <p>
-    <a href="#" onclick="ShowCommentWindow()">Оставить комментарий</a> |
+    <a href="#" onclick="ShowCommentWindow()">Оставить комментарий</a> |        
      @Html.ActionLink("Отмена", "Index")
+     <br />
+     @{
+      if(Model.DocStatus == DocumentStatus.Sended)
+      {
+         @Html.ActionLink("Утвердить", "Submit", new { id = Model.documentid } ) 
+         <text> | </text>       
+         @Html.ActionLink("Вернуть для исправлений", "Dismiss", new { id = Model.documentid })        
+      }      
+    }
 </p>
 
 @{ 
@@ -31,9 +40,9 @@
         .Draggable(true)
         .Buttons(b => b.Close())
         .Content(@<text>
-            @using (Html.BeginForm("DocumentDetails", "DocumentAppointment", FormMethod.Post,new {id = Model.documentid}))
+            @using (Html.BeginForm("DocumentDetails", "DocumentAppointment", FormMethod.Post, new { id = Model.documentid }))
             {
-                @Html.TextAreaFor(m => m.LastComment,new {@style="width: 293px; height: 260px;"})
+                @Html.TextAreaFor(m => m.LastComment, new { @style = "width: 293px; height: 260px;" })
                 <div class="form-actions">
                     <button type="submit" class="t-button t-state-default">Сохранить</button>
                 </div>

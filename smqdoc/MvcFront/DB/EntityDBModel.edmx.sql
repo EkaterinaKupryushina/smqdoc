@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 03/20/2012 09:34:24
--- Generated from EDMX file: D:\Work\smqDoc\smqdoc.net\smqdoc\MvcFront\DB\EntityDBModel.edmx
+-- Date Created: 03/25/2012 11:33:21
+-- Generated from EDMX file: G:\Works\smqDocNet\smqdoc\MvcFront\DB\EntityDBModel.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -138,7 +138,6 @@ CREATE TABLE [dbo].[Documents] (
     [LastEditDate] datetime  NOT NULL,
     [Status] int  NOT NULL,
     [LastComment] nvarchar(max)  NULL,
-    [DocumentName] nvarchar(max)  NOT NULL,
     [UserAccount_userid] int  NOT NULL,
     [GroupTemplate_grouptemplateid] bigint  NOT NULL
 );

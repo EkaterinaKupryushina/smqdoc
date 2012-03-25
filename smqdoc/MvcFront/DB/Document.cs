@@ -48,8 +48,8 @@ namespace MvcFront.DB
         [Display(Name = "Послений коментарий")]
         [DataType(DataType.MultilineText)]
         public String LastComment { get; set; }
-        [Display(Name = "Название документа")]
-        public String DocumentName { get; set; }
+        //[Display(Name = "Название документа")]
+        //public String DocumentName { get; set; }
     }
 
     public partial class DocField

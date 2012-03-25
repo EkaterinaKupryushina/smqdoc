@@ -47,8 +47,7 @@ namespace MvcFront.Repositories
                     SaveDocument(entity);
                 }
                 if (oldEntity != null)
-                {
-                    oldEntity.DocumentName = entity.DocumentName;
+                {                    
                     oldEntity.LastComment = entity.LastComment;
                     oldEntity.LastEditDate = DateTime.Now;
                     entity = oldEntity;
@@ -77,8 +76,7 @@ namespace MvcFront.Repositories
             var groupTempl = _groupTemplateRepository.GetGroupTemplateById(groupTemplId);
             if(groupTempl != null)
             {
-                var doc = new Document();
-                doc.DocumentName = groupTempl.Name;
+                var doc = new Document();                
                 doc.UserAccount_userid = userId;
                 doc.GroupTemplate_grouptemplateid = groupTemplId;
                 doc = SaveDocument(doc);

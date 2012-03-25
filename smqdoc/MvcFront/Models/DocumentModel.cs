@@ -13,14 +13,17 @@ namespace MvcFront.Models
         [Display(Name = "ID")]
         [UIHint("Hidden")]
         public long DocumentId { get; set; }
-        [Display(Name = "Названире документа")]
-        public string DocumentName { get; set; }
+        //[Display(Name = "Названире документа")]
+        //public string DocumentName { get; set; }
+        [Display(Name = "Название документа")]
+        public string GroupTemplateName { get; set; }
         [Display(Name = "Статус документа")]
         public string DocumentStatusText { get; set; }
         [Display(Name = "Последний комментарий")]
         public string LastComment { get; set; }
         [Display(Name = "Дата последнего изменения")]
         public DateTime LastEditDate { get; set; }
+        
 
         [Display(Name = "Status")] [UIHint("Hidden")] 
         public bool IsReadOnly { get; set; }
@@ -30,14 +33,15 @@ namespace MvcFront.Models
         public DocumentListViewModel(Document templ)
         {
             DocumentId = templ.documentid;
-            DocumentName = templ.DocumentName;
+            //DocumentName = templ.DocumentName;
             LastEditDate = templ.LastEditDate;
             LastComment = templ.LastComment;
             DocumentStatusText = templ.DocStatusText;
             IsReadOnly = templ.DocStatus != DocumentStatus.Editing;
+            GroupTemplateName = templ.GroupTemplate.Name;
         }
         public static DocumentListViewModel DocumentToModelConverter(Document templ)
-        {
+        {        
             return new DocumentListViewModel(templ);
         }
     }
@@ -47,8 +51,10 @@ namespace MvcFront.Models
         [Display(Name = "ID")]
         [UIHint("Hidden")]
         public long DocumentId { get; set; }
-        [Display(Name = "Названире документа")]
-        public string DocumentName { get; set; }
+        //[Display(Name = "Названире документа")]
+        //public string DocumentName { get; set; }
+        [Display(Name = "Название документа")]
+        public string GroupTemplateName { get; set; }
         [Display(Name = "Статус документа")]
         public string DocumentStatusText { get; set; }
         [Display(Name = "Последний комментарий")]
@@ -64,7 +70,8 @@ namespace MvcFront.Models
         public DocumentEditModel(Document templ):this()
         {
             DocumentId = templ.documentid;
-            DocumentName = templ.DocumentName;
+            GroupTemplateName = templ.GroupTemplate.Name;
+            //DocumentName = templ.DocumentName;
             LastEditDate = templ.LastEditDate;
             LastComment = templ.LastComment;
             DocumentStatusText = templ.DocStatusText;
