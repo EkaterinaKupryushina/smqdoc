@@ -5,7 +5,7 @@
     ViewBag.Title = "Index";
 }
 <script type="text/javascript">
-    function onRowDataBound(e) {
+    function onDocumentListGridRowDataBound(e) {
         if (e.dataItem.IsReadOnly > 0) {
             $(e.row).find('a.t-grid-EditDetails').remove(); 
             $(e.row).find('a.t-grid-DeleteDetails').remove();
@@ -15,16 +15,24 @@
         }
     }
 </script>
+<script type="text/javascript">
+    function onGroupTemplateListGridRowDataBound(e) {
+        if (e.dataItem.IsRed > 0) {
+            $(e.row).css("color", "red");
+        }
+    }
+</script>
 <h2>Необходимо начать заполнять документы:</h2>
 @* ReSharper disable ConvertToLambdaExpression *@
 @(Html.Telerik().Grid<GroupTemplateListViewModel>()
      .DataBinding(dataBinding => dataBinding.Ajax().Select("_UserGroupTeplatesList", "UserDocument", new {  }))
         .Name("GroupTemplateListGrid")
+                .ClientEvents(events => events.OnRowDataBound("onGroupTemplateListGridRowDataBound"))
                    .Columns(columns =>
                    {
                        columns.AutoGenerate(column =>
                        {
-                           if (column.Member == "ID" || column.Member == "DocTemplateName" || column.Member == "UserGroupName" || column.Member == "Status")
+                           if (column.Member == "ID" || column.Member == "DocTemplateName" || column.Member == "UserGroupName" || column.Member == "Status" ||column.Member == "IsRed")
                                column.Visible = false;
                        });
                        columns.Command(command =>
@@ -44,7 +52,7 @@
 
 @(Html.Telerik().Grid<DocumentListViewModel>()
     .DataBinding(dataBinding => dataBinding.Ajax().Select("_UserDocumentsList", "UserDocument", new { }))
-    .ClientEvents(events => events.OnRowDataBound("onRowDataBound"))
+        .ClientEvents(events => events.OnRowDataBound("onDocumentListGridRowDataBound"))
         .Name("DocumentListGrid")
                    .Columns(columns =>
                    {

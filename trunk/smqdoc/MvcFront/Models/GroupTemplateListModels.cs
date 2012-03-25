@@ -28,8 +28,9 @@ namespace MvcFront.Models
         [Display(Name = "Родительский шаблон")]
         public String DocTemplateName { get; set; }
         [Display(Name = "Родительская группа")]
-        public String UserGroupName { get; set; }        
-
+        public String UserGroupName { get; set; }
+        [UIHint("Hidden")]
+        public bool IsRed { get; set; }
         public GroupTemplateListViewModel()
         {
         }
@@ -41,7 +42,9 @@ namespace MvcFront.Models
             DateEnd = tpl.DateEnd;
             Status = tpl.GroupTemplateStatusText;
             DocTemplateName = tpl.DocTemplate.TemplateName;
-            UserGroupName = tpl.UserGroup.GroupName;                        
+            UserGroupName = tpl.UserGroup.GroupName;
+            IsRed = tpl.DateEnd + new TimeSpan(2, 0, 0, 0) > DateTime.Now &&
+                    tpl.Status == (int)DocumentStatus.Editing;        
         }
         public static GroupTemplateListViewModel GroupTemplateToModelConverter(GroupTemplate tpl)
         {
