@@ -78,8 +78,7 @@ namespace MvcFront.Models
         }
         public UserDocumentListViewModel(Document templ)
         {
-            DocumentId = templ.documentid;
-            DocumentName = templ.DocumentName;
+            DocumentId = templ.documentid;            
             LastEditDate = templ.LastEditDate;
             LastComment = templ.LastComment;
             DocumentStatusText = templ.DocStatusText;

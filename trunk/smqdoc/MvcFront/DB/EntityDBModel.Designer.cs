@@ -738,17 +738,15 @@ namespace MvcFront.DB
         /// <param name="creationDate">Initial value of the CreationDate property.</param>
         /// <param name="lastEditDate">Initial value of the LastEditDate property.</param>
         /// <param name="status">Initial value of the Status property.</param>
-        /// <param name="documentName">Initial value of the DocumentName property.</param>
         /// <param name="userAccount_userid">Initial value of the UserAccount_userid property.</param>
         /// <param name="groupTemplate_grouptemplateid">Initial value of the GroupTemplate_grouptemplateid property.</param>
-        public static Document CreateDocument(global::System.Int64 documentid, global::System.DateTime creationDate, global::System.DateTime lastEditDate, global::System.Int32 status, global::System.String documentName, global::System.Int32 userAccount_userid, global::System.Int64 groupTemplate_grouptemplateid)
+        public static Document CreateDocument(global::System.Int64 documentid, global::System.DateTime creationDate, global::System.DateTime lastEditDate, global::System.Int32 status, global::System.Int32 userAccount_userid, global::System.Int64 groupTemplate_grouptemplateid)
         {
             Document document = new Document();
             document.documentid = documentid;
             document.CreationDate = creationDate;
             document.LastEditDate = lastEditDate;
             document.Status = status;
-            document.DocumentName = documentName;
             document.UserAccount_userid = userAccount_userid;
             document.GroupTemplate_grouptemplateid = groupTemplate_grouptemplateid;
             return document;
@@ -879,30 +877,6 @@ namespace MvcFront.DB
         private global::System.String _LastComment;
         partial void OnLastCommentChanging(global::System.String value);
         partial void OnLastCommentChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.String DocumentName
-        {
-            get
-            {
-                return _DocumentName;
-            }
-            set
-            {
-                OnDocumentNameChanging(value);
-                ReportPropertyChanging("DocumentName");
-                _DocumentName = StructuralObject.SetValidValue(value, false);
-                ReportPropertyChanged("DocumentName");
-                OnDocumentNameChanged();
-            }
-        }
-        private global::System.String _DocumentName;
-        partial void OnDocumentNameChanging(global::System.String value);
-        partial void OnDocumentNameChanged();
     
         /// <summary>
         /// No Metadata Documentation available.

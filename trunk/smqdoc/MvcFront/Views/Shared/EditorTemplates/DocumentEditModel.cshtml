@@ -5,9 +5,9 @@
     ViewBag.Title = "Document";
 }
 @Html.HiddenFor(model=>model.DocumentId)
-<div class="display-label">@Html.LabelFor(model => model.DocumentName)</div>
+<div class="display-label">@Html.LabelFor(model => model.GroupTemplateName)</div>
 <div class="display-field">
-    @Html.DisplayFor(model => model.DocumentName)
+    @Html.DisplayFor(model => model.GroupTemplateName)
 </div>
 
     <div class="display-label">@Html.LabelFor(model => model.LastEditDate)</div>

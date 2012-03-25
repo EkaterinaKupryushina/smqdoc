@@ -1,11 +1,16 @@
 ﻿@using MvcFront.DB
 @model MvcFront.DB.Document
 
-<legend>@Html.DisplayFor(model => model.DocumentName)</legend>
+<legend>@Html.DisplayFor(model => model.GroupTemplate.Name)</legend>
 
-    <div class="display-label">@Html.LabelFor(model => model.DocumentName)</div>
+    @*<div class="display-label">@Html.LabelFor(model => model.DocumentName)</div>
 <div class="display-field">
     @Html.DisplayFor(model => model.DocumentName)
+</div>*@
+
+<div class="display-label">@Html.LabelFor(model => model.GroupTemplate.Name)</div>
+<div class="display-field">
+    @Html.DisplayFor(model => model.GroupTemplate.Name)
 </div>
 
 <div class="display-label">@Html.LabelFor(model => model.CreationDate)</div>

@@ -175,5 +175,18 @@ namespace MvcFront.Controllers
             doc = _documentRepository.SaveDocument(doc);
             return View(doc);
         }
+
+
+        public ActionResult Submit(long id)
+        {            
+            _documentRepository.ChangeDocumentStatus(id, DocumentStatus.Submited);
+            return RedirectToAction("DocumentDetails", new { id = id });
+        }
+
+        public ActionResult Dismiss(long id)
+        {
+            _documentRepository.ChangeDocumentStatus(id, DocumentStatus.Editing);
+            return RedirectToAction("DocumentDetails", new { id = id });
+        }
     }
 }

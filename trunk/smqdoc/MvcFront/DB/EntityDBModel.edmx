@@ -114,7 +114,6 @@
     <Property Name="LastEditDate" Type="datetime" Nullable="false" />
     <Property Name="Status" Type="int" Nullable="false" />
     <Property Name="LastComment" Type="nvarchar(max)" Nullable="true" />
-    <Property Name="DocumentName" Type="nvarchar(max)" Nullable="false" />
     <Property Name="UserAccount_userid" Type="int" Nullable="false" />
     <Property Name="GroupTemplate_grouptemplateid" Type="bigint" Nullable="false" />
   </EntityType>
@@ -415,7 +414,6 @@
           <Property Type="DateTime" Name="LastEditDate" Nullable="false" />
           <Property Type="Int32" Name="Status" Nullable="false" />
           <Property Type="String" Name="LastComment" Nullable="true" MaxLength="Max" FixedLength="false" />
-          <Property Type="String" Name="DocumentName" Nullable="false" />
           <NavigationProperty Name="UserAccount" Relationship="smqdocModel.DocumentUserAccount" FromRole="Document" ToRole="UserAccount" />
           <Property Type="Int32" Name="UserAccount_userid" Nullable="false" />
           <NavigationProperty Name="DocFields" Relationship="smqdocModel.DocFieldDocument" FromRole="Document" ToRole="DocField" />
@@ -590,7 +588,6 @@
           <ScalarProperty Name="LastEditDate" ColumnName="LastEditDate" />
           <ScalarProperty Name="Status" ColumnName="Status" />
           <ScalarProperty Name="LastComment" ColumnName="LastComment" />
-          <ScalarProperty Name="DocumentName" ColumnName="DocumentName" />
           <ScalarProperty Name="UserAccount_userid" ColumnName="UserAccount_userid" />
           <ScalarProperty Name="GroupTemplate_grouptemplateid" ColumnName="GroupTemplate_grouptemplateid" />
         </MappingFragment>
@@ -665,7 +662,7 @@
           <ConnectorPoint PointX="2.375" PointY="9.6824446614583337" />
           <ConnectorPoint PointX="3.75" PointY="9.6824446614583337" />
         </AssociationConnector>
-        <EntityTypeShape EntityType="smqdocModel.Document" Width="1.5" PointX="3.625" PointY="5" Height="3.1340950520833335" />
+        <EntityTypeShape EntityType="smqdocModel.Document" Width="1.5" PointX="3.625" PointY="5" Height="2.9417936197916656" />
         <AssociationConnector Association="smqdocModel.DocumentUserAccount">
           <ConnectorPoint PointX="3.625" PointY="5" />
           <ConnectorPoint PointX="3.125" PointY="4.3359993489583326" />
