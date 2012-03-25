@@ -25,8 +25,12 @@ namespace MvcFront.Models
         public DateTime LastEditDate { get; set; }
         
 
-        [Display(Name = "Status")] [UIHint("Hidden")] 
+        [Display(Name = "Status")] 
+        [UIHint("Hidden")] 
         public bool IsReadOnly { get; set; }
+        [Display(Name = "Coloring")]
+        [UIHint("Hidden")]
+        public bool IsRed { get; set; }
         public DocumentListViewModel()
         {
         }
@@ -38,7 +42,12 @@ namespace MvcFront.Models
             LastComment = templ.LastComment;
             DocumentStatusText = templ.DocStatusText;
             IsReadOnly = templ.DocStatus != DocumentStatus.Editing;
+
+            IsRed = templ.GroupTemplate.DateEnd + new TimeSpan(2, 0, 0, 0) > DateTime.Now &&
+                    templ.Status == (int) DocumentStatus.Editing;
+
             GroupTemplateName = templ.GroupTemplate.Name;
+
         }
         public static DocumentListViewModel DocumentToModelConverter(Document templ)
         {        
