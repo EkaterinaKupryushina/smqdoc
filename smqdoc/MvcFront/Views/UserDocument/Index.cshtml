@@ -8,7 +8,10 @@
     function onRowDataBound(e) {
         if (e.dataItem.IsReadOnly > 0) {
             $(e.row).find('a.t-grid-EditDetails').remove(); 
-            $(e.row).find('a.t-grid-DeleteDetails').remove(); 
+            $(e.row).find('a.t-grid-DeleteDetails').remove();
+        }
+        if(e.dataItem.IsRed > 0) {
+            $(e.row).css("color","red");
         }
     }
 </script>
@@ -48,7 +51,7 @@
                        columns.AutoGenerate(column =>
                        {
                            column.Width = "150px";
-                           if (column.Member == "DocumentId" || column.Member == "IsReadOnly")
+                           if (column.Member == "DocumentId" || column.Member == "IsReadOnly" || column.Member == "IsRed")
                                column.Visible = false;
                        });
                        columns.Command(command =>
@@ -63,6 +66,7 @@
                             .HtmlAttributes(new { style = "text-align: center" });
                        }).Width(50);
                    })
+                  
                  .Sortable()
                 .Pageable()
 
