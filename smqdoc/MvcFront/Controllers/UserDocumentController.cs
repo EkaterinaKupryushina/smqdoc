@@ -33,7 +33,7 @@ namespace MvcFront.Controllers
         public ActionResult _UserDocumentsList()
         {
             var sessData = SessionHelper.GetUserSessionData(Session);
-            var data = _documentRepository.GetAll().Where(x => x.Status != (int)DocumentStatus.Deleted && x.UserAccount_userid == sessData.UserId 
+            var data = _documentRepository.GetAll().Where(x => x.Status != (int)DocumentStatus.Deleted &&x.GroupTemplate.Status != (int)GroupTemplateStatus.Deleted&& x.UserAccount_userid == sessData.UserId 
                 && x.GroupTemplate.UserGroup_usergroupid == sessData.UserGroupId).ToList().ConvertAll(DocumentListViewModel.DocumentToModelConverter).ToList();
 
             return View(new GridModel<DocumentListViewModel> { Data = data });

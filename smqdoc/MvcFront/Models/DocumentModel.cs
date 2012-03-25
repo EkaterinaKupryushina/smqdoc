@@ -23,7 +23,8 @@ namespace MvcFront.Models
         public string LastComment { get; set; }
         [Display(Name = "Дата последнего изменения")]
         public DateTime LastEditDate { get; set; }
-        
+        [Display(Name = "Окончание заполенния")]
+        public DateTime DateEnd { get; set; }
 
         [Display(Name = "Status")] 
         [UIHint("Hidden")] 
@@ -42,7 +43,7 @@ namespace MvcFront.Models
             LastComment = templ.LastComment;
             DocumentStatusText = templ.DocStatusText;
             IsReadOnly = templ.DocStatus != DocumentStatus.Editing;
-
+            DateEnd = templ.GroupTemplate.DateEnd;
             IsRed = templ.GroupTemplate.DateEnd + new TimeSpan(2, 0, 0, 0) > DateTime.Now &&
                     templ.Status == (int) DocumentStatus.Editing;
 
