@@ -44,7 +44,7 @@ namespace MvcFront.Models
             DocumentStatusText = templ.DocStatusText;
             IsReadOnly = templ.DocStatus != DocumentStatus.Editing;
             DateEnd = templ.GroupTemplate.DateEnd;
-            IsRed = templ.GroupTemplate.DateEnd + new TimeSpan(2, 0, 0, 0) > DateTime.Now &&
+            IsRed = templ.GroupTemplate.DateEnd < DateTime.Now.AddDays(2) &&
                     templ.Status == (int) DocumentStatus.Editing;
 
             GroupTemplateName = templ.GroupTemplate.Name;

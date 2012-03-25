@@ -43,8 +43,10 @@ namespace MvcFront.Models
             Status = tpl.GroupTemplateStatusText;
             DocTemplateName = tpl.DocTemplate.TemplateName;
             UserGroupName = tpl.UserGroup.GroupName;
-            IsRed = tpl.DateEnd + new TimeSpan(2, 0, 0, 0) > DateTime.Now &&
-                    tpl.Status == (int)DocumentStatus.Editing;        
+            //IsRed = tpl.DateEnd + new TimeSpan(2, 0, 0, 0) > DateTime.Now &&
+            //        tpl.Status == (int)DocumentStatus.Editing;        
+            IsRed = tpl.DateEnd < DateTime.Now.AddDays(2) &&
+                    tpl.Status == (int)GroupTemplateStatus.Active;
         }
         public static GroupTemplateListViewModel GroupTemplateToModelConverter(GroupTemplate tpl)
         {
