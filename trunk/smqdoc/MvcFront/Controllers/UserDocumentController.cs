@@ -33,8 +33,8 @@ namespace MvcFront.Controllers
         public ActionResult _UserDocumentsList()
         {
             var sessData = SessionHelper.GetUserSessionData(Session);
-            var data = _documentRepository.GetAll().Where(x => x.Status != (int)DocumentStatus.Deleted && x.UserAccount_userid == sessData.UserId)
-                .ToList().ConvertAll(DocumentListViewModel.DocumentToModelConverter).ToList();
+            var data = _documentRepository.GetAll().Where(x => x.Status != (int)DocumentStatus.Deleted && x.UserAccount_userid == sessData.UserId 
+                && x.GroupTemplate.UserGroup_usergroupid == sessData.UserGroupId).ToList().ConvertAll(DocumentListViewModel.DocumentToModelConverter).ToList();
 
             return View(new GridModel<DocumentListViewModel> { Data = data });
         }
@@ -44,7 +44,7 @@ namespace MvcFront.Controllers
         {
             var sessData = SessionHelper.GetUserSessionData(Session);
             var allUserGroupDocs =
-                _documentRepository.GetAll().Where(x => x.UserAccount_userid == sessData.UserId && x.Status != (int) DocumentStatus.Deleted)
+                _documentRepository.GetAll().Where(x => x.UserAccount_userid == sessData.UserId && x.Status != (int)DocumentStatus.Deleted && x.GroupTemplate.UserGroup_usergroupid == sessData.UserGroupId)
                     .Select(x => x.GroupTemplate_grouptemplateid).ToList();
 
             var data = _groupTemplateRepository.GetGroupTemplateByGroupId(sessData.UserGroupId).Where(x=>x.DateStart <= DateTime.Now 
