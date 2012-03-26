@@ -11,6 +11,9 @@
 @Html.DisplayForModel()
 </fieldset>
 <p>
-    @Html.ActionLink("Редактировать", "Edit", new { id=Model.documentid }) |
+    @if(Model.DocStatus == DocumentStatus.Editing)
+    {
+        @Html.ActionLink("Редактировать", "Edit", new {id = Model.documentid}) |
+    }
     @Html.ActionLink("Отмена", "Index")
 </p>

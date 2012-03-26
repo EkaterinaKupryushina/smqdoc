@@ -30,14 +30,14 @@ namespace MvcFront.Controllers
                 .ToList().ConvertAll(DocumentAppointmentListViewModel.GroupTemplateToModelConverter).ToList());
         }
 
-        //
-        // GET: /DocumentAppointment/Details/5
+        ////
+        //// GET: /DocumentAppointment/Details/5
 
-        public ActionResult Details(int id)
-        {
-            return View(_groupTemplateRepository.GetGroupTemplateById(id).Documents.Where(x => x.Status != (int)DocumentStatus.Deleted).ToList()
-                .ConvertAll(UserDocumentListViewModel.DocumentToModelConverter));
-        }
+        //public ActionResult Details(int id)
+        //{
+        //    return View(_groupTemplateRepository.GetGroupTemplateById(id).Documents.Where(x => x.Status != (int)DocumentStatus.Deleted).ToList()
+        //        .ConvertAll(UserDocumentListViewModel.DocumentToModelConverter));
+        //}
 
 
         //
@@ -189,10 +189,14 @@ namespace MvcFront.Controllers
             return RedirectToAction("DocumentDetails", new { id = id });
         }
 
-        public ActionResult GroupDocumentsList()
+        public ActionResult GroupDocumentsList(int? id)
         {
             var sesData =  SessionHelper.GetUserSessionData(Session);
-            return View(_documentRepository.GetAll().Where(x => x.GroupTemplate.UserGroup_usergroupid == sesData.UserGroupId)
+            if(id.HasValue && id.Value != 0)
+            {
+                ViewBag.GroupFilter = _groupTemplateRepository.GetGroupTemplateById(id.Value).Name;
+            }
+                return View(_documentRepository.GetAll().Where(x => x.GroupTemplate.UserGroup_usergroupid == sesData.UserGroupId && x.Status != (int)DocumentStatus.Deleted)
                         .ToList().ConvertAll(GroupDocumentListViewModel.DocumentToModelConverter));
         }
     }

@@ -4,6 +4,7 @@
     {
         private static SmqSettings _instance;
         private string _applicationName = "SmqDoc";
+        private int _deadlineDays = 7;
         private SmqSettings()
         {
         }
@@ -14,5 +15,10 @@
         }
 
         public string ApplicationName { get { return _applicationName; } set { _applicationName = value; } }
+        public int DocumentsDedlineWarning
+        {
+            get { return _deadlineDays; }
+            set { _deadlineDays = value; }
+        }
     }
 }

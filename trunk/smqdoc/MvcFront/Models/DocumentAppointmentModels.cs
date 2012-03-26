@@ -2,6 +2,7 @@
 using System.Linq;
  using System.ComponentModel.DataAnnotations;
  using MvcFront.DB;
+ using MvcFront.Infrastructure;
 
 namespace MvcFront.Models
 {
@@ -78,6 +79,7 @@ namespace MvcFront.Models
         }
         public UserDocumentListViewModel(Document templ)
         {
+            DocumentName = templ.GroupTemplate.Name;
             DocumentId = templ.documentid;            
             LastEditDate = templ.LastEditDate;
             LastComment = templ.LastComment;
@@ -128,7 +130,7 @@ namespace MvcFront.Models
             DocumentStatusText = templ.DocStatusText;
             IsReadOnly = templ.DocStatus != DocumentStatus.Editing;
             DateEnd = templ.GroupTemplate.DateEnd;
-            IsRed = templ.GroupTemplate.DateEnd < DateTime.Now.AddDays(2) &&
+            IsRed = templ.GroupTemplate.DateEnd < DateTime.Now.AddDays(SmqSettings.Instance.DocumentsDedlineWarning) &&
                     templ.Status == (int)DocumentStatus.Editing;
 
             GroupTemplateName = templ.GroupTemplate.Name;
