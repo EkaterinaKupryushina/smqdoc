@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
 using MvcFront.DB;
+using MvcFront.Infrastructure;
 
 namespace MvcFront.Models
 {
@@ -45,7 +46,7 @@ namespace MvcFront.Models
             UserGroupName = tpl.UserGroup.GroupName;
             //IsRed = tpl.DateEnd + new TimeSpan(2, 0, 0, 0) > DateTime.Now &&
             //        tpl.Status == (int)DocumentStatus.Editing;        
-            IsRed = tpl.DateEnd < DateTime.Now.AddDays(2) &&
+            IsRed = tpl.DateEnd < DateTime.Now.AddDays(SmqSettings.Instance.DocumentsDedlineWarning) &&
                     tpl.Status == (int)GroupTemplateStatus.Active;
         }
         public static GroupTemplateListViewModel GroupTemplateToModelConverter(GroupTemplate tpl)

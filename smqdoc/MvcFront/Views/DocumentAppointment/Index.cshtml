@@ -19,7 +19,7 @@
                        {
                            command.Custom("ViewDocuments").Text("Документы")
                           .DataRouteValues(route => route.Add(o => o.ID).RouteKey("id"))
-                          .Action("Details", "DocumentAppointment")
+                          .Action("GroupDocumentsList", "DocumentAppointment")
                           .HtmlAttributes(new { style = "text-align: center" });
                            
                            command.Custom("Edit").Text("Редактировать")

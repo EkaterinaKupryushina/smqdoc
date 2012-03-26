@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using MvcFront.DB;
 using MvcFront.Helpers;
+using MvcFront.Infrastructure;
 
 namespace MvcFront.Models
 {
@@ -44,7 +45,7 @@ namespace MvcFront.Models
             DocumentStatusText = templ.DocStatusText;
             IsReadOnly = templ.DocStatus != DocumentStatus.Editing;
             DateEnd = templ.GroupTemplate.DateEnd;
-            IsRed = templ.GroupTemplate.DateEnd < DateTime.Now.AddDays(2) &&
+            IsRed = templ.GroupTemplate.DateEnd < DateTime.Now.AddDays(SmqSettings.Instance.DocumentsDedlineWarning) &&
                     templ.Status == (int) DocumentStatus.Editing;
 
             GroupTemplateName = templ.GroupTemplate.Name;

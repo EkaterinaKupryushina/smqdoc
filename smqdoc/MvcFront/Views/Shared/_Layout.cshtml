@@ -52,7 +52,7 @@
                                    break;
                                 case SmqUserProfileType.Groupmanager:
                                     <li>@Html.ActionLink("Типы документов группы", "Index", "DocumentAppointment")</li>
-                                    <li>@Html.ActionLink("Документы группы", "GroupDocumentsList", "DocumentAppointment")</li>
+                                    <li>@Html.ActionLink("Документы группы", "GroupDocumentsList", "DocumentAppointment",new {id=0},null)</li>
                                     <li>@Html.ActionLink("Профиль пользователя", "Index", "Account")</li>
                                    break;
                                 case SmqUserProfileType.Groupuser:
