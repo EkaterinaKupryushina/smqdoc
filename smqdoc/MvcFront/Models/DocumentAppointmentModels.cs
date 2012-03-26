@@ -89,5 +89,54 @@ namespace MvcFront.Models
         {
             return new UserDocumentListViewModel(templ);
         }
+
+
+    }
+
+    public class GroupDocumentListViewModel
+    {
+        [Display(Name = "ID")]
+        [UIHint("Hidden")]
+        public long DocumentId { get; set; }
+        [Display(Name = "Название")]
+        public string GroupTemplateName { get; set; }
+        [Display(Name = "Статус")]
+        public string DocumentStatusText { get; set; }
+        [Display(Name = "Последний комментарий")]
+        public string LastComment { get; set; }
+        [Display(Name = "Последнее изменение")]
+        public DateTime LastEditDate { get; set; }
+        [Display(Name = "Окончание заполенния")]
+        public DateTime DateEnd { get; set; }
+        [Display(Name = "Сотрудник")]
+        public string UserName { get; set; }
+
+        [Display(Name = "Status")]
+        [UIHint("Hidden")]
+        public bool IsReadOnly { get; set; }
+        [Display(Name = "Coloring")]
+        [UIHint("Hidden")]
+        public bool IsRed { get; set; }
+        public GroupDocumentListViewModel()
+        {
+        }
+        public GroupDocumentListViewModel(Document templ)
+        {
+            DocumentId = templ.documentid;
+            LastEditDate = templ.LastEditDate;
+            LastComment = templ.LastComment;
+            DocumentStatusText = templ.DocStatusText;
+            IsReadOnly = templ.DocStatus != DocumentStatus.Editing;
+            DateEnd = templ.GroupTemplate.DateEnd;
+            IsRed = templ.GroupTemplate.DateEnd < DateTime.Now.AddDays(2) &&
+                    templ.Status == (int)DocumentStatus.Editing;
+
+            GroupTemplateName = templ.GroupTemplate.Name;
+            UserName = templ.UserAccount.FullName;
+        }
+        public static GroupDocumentListViewModel DocumentToModelConverter(Document templ)
+        {
+            return new GroupDocumentListViewModel(templ);
+        }
     }
 }

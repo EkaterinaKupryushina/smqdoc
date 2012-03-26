@@ -188,5 +188,12 @@ namespace MvcFront.Controllers
             _documentRepository.ChangeDocumentStatus(id, DocumentStatus.Editing);
             return RedirectToAction("DocumentDetails", new { id = id });
         }
+
+        public ActionResult GroupDocumentsList()
+        {
+            var sesData =  SessionHelper.GetUserSessionData(Session);
+            return View(_documentRepository.GetAll().Where(x => x.GroupTemplate.UserGroup_usergroupid == sesData.UserGroupId)
+                        .ToList().ConvertAll(GroupDocumentListViewModel.DocumentToModelConverter));
+        }
     }
 }

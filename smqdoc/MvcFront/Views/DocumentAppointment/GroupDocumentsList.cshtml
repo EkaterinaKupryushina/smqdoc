@@ -1,0 +1,46 @@
+﻿@using MvcFront.Models
+@using Telerik.Web.Mvc.UI
+@model IEnumerable<MvcFront.Models.GroupDocumentListViewModel>
+
+@{
+    ViewBag.Title = "GroupDocumentsList";
+}
+
+<script type="text/javascript">
+    function onDocumentListGridRowDataBound(e) {
+        if (e.dataItem.IsReadOnly > 0) {
+            $(e.row).find('a.t-grid-EditDetails').remove();
+            $(e.row).find('a.t-grid-DeleteDetails').remove();
+        }
+        if (e.dataItem.IsRed > 0) {
+            $(e.row).css("color", "red");
+        }
+    }
+</script>
+
+<h2>Список документов</h2>
+
+@(Html.Telerik().Grid(Model)
+        .ClientEvents(events => events.OnRowDataBound("onDocumentListGridRowDataBound"))
+        .Name("DocumentListGrid")
+                   .Columns(columns =>
+                   {
+                       columns.AutoGenerate(column =>
+                       {
+                           if (column.Member == "DocumentId" || column.Member == "IsReadOnly" || column.Member == "IsRed")
+                               column.Visible = false;
+                       });
+                       columns.Command(command =>
+                       {
+                           command.Custom("viewDetails").Text("Просмотр")
+                            .DataRouteValues(route => route.Add(o => o.DocumentId).RouteKey("id"))
+                            .Action("DocumentDetails", "DocumentAppointment")
+                            .HtmlAttributes(new { style = "text-align: center" });
+                       }).Width(50);
+                   })
+
+                 .Sortable()
+                .Pageable()
+                .Filterable()
+
+    ) 
