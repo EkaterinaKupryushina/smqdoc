@@ -7,6 +7,7 @@ namespace MvcFront.Interfaces
     public interface IDocTemplateRepository
     {
         IQueryable<DocTemplate> GetAllDocTeplates();
+        IQueryable<ComputableFieldTemplateParts> GetAllComputableFieldTempalteParts();
         DocTemplate GetDocTemplateById(Int64 id);
         bool SaveDocTemplate(DocTemplate entity);
         void DeleteDocTemplate(Int64 id);

@@ -2,6 +2,7 @@
 using System.Linq;
 using MvcFront.Interfaces;
 using MvcFront.DB;
+using System.Collections.Generic;
 
 namespace MvcFront.Repositories
 {
@@ -89,6 +90,7 @@ namespace MvcFront.Repositories
                 entity.MaxVal = null;
                 entity.MinVal = null;
             }
+
             if (entity.fieldteplateid == 0)
             {
                 var docTempl = GetDocTemplateById(entity.DocTemplate_docteplateid);
@@ -117,11 +119,37 @@ namespace MvcFront.Repositories
                     oldEntity.Restricted = entity.Restricted;
                     oldEntity.Status = entity.Status;
                 }
-            }
+            }            
             _unitOfWork.DbModel.SaveChanges();
+
+            /*
+            if (entity.TemplateType == FieldTemplateType.CALCULATED)
+            {
+                SaveCalculatedFieldTemplateParts(entity);
+            } 
+            */
             return true;
         }
 
+        private void SaveCalculatedFieldTemplateParts(FieldTemplate entity)
+        {
+            var lstOld = _unitOfWork.DbModel.ComputableFieldTemplateParts.Where(x => x.FieldTemplate.fieldteplateid == entity.fieldteplateid).ToList();
+            foreach (ComputableFieldTemplateParts oldItem in lstOld)
+            {
+                _unitOfWork.DbModel.ComputableFieldTemplateParts.DeleteObject(oldItem);
+            }
+
+            foreach (ComputableFieldTemplateParts newItem in entity.ComputableFieldTemplateParts)
+            {
+                _unitOfWork.DbModel.ComputableFieldTemplateParts.AddObject(newItem);
+            }
+            _unitOfWork.DbModel.SaveChanges();
+        }
+
+        //public IQueryable<DocTemplate> GetAllDocTeplates()
+        //{
+        //    return _unitOfWork.DbModel.DocTemplates.AsQueryable();
+        //}
         public void DeleteFieldTemplate(long TemplateFieldId)
         {
             var entity = GetFieldTemplateById(TemplateFieldId);
@@ -132,6 +160,12 @@ namespace MvcFront.Repositories
             _unitOfWork.DbModel.SaveChanges();
             if (entity != null) ReoderFields(entity.DocTemplate_docteplateid);
         }
+
+        public IQueryable<ComputableFieldTemplateParts> GetAllComputableFieldTempalteParts()
+        {
+            return _unitOfWork.DbModel.ComputableFieldTemplateParts.AsQueryable();
+        }
+
         public void SetFieldTemplateNumber(long TemplateFieldId, int newNumber)
         {
             var enFirst = GetFieldTemplateById(TemplateFieldId);
@@ -151,9 +185,9 @@ namespace MvcFront.Repositories
                 }
                 _unitOfWork.DbModel.SaveChanges();
                 ReoderFields(enFirst.DocTemplate_docteplateid);
-            }
-            
+            }            
         }
+
         private void ReoderFields(long docTemplId)
         {
             var docTempl = GetDocTemplateById(docTemplId);

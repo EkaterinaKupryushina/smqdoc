@@ -75,6 +75,12 @@ namespace MvcFront.Helpers
                                         retVal = "Строка";
                                         break;
                                     }
+
+                                case 3:
+                                    {
+                                        retVal = "Вычислимое";
+                                        break;
+                                    }
                             }
                             break;
                         }
@@ -168,6 +174,29 @@ namespace MvcFront.Helpers
                                 case 2:
                                     {
                                         retVal = "Удаленый";
+                                        break;
+                                    }
+                            }
+                            break;
+                        }
+
+                    case "CalculationOperationType":
+                        {
+                            switch (item)
+                            {
+                                case 0:
+                                    {
+                                        retVal = "-";
+                                        break;
+                                    }
+                                case 1:
+                                    {
+                                        retVal = "Сумма";
+                                        break;
+                                    }
+                                case 2:
+                                    {
+                                        retVal = "Среднее арифметическое";
                                         break;
                                     }
                             }

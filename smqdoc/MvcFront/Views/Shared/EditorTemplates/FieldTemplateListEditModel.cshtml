@@ -17,11 +17,12 @@
     @Html.LabelFor(model => model.FieldType)
 </div>
 <div class="editor-field">
-    @Html.Telerik().DropDownList().Name("FieldType").Items(item => 
+    @Html.Telerik().DropDownList().Name("FieldType").Items(item =>
     {
         item.Add().Text("Да/Нет").Value("0").Selected(@Model.FieldType == 0);
         item.Add().Text("Число").Value("1").Selected(@Model.FieldType == 1);
         item.Add().Text("Строка").Value("2").Selected(@Model.FieldType == 2);
+        item.Add().Text("Вычислимое").Value("3").Selected(@Model.FieldType == 3);
     }).ClientEvents(events => events.OnChange("FieldType_onChange"))
     @Html.ValidationMessageFor(model => model.FieldType)
 </div>
@@ -50,7 +51,68 @@
         </div>
     </div>
 </div>
-
+<div id="CalcBlockId">
+    <div class="editor-label">
+        @Html.LabelFor(model => model.OperationType)
+    </div>
+    <div class="editor-field">
+        @Html.Telerik().DropDownList().Name("OperationType").Items(item =>
+    {
+        item.Add().Text("-").Value("0").Selected(@Model.OperationType == 0);
+        item.Add().Text("Сумма").Value("1").Selected(@Model.OperationType == 1);
+        item.Add().Text("Ср. арифметическое").Value("2").Selected(@Model.OperationType == 2);
+    })
+        @Html.ValidationMessageFor(model => model.OperationType)
+        <div class="display-label">
+            Поля шаблона</div>
+        @(Html.Telerik().Grid<MvcFront.Models.FieldTemplateListViewModel>()
+                  .DataBinding(dataBinding => dataBinding.Ajax().Select("_FieldTemplateListNotUsedForCalc", "DocTemplateList", new { docTemplID = Model.DocTemplateId, fieldTemplId = Model.FieldTemplateId }))
+                  .Name("NotAddedFieldTemplatesListGrid")
+                  .ClientEvents(events => events.OnComplete("onComplete"))
+                   .Columns(columns =>
+                   {
+                       columns.AutoGenerate(column =>
+                       {
+                           if (column.Member == "FieldTemplateId" || column.Member == "OperationTypeText" || column.Member == "FieldTypeText")
+                               column.Visible = false;
+                       });
+                       columns.Command(command =>
+                       {
+                           command.Custom("AddFieldToCalc")
+                            .Text("Добавить поле")
+                            .DataRouteValues(route => route.Add(o => o.FieldTemplateId).RouteKey("fieldTemplateId"))
+                            .Ajax(true)
+                            .Action("AddFieldToCalc", "DocTemplateList")
+                            .HtmlAttributes(new { style = "text-align: center" });
+                       }).Width(80);
+                   })
+    )
+        Добавленные
+        <br />
+        @(Html.Telerik().Grid<MvcFront.Models.FieldTemplateListViewModel>()
+                              .DataBinding(dataBinding => dataBinding.Ajax().Select("_FieldTemplateListUsedForCalc", "DocTemplateList", new { docTemplID = Model.DocTemplateId, fieldTemplId = Model.FieldTemplateId }))
+                 .Name("AddedFieldTemplatesListGrid")
+                      .ClientEvents(events => events.OnComplete("onComplete"))
+                       .Columns(columns =>
+                       {
+                           columns.AutoGenerate(column =>
+                           {
+                               if (column.Member == "FieldTemplateId" || column.Member == "OperationTypeText" || column.Member == "FieldTypeText")
+                                   column.Visible = false;
+                           });
+                           columns.Command(command =>
+                           {
+                               command.Custom("DeleteFieldFromCalc")
+                                .Text("Удалить")
+                                .DataRouteValues(route => route.Add(o => o.FieldTemplateId).RouteKey("fieldTemplateId"))
+                                .Ajax(true)
+                                .Action("DeleteFieldFromCalc", "DocTemplateList")
+                                .HtmlAttributes(new { style = "text-align: center" });
+                           }).Width(80);
+                       })
+        )
+    </div>
+</div>
 <script type="text/javascript">
     $(document).ready(function () {
         $('#IntBlockId').hide();
@@ -70,20 +132,35 @@
             }
         });
     });
-   
-//    function SHMinMax() {
-//        if ($('#IsRestricted').is(':checked')) {
-//            $('#RestictId').show();
-//        } else {
-//            $('#RestictId').hide();
-//        }
-//    }
+
     function FieldType_onChange() {
         var ddl = $('#FieldType').data('tDropDownList');
         if (ddl.value() == 1) {
-            $('#IntBlockId').show();
+            $('#IntBlockId').show();           
+            $('#CalcBlockId').hide();
         } else {
             $('#IntBlockId').hide();
+        }
+
+        if (ddl.value() == 3) {
+            $('#CalcBlockId').show();
+            $('#IntBlockId').hide();
+        } else {
+            $('#CalcBlockId').hide();
+        }
+    }
+
+    function onComplete(e) {
+        if (e.name == "AddFieldToCalc" || e.name == "DeleteFieldFromCalc") {        
+            var grid1 = $('#AddedFieldTemplatesListGrid').data("tGrid");
+            if (grid1 != null) {
+                grid1.rebind();
+            }
+            var grid2 = $('#NotAddedFieldTemplatesListGrid').data("tGrid");
+            if (grid2 != null) {
+
+                grid2.rebind();
+            }
         }
     }
 </script>

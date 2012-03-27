@@ -5,6 +5,7 @@ using MvcFront.Interfaces;
 using MvcFront.DB;
 using MvcFront.Models;
 using Telerik.Web.Mvc;
+using System.Collections.Generic;
 
 namespace MvcFront.Controllers
 {
@@ -27,10 +28,45 @@ namespace MvcFront.Controllers
         [GridAction]
         public ActionResult _FieldTemplateList(long templId)
         {
-            var data = _templateRepository.GetDocTemplateById(templId).FieldTeplates.Where(x => x.Status != (int)FieldTemplateStatus.Deleted).OrderBy(x=>x.OrderNumber).ToList()
+            var data = _templateRepository.GetDocTemplateById(templId).FieldTeplates.Where(x => x.Status != (int)FieldTemplateStatus.Deleted).OrderBy(x => x.OrderNumber).ToList()
                 .ConvertAll(FieldTemplateListViewModel.FieldToModelConverter);
             return View(new GridModel<FieldTemplateListViewModel> { Data = data });
         }
+
+        //Возращает список полей шаблона использованных для создания вычислимого поля
+        [GridAction]
+        public ActionResult _FieldTemplateListUsedForCalc(long docTemplID, long fieldTemplID)
+        {
+            var tpl = _templateRepository.GetFieldTemplateById(fieldTemplID);
+            List<ComputableFieldTemplateParts> lst = _templateRepository.GetAllComputableFieldTempalteParts().Where(x => x.FieldTemplate_fieldteplateid == tpl.fieldteplateid && x.Status == (int)FieldTemplateStatus.Active).ToList();
+            List<long> userTemplatesIDs = new List<long>();
+            foreach (ComputableFieldTemplateParts item in lst)
+                userTemplatesIDs.Add(item.fkCalculatedFieldTemplateID);
+
+            var data = _templateRepository.GetDocTemplateById(docTemplID).FieldTeplates.Where(x => userTemplatesIDs.Contains((int)x.fieldteplateid)).OrderBy(x => x.OrderNumber).ToList()
+                .ConvertAll(FieldTemplateListViewModel.FieldToModelConverter);
+            return View(new GridModel<FieldTemplateListViewModel> { Data = data });
+        }
+
+        //Возращает список полей шаблона не использованных доступных для создания вычислимого поля
+        [GridAction]
+        public ActionResult _FieldTemplateListNotUsedForCalc(long docTemplID, long fieldTemplID)
+        {
+
+            var tpl = _templateRepository.GetFieldTemplateById(fieldTemplID);
+            List<ComputableFieldTemplateParts> lst = _templateRepository.GetAllComputableFieldTempalteParts().Where(x => x.FieldTemplate_fieldteplateid == tpl.fieldteplateid && x.Status == (int)FieldTemplateStatus.Active).ToList();
+            List<long> userTemplatesIDs = new List<long>();
+            foreach (ComputableFieldTemplateParts item in lst)
+                userTemplatesIDs.Add(item.fkCalculatedFieldTemplateID);
+
+            var data = _templateRepository.GetDocTemplateById(docTemplID).FieldTeplates.Where(x => !userTemplatesIDs.Contains((int)x.fieldteplateid)).OrderBy(x => x.OrderNumber).ToList()
+                .ConvertAll(FieldTemplateListViewModel.FieldToModelConverter);
+
+            //var data = _templateRepository.GetDocTemplateById(docTemplID).FieldTeplates.Where(x => x.Status != (int)FieldTemplateStatus.Deleted && x.FiledType == (int)FieldTemplateType.NUMBER).OrderBy(x => x.OrderNumber).ToList()
+            //                .ConvertAll(FieldTemplateListViewModel.FieldToModelConverter);
+            return View(new GridModel<FieldTemplateListViewModel> { Data = data });
+        }
+
 
         //
         // GET: /DocTemplate/Details/5
@@ -151,6 +187,24 @@ namespace MvcFront.Controllers
         public JsonResult DeleteField(long id,long fieldTemplateId)
         {
             _templateRepository.DeleteFieldTemplate(fieldTemplateId);
+            return Json(new { result = true });
+        }
+
+        public JsonResult AddFieldToCalc(long id, long fieldTemplateId)
+        {
+            var entity = _templateRepository.GetFieldTemplateById(id);
+            entity.ComputableFieldTemplateParts.Add(new ComputableFieldTemplateParts() { FieldTemplate = entity, fkCalculatedFieldTemplateID = fieldTemplateId, Status=(int)FieldTemplateStatus.Active });
+            _templateRepository.SaveFieldTemplate(entity);
+
+            return Json(new { result = true });
+        }
+
+        public JsonResult DeleteFieldFromCalc(long id,  long fieldTemplateId)
+        {
+            var entity = _templateRepository.GetFieldTemplateById(id);            
+            var delTpl = entity.ComputableFieldTemplateParts.Where(x => x.fkCalculatedFieldTemplateID == fieldTemplateId).FirstOrDefault();
+            delTpl.Status = (int)FieldTemplateStatus.Deleted;            
+            _templateRepository.SaveFieldTemplate(entity);
             return Json(new { result = true });
         }
 

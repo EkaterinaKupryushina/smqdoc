@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 03/25/2012 11:33:21
+-- Date Created: 03/27/2012 23:37:54
 -- Generated from EDMX file: G:\Works\smqDocNet\smqdoc\MvcFront\DB\EntityDBModel.edmx
 -- --------------------------------------------------
 
@@ -47,6 +47,9 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_DocumentGroupTemplate]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Documents] DROP CONSTRAINT [FK_DocumentGroupTemplate];
 GO
+IF OBJECT_ID(N'[dbo].[FK_ComputableFieldTemplatePartsFieldTemplate]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ComputableFieldTemplateParts] DROP CONSTRAINT [FK_ComputableFieldTemplatePartsFieldTemplate];
+GO
 
 -- --------------------------------------------------
 -- Dropping existing tables
@@ -72,6 +75,9 @@ IF OBJECT_ID(N'[dbo].[DocFields]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[GroupTemplates]', 'U') IS NOT NULL
     DROP TABLE [dbo].[GroupTemplates];
+GO
+IF OBJECT_ID(N'[dbo].[ComputableFieldTemplateParts]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ComputableFieldTemplateParts];
 GO
 IF OBJECT_ID(N'[dbo].[GroupUsers]', 'U') IS NOT NULL
     DROP TABLE [dbo].[GroupUsers];
@@ -127,7 +133,8 @@ CREATE TABLE [dbo].[FieldTemplates] (
     [MinVal] float  NULL,
     [DocTemplate_docteplateid] bigint  NOT NULL,
     [OrderNumber] int  NOT NULL,
-    [Status] int  NOT NULL
+    [Status] int  NOT NULL,
+    [OperationType] int  NOT NULL
 );
 GO
 
@@ -163,6 +170,15 @@ CREATE TABLE [dbo].[GroupTemplates] (
     [Status] int  NOT NULL,
     [UserGroup_usergroupid] int  NOT NULL,
     [DocTemplate_docteplateid] bigint  NOT NULL
+);
+GO
+
+-- Creating table 'ComputableFieldTemplateParts'
+CREATE TABLE [dbo].[ComputableFieldTemplateParts] (
+    [computableFieldTemplatePartsID] bigint IDENTITY(1,1) NOT NULL,
+    [fkCalculatedFieldTemplateID] bigint  NOT NULL,
+    [FieldTemplate_fieldteplateid] bigint  NOT NULL,
+    [Status] int  NOT NULL
 );
 GO
 
@@ -217,6 +233,12 @@ GO
 ALTER TABLE [dbo].[GroupTemplates]
 ADD CONSTRAINT [PK_GroupTemplates]
     PRIMARY KEY CLUSTERED ([grouptemplateid] ASC);
+GO
+
+-- Creating primary key on [computableFieldTemplatePartsID] in table 'ComputableFieldTemplateParts'
+ALTER TABLE [dbo].[ComputableFieldTemplateParts]
+ADD CONSTRAINT [PK_ComputableFieldTemplateParts]
+    PRIMARY KEY CLUSTERED ([computableFieldTemplatePartsID] ASC);
 GO
 
 -- Creating primary key on [MemberGroups_usergroupid], [Members_userid] in table 'GroupUsers'
@@ -362,6 +384,20 @@ ADD CONSTRAINT [FK_DocumentGroupTemplate]
 CREATE INDEX [IX_FK_DocumentGroupTemplate]
 ON [dbo].[Documents]
     ([GroupTemplate_grouptemplateid]);
+GO
+
+-- Creating foreign key on [FieldTemplate_fieldteplateid] in table 'ComputableFieldTemplateParts'
+ALTER TABLE [dbo].[ComputableFieldTemplateParts]
+ADD CONSTRAINT [FK_ComputableFieldTemplatePartsFieldTemplate]
+    FOREIGN KEY ([FieldTemplate_fieldteplateid])
+    REFERENCES [dbo].[FieldTemplates]
+        ([fieldteplateid])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_ComputableFieldTemplatePartsFieldTemplate'
+CREATE INDEX [IX_FK_ComputableFieldTemplatePartsFieldTemplate]
+ON [dbo].[ComputableFieldTemplateParts]
+    ([FieldTemplate_fieldteplateid]);
 GO
 
 -- --------------------------------------------------
