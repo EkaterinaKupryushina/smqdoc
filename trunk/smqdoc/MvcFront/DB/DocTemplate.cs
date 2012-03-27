@@ -15,7 +15,8 @@ namespace MvcFront.DB
     {
         BOOL,
         NUMBER,
-        STRING
+        STRING,
+        CALCULATED
     }
     public enum FieldTemplateStatus
     {
@@ -23,6 +24,13 @@ namespace MvcFront.DB
         Unactive,
         Deleted
     }
+    public enum CalculationOperationType
+    {
+        NONE,
+        AGGREGATE,
+        AVERAGE
+    }
+
     [MetadataType(typeof(DocTemplateMetadata))]
     public partial class DocTemplate
     {
@@ -113,6 +121,28 @@ namespace MvcFront.DB
                 return DictionaryHelper.GetEnumText(typeof(FieldTemplateType), Status);
             }
         }
+
+        [Display(Name = "Операция для вычисления значения")]
+        public CalculationOperationType CalculationType
+        {
+            get
+            {
+                return (CalculationOperationType)OperationType;
+            }
+            set
+            {
+                OperationType = (int)value;
+            }
+        }
+        [Display(Name = "Операция для вычисления значения")]
+        public string CalculationTypeText
+        {
+            get
+            {
+                return DictionaryHelper.GetEnumText(typeof(CalculationOperationType), (int)OperationType);
+            }
+        }
+
     }
     public class FieldTemplateMetadata
     {
@@ -140,5 +170,7 @@ namespace MvcFront.DB
         public int Status { get; set; }
         [Display(Name = "Родительский шаблон")]
         public DocTemplate DocTemplate { get; set; }
+        [Display(Name = "Операция для вычисления значения")]
+        public int OperationType { get; set; }
     }
 }

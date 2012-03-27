@@ -14,7 +14,7 @@ namespace MvcFront.Models
         [Display(Name = "ID")]
         [UIHint("Hidden")]
         public long DocumentId { get; set; }
-        //[Display(Name = "Названире документа")]
+        //[Display(Name = "Название документа")]
         //public string DocumentName { get; set; }
         [Display(Name = "Название документа")]
         public string GroupTemplateName { get; set; }
@@ -62,7 +62,7 @@ namespace MvcFront.Models
         [Display(Name = "ID")]
         [UIHint("Hidden")]
         public long DocumentId { get; set; }
-        //[Display(Name = "Названире документа")]
+        //[Display(Name = "Название документа")]
         //public string DocumentName { get; set; }
         [Display(Name = "Название документа")]
         public string GroupTemplateName { get; set; }
@@ -125,6 +125,8 @@ namespace MvcFront.Models
         [Display(Name = "Значение")]
         [Required]
         public bool BoolValue { get; set; }
+        [Display(Name = "Операция вычисления")]
+        public int? CalcOperationType { get; set; }
 
         public DocFieldEditModel()
         {
@@ -143,6 +145,8 @@ namespace MvcFront.Models
             StringValue = item.StringValue;
             BoolValue = item.BoolValue ?? false;
             DoubleValue = item.DoubleValue;
+            CalcOperationType = item.FieldTemplate.OperationType;
+
         }
         public DocField Update(DocField item)
         {
@@ -162,6 +166,12 @@ namespace MvcFront.Models
                     item.BoolValue = null;
                     item.StringValue = StringValue;
                     item.DoubleValue = null;
+                    break;
+                case FieldTemplateType.CALCULATED:
+                    //TODO: Add calculation
+                    item.BoolValue = null;
+                    item.StringValue = null;
+                    item.DoubleValue = DoubleValue;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

@@ -12,7 +12,7 @@ namespace MvcFront.Models
         [Display(Name = "ID")]
         [UIHint("Hidden")]
         public long DocTemplateId { get; set; }
-        [Display(Name = "Названире шаблона")]
+        [Display(Name = "Название шаблона")]
         public string DocTemplateName { get; set; }
         [Display(Name = "Дата последнего изменения")]
         public DateTime LastEditDate { get; set; }
@@ -67,7 +67,7 @@ namespace MvcFront.Models
         [Display(Name = "ID")]
         [UIHint("Hidden")]
         public long DocTemplateId { get; set; }
-        [Display(Name = "Названире шаблона")]
+        [Display(Name = "Название шаблона")]
         public string DocTemplateName { get; set; }
         [Display(Name = "Описание шаблона")]
         [DataType(DataType.MultilineText)]
@@ -96,12 +96,14 @@ namespace MvcFront.Models
         public long FieldTemplateId { get; set; }
         [Display(Name = "№")]
         public long OrderNumber { get; set; }
-        [Display(Name = "Названире шаблона")]
+        [Display(Name = "Название шаблона")]
         public string FieldTemplateName { get; set; }
         [Display(Name = "Тип поля")]
         public string FieldTypeText { get; set; }
         [Display(Name = "Статус поля")]
         public string FieldStatusText { get; set; }
+        [Display(Name = "Тип операции")]
+        public string OperationTypeText { get; set; }
 
         public FieldTemplateListViewModel()
         {
@@ -112,6 +114,7 @@ namespace MvcFront.Models
             OrderNumber = templ.OrderNumber;
             FieldTemplateName = templ.FieldName;
             FieldStatusText = DictionaryHelper.GetEnumText(typeof(FieldTemplateStatus),templ.Status);
+            OperationTypeText = DictionaryHelper.GetEnumText(typeof(CalculationOperationType), templ.OperationType);
             FieldTypeText = DictionaryHelper.GetEnumText(typeof(FieldTemplateType),templ.FiledType);
         }
         public static FieldTemplateListViewModel FieldToModelConverter(FieldTemplate templ)
@@ -129,7 +132,7 @@ namespace MvcFront.Models
         public long DocTemplateId { get; set; }
 
         [Required]
-        [Display(Name = "Названире поля")]
+        [Display(Name = "Название поля")]
         public string FieldTemplateName { get; set; }
         [Required]
         [Display(Name = "Тип поля")]
@@ -144,6 +147,9 @@ namespace MvcFront.Models
         [Display(Name = "Минимальное значение")]
         public double? MinVal { get; set; }
 
+        [Display(Name = "Тип операции")]
+        public int OperationType { get; set; }
+
         public FieldTemplateListEditModel()
         {
         }
@@ -153,6 +159,8 @@ namespace MvcFront.Models
             DocTemplateId = templ.DocTemplate_docteplateid;
             FieldTemplateName = templ.FieldName;
             FieldType = templ.FiledType;
+            OperationType = templ.OperationType;
+
             IsRestricted = templ.Restricted.HasValue && templ.Restricted.Value ;
             MaxVal = templ.MaxVal;
             MinVal = templ.MinVal;
@@ -163,6 +171,7 @@ namespace MvcFront.Models
             templ.DocTemplate_docteplateid = DocTemplateId;
             templ.FieldName = FieldTemplateName;
             templ.FiledType = FieldType;
+            templ.OperationType = OperationType;
 
             templ.Restricted = IsRestricted;
             templ.MaxVal = MaxVal;

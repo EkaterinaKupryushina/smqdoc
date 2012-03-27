@@ -27,6 +27,7 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("smqdocModel", "GroupTemplateUserGroup", "GroupTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.GroupTemplate), "UserGroup", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.UserGroup), true)]
 [assembly: EdmRelationshipAttribute("smqdocModel", "GroupTemplateDocTemplate", "GroupTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.GroupTemplate), "DocTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.DocTemplate), true)]
 [assembly: EdmRelationshipAttribute("smqdocModel", "DocumentGroupTemplate", "Document", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.Document), "GroupTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.GroupTemplate), true)]
+[assembly: EdmRelationshipAttribute("smqdocModel", "ComputableFieldTemplatePartsFieldTemplate", "ComputableFieldTemplateParts", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.ComputableFieldTemplateParts), "FieldTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.FieldTemplate), true)]
 
 #endregion
 
@@ -189,6 +190,22 @@ namespace MvcFront.DB
             }
         }
         private ObjectSet<GroupTemplate> _GroupTemplates;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<ComputableFieldTemplateParts> ComputableFieldTemplateParts
+        {
+            get
+            {
+                if ((_ComputableFieldTemplateParts == null))
+                {
+                    _ComputableFieldTemplateParts = base.CreateObjectSet<ComputableFieldTemplateParts>("ComputableFieldTemplateParts");
+                }
+                return _ComputableFieldTemplateParts;
+            }
+        }
+        private ObjectSet<ComputableFieldTemplateParts> _ComputableFieldTemplateParts;
 
         #endregion
         #region AddTo Methods
@@ -248,6 +265,14 @@ namespace MvcFront.DB
         {
             base.AddObject("GroupTemplates", groupTemplate);
         }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the ComputableFieldTemplateParts EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToComputableFieldTemplateParts(ComputableFieldTemplateParts computableFieldTemplateParts)
+        {
+            base.AddObject("ComputableFieldTemplateParts", computableFieldTemplateParts);
+        }
 
         #endregion
     }
@@ -256,6 +281,180 @@ namespace MvcFront.DB
     #endregion
     
     #region Entities
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="smqdocModel", Name="ComputableFieldTemplateParts")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class ComputableFieldTemplateParts : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new ComputableFieldTemplateParts object.
+        /// </summary>
+        /// <param name="computableFieldTemplatePartsID">Initial value of the computableFieldTemplatePartsID property.</param>
+        /// <param name="fkCalculatedFieldTemplateID">Initial value of the fkCalculatedFieldTemplateID property.</param>
+        /// <param name="fieldTemplate_fieldteplateid">Initial value of the FieldTemplate_fieldteplateid property.</param>
+        /// <param name="status">Initial value of the Status property.</param>
+        public static ComputableFieldTemplateParts CreateComputableFieldTemplateParts(global::System.Int64 computableFieldTemplatePartsID, global::System.Int64 fkCalculatedFieldTemplateID, global::System.Int64 fieldTemplate_fieldteplateid, global::System.Int32 status)
+        {
+            ComputableFieldTemplateParts computableFieldTemplateParts = new ComputableFieldTemplateParts();
+            computableFieldTemplateParts.computableFieldTemplatePartsID = computableFieldTemplatePartsID;
+            computableFieldTemplateParts.fkCalculatedFieldTemplateID = fkCalculatedFieldTemplateID;
+            computableFieldTemplateParts.FieldTemplate_fieldteplateid = fieldTemplate_fieldteplateid;
+            computableFieldTemplateParts.Status = status;
+            return computableFieldTemplateParts;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int64 computableFieldTemplatePartsID
+        {
+            get
+            {
+                return _computableFieldTemplatePartsID;
+            }
+            set
+            {
+                if (_computableFieldTemplatePartsID != value)
+                {
+                    OncomputableFieldTemplatePartsIDChanging(value);
+                    ReportPropertyChanging("computableFieldTemplatePartsID");
+                    _computableFieldTemplatePartsID = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("computableFieldTemplatePartsID");
+                    OncomputableFieldTemplatePartsIDChanged();
+                }
+            }
+        }
+        private global::System.Int64 _computableFieldTemplatePartsID;
+        partial void OncomputableFieldTemplatePartsIDChanging(global::System.Int64 value);
+        partial void OncomputableFieldTemplatePartsIDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int64 fkCalculatedFieldTemplateID
+        {
+            get
+            {
+                return _fkCalculatedFieldTemplateID;
+            }
+            set
+            {
+                OnfkCalculatedFieldTemplateIDChanging(value);
+                ReportPropertyChanging("fkCalculatedFieldTemplateID");
+                _fkCalculatedFieldTemplateID = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("fkCalculatedFieldTemplateID");
+                OnfkCalculatedFieldTemplateIDChanged();
+            }
+        }
+        private global::System.Int64 _fkCalculatedFieldTemplateID;
+        partial void OnfkCalculatedFieldTemplateIDChanging(global::System.Int64 value);
+        partial void OnfkCalculatedFieldTemplateIDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int64 FieldTemplate_fieldteplateid
+        {
+            get
+            {
+                return _FieldTemplate_fieldteplateid;
+            }
+            set
+            {
+                OnFieldTemplate_fieldteplateidChanging(value);
+                ReportPropertyChanging("FieldTemplate_fieldteplateid");
+                _FieldTemplate_fieldteplateid = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("FieldTemplate_fieldteplateid");
+                OnFieldTemplate_fieldteplateidChanged();
+            }
+        }
+        private global::System.Int64 _FieldTemplate_fieldteplateid;
+        partial void OnFieldTemplate_fieldteplateidChanging(global::System.Int64 value);
+        partial void OnFieldTemplate_fieldteplateidChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Status
+        {
+            get
+            {
+                return _Status;
+            }
+            set
+            {
+                OnStatusChanging(value);
+                ReportPropertyChanging("Status");
+                _Status = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Status");
+                OnStatusChanged();
+            }
+        }
+        private global::System.Int32 _Status;
+        partial void OnStatusChanging(global::System.Int32 value);
+        partial void OnStatusChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "ComputableFieldTemplatePartsFieldTemplate", "FieldTemplate")]
+        public FieldTemplate FieldTemplate
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<FieldTemplate>("smqdocModel.ComputableFieldTemplatePartsFieldTemplate", "FieldTemplate").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<FieldTemplate>("smqdocModel.ComputableFieldTemplatePartsFieldTemplate", "FieldTemplate").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<FieldTemplate> FieldTemplateReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<FieldTemplate>("smqdocModel.ComputableFieldTemplatePartsFieldTemplate", "FieldTemplate");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<FieldTemplate>("smqdocModel.ComputableFieldTemplatePartsFieldTemplate", "FieldTemplate", value);
+                }
+            }
+        }
+
+        #endregion
+    }
     
     /// <summary>
     /// No Metadata Documentation available.
@@ -1283,6 +1482,30 @@ namespace MvcFront.DB
         private global::System.Int32 _Status;
         partial void OnStatusChanging(global::System.Int32 value);
         partial void OnStatusChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 OperationType
+        {
+            get
+            {
+                return _OperationType;
+            }
+            set
+            {
+                OnOperationTypeChanging(value);
+                ReportPropertyChanging("OperationType");
+                _OperationType = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("OperationType");
+                OnOperationTypeChanged();
+            }
+        }
+        private global::System.Int32 _OperationType = 0;
+        partial void OnOperationTypeChanging(global::System.Int32 value);
+        partial void OnOperationTypeChanged();
 
         #endregion
     
@@ -1344,6 +1567,28 @@ namespace MvcFront.DB
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<DocField>("smqdocModel.DocFieldFieldTemplate", "DocField", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "ComputableFieldTemplatePartsFieldTemplate", "ComputableFieldTemplateParts")]
+        public EntityCollection<ComputableFieldTemplateParts> ComputableFieldTemplateParts
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<ComputableFieldTemplateParts>("smqdocModel.ComputableFieldTemplatePartsFieldTemplate", "ComputableFieldTemplateParts");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<ComputableFieldTemplateParts>("smqdocModel.ComputableFieldTemplatePartsFieldTemplate", "ComputableFieldTemplateParts", value);
                 }
             }
         }

@@ -60,7 +60,7 @@ namespace MvcFront.Models
         [Display(Name = "ID")]
         [UIHint("Hidden")]
         public long DocumentId { get; set; }
-        [Display(Name = "Названире документа")]
+        [Display(Name = "Название документа")]
         public string DocumentName { get; set; }
         [Display(Name = "Имя автора")]
         public string UserName { get; set; }
