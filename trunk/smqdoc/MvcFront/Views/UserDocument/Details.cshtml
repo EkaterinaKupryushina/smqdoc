@@ -13,7 +13,7 @@
 <p>
     @if(Model.DocStatus == DocumentStatus.Editing)
     {
-        @Html.ActionLink("Редактировать", "Edit", new {id = Model.documentid}) |
+        @Html.ActionLink("Редактировать", "Edit", new {id = Model.documentid}) <text>|</text>
     }
     @Html.ActionLink("Отмена", "Index")
 </p>

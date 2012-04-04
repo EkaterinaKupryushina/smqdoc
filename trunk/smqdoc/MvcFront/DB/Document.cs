@@ -68,7 +68,7 @@ namespace MvcFront.DB
                     return StringValue ?? "";
                     break;
                 case FieldTemplateType.CALCULATED:
-                    return "getvaluestring должен возвращать"; //FIXIT
+                    return DoubleValue == null ? "" : string.Format("{0}", DoubleValue);
                 default:
                     throw new ArgumentOutOfRangeException();
             }
