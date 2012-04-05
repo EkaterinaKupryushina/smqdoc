@@ -63,12 +63,14 @@
         item.Add().Text("Ср. арифметическое").Value("2").Selected(@Model.OperationType == 2);
     })
         @Html.ValidationMessageFor(model => model.OperationType)
-        <div class="display-label">
-            Поля шаблона</div>
+@*        <div class="display-label">
+            Поля шаблона</div>*@
         @(Html.Telerik().Grid<MvcFront.Models.FieldTemplateListViewModel>()
                   .DataBinding(dataBinding => dataBinding.Ajax().Select("_FieldTemplateListNotUsedForCalc", "DocTemplateList", new { docTemplID = Model.DocTemplateId, fieldTemplId = Model.FieldTemplateId }))
                   .Name("NotAddedFieldTemplatesListGrid")
+                  
                   .ClientEvents(events => events.OnComplete("onComplete"))
+                  .HtmlAttributes(new { style = Model.FieldTemplateId > 0 ? "display: block; " : "display: none; " })
                    .Columns(columns =>
                    {
                        columns.AutoGenerate(column =>
@@ -79,20 +81,21 @@
                        columns.Command(command =>
                        {
                            command.Custom("AddFieldToCalc")
-                            .Text("Добавить поле")
+                            .Text("Добавить для вычисления")
                             .DataRouteValues(route => route.Add(o => o.FieldTemplateId).RouteKey("fieldTemplateId"))
                             .Ajax(true)
                             .Action("AddFieldToCalc", "DocTemplateList")
                             .HtmlAttributes(new { style = "text-align: center" });
-                       }).Width(80);
+                       }).Width(160);
                    })
     )
-        Добавленные
+@*        Добавленные*@
         <br />
         @(Html.Telerik().Grid<MvcFront.Models.FieldTemplateListViewModel>()
                               .DataBinding(dataBinding => dataBinding.Ajax().Select("_FieldTemplateListUsedForCalc", "DocTemplateList", new { docTemplID = Model.DocTemplateId, fieldTemplId = Model.FieldTemplateId }))
                  .Name("AddedFieldTemplatesListGrid")
                       .ClientEvents(events => events.OnComplete("onComplete"))
+                      .HtmlAttributes(new { style = Model.FieldTemplateId > 0 ? "display: block; " : "display: none; " })
                        .Columns(columns =>
                        {
                            columns.AutoGenerate(column =>
@@ -103,12 +106,12 @@
                            columns.Command(command =>
                            {
                                command.Custom("DeleteFieldFromCalc")
-                                .Text("Удалить")
+                                .Text("Удалить из вычисления")
                                 .DataRouteValues(route => route.Add(o => o.FieldTemplateId).RouteKey("fieldTemplateId"))
                                 .Ajax(true)
                                 .Action("DeleteFieldFromCalc", "DocTemplateList")
                                 .HtmlAttributes(new { style = "text-align: center" });
-                           }).Width(80);
+                           }).Width(160);
                        })
         )
     </div>
@@ -136,7 +139,7 @@
     function FieldType_onChange() {
         var ddl = $('#FieldType').data('tDropDownList');
         if (ddl.value() == 1) {
-            $('#IntBlockId').show();           
+            $('#IntBlockId').show();
             $('#CalcBlockId').hide();
         } else {
             $('#IntBlockId').hide();
@@ -151,7 +154,7 @@
     }
 
     function onComplete(e) {
-        if (e.name == "AddFieldToCalc" || e.name == "DeleteFieldFromCalc") {        
+        if (e.name == "AddFieldToCalc" || e.name == "DeleteFieldFromCalc") {
             var grid1 = $('#AddedFieldTemplatesListGrid').data("tGrid");
             if (grid1 != null) {
                 grid1.rebind();
