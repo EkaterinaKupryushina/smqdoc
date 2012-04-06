@@ -1,17 +1,30 @@
 ﻿@using Telerik.Web.Mvc.UI
 @using MvcFront.Models
 @model MvcFront.DB.DocTemplate
-
 @{
     ViewBag.Title = "DocTemplateFieldsManagment";
 }
-
-<h2>Управление полями</h2>
+<h2>
+    Управление полями</h2>
 <fieldset>
-@Html.DisplayForModel()
-<div class="display-label">Поля шаблона</div>
-@Html.ActionLink("Добавить поле", "AddField", new { id=Model.docteplateid});
- @(Html.Telerik().Grid<FieldTemplateListViewModel>()
+    @Html.DisplayForModel()
+    <div class="display-label">
+        Поля шаблона</div>
+    
+    @{
+        if (Model.IsEditable)
+        {
+            @Html.ActionLink("Добавить поле", "AddField", new { id = Model.docteplateid });
+        }
+        else
+        {   
+             <div class="display-label">
+                <span style="color: red;">Для выбранного шаблона уже заполнены документы. Редактирование невозможно.</span>
+            </div>
+        }
+    }
+
+    @(Html.Telerik().Grid<FieldTemplateListViewModel>()
              .DataBinding(dataBinding => dataBinding.Ajax().Select("_FieldTemplateList", "DocTemplateList", new { templId = Model.docteplateid }))
              .Name("FieldTeplateListGrid")
                   .ClientEvents(events => events.OnComplete("onComplete"))
@@ -35,7 +48,7 @@
                             .Ajax(true)
                             .Action("DeleteField", "DocTemplateList")
                             .HtmlAttributes(new { style = "text-align: center" });
-                       }).Width(80);
+                       }).Width(80).Visible(Model.IsEditable);
                        columns.Command(command =>
                        {
                            command.Custom("UpDetails")
@@ -50,11 +63,10 @@
                             .Ajax(true)
                             .Action("DownField", "DocTemplateList")
                             .HtmlAttributes(new { style = "text-align: center" });
-                       }).Width(80);
+                       }).Width(80).Visible(Model.IsEditable);
                    })
-    ) 
+    )
 </fieldset>
-
 <script type="text/javascript">
     function onComplete(e) {
         if (e.name == "DeleteDetails" || e.name == "DownDetails" || e.name == "UpDetails") {

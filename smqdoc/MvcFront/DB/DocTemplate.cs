@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Data.Objects.DataClasses;
 using MvcFront.Helpers;
+using System.Linq;
 
 namespace MvcFront.DB
 {
@@ -34,6 +35,35 @@ namespace MvcFront.DB
     [MetadataType(typeof(DocTemplateMetadata))]
     public partial class DocTemplate
     {
+        private bool? isEditable = null;
+
+        public Boolean IsEditable 
+        {
+            get 
+            {
+                if (isEditable.HasValue) 
+                    return (bool)isEditable;
+                
+                if (docteplateid > 0)
+                {
+
+                    int cnt = (from gt in GroupTemplates from doc in gt.Documents where doc.Status != (int)DocumentStatus.Deleted select doc).Count();
+                    if (cnt > 0)
+                    {
+                        isEditable = false;
+                        return (bool)isEditable;
+                    }
+                }
+                
+                isEditable = true;
+                return (bool)isEditable;
+            }
+            set 
+            { 
+                isEditable = value;  
+            }
+        }
+
         [Display(Name = "Статус шаблона")]
         public DocTemplateStatus TemplateStatus
         {

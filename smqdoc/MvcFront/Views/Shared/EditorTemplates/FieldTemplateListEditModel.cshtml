@@ -58,7 +58,7 @@
     <div class="editor-field">
         @Html.Telerik().DropDownList().Name("OperationType").Items(item =>
     {
-        item.Add().Text("-").Value("0").Selected(@Model.OperationType == 0);
+        //item.Add().Text("-").Value("0").Selected(@Model.OperationType == 0);
         item.Add().Text("Сумма").Value("1").Selected(@Model.OperationType == 1);
         item.Add().Text("Ср. арифметическое").Value("2").Selected(@Model.OperationType == 2);
     })

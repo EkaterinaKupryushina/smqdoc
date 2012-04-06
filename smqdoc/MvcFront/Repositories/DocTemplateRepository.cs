@@ -52,7 +52,7 @@ namespace MvcFront.Repositories
             _unitOfWork.DbModel.SaveChanges();
             return true;
         }
-
+        
         public void DeleteDocTemplate(long id)
         {
             var entity = GetDocTemplateById(id);
