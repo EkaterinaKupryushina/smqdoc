@@ -127,6 +127,8 @@ namespace MvcFront.Models
         public bool BoolValue { get; set; }
         [Display(Name = "Операция вычисления")]
         public int? CalcOperationType { get; set; }
+        [UIHint("Hidden")]
+        public List<long> ComputebleFieldIds { get; set; }
 
         public DocFieldEditModel()
         {
@@ -146,7 +148,16 @@ namespace MvcFront.Models
             BoolValue = item.BoolValue ?? false;
             DoubleValue = item.DoubleValue;
             CalcOperationType = item.FieldTemplate.OperationType;
-
+            if(item.FieldTemplate.TemplateType == FieldTemplateType.CALCULATED)
+            {
+                ComputebleFieldIds = new List<long>();
+                foreach (var part in item.FieldTemplate.ComputableFieldTemplateParts)
+                {
+                    var field = item.Document.DocFields.FirstOrDefault(x => x.FieldTemplate_fieldteplateid == part.fkCalculatedFieldTemplateID);
+                    if (field != null && field.FieldTemplate.TemplateType == FieldTemplateType.NUMBER)
+                        ComputebleFieldIds.Add(field.docfieldid);
+                }
+            }
         }
         public DocField Update(DocField item)
         {
