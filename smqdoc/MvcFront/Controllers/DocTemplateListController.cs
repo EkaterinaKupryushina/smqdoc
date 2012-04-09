@@ -59,7 +59,7 @@ namespace MvcFront.Controllers
             foreach (ComputableFieldTemplateParts item in lst)
                 userTemplatesIDs.Add(item.fkCalculatedFieldTemplateID);
 
-            var data = _templateRepository.GetDocTemplateById(docTemplID).FieldTeplates.Where(x => !userTemplatesIDs.Contains((int)x.fieldteplateid)).OrderBy(x => x.OrderNumber).ToList()
+            var data = _templateRepository.GetDocTemplateById(docTemplID).FieldTeplates.Where(x => !userTemplatesIDs.Contains((int)x.fieldteplateid) && x.FiledType == (int)FieldTemplateType.NUMBER ).OrderBy(x => x.OrderNumber).ToList()
                 .ConvertAll(FieldTemplateListViewModel.FieldToModelConverter);
 
             //var data = _templateRepository.GetDocTemplateById(docTemplID).FieldTeplates.Where(x => x.Status != (int)FieldTemplateStatus.Deleted && x.FiledType == (int)FieldTemplateType.NUMBER).OrderBy(x => x.OrderNumber).ToList()

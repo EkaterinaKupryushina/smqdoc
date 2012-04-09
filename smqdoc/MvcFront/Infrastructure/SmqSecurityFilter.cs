@@ -26,8 +26,11 @@ namespace MvcFront.Infrastructure
                 //var routeData = filterContext.RouteData.Values;
                 //var httpContext = filterContext.RequestContext.HttpContext;
                 //Старницы авторизации
+
                 if (controllerType == typeof(AccountController))
                     return;
+
+
                 if (!filterContext.HttpContext.User.Identity.IsAuthenticated)
                 {
                         SessionHelper.ClearUserSessionData(filterContext.HttpContext.Session);
