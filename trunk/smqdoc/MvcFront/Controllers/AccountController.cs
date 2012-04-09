@@ -21,6 +21,10 @@ namespace MvcFront.Controllers
 
         public ActionResult Index()
         {
+            SmqUserSessionData sessData = SessionHelper.GetUserSessionData(Session);
+            if (sessData == null)
+                return RedirectToAction("LogOn");
+
             return View();
         }
 
@@ -46,9 +50,59 @@ namespace MvcFront.Controllers
                     {
                         return Redirect(returnUrl);
                     }
-                    return RedirectToAction("Index", "Home");
+                    //return RedirectToAction("Index", "Home");
+                    
+                        //Читаем код последнего профиля пользовтаеля
+                        var userProfileType = SmqUserProfileType.User;
+                        var userProfileName = "Пользователь";
+                        string userProfileGroupName = null;
+                        var userProfileGroupId = 0;
+                        int? groupId;
+                        bool isManager;
+                        SessionHelper.ParseUserProfileCode(user.LastAccessProfileCode,out groupId,out isManager);
+                        if (groupId == null && isManager)
+                        {
+                            userProfileGroupId = 0;
+                            userProfileType = SmqUserProfileType.Systemadmin;
+                            userProfileName = "Администратор";
+
+                        }
+                        if (groupId == null && !isManager)
+                        {
+                            userProfileGroupId = 0;
+                            userProfileType = SmqUserProfileType.User;
+                            userProfileName = "Пользователь";
+
+                        }
+                        if(groupId != null && isManager)
+                        {
+                            var group = user.ManagedGroups.FirstOrDefault(x => x.usergroupid == groupId);
+                            if(group != null)
+                            {
+                                userProfileGroupName = group.GroupName;
+                                userProfileGroupId = group.usergroupid;
+                                userProfileType = SmqUserProfileType.Groupmanager;
+                                userProfileName = "Менеджер " + userProfileGroupName;
+                            }
+                        }
+                        if (groupId != null && !isManager)
+                        {
+                            var group = user.MemberGroups.FirstOrDefault(x => x.usergroupid == groupId);
+                            if (group != null)
+                            {
+                                userProfileGroupName = group.GroupName;
+                                userProfileGroupId = group.usergroupid;
+                                userProfileType = SmqUserProfileType.Groupuser;
+                                userProfileName = "Участник " + userProfileGroupName;
+                            }
+                        }
+                        var sessData = new SmqUserSessionData {UserName = user.Login,UserId = user.userid,UserType = userProfileType,
+                            CurrentProfileName = userProfileName,UserGroupName = userProfileGroupName,UserGroupId = userProfileGroupId};
+                        SessionHelper.SetUserSessionData(Session,sessData);
+                        
+                    return RedirectToAction("Index");
                 }
-                ModelState.AddModelError("", "Не верный логин/Пароль");
+                ModelState.AddModelError("", "Неверный логин/Пароль");
             }
             // If we got this far, something failed, redisplay form
             return View(model);

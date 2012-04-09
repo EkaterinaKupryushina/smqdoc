@@ -29,14 +29,15 @@
         <div id="header">
             <div id="title">
                 <h1>
-                    СМК</h1>
+                    Система Менеджмента Качества</h1>
             </div>
             <div id="logindisplay">
                 @Html.Partial("_LogOnPartial")
             </div>
             <div id="menucontainer">
                 <ul id="menu">
-                    <li>@Html.ActionLink("Домой", "Index", "Home")</li>
+                 @*   <li>@Html.ActionLink("Домой", "Index", "Home")</li>*@
+                    <li>@Html.ActionLink("Профиль", "Index", "Account")</li>
                     @{
                         var sessState = SessionHelper.GetUserSessionData(Session);
                         if (sessState != null)
@@ -48,19 +49,19 @@
                                     <li>@Html.ActionLink("Группы", "Index", "UserGroupList")</li>
                                     <li>@Html.ActionLink("Шаблоны", "Index", "DocTemplateList")</li>
                                     <li>@Html.ActionLink("Связи шаблонов и групп", "Index", "GroupTemplateList")</li>
-                                    <li>@Html.ActionLink("Профиль пользователя", "Index", "Account")</li>
+                                    @*<li>@Html.ActionLink("Профиль пользователя", "Index", "Account")</li>*@
                                    break;
                                 case SmqUserProfileType.Groupmanager:
                                     <li>@Html.ActionLink("Типы документов группы", "Index", "DocumentAppointment")</li>
                                     <li>@Html.ActionLink("Документы группы", "GroupDocumentsList", "DocumentAppointment",new {id=0},null)</li>
-                                    <li>@Html.ActionLink("Профиль пользователя", "Index", "Account")</li>
+                                    @*<li>@Html.ActionLink("Профиль пользователя", "Index", "Account")</li>*@
                                    break;
                                 case SmqUserProfileType.Groupuser:
                                     <li>@Html.ActionLink("Документы", "Index", "UserDocument")</li>
-                                    <li>@Html.ActionLink("Профиль пользователя", "Index", "Account")</li>
+                                    @*<li>@Html.ActionLink("Профиль пользователя", "Index", "Account")</li>*@
                                    break;
                                 case SmqUserProfileType.User:
-                                    <li>@Html.ActionLink("Профиль пользователя", "Index", "Account")</li>
+                                    @*<li>@Html.ActionLink("Профиль пользователя", "Index", "Account")</li>*@
                                    break;
                                 case SmqUserProfileType.Anonymous:
                                    break;

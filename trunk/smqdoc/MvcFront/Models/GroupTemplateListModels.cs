@@ -48,6 +48,7 @@ namespace MvcFront.Models
             //        tpl.Status == (int)DocumentStatus.Editing;        
             IsRed = tpl.DateEnd < DateTime.Now.AddDays(SmqSettings.Instance.DocumentsDedlineWarning) &&
                     tpl.Status == (int)GroupTemplateStatus.Active;
+            
         }
         public static GroupTemplateListViewModel GroupTemplateToModelConverter(GroupTemplate tpl)
         {
