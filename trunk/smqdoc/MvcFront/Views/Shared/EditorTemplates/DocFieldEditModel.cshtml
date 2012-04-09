@@ -12,13 +12,15 @@
             @Html.EditorFor(x => x.BoolValue);
             break;
         case FieldTemplateType.NUMBER:
-            @(Model.IsRestricted ? Html.Telerik().NumericTextBoxFor(x => x.DoubleValue).MaxValue(Model.MaxVal).MinValue(Model.MinVal).EmptyMessage("Введите число") : Html.Telerik().NumericTextBoxFor(x => x.DoubleValue).EmptyMessage("Введите число"))
-            break;
+            @(Model.IsRestricted ? Html.Telerik().NumericTextBoxFor(x => x.DoubleValue).MaxValue(Model.MaxVal).MinValue(Model.MinVal).EmptyMessage("Введите число").InputHtmlAttributes(new Dictionary<string, object> {{"docFieldId", Model.FieldId}}) : Html.Telerik().NumericTextBoxFor(x => x.DoubleValue).EmptyMessage("Введите число").InputHtmlAttributes(new Dictionary<string, object> {{"docFieldId", Model.FieldId}}))
+        break;
         case FieldTemplateType.STRING:
             @Html.EditorFor(x => x.StringValue,new {@class="stringfield"})
             break;         
         case FieldTemplateType.CALCULATED:
-            @Html.Telerik().NumericTextBoxFor(x => x.DoubleValue).Enable(false);
+            var ids = "";
+            Model.ComputebleFieldIds.ForEach(x=>ids+=x.ToString()+";");
+            @Html.Telerik().NumericTextBoxFor(x => x.DoubleValue).Enable(false).InputHtmlAttributes(new Dictionary<string, object> {{"calcids", ids},{"calcoper",Model.CalcOperationType}});
             break;     
         default:
             throw new ArgumentOutOfRangeException();
