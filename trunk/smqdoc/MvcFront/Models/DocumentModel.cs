@@ -27,8 +27,8 @@ namespace MvcFront.Models
         [Display(Name = "Окончание заполенния")]
         public DateTime DateEnd { get; set; }
 
-        [Display(Name = "Status")] 
-        [UIHint("Hidden")] 
+        [Display(Name = "Status")]
+        [UIHint("Hidden")]
         public bool IsReadOnly { get; set; }
         [Display(Name = "Coloring")]
         [UIHint("Hidden")]
@@ -46,18 +46,18 @@ namespace MvcFront.Models
             IsReadOnly = templ.DocStatus != DocumentStatus.Editing;
             DateEnd = templ.GroupTemplate.DateEnd;
             IsRed = templ.GroupTemplate.DateEnd < DateTime.Now.AddDays(SmqSettings.Instance.DocumentsDedlineWarning) &&
-                    templ.Status == (int) DocumentStatus.Editing;
+                    templ.Status == (int)DocumentStatus.Editing;
 
             GroupTemplateName = templ.GroupTemplate.Name;
 
         }
         public static DocumentListViewModel DocumentToModelConverter(Document templ)
-        {        
+        {
             return new DocumentListViewModel(templ);
         }
     }
 
-    public class DocumentEditModel 
+    public class DocumentEditModel
     {
         [Display(Name = "ID")]
         [UIHint("Hidden")]
@@ -78,7 +78,8 @@ namespace MvcFront.Models
         {
             Fields = new List<DocFieldEditModel>();
         }
-        public DocumentEditModel(Document templ):this()
+        public DocumentEditModel(Document templ)
+            : this()
         {
             DocumentId = templ.documentid;
             GroupTemplateName = templ.GroupTemplate.Name;
@@ -159,9 +160,9 @@ namespace MvcFront.Models
                 }
             }
         }
-        public DocField Update(DocField item)
+        public DocField Update(DocField item, Document doc = null)
         {
-            switch((FieldTemplateType)FieldType)
+            switch ((FieldTemplateType)FieldType)
             {
                 case FieldTemplateType.BOOL:
                     item.BoolValue = BoolValue;
@@ -179,7 +180,9 @@ namespace MvcFront.Models
                     item.DoubleValue = null;
                     break;
                 case FieldTemplateType.CALCULATED:
-                    //TODO: Add calculation
+                    if (doc != null)
+                        DoubleValue = CalculateValue(doc, item);
+
                     item.BoolValue = null;
                     item.StringValue = null;
                     item.DoubleValue = DoubleValue;
@@ -187,9 +190,34 @@ namespace MvcFront.Models
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-
             return item;
         }
+
+        private Double CalculateValue(Document doc, DocField field)
+        {
+            Double res = 0;
+            List<long> lstFieldTemplateIDs = field.FieldTemplate.ComputableFieldTemplateParts
+                                                                .Where(x => x.FieldTemplate_fieldteplateid == field.FieldTemplate_fieldteplateid)
+                                                                .Select(x => x.fkCalculatedFieldTemplateID).ToList();
+
+            List<double?> lstValues = doc.DocFields
+                                          .Where(x => lstFieldTemplateIDs.Contains(x.FieldTemplate.fieldteplateid))
+                                          .Select(x => x.DoubleValue).ToList();
+
+            switch (field.FieldTemplate.OperationType)
+            {
+                case (int)CalculationOperationType.AGGREGATE:
+                    res = (double)lstValues.Sum();
+                    break;
+
+                case (int)CalculationOperationType.AVERAGE:
+                    res = (double)lstValues.Average();
+                    break;
+            }
+
+            return res;
+        }
+
         public static DocFieldEditModel FieldToModelConverter(DocField templ)
         {
             return new DocFieldEditModel(templ);
