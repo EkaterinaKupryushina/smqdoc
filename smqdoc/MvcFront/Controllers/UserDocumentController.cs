@@ -97,7 +97,15 @@ namespace MvcFront.Controllers
                 var doc = _documentRepository.GetDocumentById(model.DocumentId);
                 foreach (var field in model.Fields)
                 {
-                    field.Update(doc.DocFields.Single(x => x.docfieldid == field.FieldId));
+                    if (field.FieldType == (int)FieldTemplateType.CALCULATED)
+                    {
+                        field.Update(doc.DocFields.Single(x => x.docfieldid == field.FieldId), doc);
+                    }
+                    else
+                    {
+                        field.Update(doc.DocFields.Single(x => x.docfieldid == field.FieldId));
+                    }
+                    
                 }
                 _documentRepository.SaveDocument(doc);
                 if (Request.Form["send"] != null)
