@@ -20,8 +20,8 @@
         case FieldTemplateType.CALCULATED:
             var ids = "";
             Model.ComputebleFieldIds.ForEach(x=>ids+=x.ToString()+";");
-            @Html.Telerik().NumericTextBoxFor(x => x.DoubleValue).Enable(false).InputHtmlAttributes(new Dictionary<string, object> {{"calcids", ids},{"calcoper",Model.CalcOperationType}});
-            break;     
+            @Html.TextBoxFor(x => x.DoubleValue,new Dictionary<string, object> {{"calcids", ids},{"calcoper",Model.CalcOperationType},{ "readonly","true" }})
+       break;     
         default:
             throw new ArgumentOutOfRangeException();
     }
