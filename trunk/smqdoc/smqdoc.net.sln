@@ -9,6 +9,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{92BA56
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ELW.Library.Math", "ELW.Library.Math\ELW.Library.Math.csproj", "{0374C9F1-8508-421C-82A7-8D5DADB2B49A}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -23,6 +25,10 @@ Global
 		{2A973376-5271-4B32-8A4C-417DBA865978}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A973376-5271-4B32-8A4C-417DBA865978}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A973376-5271-4B32-8A4C-417DBA865978}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0374C9F1-8508-421C-82A7-8D5DADB2B49A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0374C9F1-8508-421C-82A7-8D5DADB2B49A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0374C9F1-8508-421C-82A7-8D5DADB2B49A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0374C9F1-8508-421C-82A7-8D5DADB2B49A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
