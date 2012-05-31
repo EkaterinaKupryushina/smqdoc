@@ -38,7 +38,7 @@ namespace MvcFront.Controllers
         public ActionResult _FieldTemplateListUsedForCalc(long docTemplID, long fieldTemplID)
         {
             var tpl = _templateRepository.GetFieldTemplateById(fieldTemplID);
-            List<ComputableFieldTemplateParts> lst = _templateRepository.GetAllComputableFieldTempalteParts().Where(x => x.FieldTemplate_fieldteplateid == tpl.fieldteplateid && x.Status == (int)FieldTemplateStatus.Active).ToList();
+            List<ComputableFieldTemplateParts> lst = _templateRepository.GetAllComputableFieldTempalteParts().Where(x => x.FieldTemplate_fieldteplateid == tpl.fieldteplateid).ToList();
             List<long> userTemplatesIDs = new List<long>();
             foreach (ComputableFieldTemplateParts item in lst)
                 userTemplatesIDs.Add(item.fkCalculatedFieldTemplateID);
@@ -54,7 +54,7 @@ namespace MvcFront.Controllers
         {
 
             var tpl = _templateRepository.GetFieldTemplateById(fieldTemplID);
-            List<ComputableFieldTemplateParts> lst = _templateRepository.GetAllComputableFieldTempalteParts().Where(x => x.FieldTemplate_fieldteplateid == tpl.fieldteplateid && x.Status == (int)FieldTemplateStatus.Active).ToList();
+            List<ComputableFieldTemplateParts> lst = _templateRepository.GetAllComputableFieldTempalteParts().Where(x => x.FieldTemplate_fieldteplateid == tpl.fieldteplateid).ToList();
             List<long> userTemplatesIDs = new List<long>();
             foreach (ComputableFieldTemplateParts item in lst)
                 userTemplatesIDs.Add(item.fkCalculatedFieldTemplateID);
@@ -193,7 +193,7 @@ namespace MvcFront.Controllers
         public JsonResult AddFieldToCalc(long id, long fieldTemplateId)
         {
             var entity = _templateRepository.GetFieldTemplateById(id);
-            entity.ComputableFieldTemplateParts.Add(new ComputableFieldTemplateParts() { FieldTemplate = entity, fkCalculatedFieldTemplateID = fieldTemplateId, Status=(int)FieldTemplateStatus.Active });
+            entity.ComputableFieldTemplateParts.Add(new ComputableFieldTemplateParts() { FieldTemplate = entity, fkCalculatedFieldTemplateID = fieldTemplateId});
             _templateRepository.SaveFieldTemplate(entity);
 
             return Json(new { result = true });
@@ -202,8 +202,7 @@ namespace MvcFront.Controllers
         public JsonResult DeleteFieldFromCalc(long id,  long fieldTemplateId)
         {
             var entity = _templateRepository.GetFieldTemplateById(id);            
-            var delTpl = entity.ComputableFieldTemplateParts.Where(x => x.fkCalculatedFieldTemplateID == fieldTemplateId).FirstOrDefault();
-            delTpl.Status = (int)FieldTemplateStatus.Deleted;            
+            var delTpl = entity.ComputableFieldTemplateParts.Where(x => x.fkCalculatedFieldTemplateID == fieldTemplateId).FirstOrDefault();           
             _templateRepository.SaveFieldTemplate(entity);
             return Json(new { result = true });
         }

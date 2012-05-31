@@ -152,26 +152,26 @@ namespace MvcFront.DB
             }
         }
 
-        [Display(Name = "Операция для вычисления значения")]
-        public CalculationOperationType CalculationType
-        {
-            get
-            {
-                return (CalculationOperationType)OperationType;
-            }
-            set
-            {
-                OperationType = (int)value;
-            }
-        }
-        [Display(Name = "Операция для вычисления значения")]
-        public string CalculationTypeText
-        {
-            get
-            {
-                return DictionaryHelper.GetEnumText(typeof(CalculationOperationType), (int)OperationType);
-            }
-        }
+        //[Display(Name = "Операция для вычисления значения")]
+        //public CalculationOperationType CalculationType
+        //{
+        //    get
+        //    {
+        //        return (CalculationOperationType)OperationType;
+        //    }
+        //    set
+        //    {
+        //        OperationType = (int)value;
+        //    }
+        //}
+        //[Display(Name = "Операция для вычисления значения")]
+        //public string CalculationTypeText
+        //{
+        //    get
+        //    {
+        //        return DictionaryHelper.GetEnumText(typeof(CalculationOperationType), (int)OperationType);
+        //    }
+        //}
 
     }
     public class FieldTemplateMetadata
