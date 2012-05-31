@@ -102,8 +102,6 @@ namespace MvcFront.Models
         public string FieldTypeText { get; set; }
         [Display(Name = "Статус поля")]
         public string FieldStatusText { get; set; }
-        [Display(Name = "Тип операции")]
-        public string OperationTypeText { get; set; }
 
         public FieldTemplateListViewModel()
         {
@@ -114,7 +112,6 @@ namespace MvcFront.Models
             OrderNumber = templ.OrderNumber;
             FieldTemplateName = templ.FieldName;
             FieldStatusText = DictionaryHelper.GetEnumText(typeof(FieldTemplateStatus),templ.Status);
-            OperationTypeText = DictionaryHelper.GetEnumText(typeof(CalculationOperationType), templ.OperationType);
             FieldTypeText = DictionaryHelper.GetEnumText(typeof(FieldTemplateType),templ.FiledType);
         }
         public static FieldTemplateListViewModel FieldToModelConverter(FieldTemplate templ)
@@ -147,9 +144,6 @@ namespace MvcFront.Models
         [Display(Name = "Минимальное значение")]
         public double? MinVal { get; set; }
 
-        [Display(Name = "Тип операции")]
-        public int OperationType { get; set; }
-
         public FieldTemplateListEditModel()
         {
         }
@@ -159,7 +153,6 @@ namespace MvcFront.Models
             DocTemplateId = templ.DocTemplate_docteplateid;
             FieldTemplateName = templ.FieldName;
             FieldType = templ.FiledType;
-            OperationType = templ.OperationType;
 
             IsRestricted = templ.Restricted.HasValue && templ.Restricted.Value ;
             MaxVal = templ.MaxVal;
@@ -171,7 +164,6 @@ namespace MvcFront.Models
             templ.DocTemplate_docteplateid = DocTemplateId;
             templ.FieldName = FieldTemplateName;
             templ.FiledType = FieldType;
-            templ.OperationType = OperationType;
 
             templ.Restricted = IsRestricted;
             templ.MaxVal = MaxVal;

@@ -298,14 +298,14 @@ namespace MvcFront.DB
         /// <param name="computableFieldTemplatePartsID">Initial value of the computableFieldTemplatePartsID property.</param>
         /// <param name="fkCalculatedFieldTemplateID">Initial value of the fkCalculatedFieldTemplateID property.</param>
         /// <param name="fieldTemplate_fieldteplateid">Initial value of the FieldTemplate_fieldteplateid property.</param>
-        /// <param name="status">Initial value of the Status property.</param>
-        public static ComputableFieldTemplateParts CreateComputableFieldTemplateParts(global::System.Int64 computableFieldTemplatePartsID, global::System.Int64 fkCalculatedFieldTemplateID, global::System.Int64 fieldTemplate_fieldteplateid, global::System.Int32 status)
+        /// <param name="orderNumber">Initial value of the OrderNumber property.</param>
+        public static ComputableFieldTemplateParts CreateComputableFieldTemplateParts(global::System.Int64 computableFieldTemplatePartsID, global::System.Int64 fkCalculatedFieldTemplateID, global::System.Int64 fieldTemplate_fieldteplateid, global::System.Int32 orderNumber)
         {
             ComputableFieldTemplateParts computableFieldTemplateParts = new ComputableFieldTemplateParts();
             computableFieldTemplateParts.computableFieldTemplatePartsID = computableFieldTemplatePartsID;
             computableFieldTemplateParts.fkCalculatedFieldTemplateID = fkCalculatedFieldTemplateID;
             computableFieldTemplateParts.FieldTemplate_fieldteplateid = fieldTemplate_fieldteplateid;
-            computableFieldTemplateParts.Status = status;
+            computableFieldTemplateParts.OrderNumber = orderNumber;
             return computableFieldTemplateParts;
         }
 
@@ -392,24 +392,24 @@ namespace MvcFront.DB
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.Int32 Status
+        public global::System.Int32 OrderNumber
         {
             get
             {
-                return _Status;
+                return _OrderNumber;
             }
             set
             {
-                OnStatusChanging(value);
-                ReportPropertyChanging("Status");
-                _Status = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("Status");
-                OnStatusChanged();
+                OnOrderNumberChanging(value);
+                ReportPropertyChanging("OrderNumber");
+                _OrderNumber = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("OrderNumber");
+                OnOrderNumberChanged();
             }
         }
-        private global::System.Int32 _Status;
-        partial void OnStatusChanging(global::System.Int32 value);
-        partial void OnStatusChanged();
+        private global::System.Int32 _OrderNumber;
+        partial void OnOrderNumberChanging(global::System.Int32 value);
+        partial void OnOrderNumberChanged();
 
         #endregion
     
@@ -1486,26 +1486,26 @@ namespace MvcFront.DB
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.Int32 OperationType
+        public global::System.String OperationExpression
         {
             get
             {
-                return _OperationType;
+                return _OperationExpression;
             }
             set
             {
-                OnOperationTypeChanging(value);
-                ReportPropertyChanging("OperationType");
-                _OperationType = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("OperationType");
-                OnOperationTypeChanged();
+                OnOperationExpressionChanging(value);
+                ReportPropertyChanging("OperationExpression");
+                _OperationExpression = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("OperationExpression");
+                OnOperationExpressionChanged();
             }
         }
-        private global::System.Int32 _OperationType = 0;
-        partial void OnOperationTypeChanging(global::System.Int32 value);
-        partial void OnOperationTypeChanged();
+        private global::System.String _OperationExpression;
+        partial void OnOperationExpressionChanging(global::System.String value);
+        partial void OnOperationExpressionChanged();
 
         #endregion
     

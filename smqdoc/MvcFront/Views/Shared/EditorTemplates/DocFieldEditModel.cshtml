@@ -19,8 +19,8 @@
             break;         
         case FieldTemplateType.CALCULATED:
             var ids = "";
-            Model.ComputebleFieldIds.ForEach(x=>ids+=x.ToString()+";");
-            @Html.TextBoxFor(x => x.DoubleValue,new Dictionary<string, object> {{"calcids", ids},{"calcoper",Model.CalcOperationType},{ "readonly","true" }})
+            @*Model.ComputebleFieldIds.ForEach(x=>ids+=x.ToString()+";");
+            @Html.TextBoxFor(x => x.DoubleValue,new Dictionary<string, object> {{"calcids", ids},{"calcoper",Model.CalcOperationType},{ "readonly","true" }})*@
        break;     
         default:
             throw new ArgumentOutOfRangeException();

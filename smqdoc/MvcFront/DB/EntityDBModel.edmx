@@ -109,7 +109,7 @@
     <Property Name="DocTemplate_docteplateid" Type="bigint" Nullable="false" />
     <Property Name="OrderNumber" Type="int" Nullable="false" />
     <Property Name="Status" Type="int" Nullable="false" />
-    <Property Name="OperationType" Type="int" Nullable="false" DefaultValue="0" />
+    <Property Name="OperationExpression" Type="nvarchar(max)" Nullable="true" />
   </EntityType>
   <EntityType Name="Documents">
     <Key>
@@ -153,7 +153,7 @@
     <Property Name="computableFieldTemplatePartsID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="fkCalculatedFieldTemplateID" Type="bigint" Nullable="false" />
     <Property Name="FieldTemplate_fieldteplateid" Type="bigint" Nullable="false" />
-    <Property Name="Status" Type="int" Nullable="false" />
+    <Property Name="OrderNumber" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="GroupUsers">
     <Key>
@@ -424,8 +424,8 @@
           <Property Type="Int32" Name="OrderNumber" Nullable="false" />
           <Property Type="Int32" Name="Status" Nullable="false" />
           <NavigationProperty Name="DocFields" Relationship="smqdocModel.DocFieldFieldTemplate" FromRole="FieldTemplate" ToRole="DocField" />
-          <Property Type="Int32" Name="OperationType" Nullable="false" DefaultValue="0" />
           <NavigationProperty Name="ComputableFieldTemplateParts" Relationship="smqdocModel.ComputableFieldTemplatePartsFieldTemplate" FromRole="FieldTemplate" ToRole="ComputableFieldTemplateParts" />
+          <Property Type="String" Name="OperationExpression" Nullable="true" />
         </EntityType>
         <Association Name="FieldTeplateDocTemplate">
           <End Type="smqdocModel.FieldTemplate" Role="FieldTeplate" Multiplicity="*" />
@@ -562,7 +562,7 @@
           <Property Type="Int64" Name="fkCalculatedFieldTemplateID" Nullable="false" />
           <NavigationProperty Name="FieldTemplate" Relationship="smqdocModel.ComputableFieldTemplatePartsFieldTemplate" FromRole="ComputableFieldTemplateParts" ToRole="FieldTemplate" />
           <Property Type="Int64" Name="FieldTemplate_fieldteplateid" Nullable="false" />
-          <Property Type="Int32" Name="Status" Nullable="false" />
+          <Property Type="Int32" Name="OrderNumber" Nullable="false" />
         </EntityType>
         <Association Name="ComputableFieldTemplatePartsFieldTemplate">
           <End Type="smqdocModel.ComputableFieldTemplateParts" Role="ComputableFieldTemplateParts" Multiplicity="*" >
@@ -635,7 +635,7 @@
           <ScalarProperty Name="DocTemplate_docteplateid" ColumnName="DocTemplate_docteplateid" />
           <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
           <ScalarProperty Name="Status" ColumnName="Status" />
-          <ScalarProperty Name="OperationType" ColumnName="OperationType" />
+          <ScalarProperty Name="OperationExpression" ColumnName="OperationExpression" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -683,7 +683,7 @@
           <ScalarProperty Name="computableFieldTemplatePartsID" ColumnName="computableFieldTemplatePartsID" />
           <ScalarProperty Name="fkCalculatedFieldTemplateID" ColumnName="fkCalculatedFieldTemplateID" />
           <ScalarProperty Name="FieldTemplate_fieldteplateid" ColumnName="FieldTemplate_fieldteplateid" />
-          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -726,7 +726,7 @@
           <ConnectorPoint PointX="3.125" PointY="1.7943050384521484" />
         </AssociationConnector>
         <EntityTypeShape EntityType="smqdocModel.DocTemplate" Width="1.5" PointX="3.75" PointY="8.5" Height="2.3648893229166656" />
-        <EntityTypeShape EntityType="smqdocModel.FieldTemplate" Width="2.125" PointX="0.5" PointY="8" Height="3.3263964843749978" />
+        <EntityTypeShape EntityType="smqdocModel.FieldTemplate" Width="2.125" PointX="0.5" PointY="8" Height="3.5186979166666656" />
         <AssociationConnector Association="smqdocModel.FieldTeplateDocTemplate">
           <ConnectorPoint PointX="2.625" PointY="9.6824446614583337" />
           <ConnectorPoint PointX="3.75" PointY="9.6824446614583337" />

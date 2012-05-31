@@ -126,10 +126,10 @@ namespace MvcFront.Models
         [Display(Name = "Значение")]
         [Required]
         public bool BoolValue { get; set; }
-        [Display(Name = "Операция вычисления")]
-        public int? CalcOperationType { get; set; }
-        [UIHint("Hidden")]
-        public List<long> ComputebleFieldIds { get; set; }
+        //[Display(Name = "Операция вычисления")]
+        //public int? CalcOperationType { get; set; }
+        //[UIHint("Hidden")]
+        //public List<long> ComputebleFieldIds { get; set; }
 
         public DocFieldEditModel()
         {
@@ -148,17 +148,16 @@ namespace MvcFront.Models
             StringValue = item.StringValue;
             BoolValue = item.BoolValue ?? false;
             DoubleValue = item.DoubleValue;
-            CalcOperationType = item.FieldTemplate.OperationType;
-            if(item.FieldTemplate.TemplateType == FieldTemplateType.CALCULATED)
-            {
-                ComputebleFieldIds = new List<long>();
-                foreach (var part in item.FieldTemplate.ComputableFieldTemplateParts)
-                {
-                    var field = item.Document.DocFields.FirstOrDefault(x => x.FieldTemplate_fieldteplateid == part.fkCalculatedFieldTemplateID);
-                    if (field != null && field.FieldTemplate.TemplateType == FieldTemplateType.NUMBER)
-                        ComputebleFieldIds.Add(field.docfieldid);
-                }
-            }
+            //if(item.FieldTemplate.TemplateType == FieldTemplateType.CALCULATED)
+            //{
+            //    ComputebleFieldIds = new List<long>();
+            //    foreach (var part in item.FieldTemplate.ComputableFieldTemplateParts)
+            //    {
+            //        var field = item.Document.DocFields.FirstOrDefault(x => x.FieldTemplate_fieldteplateid == part.fkCalculatedFieldTemplateID);
+            //        if (field != null && field.FieldTemplate.TemplateType == FieldTemplateType.NUMBER)
+            //            ComputebleFieldIds.Add(field.docfieldid);
+            //    }
+            //}
         }
         public DocField Update(DocField item, Document doc = null)
         {
@@ -204,16 +203,16 @@ namespace MvcFront.Models
                                           .Where(x => lstFieldTemplateIDs.Contains(x.FieldTemplate.fieldteplateid))
                                           .Select(x => x.DoubleValue).ToList();
 
-            switch (field.FieldTemplate.OperationType)
-            {
-                case (int)CalculationOperationType.AGGREGATE:
-                    res = (double)lstValues.Sum();
-                    break;
+            //switch (field.FieldTemplate.OperationType)
+            //{
+            //    case (int)CalculationOperationType.AGGREGATE:
+            //        res = (double)lstValues.Sum();
+            //        break;
 
-                case (int)CalculationOperationType.AVERAGE:
-                    res = (double)lstValues.Average();
-                    break;
-            }
+            //    case (int)CalculationOperationType.AVERAGE:
+            //        res = (double)lstValues.Average();
+            //        break;
+            //}
 
             return res;
         }

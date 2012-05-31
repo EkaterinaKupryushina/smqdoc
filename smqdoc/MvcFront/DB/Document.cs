@@ -60,13 +60,10 @@ namespace MvcFront.DB
             {
                 case FieldTemplateType.BOOL:
                     return BoolValue == null ? "" : BoolValue.Value ? "Да" : "Нет";
-                    break;
                 case FieldTemplateType.NUMBER:
                     return DoubleValue == null ? "" : string.Format("{0}",DoubleValue);
-                    break;
                 case FieldTemplateType.STRING:
                     return StringValue ?? "";
-                    break;
                 case FieldTemplateType.CALCULATED:
                     return DoubleValue == null ? "" : string.Format("{0}", DoubleValue);
                 default:

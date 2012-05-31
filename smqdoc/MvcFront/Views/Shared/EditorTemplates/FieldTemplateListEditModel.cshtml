@@ -51,7 +51,7 @@
         </div>
     </div>
 </div>
-<div id="CalcBlockId">
+@*<div id="CalcBlockId">
     <div class="editor-label">
         @Html.LabelFor(model => model.OperationType)
     </div>
@@ -65,7 +65,7 @@
         @Html.ValidationMessageFor(model => model.OperationType)
 @*        <div class="display-label">
             Поля шаблона</div>*@
-        @(Html.Telerik().Grid<MvcFront.Models.FieldTemplateListViewModel>()
+      @*  @(Html.Telerik().Grid<MvcFront.Models.FieldTemplateListViewModel>()
                   .DataBinding(dataBinding => dataBinding.Ajax().Select("_FieldTemplateListNotUsedForCalc", "DocTemplateList", new { docTemplID = Model.DocTemplateId, fieldTemplId = Model.FieldTemplateId }))
                   .Name("NotAddedFieldTemplatesListGrid")
                   
@@ -89,7 +89,7 @@
                        }).Width(160);
                    })
     )
-@*        Добавленные*@
+
         <br />
         @(Html.Telerik().Grid<MvcFront.Models.FieldTemplateListViewModel>()
                               .DataBinding(dataBinding => dataBinding.Ajax().Select("_FieldTemplateListUsedForCalc", "DocTemplateList", new { docTemplID = Model.DocTemplateId, fieldTemplId = Model.FieldTemplateId }))
@@ -115,7 +115,7 @@
                        })
         )
     </div>
-</div>
+</div>*@
 <script type="text/javascript">
     $(document).ready(function () {
         $('#IntBlockId').hide();
