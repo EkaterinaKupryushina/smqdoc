@@ -18,9 +18,7 @@
             @Html.EditorFor(x => x.StringValue,new {@class="stringfield"})
             break;         
         case FieldTemplateType.CALCULATED:
-            var ids = "";
-            @*Model.ComputebleFieldIds.ForEach(x=>ids+=x.ToString()+";");
-            @Html.TextBoxFor(x => x.DoubleValue,new Dictionary<string, object> {{"calcids", ids},{"calcoper",Model.CalcOperationType},{ "readonly","true" }})*@
+            @Html.TextBoxFor(x => x.DoubleValue,new Dictionary<string, object> {{ "readonly","true" }})
        break;     
         default:
             throw new ArgumentOutOfRangeException();

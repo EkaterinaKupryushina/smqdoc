@@ -51,21 +51,15 @@
         </div>
     </div>
 </div>
-@*<div id="CalcBlockId">
+<div id="CalcBlockId">
     <div class="editor-label">
-        @Html.LabelFor(model => model.OperationType)
+        @Html.LabelFor(model => model.OperationExpression)
     </div>
     <div class="editor-field">
-        @Html.Telerik().DropDownList().Name("OperationType").Items(item =>
-    {
-        //item.Add().Text("-").Value("0").Selected(@Model.OperationType == 0);
-        item.Add().Text("Сумма").Value("1").Selected(@Model.OperationType == 1);
-        item.Add().Text("Ср. арифметическое").Value("2").Selected(@Model.OperationType == 2);
-    })
-        @Html.ValidationMessageFor(model => model.OperationType)
-@*        <div class="display-label">
-            Поля шаблона</div>*@
-      @*  @(Html.Telerik().Grid<MvcFront.Models.FieldTemplateListViewModel>()
+        @Html.EditorFor(model => model.OperationExpression)
+        <div class="display-label">
+            Поля шаблона</div>
+       @(Html.Telerik().Grid<MvcFront.Models.FieldTemplateListViewModel>()
                   .DataBinding(dataBinding => dataBinding.Ajax().Select("_FieldTemplateListNotUsedForCalc", "DocTemplateList", new { docTemplID = Model.DocTemplateId, fieldTemplId = Model.FieldTemplateId }))
                   .Name("NotAddedFieldTemplatesListGrid")
                   
@@ -100,7 +94,7 @@
                        {
                            columns.AutoGenerate(column =>
                            {
-                               if (column.Member == "FieldTemplateId" || column.Member == "OperationTypeText" || column.Member == "FieldTypeText")
+                               if (column.Member == "FieldTypeText")
                                    column.Visible = false;
                            });
                            columns.Command(command =>
@@ -115,7 +109,7 @@
                        })
         )
     </div>
-</div>*@
+</div>
 <script type="text/javascript">
     $(document).ready(function () {
         $('#IntBlockId').hide();
