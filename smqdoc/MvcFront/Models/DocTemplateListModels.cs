@@ -2,8 +2,6 @@
 using System.ComponentModel.DataAnnotations;
 using MvcFront.DB;
 using MvcFront.Helpers;
-using System.ComponentModel;
-using System.Globalization;
 
 namespace MvcFront.Models
 {
@@ -92,7 +90,6 @@ namespace MvcFront.Models
     public class FieldTemplateListViewModel
     {
         [Display(Name = "ID")]
-        [UIHint("Hidden")]
         public long FieldTemplateId { get; set; }
         [Display(Name = "№")]
         public long OrderNumber { get; set; }
@@ -127,14 +124,12 @@ namespace MvcFront.Models
         [Display(Name = "DocTemplateId")]
         [UIHint("Hidden")]
         public long DocTemplateId { get; set; }
-
         [Required]
         [Display(Name = "Название поля")]
         public string FieldTemplateName { get; set; }
         [Required]
         [Display(Name = "Тип поля")]
         public int FieldType { get; set; }
-
         [Display(Name = "Поле ограничено?")]
         public bool IsRestricted { get; set; }
         [Display(Name = "Максимальное значение")]
@@ -143,6 +138,8 @@ namespace MvcFront.Models
         [DataType("Number")]
         [Display(Name = "Минимальное значение")]
         public double? MinVal { get; set; }
+        [Display(Name = "Формула")]
+        public string OperationExpression { get; set; }
 
         public FieldTemplateListEditModel()
         {
@@ -157,6 +154,7 @@ namespace MvcFront.Models
             IsRestricted = templ.Restricted.HasValue && templ.Restricted.Value ;
             MaxVal = templ.MaxVal;
             MinVal = templ.MinVal;
+            OperationExpression = templ.OperationExpression;
         }
         public FieldTemplate Update(FieldTemplate templ)
         {
@@ -169,6 +167,7 @@ namespace MvcFront.Models
             templ.MaxVal = MaxVal;
             templ.MinVal = MinVal;
 
+            templ.OperationExpression = OperationExpression;
             return templ;
         }
         public static FieldTemplateListEditModel FieldToModelConverter(FieldTemplate templ)
