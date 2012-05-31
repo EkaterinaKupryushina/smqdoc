@@ -121,13 +121,20 @@ namespace ELW.Library.Math.Tools {
             // Empty strings are not allowed
             if (@string.Length == 0)
                 return (false);
-            // Variable must be started from letter
-            if (!Char.IsLetter(@string[0]))
-                return (false);
+            //Added By Pavel S
+            if (@string[0] != '{' || @string[@string.Length-1] != '}')
+            {
+                return false;
+            }
+            //// Variable must be started from letter
+            //if (!Char.IsLetter(@string[1]))
+            //    return (false);
             // All symbols must be letter or digit
-            foreach (char c in @string)
-                if (!Char.IsLetterOrDigit(c))
+            for (var i = 1; i < @string.Length - 2;i++)// @string.ToCharArray(1, @string.Length - 2))
+            {
+                if (!Char.IsDigit(@string[i]))
                     return (false);
+            }
             //
             return (true);
         }
