@@ -14,5 +14,12 @@ namespace MvcFront.Interfaces
         void Delete(Int32 id);
         void ChangeState(Int32 id);
         UserAccount Copy(IUnitOfWork uw, int userid);
+
+        UserTags GetUserTagByID(long id);
+        IQueryable<UserTags> GetAllUserTags();
+        bool SaveUserTag(UserTags tag);
+        void DeleteUserTag(int id);
+        bool AddUserTag(int userId, int tagId);
+        bool RemoveUserTag(int userId, int tagId);                
     }
 }

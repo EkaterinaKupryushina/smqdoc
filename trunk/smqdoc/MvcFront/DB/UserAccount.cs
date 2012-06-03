@@ -8,6 +8,13 @@ namespace MvcFront.DB
         Unactive,
         Deleted
     }
+
+    public enum UserTagStatus
+    {
+        Active,
+        Deleted
+    }
+
     public partial class UserAccount
     {
         public string FullName

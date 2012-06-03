@@ -33,6 +33,10 @@
                             .DataRouteValues(route => route.Add(o => o.UserId).RouteKey("id"))
                             .Action("Delete", "UserAccountList")
                             .HtmlAttributes(new { style = "text-align: center" });
+                           command.Custom("TagsUserManagement").Text("Редактировать метки")
+                            .DataRouteValues(route => route.Add(o => o.UserId).RouteKey("id"))
+                            .Action("TagsUserManagement", "UserAccountList")
+                            .HtmlAttributes(new { style = "text-align: center" });
                            command.Custom("ChangeStatusDetails").Text("Включить/Выключить")
                             .DataRouteValues(route => route.Add(o => o.UserId).RouteKey("id"))
                             .Action("ChangeState", "UserAccountList")

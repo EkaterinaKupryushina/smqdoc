@@ -133,4 +133,15 @@ INSERT INTO [smqdoc].[dbo].[DocFields]
 			(5,1,NULL,1,NULL),(5,2,NULL,NULL,10),(5,3,'Значение',NULL,NULL),(5,4,NULL,NULL,3),(5,5,NULL,NULL,4),(5,6,NULL,NULL,5),(5,7,NULL,NULL,6),
 			(6,1,NULL,1,NULL),(6,2,NULL,NULL,10),(6,3,'Значение',NULL,NULL),(6,4,NULL,NULL,3),(6,5,NULL,NULL,4),(6,6,NULL,NULL,5),(6,7,NULL,NULL,6)
      GO
-
+----заполняем таблицу меток пользователей
+INSERT INTO [smqdoc].[dbo].[UserTags]
+           ([Name]
+           ,[Status]
+           )
+     VALUES
+           ('Параллель 5 классов',0),
+           ('Учителя математики', 0),
+           ('Учителя физики',0),
+           ('Параллель 10 классов', 0),
+           ('Учителя русского языка',0)
+GO

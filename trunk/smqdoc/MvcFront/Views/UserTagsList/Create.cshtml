@@ -1,0 +1,25 @@
+﻿@model MvcFront.Models.UserTagsEditViewModel
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Новая метка</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary()
+    <fieldset>        
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Name)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Name)
+            @Html.ValidationMessageFor(model => model.Name)
+        </div> 
+    </fieldset>
+    <p>
+            <input type="submit" value="Создать" />|
+            @Html.ActionLink("Отмена", "Index")
+        </p>
+}
+

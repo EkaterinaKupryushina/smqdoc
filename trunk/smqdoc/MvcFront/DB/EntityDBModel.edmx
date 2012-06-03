@@ -14,7 +14,9 @@
     <EntitySet Name="DocFields" EntityType="smqdocModel.Store.DocFields" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="GroupTemplates" EntityType="smqdocModel.Store.GroupTemplates" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="ComputableFieldTemplateParts" EntityType="smqdocModel.Store.ComputableFieldTemplateParts" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="UserTags" EntityType="smqdocModel.Store.UserTags" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="GroupUsers" EntityType="smqdocModel.Store.GroupUsers" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="UserAccountUserTags" EntityType="smqdocModel.Store.UserAccountUserTags" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="GroupManager" Association="smqdocModel.Store.GroupManager">
       <End Role="UserGroup" EntitySet="UserGroups" />
       <End Role="UserAccount" EntitySet="UserAccounts" />
@@ -58,6 +60,14 @@
     <AssociationSet Name="ComputableFieldTemplatePartsFieldTemplate" Association="smqdocModel.Store.ComputableFieldTemplatePartsFieldTemplate">
       <End Role="ComputableFieldTemplateParts" EntitySet="ComputableFieldTemplateParts" />
       <End Role="FieldTemplate" EntitySet="FieldTemplates" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserAccountUserTags_UserAccount" Association="smqdocModel.Store.FK_UserAccountUserTags_UserAccount">
+      <End Role="UserAccount" EntitySet="UserAccounts" />
+      <End Role="UserAccountUserTags" EntitySet="UserAccountUserTags" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserAccountUserTags_UserTags" Association="smqdocModel.Store.FK_UserAccountUserTags_UserTags">
+      <End Role="UserTags" EntitySet="UserTags" />
+      <End Role="UserAccountUserTags" EntitySet="UserAccountUserTags" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="UserAccounts">
@@ -155,6 +165,14 @@
     <Property Name="FieldTemplate_fieldteplateid" Type="bigint" Nullable="false" />
     <Property Name="OrderNumber" Type="int" Nullable="false" />
   </EntityType>
+  <EntityType Name="UserTags">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Status" Type="int" Nullable="false" />
+  </EntityType>
   <EntityType Name="GroupUsers">
     <Key>
       <PropertyRef Name="MemberGroups_usergroupid" />
@@ -162,6 +180,14 @@
     </Key>
     <Property Name="MemberGroups_usergroupid" Type="int" Nullable="false" />
     <Property Name="Members_userid" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UserAccountUserTags">
+    <Key>
+      <PropertyRef Name="UserAccounts_userid" />
+      <PropertyRef Name="UserTags_Id" />
+    </Key>
+    <Property Name="UserAccounts_userid" Type="int" Nullable="false" />
+    <Property Name="UserTags_Id" Type="int" Nullable="false" />
   </EntityType>
   <Association Name="GroupManager">
     <End Role="UserGroup" Type="smqdocModel.Store.UserGroups" Multiplicity="*" />
@@ -295,6 +321,30 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_UserAccountUserTags_UserAccount">
+    <End Role="UserAccount" Type="smqdocModel.Store.UserAccounts" Multiplicity="1" />
+    <End Role="UserAccountUserTags" Type="smqdocModel.Store.UserAccountUserTags" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserAccount">
+        <PropertyRef Name="userid" />
+      </Principal>
+      <Dependent Role="UserAccountUserTags">
+        <PropertyRef Name="UserAccounts_userid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserAccountUserTags_UserTags">
+    <End Role="UserAccountUserTags" Type="smqdocModel.Store.UserAccountUserTags" Multiplicity="*" />
+    <End Role="UserTags" Type="smqdocModel.Store.UserTags" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="UserTags">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserAccountUserTags">
+        <PropertyRef Name="UserTags_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -348,7 +398,12 @@
             <End Role="ComputableFieldTemplateParts" EntitySet="ComputableFieldTemplateParts" />
             <End Role="FieldTemplate" EntitySet="FieldTemplates" />
           </AssociationSet>
-        </EntityContainer>
+          <EntitySet Name="UserTags" EntityType="smqdocModel.UserTags" />
+          <AssociationSet Name="UserAccountUserTags" Association="smqdocModel.UserAccountUserTags">
+            <End Role="UserAccount" EntitySet="UserAccounts" />
+            <End Role="UserTags" EntitySet="UserTags" />
+          </AssociationSet>
+          </EntityContainer>
         <EntityType Name="UserAccount">
           <Key>
             <PropertyRef Name="userid" />
@@ -367,6 +422,7 @@
           <NavigationProperty Name="MemberGroups" Relationship="smqdocModel.GroupUsers" FromRole="UserAccount" ToRole="UserGroup" />
           <Property Type="String" Name="LastAccessProfileCode" Nullable="true" />
           <NavigationProperty Name="Documents" Relationship="smqdocModel.DocumentUserAccount" FromRole="UserAccount" ToRole="Document" />
+          <NavigationProperty Name="UserTags" Relationship="smqdocModel.UserAccountUserTags" FromRole="UserAccount" ToRole="UserTags" />
         </EntityType>
         <EntityType Name="UserGroup">
           <Key>
@@ -578,7 +634,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        <EntityType Name="UserTags">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" />
+          <Property Type="Int32" Name="Status" Nullable="false" />
+          <NavigationProperty Name="UserAccounts" Relationship="smqdocModel.UserAccountUserTags" FromRole="UserTags" ToRole="UserAccount" />
+        </EntityType>
+        <Association Name="UserAccountUserTags">
+          <End Type="smqdocModel.UserAccount" Role="UserAccount" Multiplicity="*" />
+          <End Type="smqdocModel.UserTags" Role="UserTags" Multiplicity="*" />
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -687,12 +756,29 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="UserTags">
+      <EntityTypeMapping TypeName="IsTypeOf(smqdocModel.UserTags)">
+        <MappingFragment StoreEntitySet="UserTags">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <AssociationSetMapping Name="GroupUsers" TypeName="smqdocModel.GroupUsers" StoreEntitySet="GroupUsers">
       <EndProperty Name="UserGroup">
         <ScalarProperty Name="usergroupid" ColumnName="MemberGroups_usergroupid" />
       </EndProperty>
       <EndProperty Name="UserAccount">
         <ScalarProperty Name="userid" ColumnName="Members_userid" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="UserAccountUserTags" TypeName="smqdocModel.UserAccountUserTags" StoreEntitySet="UserAccountUserTags">
+      <EndProperty Name="UserAccount">
+        <ScalarProperty Name="userid" ColumnName="UserAccounts_userid" />
+      </EndProperty>
+      <EndProperty Name="UserTags">
+        <ScalarProperty Name="Id" ColumnName="UserTags_Id" />
       </EndProperty>
     </AssociationSetMapping>
   </EntityContainerMapping>
@@ -715,58 +801,63 @@
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
       <Diagram Name="EntityDBModel" ZoomLevel="94">
-        <EntityTypeShape EntityType="smqdocModel.UserAccount" Width="1.5" PointX="1.625" PointY="0.625" Height="3.7109993489583326" IsExpanded="true" />
-        <EntityTypeShape EntityType="smqdocModel.UserGroup" Width="1.5" PointX="4.5" PointY="1" Height="2.3648893229166661" />
+        <EntityTypeShape EntityType="smqdocModel.UserAccount" Width="1.5" PointX="3.75" PointY="0.75" Height="3.7109993489583326" IsExpanded="true" />
+        <EntityTypeShape EntityType="smqdocModel.UserGroup" Width="1.5" PointX="6.625" PointY="1.125" Height="2.5571907552083331" />
         <AssociationConnector Association="smqdocModel.GroupManager">
-          <ConnectorPoint PointX="4.5" PointY="2.7136100769042968" />
-          <ConnectorPoint PointX="3.125" PointY="2.7136100769042968" />
+          <ConnectorPoint PointX="6.625" PointY="2.4035953776041667" />
+          <ConnectorPoint PointX="5.25" PointY="2.4035953776041667" />
         </AssociationConnector>
         <AssociationConnector Association="smqdocModel.GroupUsers">
-          <ConnectorPoint PointX="4.5" PointY="1.7943050384521484" />
-          <ConnectorPoint PointX="3.125" PointY="1.7943050384521484" />
+          <ConnectorPoint PointX="6.625" PointY="1.7017976888020834" />
+          <ConnectorPoint PointX="5.25" PointY="1.7017976888020834" />
         </AssociationConnector>
-        <EntityTypeShape EntityType="smqdocModel.DocTemplate" Width="1.5" PointX="3.75" PointY="8.5" Height="2.3648893229166656" />
-        <EntityTypeShape EntityType="smqdocModel.FieldTemplate" Width="2.125" PointX="0.5" PointY="8" Height="3.5186979166666656" />
+        <EntityTypeShape EntityType="smqdocModel.DocTemplate" Width="1.5" PointX="5.875" PointY="8.625" Height="2.3648893229166656" />
+        <EntityTypeShape EntityType="smqdocModel.FieldTemplate" Width="2.125" PointX="2.625" PointY="8.125" Height="3.5186979166666656" />
         <AssociationConnector Association="smqdocModel.FieldTeplateDocTemplate">
-          <ConnectorPoint PointX="2.625" PointY="9.6824446614583337" />
-          <ConnectorPoint PointX="3.75" PointY="9.6824446614583337" />
+          <ConnectorPoint PointX="4.75" PointY="9.8074446614583337" />
+          <ConnectorPoint PointX="5.875" PointY="9.8074446614583337" />
         </AssociationConnector>
-        <EntityTypeShape EntityType="smqdocModel.Document" Width="1.5" PointX="3.625" PointY="5" Height="2.9417936197916656" />
+        <EntityTypeShape EntityType="smqdocModel.Document" Width="1.5" PointX="5.75" PointY="5.125" Height="2.9417936197916656" />
         <AssociationConnector Association="smqdocModel.DocumentUserAccount">
-          <ConnectorPoint PointX="3.625" PointY="5" />
-          <ConnectorPoint PointX="3.125" PointY="4.3359993489583326" />
+          <ConnectorPoint PointX="5.75" PointY="5.125" />
+          <ConnectorPoint PointX="5.25" PointY="4.4609993489583326" />
         </AssociationConnector>
-        <EntityTypeShape EntityType="smqdocModel.DocField" Width="2.125" PointX="0.5" PointY="4.875" Height="2.5571907552083326" />
+        <EntityTypeShape EntityType="smqdocModel.DocField" Width="2.125" PointX="2.625" PointY="5" Height="2.5571907552083326" />
         <AssociationConnector Association="smqdocModel.DocFieldDocument">
-          <ConnectorPoint PointX="2.625" PointY="6.2473478776041667" />
-          <ConnectorPoint PointX="3.625" PointY="6.2473478776041667" />
+          <ConnectorPoint PointX="4.75" PointY="6.3723478776041667" />
+          <ConnectorPoint PointX="5.75" PointY="6.3723478776041667" />
         </AssociationConnector>
         <AssociationConnector Association="smqdocModel.DocFieldFieldTemplate">
-          <ConnectorPoint PointX="1.5625" PointY="7.4321907552083326" />
-          <ConnectorPoint PointX="1.5625" PointY="8" />
+          <ConnectorPoint PointX="3.6875" PointY="7.5571907552083326" />
+          <ConnectorPoint PointX="3.6875" PointY="8.125" />
         </AssociationConnector>
         <EntityTypeShape EntityType="smqdocModel.GroupTemplate" Width="3" PointX="9.375" PointY="3.375" Height="1.9802864583333326" />
         <AssociationConnector Association="smqdocModel.GroupTemplateUserGroup">
-          <ConnectorPoint PointX="9.375" PointY="4.2473458776041664" />
-          <ConnectorPoint PointX="5.59375" PointY="4.2473458776041664" />
-          <ConnectorPoint PointX="5.59375" PointY="3.5571907552083331" />
+          <ConnectorPoint PointX="9.375" PointY="4.3723458776041664" />
+          <ConnectorPoint PointX="7.71875" PointY="4.3723458776041664" />
+          <ConnectorPoint PointX="7.71875" PointY="3.6821907552083331" />
         </AssociationConnector>
         <AssociationConnector Association="smqdocModel.GroupTemplateDocTemplate">
-          <ConnectorPoint PointX="10.875" PointY="6.1244921875" />
-          <ConnectorPoint PointX="10.875" PointY="9.7785953776041659" />
-          <ConnectorPoint PointX="5.25" PointY="9.7785953776041659" />
+          <ConnectorPoint PointX="10.875" PointY="6.3167936197916656" />
+          <ConnectorPoint PointX="10.875" PointY="9.8074446614583337" />
+          <ConnectorPoint PointX="7.375" PointY="9.8074446614583337" />
         </AssociationConnector>
         <AssociationConnector Association="smqdocModel.DocumentGroupTemplate">
-          <ConnectorPoint PointX="5.125" PointY="5.6583968098958328" />
-          <ConnectorPoint PointX="9.375" PointY="5.6583968098958328" />
+          <ConnectorPoint PointX="7.25" PointY="5.7208968098958328" />
+          <ConnectorPoint PointX="9.375" PointY="5.7208968098958328" />
         </AssociationConnector>
-        <EntityTypeShape EntityType="smqdocModel.ComputableFieldTemplateParts" Width="2.375" PointX="3.375" PointY="11.625" Height="1.9802864583333317" />
+        <EntityTypeShape EntityType="smqdocModel.ComputableFieldTemplateParts" Width="2.375" PointX="5.5" PointY="11.75" Height="1.9802864583333317" />
         <AssociationConnector Association="smqdocModel.ComputableFieldTemplatePartsFieldTemplate">
-          <ConnectorPoint PointX="3.375" PointY="12.615143229166666" />
-          <ConnectorPoint PointX="1.5625" PointY="12.615143229166666" />
-          <ConnectorPoint PointX="1.5625" PointY="11.518697916666666" />
+          <ConnectorPoint PointX="5.5" PointY="12.740143229166666" />
+          <ConnectorPoint PointX="3.6875" PointY="12.740143229166666" />
+          <ConnectorPoint PointX="3.6875" PointY="11.643697916666666" />
         </AssociationConnector>
-      </Diagram>
+        <EntityTypeShape EntityType="smqdocModel.UserTags" Width="1.5" PointX="0.625" PointY="0.75" Height="1.59568359375" />
+        <AssociationConnector Association="smqdocModel.UserAccountUserTags">
+          <ConnectorPoint PointX="3.75" PointY="1.6439925130208337" />
+          <ConnectorPoint PointX="2.125" PointY="1.6439925130208337" />
+        </AssociationConnector>
+        </Diagram>
     </Diagrams>
   </Designer>
 </edmx:Edmx>

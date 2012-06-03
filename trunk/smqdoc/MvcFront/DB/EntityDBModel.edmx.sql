@@ -2,9 +2,10 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 05/31/2012 11:19:06
--- Generated from EDMX file: D:\Work\smqdoc.net\smqdoc\MvcFront\DB\EntityDBModel.edmx
--- --------------------------------------------------
+
+-- Date Created: 06/02/2012 16:34:51
+-- Generated from EDMX file: G:\Works\smqDocNet\smqdoc\MvcFront\DB\EntityDBModel.edmx
+
 
 SET QUOTED_IDENTIFIER OFF;
 GO
@@ -50,6 +51,12 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_ComputableFieldTemplatePartsFieldTemplate]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[ComputableFieldTemplateParts] DROP CONSTRAINT [FK_ComputableFieldTemplatePartsFieldTemplate];
 GO
+IF OBJECT_ID(N'[dbo].[FK_UserAccountUserTags_UserAccount]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[UserAccountUserTags] DROP CONSTRAINT [FK_UserAccountUserTags_UserAccount];
+GO
+IF OBJECT_ID(N'[dbo].[FK_UserAccountUserTags_UserTags]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[UserAccountUserTags] DROP CONSTRAINT [FK_UserAccountUserTags_UserTags];
+GO
 
 -- --------------------------------------------------
 -- Dropping existing tables
@@ -79,8 +86,14 @@ GO
 IF OBJECT_ID(N'[dbo].[ComputableFieldTemplateParts]', 'U') IS NOT NULL
     DROP TABLE [dbo].[ComputableFieldTemplateParts];
 GO
+IF OBJECT_ID(N'[dbo].[UserTags]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[UserTags];
+GO
 IF OBJECT_ID(N'[dbo].[GroupUsers]', 'U') IS NOT NULL
     DROP TABLE [dbo].[GroupUsers];
+GO
+IF OBJECT_ID(N'[dbo].[UserAccountUserTags]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[UserAccountUserTags];
 GO
 
 -- --------------------------------------------------
@@ -182,10 +195,25 @@ CREATE TABLE [dbo].[ComputableFieldTemplateParts] (
 );
 GO
 
+-- Creating table 'UserTags'
+CREATE TABLE [dbo].[UserTags] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [Name] nvarchar(max)  NOT NULL,
+    [Status] int  NOT NULL
+);
+GO
+
 -- Creating table 'GroupUsers'
 CREATE TABLE [dbo].[GroupUsers] (
     [MemberGroups_usergroupid] int  NOT NULL,
     [Members_userid] int  NOT NULL
+);
+GO
+
+-- Creating table 'UserAccountUserTags'
+CREATE TABLE [dbo].[UserAccountUserTags] (
+    [UserAccounts_userid] int  NOT NULL,
+    [UserTags_Id] int  NOT NULL
 );
 GO
 
@@ -241,10 +269,22 @@ ADD CONSTRAINT [PK_ComputableFieldTemplateParts]
     PRIMARY KEY CLUSTERED ([computableFieldTemplatePartsID] ASC);
 GO
 
+-- Creating primary key on [Id] in table 'UserTags'
+ALTER TABLE [dbo].[UserTags]
+ADD CONSTRAINT [PK_UserTags]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
 -- Creating primary key on [MemberGroups_usergroupid], [Members_userid] in table 'GroupUsers'
 ALTER TABLE [dbo].[GroupUsers]
 ADD CONSTRAINT [PK_GroupUsers]
     PRIMARY KEY NONCLUSTERED ([MemberGroups_usergroupid], [Members_userid] ASC);
+GO
+
+-- Creating primary key on [UserAccounts_userid], [UserTags_Id] in table 'UserAccountUserTags'
+ALTER TABLE [dbo].[UserAccountUserTags]
+ADD CONSTRAINT [PK_UserAccountUserTags]
+    PRIMARY KEY NONCLUSTERED ([UserAccounts_userid], [UserTags_Id] ASC);
 GO
 
 -- --------------------------------------------------
@@ -398,6 +438,29 @@ ADD CONSTRAINT [FK_ComputableFieldTemplatePartsFieldTemplate]
 CREATE INDEX [IX_FK_ComputableFieldTemplatePartsFieldTemplate]
 ON [dbo].[ComputableFieldTemplateParts]
     ([FieldTemplate_fieldteplateid]);
+GO
+
+-- Creating foreign key on [UserAccounts_userid] in table 'UserAccountUserTags'
+ALTER TABLE [dbo].[UserAccountUserTags]
+ADD CONSTRAINT [FK_UserAccountUserTags_UserAccount]
+    FOREIGN KEY ([UserAccounts_userid])
+    REFERENCES [dbo].[UserAccounts]
+        ([userid])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating foreign key on [UserTags_Id] in table 'UserAccountUserTags'
+ALTER TABLE [dbo].[UserAccountUserTags]
+ADD CONSTRAINT [FK_UserAccountUserTags_UserTags]
+    FOREIGN KEY ([UserTags_Id])
+    REFERENCES [dbo].[UserTags]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_UserAccountUserTags_UserTags'
+CREATE INDEX [IX_FK_UserAccountUserTags_UserTags]
+ON [dbo].[UserAccountUserTags]
+    ([UserTags_Id]);
 GO
 
 -- --------------------------------------------------
