@@ -121,13 +121,6 @@ namespace MvcFront.Repositories
                 }
             }            
             _unitOfWork.DbModel.SaveChanges();
-
-            /*
-            if (entity.TemplateType == FieldTemplateType.CALCULATED)
-            {
-                SaveCalculatedFieldTemplateParts(entity);
-            } 
-            */
             return true;
         }
 

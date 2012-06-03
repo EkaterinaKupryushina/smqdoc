@@ -28,6 +28,7 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("smqdocModel", "GroupTemplateDocTemplate", "GroupTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.GroupTemplate), "DocTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.DocTemplate), true)]
 [assembly: EdmRelationshipAttribute("smqdocModel", "DocumentGroupTemplate", "Document", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.Document), "GroupTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.GroupTemplate), true)]
 [assembly: EdmRelationshipAttribute("smqdocModel", "ComputableFieldTemplatePartsFieldTemplate", "ComputableFieldTemplateParts", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.ComputableFieldTemplateParts), "FieldTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.FieldTemplate), true)]
+[assembly: EdmRelationshipAttribute("smqdocModel", "UserAccountUserTags", "UserAccount", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.UserAccount), "UserTags", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.UserTags))]
 
 #endregion
 
@@ -206,6 +207,22 @@ namespace MvcFront.DB
             }
         }
         private ObjectSet<ComputableFieldTemplateParts> _ComputableFieldTemplateParts;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<UserTags> UserTags
+        {
+            get
+            {
+                if ((_UserTags == null))
+                {
+                    _UserTags = base.CreateObjectSet<UserTags>("UserTags");
+                }
+                return _UserTags;
+            }
+        }
+        private ObjectSet<UserTags> _UserTags;
 
         #endregion
         #region AddTo Methods
@@ -272,6 +289,14 @@ namespace MvcFront.DB
         public void AddToComputableFieldTemplateParts(ComputableFieldTemplateParts computableFieldTemplateParts)
         {
             base.AddObject("ComputableFieldTemplateParts", computableFieldTemplateParts);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the UserTags EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToUserTags(UserTags userTags)
+        {
+            base.AddObject("UserTags", userTags);
         }
 
         #endregion
@@ -2284,6 +2309,28 @@ namespace MvcFront.DB
                 }
             }
         }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "UserAccountUserTags", "UserTags")]
+        public EntityCollection<UserTags> UserTags
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<UserTags>("smqdocModel.UserAccountUserTags", "UserTags");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<UserTags>("smqdocModel.UserAccountUserTags", "UserTags", value);
+                }
+            }
+        }
 
         #endregion
     }
@@ -2525,6 +2572,138 @@ namespace MvcFront.DB
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<GroupTemplate>("smqdocModel.GroupTemplateUserGroup", "GroupTemplate", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="smqdocModel", Name="UserTags")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class UserTags : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new UserTags object.
+        /// </summary>
+        /// <param name="id">Initial value of the Id property.</param>
+        /// <param name="name">Initial value of the Name property.</param>
+        /// <param name="status">Initial value of the Status property.</param>
+        public static UserTags CreateUserTags(global::System.Int32 id, global::System.String name, global::System.Int32 status)
+        {
+            UserTags userTags = new UserTags();
+            userTags.Id = id;
+            userTags.Name = name;
+            userTags.Status = status;
+            return userTags;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Id
+        {
+            get
+            {
+                return _Id;
+            }
+            set
+            {
+                if (_Id != value)
+                {
+                    OnIdChanging(value);
+                    ReportPropertyChanging("Id");
+                    _Id = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("Id");
+                    OnIdChanged();
+                }
+            }
+        }
+        private global::System.Int32 _Id;
+        partial void OnIdChanging(global::System.Int32 value);
+        partial void OnIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Name
+        {
+            get
+            {
+                return _Name;
+            }
+            set
+            {
+                OnNameChanging(value);
+                ReportPropertyChanging("Name");
+                _Name = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Name");
+                OnNameChanged();
+            }
+        }
+        private global::System.String _Name;
+        partial void OnNameChanging(global::System.String value);
+        partial void OnNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Status
+        {
+            get
+            {
+                return _Status;
+            }
+            set
+            {
+                OnStatusChanging(value);
+                ReportPropertyChanging("Status");
+                _Status = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Status");
+                OnStatusChanged();
+            }
+        }
+        private global::System.Int32 _Status;
+        partial void OnStatusChanging(global::System.Int32 value);
+        partial void OnStatusChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "UserAccountUserTags", "UserAccount")]
+        public EntityCollection<UserAccount> UserAccounts
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<UserAccount>("smqdocModel.UserAccountUserTags", "UserAccount");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<UserAccount>("smqdocModel.UserAccountUserTags", "UserAccount", value);
                 }
             }
         }

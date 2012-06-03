@@ -121,6 +121,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UserAccountListController.cs" />
     <Compile Include="Controllers\UserGroupListController.cs" />
+    <Compile Include="Controllers\UserTagsListController.cs" />
     <Compile Include="DB\DocTemplate.cs" />
     <Compile Include="DB\Document.cs" />
     <Compile Include="DB\EntityDBModel.Designer.cs">
@@ -576,6 +577,7 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="Views\DocumentAppointment\GroupDocumentsList.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\UserTagFilter.cshtml" />
     <None Include="Views\UserAccountList\ChangeState.cshtml" />
     <Content Include="Views\UserGroupList\Index.cshtml" />
     <Content Include="Views\UserGroupList\Delete.cshtml" />
@@ -586,6 +588,11 @@
     <Content Include="Views\UserGroupList\GroupUsersManagment.cshtml" />
     <Content Include="Views\UserDocument\Index.cshtml" />
     <Content Include="Views\UserDocument\Edit.cshtml" />
+    <Content Include="Views\UserAccountList\TagsUserManagement.cshtml" />
+    <Content Include="Views\UserTagsList\Index.cshtml" />
+    <Content Include="Views\UserTagsList\Create.cshtml" />
+    <Content Include="Views\UserTagsList\Edit.cshtml" />
+    <Content Include="Views\UserTagsList\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ELW.Library.Math\ELW.Library.Math.csproj">

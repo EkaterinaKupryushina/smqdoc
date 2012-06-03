@@ -3,6 +3,9 @@ using MvcFront.DB;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 using System.Globalization;
+using System.Collections.Generic;
+using System.Linq;
+using MvcFront.Helpers;
 
 namespace MvcFront.Models
 {
@@ -23,8 +26,7 @@ namespace MvcFront.Models
         public DateTime? LastLogin { get; set; }
         [Display(Name = "CompositeId")]
         [UIHint("Hidden")]
-        public string CompositeId { get; set; }
-
+        public string CompositeId { get; set; }        
         public UserAccountListViewModel()
         {
         }
@@ -36,7 +38,7 @@ namespace MvcFront.Models
                 Login = acc.Login;
                 FullName = acc.FullName;
                 LastLogin = acc.LastAccess;
-                StatusText = acc.UserStatusText;
+                StatusText = acc.UserStatusText;                
             }
         }
         public static UserAccountListViewModel UserAccountToModelConverter(UserAccount templ)
@@ -100,7 +102,7 @@ namespace MvcFront.Models
         [Required]
         [Display(Name = "Пароль")]
         public string Password { get; set; }
-
+        
         public UserAccountEditViewModel()
         {
         }
@@ -113,7 +115,7 @@ namespace MvcFront.Models
             LastName = acc.LastName;
             IsAdmin = acc.IsAdmin;
             Email = acc.Email;
-            Password = acc.Password;
+            Password = acc.Password;            
         }
         public UserAccount Update(UserAccount acc)
         {
@@ -124,8 +126,65 @@ namespace MvcFront.Models
             acc.IsAdmin = IsAdmin;
             acc.Email = Email;
             acc.Password = Password;
-            acc.userid = UserId;
+            acc.userid = UserId;            
             return acc;
+        }
+    }
+
+
+    public class UserTagsListViewModel
+    {
+        [Display(Name = "ID")]
+        [UIHint("Hidden")]
+        public Int32 UserTagNameId { get; set; }
+        [Display(Name = "Название")]
+        public string Name { get; set; }        
+        [Display(Name = "Статус")]
+        [UIHint("Hidden")]
+        public Int32 Status { get; set; }
+        
+        public UserTagsListViewModel()
+        {
+        }
+        public UserTagsListViewModel(UserTags tag)
+        {
+            if (tag != null)
+            {
+                UserTagNameId = tag.Id;
+                Name = tag.Name;
+                Status = tag.Status;                
+            }
+        }
+        public static UserTagsListViewModel UserTagNamesToModelConverter(UserTags templ)
+        {
+            return new UserTagsListViewModel(templ);
+        }
+    }
+
+    public class UserTagsEditViewModel
+    {
+        [Display(Name = "ID")]
+        [UIHint("Hidden")]
+        public Int32 UserTagNameId { get; set; }
+        [Required]
+        [Display(Name = "Название")]
+        public string Name { get; set; }
+        [Display(Name = "Статус")]
+        public int Status { get; set; }
+        public UserTagsEditViewModel()
+        {
+        }
+        public UserTagsEditViewModel(UserTags tag)
+        {
+            UserTagNameId = tag.Id;
+            Name = tag.Name;
+            Status = tag.Status;
+        }
+        public UserTags Update(UserTags tag)
+        {
+            tag.Name = Name;
+            tag.Status = Status;
+            return tag;
         }
     }
 }

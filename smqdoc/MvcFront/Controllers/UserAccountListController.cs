@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using MvcFront.Interfaces;
 using MvcFront.Models;
 using MvcFront.DB;
+using Telerik.Web.Mvc;
 
 namespace MvcFront.Controllers
 {
@@ -154,6 +155,32 @@ namespace MvcFront.Controllers
                 ModelState.AddModelError("Ошибка", ex.Message);
                 return View();
             }
+        }
+
+
+        public ActionResult TagsUserManagement(int id)
+        {
+            return View( _userRepository.GetById(id));
+        }
+
+        public JsonResult RemoveUserTag(int id, int tagId)
+        {            
+            return Json(new { result = _userRepository.RemoveUserTag(id, tagId) });
+        }
+
+        public JsonResult AddUserTag(int userId, int tagId)
+        {            
+            return Json(new { result = _userRepository.AddUserTag(userId, tagId) });
+        }
+
+        //список меток пользователя
+        [GridAction]
+        public ActionResult _UserTagList(int userId)
+        {            
+            var data = _userRepository.GetById(userId).UserTags.Where(x => x.Status != (int)UserTagStatus.Deleted).ToList()
+                .ConvertAll(UserTagsListViewModel.UserTagNamesToModelConverter).ToList();
+
+            return View(new GridModel<UserTagsListViewModel> { Data = data });
         }
     }
 }

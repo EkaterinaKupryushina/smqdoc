@@ -80,5 +80,16 @@ namespace MvcFront.Controllers
 
             return new JsonResult { Data = new SelectList(model, "DocTemplateId", "DocTemplateName") };
         }
+
+        [HttpPost]
+        public ActionResult AjaxUserTagsList(string text)
+        {
+            var data = _userRepository.GetAllUserTags();
+            if (!String.IsNullOrEmpty(text))
+            {
+                data = data.Where(p => p.Name != null && p.Name.ToLower().Contains(text.ToLower())).Take(20);
+            }
+            return new JsonResult { Data = new SelectList(data.ToList().Select(x => new { Id = x.Id, Name = x.Name}), "Id", "Name") };
+        }
     }
 }
