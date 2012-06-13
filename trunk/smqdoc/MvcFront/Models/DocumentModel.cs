@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using ELW.Library.Math.Tools;
 using MvcFront.DB;
 using MvcFront.Helpers;
 using MvcFront.Infrastructure;
@@ -62,8 +63,6 @@ namespace MvcFront.Models
         [Display(Name = "ID")]
         [UIHint("Hidden")]
         public long DocumentId { get; set; }
-        //[Display(Name = "Название документа")]
-        //public string DocumentName { get; set; }
         [Display(Name = "Название документа")]
         public string GroupTemplateName { get; set; }
         [Display(Name = "Статус документа")]
@@ -74,6 +73,7 @@ namespace MvcFront.Models
         public DateTime LastEditDate { get; set; }
 
         public List<DocFieldEditModel> Fields { get; set; }
+        
         public DocumentEditModel()
         {
             Fields = new List<DocFieldEditModel>();
@@ -117,6 +117,8 @@ namespace MvcFront.Models
         public double? DoubleValue { get; set; }
         [Display(Name = "Поле ограничено?")]
         public bool IsRestricted { get; set; }
+        [Display(Name = "Поле Целое?")]
+        public bool IsInteger { get; set; }
         [Display(Name = "Максимальное значение")]
         [DataType("Number")]
         public double? MaxVal { get; set; }
@@ -148,6 +150,7 @@ namespace MvcFront.Models
             StringValue = item.StringValue;
             BoolValue = item.BoolValue ?? false;
             DoubleValue = item.DoubleValue;
+            OrderNumber = item.FieldTemplate.OrderNumber;
             //if(item.FieldTemplate.TemplateType == FieldTemplateType.CALCULATED)
             //{
             //    ComputebleFieldIds = new List<long>();
@@ -192,28 +195,24 @@ namespace MvcFront.Models
             return item;
         }
 
-        private Double CalculateValue(Document doc, DocField field)
+        private Double? CalculateValue(Document doc, DocField field)
         {
-            Double res = 0;
+            Double? res = 0;
             List<long> lstFieldTemplateIDs = field.FieldTemplate.ComputableFieldTemplateParts
                                                                 .Where(x => x.FieldTemplate_fieldteplateid == field.FieldTemplate_fieldteplateid)
                                                                 .Select(x => x.fkCalculatedFieldTemplateID).ToList();
 
-            List<double?> lstValues = doc.DocFields
-                                          .Where(x => lstFieldTemplateIDs.Contains(x.FieldTemplate.fieldteplateid))
-                                          .Select(x => x.DoubleValue).ToList();
+            var lstValues = doc.DocFields
+                                          .Where(x => lstFieldTemplateIDs.Contains(x.FieldTemplate.fieldteplateid) && x.DoubleValue.HasValue)
+                                          .Select(x => new VariableValue ( x.DoubleValue.Value,string.Format("{{{0}}}",x.FieldTemplate.fieldteplateid) )).ToList();
+            try
+            {
 
-            //switch (field.FieldTemplate.OperationType)
-            //{
-            //    case (int)CalculationOperationType.AGGREGATE:
-            //        res = (double)lstValues.Sum();
-            //        break;
-
-            //    case (int)CalculationOperationType.AVERAGE:
-            //        res = (double)lstValues.Average();
-            //        break;
-            //}
-
+                res = CalculationHelper.CalculateExpression(field.FieldTemplate.OperationExpression,lstValues);
+            }
+            catch(Exception)
+            {
+            }
             return res;
         }
 

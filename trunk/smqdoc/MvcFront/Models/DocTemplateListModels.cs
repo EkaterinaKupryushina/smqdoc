@@ -132,6 +132,8 @@ namespace MvcFront.Models
         public int FieldType { get; set; }
         [Display(Name = "Поле ограничено?")]
         public bool IsRestricted { get; set; }
+        [Display(Name = "Поле Целое?")]
+        public bool IsInteger { get; set; }
         [Display(Name = "Максимальное значение")]
         [DataType("Number")]
         public double? MaxVal { get; set; }
@@ -152,6 +154,7 @@ namespace MvcFront.Models
             FieldType = templ.FiledType;
 
             IsRestricted = templ.Restricted.HasValue && templ.Restricted.Value ;
+            IsInteger = templ.Integer.HasValue && templ.Integer.Value;
             MaxVal = templ.MaxVal;
             MinVal = templ.MinVal;
             OperationExpression = templ.OperationExpression;
@@ -164,6 +167,7 @@ namespace MvcFront.Models
             templ.FiledType = FieldType;
 
             templ.Restricted = IsRestricted;
+            templ.Integer = IsInteger;
             templ.MaxVal = MaxVal;
             templ.MinVal = MinVal;
 

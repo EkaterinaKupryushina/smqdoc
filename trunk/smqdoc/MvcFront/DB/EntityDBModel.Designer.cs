@@ -1531,6 +1531,30 @@ namespace MvcFront.DB
         private global::System.String _OperationExpression;
         partial void OnOperationExpressionChanging(global::System.String value);
         partial void OnOperationExpressionChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Boolean> Integer
+        {
+            get
+            {
+                return _Integer;
+            }
+            set
+            {
+                OnIntegerChanging(value);
+                ReportPropertyChanging("Integer");
+                _Integer = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Integer");
+                OnIntegerChanged();
+            }
+        }
+        private Nullable<global::System.Boolean> _Integer;
+        partial void OnIntegerChanging(Nullable<global::System.Boolean> value);
+        partial void OnIntegerChanged();
 
         #endregion
     

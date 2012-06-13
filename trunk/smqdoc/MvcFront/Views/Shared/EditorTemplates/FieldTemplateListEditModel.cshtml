@@ -28,6 +28,13 @@
 </div>
 <div id="IntBlockId">
     <div class="editor-label">
+        @Html.LabelFor(model => model.IsInteger)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.IsInteger)
+        @Html.ValidationMessageFor(model => model.IsInteger)
+    </div>
+    <div class="editor-label">
         @Html.LabelFor(model => model.IsRestricted)
     </div>
     <div class="editor-field">

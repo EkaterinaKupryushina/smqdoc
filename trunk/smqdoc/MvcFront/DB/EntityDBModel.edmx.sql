@@ -2,10 +2,9 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
-
--- Date Created: 06/02/2012 16:34:51
--- Generated from EDMX file: G:\Works\smqDocNet\smqdoc\MvcFront\DB\EntityDBModel.edmx
-
+-- Date Created: 06/11/2012 12:37:31
+-- Generated from EDMX file: D:\Work\smqDoc\smqdoc.net\smqdoc\MvcFront\DB\EntityDBModel.edmx
+-- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
 GO
@@ -147,7 +146,8 @@ CREATE TABLE [dbo].[FieldTemplates] (
     [DocTemplate_docteplateid] bigint  NOT NULL,
     [OrderNumber] int  NOT NULL,
     [Status] int  NOT NULL,
-    [OperationExpression] nvarchar(max)  NULL
+    [OperationExpression] nvarchar(max)  NULL,
+    [Integer] bit  NULL
 );
 GO
 

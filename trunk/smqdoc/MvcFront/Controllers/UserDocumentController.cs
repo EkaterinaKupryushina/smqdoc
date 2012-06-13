@@ -107,9 +107,18 @@ namespace MvcFront.Controllers
                     }
                     
                 }
-                _documentRepository.SaveDocument(doc);
-                if (Request.Form["send"] != null)
-                    _documentRepository.ChangeDocumentStatus(doc.documentid, DocumentStatus.Sended);
+                if (Request.Form["calculate"] != null)
+                {
+
+                    return View(new DocumentEditModel(doc));
+                }
+                else
+                {
+
+                    _documentRepository.SaveDocument(doc);
+                    if (Request.Form["send"] != null)
+                        _documentRepository.ChangeDocumentStatus(doc.documentid, DocumentStatus.Sended);
+                }
                 return RedirectToAction("Index");
             }
             catch
