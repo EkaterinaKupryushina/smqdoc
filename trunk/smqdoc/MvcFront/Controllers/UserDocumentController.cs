@@ -95,18 +95,19 @@ namespace MvcFront.Controllers
             try
             {
                 var doc = _documentRepository.GetDocumentById(model.DocumentId);
-                foreach (var field in model.Fields)
+                foreach (var field in model.Fields.Where(x => x.FieldType != (int)FieldTemplateType.CALCULATED))
                 {
-                    if (field.FieldType == (int)FieldTemplateType.CALCULATED)
+                    {
+                        field.Update(doc.DocFields.Single(x => x.docfieldid == field.FieldId));
+                    } 
+                }
+                foreach (var field in model.Fields.Where(x => x.FieldType == (int)FieldTemplateType.CALCULATED))
+                {
                     {
                         field.Update(doc.DocFields.Single(x => x.docfieldid == field.FieldId), doc);
                     }
-                    else
-                    {
-                        field.Update(doc.DocFields.Single(x => x.docfieldid == field.FieldId));
-                    }
-                    
                 }
+
                 if (Request.Form["calculate"] != null)
                 {
 

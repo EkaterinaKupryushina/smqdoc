@@ -26,7 +26,8 @@
             @Html.EditorFor(x => x.StringValue, new { @class = "stringfield" })
        break;
         case FieldTemplateType.CALCULATED:
-            @Html.TextBoxFor(x => x.DoubleValue, new Dictionary<string, object> { { "readonly", "true" } })
+            @(Html.TextBox(Model.FieldId.ToString(),Model.DoubleValue, new Dictionary<string, object> { { "readonly", "true" } }))
+            @*@Html.TextBox(x => x.DoubleValue, new Dictionary<string, object> { { "readonly", "true" } })*@
        break;     
         default:
             throw new ArgumentOutOfRangeException();
