@@ -115,6 +115,10 @@ namespace MvcFront.Models
         [DataType("Number")]
         [Required]
         public double? DoubleValue { get; set; }
+        [Display(Name = "Значение")]
+        [DataType("Number")]
+        [Required]
+        public int? IntegerValue { get; set; }
         [Display(Name = "Поле ограничено?")]
         public bool IsRestricted { get; set; }
         [Display(Name = "Поле Целое?")]
@@ -151,6 +155,11 @@ namespace MvcFront.Models
             BoolValue = item.BoolValue ?? false;
             DoubleValue = item.DoubleValue;
             OrderNumber = item.FieldTemplate.OrderNumber;
+            IsInteger = item.FieldTemplate.Integer.HasValue && item.FieldTemplate.Integer.Value;
+            if(IsInteger && item.DoubleValue.HasValue)
+            {
+                IntegerValue = (int) item.DoubleValue.Value;
+            }
             //if(item.FieldTemplate.TemplateType == FieldTemplateType.CALCULATED)
             //{
             //    ComputebleFieldIds = new List<long>();
@@ -174,7 +183,14 @@ namespace MvcFront.Models
                 case FieldTemplateType.NUMBER:
                     item.BoolValue = null;
                     item.StringValue = null;
-                    item.DoubleValue = DoubleValue;
+                    if (item.FieldTemplate.Integer.HasValue && item.FieldTemplate.Integer.Value)
+                    {
+                        item.DoubleValue = IntegerValue;
+                    }
+                    else
+                    {
+                        item.DoubleValue = DoubleValue;
+                    }
                     break;
                 case FieldTemplateType.STRING:
                     item.BoolValue = null;

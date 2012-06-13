@@ -5,348 +5,348 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="smqdocModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
-        <EntityContainer Name="smqdocModelStoreContainer">
-          <EntitySet Name="ComputableFieldTemplateParts" EntityType="smqdocModel.Store.ComputableFieldTemplateParts" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="DocFields" EntityType="smqdocModel.Store.DocFields" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="DocTemplates" EntityType="smqdocModel.Store.DocTemplates" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Documents" EntityType="smqdocModel.Store.Documents" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="FieldTemplates" EntityType="smqdocModel.Store.FieldTemplates" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="GroupTemplates" EntityType="smqdocModel.Store.GroupTemplates" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="GroupUsers" EntityType="smqdocModel.Store.GroupUsers" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="UserAccounts" EntityType="smqdocModel.Store.UserAccounts" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="UserAccountUserTags" EntityType="smqdocModel.Store.UserAccountUserTags" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="UserGroups" EntityType="smqdocModel.Store.UserGroups" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="UserTags" EntityType="smqdocModel.Store.UserTags" store:Type="Tables" Schema="dbo" />
-          <AssociationSet Name="FK_ComputableFieldTemplatePartsFieldTemplate" Association="smqdocModel.Store.FK_ComputableFieldTemplatePartsFieldTemplate">
-            <End Role="FieldTemplates" EntitySet="FieldTemplates" />
-            <End Role="ComputableFieldTemplateParts" EntitySet="ComputableFieldTemplateParts" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DocFieldDocument" Association="smqdocModel.Store.FK_DocFieldDocument">
-            <End Role="Documents" EntitySet="Documents" />
-            <End Role="DocFields" EntitySet="DocFields" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DocFieldFieldTemplate" Association="smqdocModel.Store.FK_DocFieldFieldTemplate">
-            <End Role="FieldTemplates" EntitySet="FieldTemplates" />
-            <End Role="DocFields" EntitySet="DocFields" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DocumentGroupTemplate" Association="smqdocModel.Store.FK_DocumentGroupTemplate">
-            <End Role="GroupTemplates" EntitySet="GroupTemplates" />
-            <End Role="Documents" EntitySet="Documents" />
-          </AssociationSet>
-          <AssociationSet Name="FK_DocumentUserAccount" Association="smqdocModel.Store.FK_DocumentUserAccount">
-            <End Role="UserAccounts" EntitySet="UserAccounts" />
-            <End Role="Documents" EntitySet="Documents" />
-          </AssociationSet>
-          <AssociationSet Name="FK_FieldTeplateDocTemplate" Association="smqdocModel.Store.FK_FieldTeplateDocTemplate">
-            <End Role="DocTemplates" EntitySet="DocTemplates" />
-            <End Role="FieldTemplates" EntitySet="FieldTemplates" />
-          </AssociationSet>
-          <AssociationSet Name="FK_GroupManager" Association="smqdocModel.Store.FK_GroupManager">
-            <End Role="UserAccounts" EntitySet="UserAccounts" />
-            <End Role="UserGroups" EntitySet="UserGroups" />
-          </AssociationSet>
-          <AssociationSet Name="FK_GroupTemplateDocTemplate" Association="smqdocModel.Store.FK_GroupTemplateDocTemplate">
-            <End Role="DocTemplates" EntitySet="DocTemplates" />
-            <End Role="GroupTemplates" EntitySet="GroupTemplates" />
-          </AssociationSet>
-          <AssociationSet Name="FK_GroupTemplateUserGroup" Association="smqdocModel.Store.FK_GroupTemplateUserGroup">
-            <End Role="UserGroups" EntitySet="UserGroups" />
-            <End Role="GroupTemplates" EntitySet="GroupTemplates" />
-          </AssociationSet>
-          <AssociationSet Name="FK_GroupUsers_UserAccount" Association="smqdocModel.Store.FK_GroupUsers_UserAccount">
-            <End Role="UserAccounts" EntitySet="UserAccounts" />
-            <End Role="GroupUsers" EntitySet="GroupUsers" />
-          </AssociationSet>
-          <AssociationSet Name="FK_GroupUsers_UserGroup" Association="smqdocModel.Store.FK_GroupUsers_UserGroup">
-            <End Role="UserGroups" EntitySet="UserGroups" />
-            <End Role="GroupUsers" EntitySet="GroupUsers" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UserAccountUserTags_UserAccount" Association="smqdocModel.Store.FK_UserAccountUserTags_UserAccount">
-            <End Role="UserAccounts" EntitySet="UserAccounts" />
-            <End Role="UserAccountUserTags" EntitySet="UserAccountUserTags" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UserAccountUserTags_UserTags" Association="smqdocModel.Store.FK_UserAccountUserTags_UserTags">
-            <End Role="UserTags" EntitySet="UserTags" />
-            <End Role="UserAccountUserTags" EntitySet="UserAccountUserTags" />
-          </AssociationSet>
-        </EntityContainer>
-        <EntityType Name="ComputableFieldTemplateParts">
-          <Key>
-            <PropertyRef Name="computableFieldTemplatePartsID" />
-          </Key>
-          <Property Name="computableFieldTemplatePartsID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="fkCalculatedFieldTemplateID" Type="bigint" Nullable="false" />
-          <Property Name="FieldTemplate_fieldteplateid" Type="bigint" Nullable="false" />
-          <Property Name="OrderNumber" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="DocFields">
-          <Key>
-            <PropertyRef Name="docfieldid" />
-          </Key>
-          <Property Name="docfieldid" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Document_documentid" Type="bigint" Nullable="false" />
-          <Property Name="FieldTemplate_fieldteplateid" Type="bigint" Nullable="false" />
-          <Property Name="StringValue" Type="nvarchar(max)" />
-          <Property Name="BoolValue" Type="bit" />
-          <Property Name="DoubleValue" Type="float" />
-        </EntityType>
-        <EntityType Name="DocTemplates">
-          <Key>
-            <PropertyRef Name="docteplateid" />
-          </Key>
-          <Property Name="docteplateid" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="TemplateName" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="Status" Type="int" Nullable="false" />
-          <Property Name="Comment" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="LastEditDate" Type="datetime" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Documents">
-          <Key>
-            <PropertyRef Name="documentid" />
-          </Key>
-          <Property Name="documentid" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="CreationDate" Type="datetime" Nullable="false" />
-          <Property Name="LastEditDate" Type="datetime" Nullable="false" />
-          <Property Name="Status" Type="int" Nullable="false" />
-          <Property Name="LastComment" Type="nvarchar(max)" />
-          <Property Name="UserAccount_userid" Type="int" Nullable="false" />
-          <Property Name="GroupTemplate_grouptemplateid" Type="bigint" Nullable="false" />
-        </EntityType>
-        <EntityType Name="FieldTemplates">
-          <Key>
-            <PropertyRef Name="fieldteplateid" />
-          </Key>
-          <Property Name="fieldteplateid" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="FieldName" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="FiledType" Type="int" Nullable="false" />
-          <Property Name="Restricted" Type="bit" />
-          <Property Name="MaxVal" Type="float" />
-          <Property Name="MinVal" Type="float" />
-          <Property Name="DocTemplate_docteplateid" Type="bigint" Nullable="false" />
-          <Property Name="OrderNumber" Type="int" Nullable="false" />
-          <Property Name="Status" Type="int" Nullable="false" />
-          <Property Name="OperationExpression" Type="nvarchar(max)" />
-          <Property Name="Integer" Type="bit" />
-        </EntityType>
-        <EntityType Name="GroupTemplates">
-          <Key>
-            <PropertyRef Name="grouptemplateid" />
-          </Key>
-          <Property Name="grouptemplateid" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="DateStart" Type="datetime" Nullable="false" />
-          <Property Name="DateEnd" Type="datetime" Nullable="false" />
-          <Property Name="Status" Type="int" Nullable="false" />
-          <Property Name="UserGroup_usergroupid" Type="int" Nullable="false" />
-          <Property Name="DocTemplate_docteplateid" Type="bigint" Nullable="false" />
-        </EntityType>
-        <EntityType Name="GroupUsers">
-          <Key>
-            <PropertyRef Name="MemberGroups_usergroupid" />
-            <PropertyRef Name="Members_userid" />
-          </Key>
-          <Property Name="MemberGroups_usergroupid" Type="int" Nullable="false" />
-          <Property Name="Members_userid" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="UserAccounts">
-          <Key>
-            <PropertyRef Name="userid" />
-          </Key>
-          <Property Name="userid" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Login" Type="nvarchar" Nullable="false" MaxLength="50" />
-          <Property Name="FirstName" Type="nvarchar" Nullable="false" MaxLength="50" />
-          <Property Name="SecondName" Type="nvarchar" Nullable="false" MaxLength="50" />
-          <Property Name="LastName" Type="nvarchar" Nullable="false" MaxLength="50" />
-          <Property Name="Status" Type="int" Nullable="false" />
-          <Property Name="LastAccess" Type="datetime" />
-          <Property Name="IsAdmin" Type="bit" Nullable="false" />
-          <Property Name="Password" Type="nvarchar" Nullable="false" MaxLength="50" />
-          <Property Name="Email" Type="nvarchar" Nullable="false" MaxLength="50" />
-          <Property Name="LastAccessProfileCode" Type="nvarchar(max)" />
-        </EntityType>
-        <EntityType Name="UserAccountUserTags">
-          <Key>
-            <PropertyRef Name="UserAccounts_userid" />
-            <PropertyRef Name="UserTags_Id" />
-          </Key>
-          <Property Name="UserAccounts_userid" Type="int" Nullable="false" />
-          <Property Name="UserTags_Id" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="UserGroups">
-          <Key>
-            <PropertyRef Name="usergroupid" />
-          </Key>
-          <Property Name="usergroupid" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="FullGroupName" Type="nvarchar" Nullable="false" MaxLength="100" />
-          <Property Name="GroupName" Type="nvarchar" Nullable="false" MaxLength="50" />
-          <Property Name="Managerid" Type="int" Nullable="false" />
-          <Property Name="Status" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="UserTags">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="Status" Type="int" Nullable="false" />
-        </EntityType>
-        <Association Name="FK_ComputableFieldTemplatePartsFieldTemplate">
-          <End Role="FieldTemplates" Type="smqdocModel.Store.FieldTemplates" Multiplicity="1" />
-          <End Role="ComputableFieldTemplateParts" Type="smqdocModel.Store.ComputableFieldTemplateParts" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="FieldTemplates">
-              <PropertyRef Name="fieldteplateid" />
-            </Principal>
-            <Dependent Role="ComputableFieldTemplateParts">
-              <PropertyRef Name="FieldTemplate_fieldteplateid" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_DocFieldDocument">
-          <End Role="Documents" Type="smqdocModel.Store.Documents" Multiplicity="1" />
-          <End Role="DocFields" Type="smqdocModel.Store.DocFields" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Documents">
-              <PropertyRef Name="documentid" />
-            </Principal>
-            <Dependent Role="DocFields">
-              <PropertyRef Name="Document_documentid" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_DocFieldFieldTemplate">
-          <End Role="FieldTemplates" Type="smqdocModel.Store.FieldTemplates" Multiplicity="1" />
-          <End Role="DocFields" Type="smqdocModel.Store.DocFields" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="FieldTemplates">
-              <PropertyRef Name="fieldteplateid" />
-            </Principal>
-            <Dependent Role="DocFields">
-              <PropertyRef Name="FieldTemplate_fieldteplateid" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_DocumentGroupTemplate">
-          <End Role="GroupTemplates" Type="smqdocModel.Store.GroupTemplates" Multiplicity="1" />
-          <End Role="Documents" Type="smqdocModel.Store.Documents" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="GroupTemplates">
-              <PropertyRef Name="grouptemplateid" />
-            </Principal>
-            <Dependent Role="Documents">
-              <PropertyRef Name="GroupTemplate_grouptemplateid" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_DocumentUserAccount">
-          <End Role="UserAccounts" Type="smqdocModel.Store.UserAccounts" Multiplicity="1" />
-          <End Role="Documents" Type="smqdocModel.Store.Documents" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserAccounts">
-              <PropertyRef Name="userid" />
-            </Principal>
-            <Dependent Role="Documents">
-              <PropertyRef Name="UserAccount_userid" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_FieldTeplateDocTemplate">
-          <End Role="DocTemplates" Type="smqdocModel.Store.DocTemplates" Multiplicity="1" />
-          <End Role="FieldTemplates" Type="smqdocModel.Store.FieldTemplates" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DocTemplates">
-              <PropertyRef Name="docteplateid" />
-            </Principal>
-            <Dependent Role="FieldTemplates">
-              <PropertyRef Name="DocTemplate_docteplateid" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_GroupManager">
-          <End Role="UserAccounts" Type="smqdocModel.Store.UserAccounts" Multiplicity="1" />
-          <End Role="UserGroups" Type="smqdocModel.Store.UserGroups" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserAccounts">
-              <PropertyRef Name="userid" />
-            </Principal>
-            <Dependent Role="UserGroups">
-              <PropertyRef Name="Managerid" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_GroupTemplateDocTemplate">
-          <End Role="DocTemplates" Type="smqdocModel.Store.DocTemplates" Multiplicity="1" />
-          <End Role="GroupTemplates" Type="smqdocModel.Store.GroupTemplates" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="DocTemplates">
-              <PropertyRef Name="docteplateid" />
-            </Principal>
-            <Dependent Role="GroupTemplates">
-              <PropertyRef Name="DocTemplate_docteplateid" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_GroupTemplateUserGroup">
-          <End Role="UserGroups" Type="smqdocModel.Store.UserGroups" Multiplicity="1" />
-          <End Role="GroupTemplates" Type="smqdocModel.Store.GroupTemplates" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserGroups">
-              <PropertyRef Name="usergroupid" />
-            </Principal>
-            <Dependent Role="GroupTemplates">
-              <PropertyRef Name="UserGroup_usergroupid" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_GroupUsers_UserAccount">
-          <End Role="UserAccounts" Type="smqdocModel.Store.UserAccounts" Multiplicity="1" />
-          <End Role="GroupUsers" Type="smqdocModel.Store.GroupUsers" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserAccounts">
-              <PropertyRef Name="userid" />
-            </Principal>
-            <Dependent Role="GroupUsers">
-              <PropertyRef Name="Members_userid" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_GroupUsers_UserGroup">
-          <End Role="UserGroups" Type="smqdocModel.Store.UserGroups" Multiplicity="1" />
-          <End Role="GroupUsers" Type="smqdocModel.Store.GroupUsers" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserGroups">
-              <PropertyRef Name="usergroupid" />
-            </Principal>
-            <Dependent Role="GroupUsers">
-              <PropertyRef Name="MemberGroups_usergroupid" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_UserAccountUserTags_UserAccount">
-          <End Role="UserAccounts" Type="smqdocModel.Store.UserAccounts" Multiplicity="1" />
-          <End Role="UserAccountUserTags" Type="smqdocModel.Store.UserAccountUserTags" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserAccounts">
-              <PropertyRef Name="userid" />
-            </Principal>
-            <Dependent Role="UserAccountUserTags">
-              <PropertyRef Name="UserAccounts_userid" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_UserAccountUserTags_UserTags">
-          <End Role="UserTags" Type="smqdocModel.Store.UserTags" Multiplicity="1" />
-          <End Role="UserAccountUserTags" Type="smqdocModel.Store.UserAccountUserTags" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserTags">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="UserAccountUserTags">
-              <PropertyRef Name="UserTags_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-      </Schema></edmx:StorageModels>
+  <EntityContainer Name="smqdocModelStoreContainer">
+    <EntitySet Name="UserAccounts" EntityType="smqdocModel.Store.UserAccounts" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="UserGroups" EntityType="smqdocModel.Store.UserGroups" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="DocTemplates" EntityType="smqdocModel.Store.DocTemplates" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="FieldTemplates" EntityType="smqdocModel.Store.FieldTemplates" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Documents" EntityType="smqdocModel.Store.Documents" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="DocFields" EntityType="smqdocModel.Store.DocFields" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="GroupTemplates" EntityType="smqdocModel.Store.GroupTemplates" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ComputableFieldTemplateParts" EntityType="smqdocModel.Store.ComputableFieldTemplateParts" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="UserTags" EntityType="smqdocModel.Store.UserTags" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="GroupUsers" EntityType="smqdocModel.Store.GroupUsers" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="UserAccountUserTags" EntityType="smqdocModel.Store.UserAccountUserTags" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="GroupManager" Association="smqdocModel.Store.GroupManager">
+      <End Role="UserGroup" EntitySet="UserGroups" />
+      <End Role="UserAccount" EntitySet="UserAccounts" />
+    </AssociationSet>
+    <AssociationSet Name="FK_GroupUsers_UserGroup" Association="smqdocModel.Store.FK_GroupUsers_UserGroup">
+      <End Role="UserGroup" EntitySet="UserGroups" />
+      <End Role="GroupUsers" EntitySet="GroupUsers" />
+    </AssociationSet>
+    <AssociationSet Name="FK_GroupUsers_UserAccount" Association="smqdocModel.Store.FK_GroupUsers_UserAccount">
+      <End Role="UserAccount" EntitySet="UserAccounts" />
+      <End Role="GroupUsers" EntitySet="GroupUsers" />
+    </AssociationSet>
+    <AssociationSet Name="FieldTeplateDocTemplate" Association="smqdocModel.Store.FieldTeplateDocTemplate">
+      <End Role="FieldTeplate" EntitySet="FieldTemplates" />
+      <End Role="DocTemplate" EntitySet="DocTemplates" />
+    </AssociationSet>
+    <AssociationSet Name="DocumentUserAccount" Association="smqdocModel.Store.DocumentUserAccount">
+      <End Role="Document" EntitySet="Documents" />
+      <End Role="UserAccount" EntitySet="UserAccounts" />
+    </AssociationSet>
+    <AssociationSet Name="DocFieldDocument" Association="smqdocModel.Store.DocFieldDocument">
+      <End Role="DocField" EntitySet="DocFields" />
+      <End Role="Document" EntitySet="Documents" />
+    </AssociationSet>
+    <AssociationSet Name="DocFieldFieldTemplate" Association="smqdocModel.Store.DocFieldFieldTemplate">
+      <End Role="DocField" EntitySet="DocFields" />
+      <End Role="FieldTemplate" EntitySet="FieldTemplates" />
+    </AssociationSet>
+    <AssociationSet Name="GroupTemplateUserGroup" Association="smqdocModel.Store.GroupTemplateUserGroup">
+      <End Role="GroupTemplate" EntitySet="GroupTemplates" />
+      <End Role="UserGroup" EntitySet="UserGroups" />
+    </AssociationSet>
+    <AssociationSet Name="GroupTemplateDocTemplate" Association="smqdocModel.Store.GroupTemplateDocTemplate">
+      <End Role="GroupTemplate" EntitySet="GroupTemplates" />
+      <End Role="DocTemplate" EntitySet="DocTemplates" />
+    </AssociationSet>
+    <AssociationSet Name="DocumentGroupTemplate" Association="smqdocModel.Store.DocumentGroupTemplate">
+      <End Role="Document" EntitySet="Documents" />
+      <End Role="GroupTemplate" EntitySet="GroupTemplates" />
+    </AssociationSet>
+    <AssociationSet Name="ComputableFieldTemplatePartsFieldTemplate" Association="smqdocModel.Store.ComputableFieldTemplatePartsFieldTemplate">
+      <End Role="ComputableFieldTemplateParts" EntitySet="ComputableFieldTemplateParts" />
+      <End Role="FieldTemplate" EntitySet="FieldTemplates" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserAccountUserTags_UserAccount" Association="smqdocModel.Store.FK_UserAccountUserTags_UserAccount">
+      <End Role="UserAccount" EntitySet="UserAccounts" />
+      <End Role="UserAccountUserTags" EntitySet="UserAccountUserTags" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserAccountUserTags_UserTags" Association="smqdocModel.Store.FK_UserAccountUserTags_UserTags">
+      <End Role="UserTags" EntitySet="UserTags" />
+      <End Role="UserAccountUserTags" EntitySet="UserAccountUserTags" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="UserAccounts">
+    <Key>
+      <PropertyRef Name="userid" />
+    </Key>
+    <Property Name="userid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Login" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="FirstName" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="SecondName" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="LastName" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="Status" Type="int" Nullable="false" />
+    <Property Name="LastAccess" Type="datetime" Nullable="true" />
+    <Property Name="IsAdmin" Type="bit" Nullable="false" />
+    <Property Name="Password" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="Email" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="LastAccessProfileCode" Type="nvarchar(max)" Nullable="true" />
+  </EntityType>
+  <EntityType Name="UserGroups">
+    <Key>
+      <PropertyRef Name="usergroupid" />
+    </Key>
+    <Property Name="usergroupid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FullGroupName" Type="nvarchar" Nullable="false" MaxLength="100" />
+    <Property Name="GroupName" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="Managerid" Type="int" Nullable="false" />
+    <Property Name="Status" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="DocTemplates">
+    <Key>
+      <PropertyRef Name="docteplateid" />
+    </Key>
+    <Property Name="docteplateid" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TemplateName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Status" Type="int" Nullable="false" />
+    <Property Name="Comment" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="LastEditDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="FieldTemplates">
+    <Key>
+      <PropertyRef Name="fieldteplateid" />
+    </Key>
+    <Property Name="fieldteplateid" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FieldName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="FiledType" Type="int" Nullable="false" />
+    <Property Name="Restricted" Type="bit" Nullable="true" />
+    <Property Name="MaxVal" Type="float" Nullable="true" />
+    <Property Name="MinVal" Type="float" Nullable="true" />
+    <Property Name="DocTemplate_docteplateid" Type="bigint" Nullable="false" />
+    <Property Name="OrderNumber" Type="int" Nullable="false" />
+    <Property Name="Status" Type="int" Nullable="false" />
+    <Property Name="OperationExpression" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="Integer" Type="bit" Nullable="true" />
+  </EntityType>
+  <EntityType Name="Documents">
+    <Key>
+      <PropertyRef Name="documentid" />
+    </Key>
+    <Property Name="documentid" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CreationDate" Type="datetime" Nullable="false" />
+    <Property Name="LastEditDate" Type="datetime" Nullable="false" />
+    <Property Name="Status" Type="int" Nullable="false" />
+    <Property Name="LastComment" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="UserAccount_userid" Type="int" Nullable="false" />
+    <Property Name="GroupTemplate_grouptemplateid" Type="bigint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="DocFields">
+    <Key>
+      <PropertyRef Name="docfieldid" />
+    </Key>
+    <Property Name="docfieldid" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Document_documentid" Type="bigint" Nullable="false" />
+    <Property Name="FieldTemplate_fieldteplateid" Type="bigint" Nullable="false" />
+    <Property Name="StringValue" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="BoolValue" Type="bit" Nullable="true" />
+    <Property Name="DoubleValue" Type="float" Nullable="true" />
+  </EntityType>
+  <EntityType Name="GroupTemplates">
+    <Key>
+      <PropertyRef Name="grouptemplateid" />
+    </Key>
+    <Property Name="grouptemplateid" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="DateStart" Type="datetime" Nullable="false" />
+    <Property Name="DateEnd" Type="datetime" Nullable="false" />
+    <Property Name="Status" Type="int" Nullable="false" />
+    <Property Name="UserGroup_usergroupid" Type="int" Nullable="false" />
+    <Property Name="DocTemplate_docteplateid" Type="bigint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ComputableFieldTemplateParts">
+    <Key>
+      <PropertyRef Name="computableFieldTemplatePartsID" />
+    </Key>
+    <Property Name="computableFieldTemplatePartsID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="fkCalculatedFieldTemplateID" Type="bigint" Nullable="false" />
+    <Property Name="FieldTemplate_fieldteplateid" Type="bigint" Nullable="false" />
+    <Property Name="OrderNumber" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UserTags">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Status" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="GroupUsers">
+    <Key>
+      <PropertyRef Name="MemberGroups_usergroupid" />
+      <PropertyRef Name="Members_userid" />
+    </Key>
+    <Property Name="MemberGroups_usergroupid" Type="int" Nullable="false" />
+    <Property Name="Members_userid" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UserAccountUserTags">
+    <Key>
+      <PropertyRef Name="UserAccounts_userid" />
+      <PropertyRef Name="UserTags_Id" />
+    </Key>
+    <Property Name="UserAccounts_userid" Type="int" Nullable="false" />
+    <Property Name="UserTags_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="GroupManager">
+    <End Role="UserGroup" Type="smqdocModel.Store.UserGroups" Multiplicity="*" />
+    <End Role="UserAccount" Type="smqdocModel.Store.UserAccounts" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="UserAccount">
+        <PropertyRef Name="userid" />
+      </Principal>
+      <Dependent Role="UserGroup">
+        <PropertyRef Name="Managerid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FieldTeplateDocTemplate">
+    <End Role="FieldTeplate" Type="smqdocModel.Store.FieldTemplates" Multiplicity="*" />
+    <End Role="DocTemplate" Type="smqdocModel.Store.DocTemplates" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="DocTemplate">
+        <PropertyRef Name="docteplateid" />
+      </Principal>
+      <Dependent Role="FieldTeplate">
+        <PropertyRef Name="DocTemplate_docteplateid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="DocumentUserAccount">
+    <End Role="Document" Type="smqdocModel.Store.Documents" Multiplicity="*" />
+    <End Role="UserAccount" Type="smqdocModel.Store.UserAccounts" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="UserAccount">
+        <PropertyRef Name="userid" />
+      </Principal>
+      <Dependent Role="Document">
+        <PropertyRef Name="UserAccount_userid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="DocFieldDocument">
+    <End Role="DocField" Type="smqdocModel.Store.DocFields" Multiplicity="*" />
+    <End Role="Document" Type="smqdocModel.Store.Documents" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Document">
+        <PropertyRef Name="documentid" />
+      </Principal>
+      <Dependent Role="DocField">
+        <PropertyRef Name="Document_documentid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="DocFieldFieldTemplate">
+    <End Role="DocField" Type="smqdocModel.Store.DocFields" Multiplicity="*" />
+    <End Role="FieldTemplate" Type="smqdocModel.Store.FieldTemplates" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="FieldTemplate">
+        <PropertyRef Name="fieldteplateid" />
+      </Principal>
+      <Dependent Role="DocField">
+        <PropertyRef Name="FieldTemplate_fieldteplateid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="GroupTemplateUserGroup">
+    <End Role="GroupTemplate" Type="smqdocModel.Store.GroupTemplates" Multiplicity="*" />
+    <End Role="UserGroup" Type="smqdocModel.Store.UserGroups" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="UserGroup">
+        <PropertyRef Name="usergroupid" />
+      </Principal>
+      <Dependent Role="GroupTemplate">
+        <PropertyRef Name="UserGroup_usergroupid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="GroupTemplateDocTemplate">
+    <End Role="GroupTemplate" Type="smqdocModel.Store.GroupTemplates" Multiplicity="*" />
+    <End Role="DocTemplate" Type="smqdocModel.Store.DocTemplates" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="DocTemplate">
+        <PropertyRef Name="docteplateid" />
+      </Principal>
+      <Dependent Role="GroupTemplate">
+        <PropertyRef Name="DocTemplate_docteplateid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="DocumentGroupTemplate">
+    <End Role="Document" Type="smqdocModel.Store.Documents" Multiplicity="*" />
+    <End Role="GroupTemplate" Type="smqdocModel.Store.GroupTemplates" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="GroupTemplate">
+        <PropertyRef Name="grouptemplateid" />
+      </Principal>
+      <Dependent Role="Document">
+        <PropertyRef Name="GroupTemplate_grouptemplateid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ComputableFieldTemplatePartsFieldTemplate">
+    <End Role="ComputableFieldTemplateParts" Type="smqdocModel.Store.ComputableFieldTemplateParts" Multiplicity="*" />
+    <End Role="FieldTemplate" Type="smqdocModel.Store.FieldTemplates" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="FieldTemplate">
+        <PropertyRef Name="fieldteplateid" />
+      </Principal>
+      <Dependent Role="ComputableFieldTemplateParts">
+        <PropertyRef Name="FieldTemplate_fieldteplateid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_GroupUsers_UserGroup">
+    <End Role="UserGroup" Type="smqdocModel.Store.UserGroups" Multiplicity="1" />
+    <End Role="GroupUsers" Type="smqdocModel.Store.GroupUsers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserGroup">
+        <PropertyRef Name="usergroupid" />
+      </Principal>
+      <Dependent Role="GroupUsers">
+        <PropertyRef Name="MemberGroups_usergroupid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_GroupUsers_UserAccount">
+    <End Role="GroupUsers" Type="smqdocModel.Store.GroupUsers" Multiplicity="*" />
+    <End Role="UserAccount" Type="smqdocModel.Store.UserAccounts" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="UserAccount">
+        <PropertyRef Name="userid" />
+      </Principal>
+      <Dependent Role="GroupUsers">
+        <PropertyRef Name="Members_userid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserAccountUserTags_UserAccount">
+    <End Role="UserAccount" Type="smqdocModel.Store.UserAccounts" Multiplicity="1" />
+    <End Role="UserAccountUserTags" Type="smqdocModel.Store.UserAccountUserTags" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserAccount">
+        <PropertyRef Name="userid" />
+      </Principal>
+      <Dependent Role="UserAccountUserTags">
+        <PropertyRef Name="UserAccounts_userid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserAccountUserTags_UserTags">
+    <End Role="UserAccountUserTags" Type="smqdocModel.Store.UserAccountUserTags" Multiplicity="*" />
+    <End Role="UserTags" Type="smqdocModel.Store.UserTags" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="UserTags">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="UserAccountUserTags">
+        <PropertyRef Name="UserTags_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="smqdocModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
