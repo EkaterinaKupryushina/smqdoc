@@ -12,17 +12,13 @@
             @Html.RadioButtonFor(x => x.BoolValue, true) <text>ДА</text>@Html.RadioButtonFor(x => x.BoolValue, false)<text>Нет</text>
                                                        break;
         case FieldTemplateType.NUMBER:
-            switch (Model.IsInteger)
+            if (Model.IsInteger)
             {
-
-                case true:
-                    @(Model.IsRestricted ? (Html.Telerik().IntegerTextBoxFor(x => (int) x.DoubleValue).MaxValue((int) Model.MaxVal).MinValue((int) Model.MinVal).EmptyMessage("Введите число")) : (Html.Telerik().IntegerTextBoxFor(x => (int) x.DoubleValue).EmptyMessage("Введите число")))
-                    break;
-                case false:
-
-                    @(Model.IsRestricted ? (Html.Telerik().NumericTextBoxFor(x => x.DoubleValue).MaxValue(Model.MaxVal).MinValue(Model.MinVal).EmptyMessage("Введите число")) : (Html.Telerik().NumericTextBoxFor(x => x.DoubleValue).EmptyMessage("Введите число")))
-                    break;
-
+                @(Model.IsRestricted ? (Html.Telerik().IntegerTextBoxFor(x => x.IntegerValue).MaxValue((int) Model.MaxVal).MinValue((int) Model.MinVal).EmptyMessage("Введите целое")) : (Html.Telerik().IntegerTextBoxFor(x => x.IntegerValue).EmptyMessage("Введите целое")))
+            }
+            else
+            {
+                @(Model.IsRestricted ? (Html.Telerik().NumericTextBoxFor(x => x.DoubleValue).MaxValue(Model.MaxVal).MinValue(Model.MinVal).EmptyMessage("Введите число")) : (Html.Telerik().NumericTextBoxFor(x => x.DoubleValue).EmptyMessage("Введите число")))
             }
             @*@(Model.IsInteger ? Model.IsRestricted ? (Html.Telerik().IntegerTextBoxFor(x => (int)x.DoubleValue).MaxValue((int)Model.MaxVal).MinValue((int)Model.MinVal).EmptyMessage("Введите число").ToHtmlString()) : (Html.Telerik().IntegerTextBoxFor(x => (int)x.DoubleValue).EmptyMessage("Введите число").ToHtmlString()) :  (Html.Telerik().NumericTextBoxFor(x => x.DoubleValue).MaxValue(Model.MaxVal).MinValue(Model.MinVal).EmptyMessage("Введите число").ToHtmlString()) : (Html.Telerik().NumericTextBoxFor(x => x.DoubleValue).EmptyMessage("Введите число").ToHtmlString());*@
             break;
