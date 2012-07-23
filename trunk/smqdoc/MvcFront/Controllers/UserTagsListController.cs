@@ -31,14 +31,14 @@ namespace MvcFront.Controllers
 
         public ActionResult Create()
         {
-            return View(new UserTagsEditViewModel(_userRepository.GetUserTagByID(0)));
+            return View(new UserTagsEditModel(_userRepository.GetUserTagByID(0)));
         } 
 
         //
         // POST: /UserAccountList/Create
 
         [HttpPost]
-        public ActionResult Create(UserTagsEditViewModel model)
+        public ActionResult Create(UserTagsEditModel model)
         {
             try
             {
@@ -69,14 +69,14 @@ namespace MvcFront.Controllers
  
         public ActionResult Edit(int id)
         {
-            return View(new UserTagsEditViewModel(_userRepository.GetUserTagByID(id)));
+            return View(new UserTagsEditModel(_userRepository.GetUserTagByID(id)));
         }
 
         //
         // POST: /UserAccountList/Edit/5
 
         [HttpPost]
-        public ActionResult Edit(UserTagsEditViewModel model)
+        public ActionResult Edit(UserTagsEditModel model)
         {
             try
             {
@@ -107,7 +107,7 @@ namespace MvcFront.Controllers
  
         public ActionResult Delete(int id)
         {
-            return View(new UserTagsEditViewModel(_userRepository.GetUserTagByID(id)));
+            return View(new UserTagsEditModel(_userRepository.GetUserTagByID(id)));
         }
 
         //

@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Security;
-using ELW.Library.Math.Tools;
+using MvcFront.Entities;
+using MvcFront.Enums;
 using MvcFront.Helpers;
 using MvcFront.Models;
 using MvcFront.Interfaces;
@@ -18,26 +18,32 @@ namespace MvcFront.Controllers
         {
             _userRepository = userRepository;
         }
-        //
-        // GET: /Account/LogOn
+        
 
         public ActionResult Index()
         {
-            SmqUserSessionData sessData = SessionHelper.GetUserSessionData(Session);
+            UserSessionData sessData = SessionHelper.GetUserSessionData(Session);
             if (sessData == null)
                 return RedirectToAction("LogOn");
 
             return View();
         }
 
+        /// <summary>
+        /// GET: /Account/LogOn
+        /// </summary>
+        /// <returns></returns>
         public ActionResult LogOn()
         {
             return View();
         }
 
-        //
-        // POST: /Account/LogOn
-
+        /// <summary>
+        ///  POST: /Account/LogOn 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="returnUrl"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult LogOn(LogOnModel model, string returnUrl)
         {
@@ -52,30 +58,32 @@ namespace MvcFront.Controllers
                     {
                         return Redirect(returnUrl);
                     }
-                    //return RedirectToAction("Index", "Home");
                     
                         //Читаем код последнего профиля пользовтаеля
-                        var userProfileType = SmqUserProfileType.User;
+                        var userProfileType = UserProfileTypes.User;
                         var userProfileName = "Пользователь";
                         string userProfileGroupName = null;
                         var userProfileGroupId = 0;
                         int? groupId;
                         bool isManager;
                         SessionHelper.ParseUserProfileCode(user.LastAccessProfileCode,out groupId,out isManager);
+                        // Администратор
                         if (groupId == null && isManager)
                         {
                             userProfileGroupId = 0;
-                            userProfileType = SmqUserProfileType.Systemadmin;
+                            userProfileType = UserProfileTypes.Systemadmin;
                             userProfileName = "Администратор";
 
                         }
+                        //Пользователь
                         if (groupId == null && !isManager)
                         {
                             userProfileGroupId = 0;
-                            userProfileType = SmqUserProfileType.User;
+                            userProfileType = UserProfileTypes.User;
                             userProfileName = "Пользователь";
 
                         }
+                        //Менеджер группы 
                         if(groupId != null && isManager)
                         {
                             var group = user.ManagedGroups.FirstOrDefault(x => x.usergroupid == groupId);
@@ -83,10 +91,11 @@ namespace MvcFront.Controllers
                             {
                                 userProfileGroupName = group.GroupName;
                                 userProfileGroupId = group.usergroupid;
-                                userProfileType = SmqUserProfileType.Groupmanager;
+                                userProfileType = UserProfileTypes.Groupmanager;
                                 userProfileName = "Менеджер " + userProfileGroupName;
                             }
                         }
+                        //Участник группы
                         if (groupId != null && !isManager)
                         {
                             var group = user.MemberGroups.FirstOrDefault(x => x.usergroupid == groupId);
@@ -94,11 +103,13 @@ namespace MvcFront.Controllers
                             {
                                 userProfileGroupName = group.GroupName;
                                 userProfileGroupId = group.usergroupid;
-                                userProfileType = SmqUserProfileType.Groupuser;
+                                userProfileType = UserProfileTypes.Groupuser;
                                 userProfileName = "Участник " + userProfileGroupName;
                             }
                         }
-                        var sessData = new SmqUserSessionData {UserName = user.Login,UserId = user.userid,UserType = userProfileType,
+
+                        //Сохраняем данные в сессию
+                        var sessData = new UserSessionData {UserName = user.Login,UserId = user.userid,UserType = userProfileType,
                             CurrentProfileName = userProfileName,UserGroupName = userProfileGroupName,UserGroupId = userProfileGroupId};
                         SessionHelper.SetUserSessionData(Session,sessData);
                         
@@ -110,9 +121,10 @@ namespace MvcFront.Controllers
             return View(model);
         }
 
-        //
-        // GET: /Account/LogOff
-
+        /// <summary>
+        /// GET: /Account/LogOff 
+        /// </summary>
+        /// <returns></returns>
         public ActionResult LogOff()
         {
             FormsAuthentication.SignOut();
@@ -120,18 +132,21 @@ namespace MvcFront.Controllers
             return RedirectToAction("LogOn", "Account");
         }
 
-        //
-        // GET: /Account/ChangePassword
-
+        /// <summary>
+        /// GET: /Account/ChangePassword
+        /// </summary>
+        /// <returns></returns>
         [Authorize]
         public ActionResult ChangePassword()
         {
             return View();
         }
 
-        //
-        // POST: /Account/ChangePassword
-
+        /// <summary>
+        /// POST: /Account/ChangePassword
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [Authorize]
         [HttpPost]
         public ActionResult ChangePassword(ChangePasswordModel model)
@@ -169,20 +184,26 @@ namespace MvcFront.Controllers
             return View(model);
         }
 
-        //
-        // GET: /Account/ChangePasswordSuccess
-
+       /// <summary>
+        ///  GET: /Account/ChangePasswordSuccess (смена пароля прошла успешно)
+       /// </summary>
+       /// <returns></returns>
         public ActionResult ChangePasswordSuccess()
         {
             return View();
         }
         
+        /// <summary>
+        /// Смена текущего профиля пользователя
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult ChangeUserProfile(ChangeUserProfileModel model)
         {
             if(ModelState.IsValid)
             {
-                SmqUserSessionData sessData = SessionHelper.GetUserSessionData(Session);
+                UserSessionData sessData = SessionHelper.GetUserSessionData(Session);
                 var user = _userRepository.GetById(sessData.UserId);
                 
                 int? groupId;
@@ -192,7 +213,7 @@ namespace MvcFront.Controllers
                 {
                     sessData.UserGroupId = 0;
                     sessData.UserGroupName = null;
-                    sessData.UserType = SmqUserProfileType.Systemadmin;
+                    sessData.UserType = UserProfileTypes.Systemadmin;
                     sessData.CurrentProfileName = "Администратор";
 
                 }
@@ -200,7 +221,7 @@ namespace MvcFront.Controllers
                 {
                     sessData.UserGroupId = 0;
                     sessData.UserGroupName = null;
-                    sessData.UserType = SmqUserProfileType.User;
+                    sessData.UserType = UserProfileTypes.User;
                     sessData.CurrentProfileName = "Пользователь";
 
                 }
@@ -210,7 +231,7 @@ namespace MvcFront.Controllers
                     sessData.UserGroupName =
                     user.ManagedGroups.First(
                             x => x.usergroupid == groupId.Value).GroupName;
-                    sessData.UserType = SmqUserProfileType.Groupmanager;
+                    sessData.UserType = UserProfileTypes.Groupmanager;
                     sessData.CurrentProfileName = "Менеджер " + sessData.UserGroupName;
 
                 }
@@ -220,7 +241,7 @@ namespace MvcFront.Controllers
                     sessData.UserGroupName =
                     user.MemberGroups.First(
                             x => x.usergroupid == groupId.Value).GroupName;
-                    sessData.UserType = SmqUserProfileType.Groupuser;
+                    sessData.UserType = UserProfileTypes.Groupuser;
                     sessData.CurrentProfileName = "Участник " + sessData.UserGroupName;
 
                 }
@@ -231,21 +252,25 @@ namespace MvcFront.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-
+        /// <summary>
+        /// Get: /Account/EditUserInfo
+        /// </summary>
+        /// <returns></returns>
         [Authorize]
         public ActionResult EditUserInfo()
         {
-            var sessData = SessionHelper.GetUserSessionData(Session);
-            //return View(new EditUserInfoModel(_userRepository.GetAll().Where(x => x.userid == sessData.UserId).SingleOrDefault()));             
-            return View(new EditUserInfoModel(_userRepository.GetById(sessData.UserId)));
+            var sessData = SessionHelper.GetUserSessionData(Session);   
+            return View(new EditUserAccountForUserModel(_userRepository.GetById(sessData.UserId)));
         }
 
-        //
-        // POST: /Account/EditUserInfo
-
+        /// <summary>
+        /// POST: /Account/EditUserInfo
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [Authorize]
         [HttpPost]
-        public ActionResult EditUserInfo(EditUserInfoModel model)
+        public ActionResult EditUserInfo(EditUserAccountForUserModel model)
         {
             if (ModelState.IsValid)
             {

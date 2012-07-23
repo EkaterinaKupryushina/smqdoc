@@ -1,53 +1,38 @@
-﻿using System;
-using System.Web;
+﻿using System.Web;
 using System.Xml.Serialization;
 using System.IO;
-using MvcFront.DB;
+using MvcFront.Entities;
 
 namespace MvcFront.Helpers
 {
-    /// <summary>
-    /// Тип профиля пользователя
-    /// </summary>
-    public enum SmqUserProfileType
-    {
-        Anonymous,
-        User,
-        Groupuser,
-        Groupmanager,
-        Systemadmin 
-    }
-    /// <summary>
-    /// Хранит информацию о текущем профиле пользователя
-    /// </summary>
-    [Serializable]
-    public class SmqUserSessionData
-    {   
-        public string UserName { get; set; }
-        public int UserId { get; set; }
-        public SmqUserProfileType UserType { get; set; }
-        public string UserGroupName { get; set; }
-        public int UserGroupId { get; set; }
-        public string CurrentProfileName { get; set; }
-    }
-
     public static class SessionHelper
     {
         private const string Smqsessiondatastore = "SMQSESSIONDATASTOPE";
 
-        public static void SetUserSessionData(HttpSessionStateBase ses, SmqUserSessionData data)
+        /// <summary>
+        /// Сохраняем данные о пользователе в сессию
+        /// </summary>
+        /// <param name="ses"></param>
+        /// <param name="data"></param>
+        public static void SetUserSessionData(HttpSessionStateBase ses, UserSessionData data)
         {
-            var xSer = new XmlSerializer(typeof(SmqUserSessionData));
+            var xSer = new XmlSerializer(typeof(UserSessionData));
             using (var stream =  new MemoryStream())
             {
                 xSer.Serialize(stream, data);
                 ses[Smqsessiondatastore] = stream.ToArray();
             }
         }
-        public static SmqUserSessionData GetUserSessionData(HttpSessionStateBase ses)
+
+        /// <summary>
+        /// Читаем пользовательские данные из сессии
+        /// </summary>
+        /// <param name="ses"></param>
+        /// <returns></returns>
+        public static UserSessionData GetUserSessionData(HttpSessionStateBase ses)
         {
-            SmqUserSessionData retVal = null;
-            var xSer = new XmlSerializer(typeof(SmqUserSessionData));
+            UserSessionData retVal = null;
+            var xSer = new XmlSerializer(typeof(UserSessionData));
             using (var ms = new MemoryStream())
             {
                 var data = (byte[])ses[Smqsessiondatastore]; 
@@ -56,15 +41,27 @@ namespace MvcFront.Helpers
                     ms.Write(data,0,data.Length);
                     ms.Position = 0;
                     ms.Seek(0, SeekOrigin.Begin);
-                    retVal = (SmqUserSessionData)xSer.Deserialize(ms);
+                    retVal = (UserSessionData)xSer.Deserialize(ms);
                 }
             }
             return retVal;
         }
+
+        /// <summary>
+        /// Чистит данные в сессии
+        /// </summary>
+        /// <param name="ses"></param>
         public static void ClearUserSessionData(HttpSessionStateBase ses)
         {
             ses[Smqsessiondatastore] = null;
         }
+
+        /// <summary>
+        /// Саздает код пользовательского профиля (нужно для хранения в сессии и для входа в прошлый пльзовательский профиль )
+        /// </summary>
+        /// <param name="groupId"></param>
+        /// <param name="isManager"></param>
+        /// <returns></returns>
         public static string GenerateUserProfileCode(int? groupId,bool isManager)
         {
             if (groupId == null)
@@ -74,6 +71,13 @@ namespace MvcFront.Helpers
                     return "1";
             return groupId + ";" + (isManager ? "0" : "1");
         }
+
+        /// <summary>
+        /// Парсит код пользовательского профиля
+        /// </summary>
+        /// <param name="code">Код профиля</param>
+        /// <param name="groupId">ID группы</param>
+        /// <param name="isManager">показывает менеджер ли ?</param>
         public static void ParseUserProfileCode(string code, out int? groupId, out bool isManager)
         {
             
@@ -86,19 +90,17 @@ namespace MvcFront.Helpers
             //Админ
             if (code == "0")
             {
-                groupId = null;
                 isManager = true;
                 return;
             }
             //Просто пользователь
             if (code == "1")
             {
-                groupId = null;
-                isManager = false;
                 return;
             }
+
             var ids = code.Split(';');
-            var parsedGId = 0;
+            int parsedGId;
             if(int.TryParse(ids[0],out parsedGId))
                 groupId = parsedGId;
             isManager = ids[1] == "0";

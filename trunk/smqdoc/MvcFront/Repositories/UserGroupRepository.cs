@@ -14,6 +14,7 @@ namespace MvcFront.Repositories
             _unitOfWork = unitOfWork;
             _userRepository = userRepository;
         }
+
         public IQueryable<UserGroup> GetAll()
         {
             return _unitOfWork.DbModel.UserGroups.AsQueryable();
@@ -70,6 +71,7 @@ namespace MvcFront.Repositories
                 _unitOfWork.DbModel.SaveChanges();
             }
         }
+
         public bool AddMember(int groupId, int userId)
         {
             var group = GetById(groupId);
@@ -85,6 +87,7 @@ namespace MvcFront.Repositories
                 
             return true;
         }
+
         public bool RemoveMember(int groupId, int userId)
         {
             var group = GetById(groupId);
@@ -96,6 +99,7 @@ namespace MvcFront.Repositories
             _unitOfWork.DbModel.SaveChanges();
             return true;
         }
+
         public void ChangeState(int id)
         {
             var item = _unitOfWork.DbModel.UserGroups.SingleOrDefault(x => x.usergroupid == id);
@@ -105,6 +109,7 @@ namespace MvcFront.Repositories
                 _unitOfWork.DbModel.SaveChanges();
             }
         }
+
         public UserGroup Copy(IUnitOfWork uw, int usergroupid)
         {
             return usergroupid == 0 ? new UserGroup() : uw.DbModel.UserGroups.SingleOrDefault(x => x.usergroupid == usergroupid);

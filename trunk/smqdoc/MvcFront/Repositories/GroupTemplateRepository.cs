@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using MvcFront.Enums;
 using MvcFront.Interfaces;
 using MvcFront.DB;
 
@@ -15,7 +15,7 @@ namespace MvcFront.Repositories
             _unitOfWork = unitOfWork;
         }
 
-        public List<GroupTemplate> GetGroupTemplateByGroupId(Int64 id)
+        public IEnumerable<GroupTemplate> GetGroupTemplateByGroupId(Int64 id)
         {
             return GetAllGroupTemplates().Where(x => x.UserGroup_usergroupid == id).ToList();
         }

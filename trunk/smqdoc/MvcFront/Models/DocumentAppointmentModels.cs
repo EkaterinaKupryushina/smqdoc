@@ -2,6 +2,7 @@
 using System.Linq;
  using System.ComponentModel.DataAnnotations;
  using MvcFront.DB;
+ using MvcFront.Enums;
  using MvcFront.Infrastructure;
 
 namespace MvcFront.Models

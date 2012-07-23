@@ -44,14 +44,14 @@ namespace MvcFront.Controllers
 
         public ActionResult Create()
         {
-            return View(new UserGroupEditViewModel(_groupRepository.GetById(0)));
+            return View(new UserGroupEditModel(_groupRepository.GetById(0)));
         } 
 
         //
         // POST: /UserGroup/Create
 
         [HttpPost]
-        public ActionResult Create(UserGroupEditViewModel model)
+        public ActionResult Create(UserGroupEditModel model)
         {
             try
             {
@@ -82,14 +82,14 @@ namespace MvcFront.Controllers
  
         public ActionResult Edit(int id)
         {
-            return View(new UserGroupEditViewModel(_groupRepository.GetById(id)));
+            return View(new UserGroupEditModel(_groupRepository.GetById(id)));
         }
 
         //
         // POST: /UserGroup/Edit/5
 
         [HttpPost]
-        public ActionResult Edit(UserGroupEditViewModel model)
+        public ActionResult Edit(UserGroupEditModel model)
         {
             try
             {

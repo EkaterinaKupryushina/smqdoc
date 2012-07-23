@@ -1,20 +1,8 @@
-﻿using MvcFront.Helpers;
+﻿using MvcFront.Enums;
+using MvcFront.Helpers;
 
 namespace MvcFront.DB
-{
-    public enum UserAccountStatus
     {
-        Active,
-        Unactive,
-        Deleted
-    }
-
-    public enum UserTagStatus
-    {
-        Active,
-        Deleted
-    }
-
     public partial class UserAccount
     {
         public string FullName

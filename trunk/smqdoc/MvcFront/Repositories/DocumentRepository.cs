@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using MvcFront.DB;
+using MvcFront.Enums;
 using MvcFront.Interfaces;
 
 namespace MvcFront.Repositories
@@ -56,12 +57,11 @@ namespace MvcFront.Repositories
             _unitOfWork.DbModel.SaveChanges();
             return entity;
         }
-        public Document ChangeDocumentStatus(long id, DocumentStatus state)
+        public void ChangeDocumentStatus(long id, DocumentStatus state)
         {
             var doc = GetDocumentById(id);
             doc.DocStatus = state;
             _unitOfWork.DbModel.SaveChanges();
-            return doc;
         }
 
         public Document DeleteDocument(long id)

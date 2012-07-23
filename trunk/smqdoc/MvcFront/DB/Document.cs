@@ -1,20 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+using MvcFront.Enums;
 using MvcFront.Helpers;
 
 namespace MvcFront.DB
 {
-    public enum DocumentStatus
-    {
-        Editing,
-        Sended,
-        Submited,
-        Deleted
-    }
-
     [MetadataType(typeof(DocumentMetadata))]
     public partial class Document
     {
@@ -31,8 +21,10 @@ namespace MvcFront.DB
         }
     }
 
-    public partial class DocumentMetadata
+    public class DocumentMetadata
     {
+        // ReSharper disable UnusedMember.Global
+        // ReSharper disable InconsistentNaming
         [Display(Name = "Id документа")]
         [UIHint("Hidden")]
         public Int64 documentid { get; set; }
@@ -48,8 +40,8 @@ namespace MvcFront.DB
         [Display(Name = "Послений коментарий")]
         [DataType(DataType.MultilineText)]
         public String LastComment { get; set; }
-        //[Display(Name = "Название документа")]
-        //public String DocumentName { get; set; }
+        // ReSharper restore InconsistentNaming
+        // ReSharper restore UnusedMember.Global
     }
 
     public partial class DocField

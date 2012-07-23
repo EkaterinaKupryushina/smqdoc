@@ -24,11 +24,12 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("smqdocModel", "DocumentUserAccount", "Document", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.Document), "UserAccount", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.UserAccount), true)]
 [assembly: EdmRelationshipAttribute("smqdocModel", "DocFieldDocument", "DocField", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.DocField), "Document", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.Document), true)]
 [assembly: EdmRelationshipAttribute("smqdocModel", "DocFieldFieldTemplate", "DocField", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.DocField), "FieldTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.FieldTemplate), true)]
-[assembly: EdmRelationshipAttribute("smqdocModel", "GroupTemplateUserGroup", "GroupTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.GroupTemplate), "UserGroup", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.UserGroup), true)]
-[assembly: EdmRelationshipAttribute("smqdocModel", "GroupTemplateDocTemplate", "GroupTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.GroupTemplate), "DocTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.DocTemplate), true)]
-[assembly: EdmRelationshipAttribute("smqdocModel", "DocumentGroupTemplate", "Document", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.Document), "GroupTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.GroupTemplate), true)]
+[assembly: EdmRelationshipAttribute("smqdocModel", "GroupTemplateUserGroup", "GroupTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.GroupTemplate), "UserGroup", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(MvcFront.DB.UserGroup), true)]
 [assembly: EdmRelationshipAttribute("smqdocModel", "ComputableFieldTemplatePartsFieldTemplate", "ComputableFieldTemplateParts", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.ComputableFieldTemplateParts), "FieldTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.FieldTemplate), true)]
 [assembly: EdmRelationshipAttribute("smqdocModel", "UserAccountUserTags", "UserAccount", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.UserAccount), "UserTags", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.UserTags))]
+[assembly: EdmRelationshipAttribute("smqdocModel", "DocTemplateDocAppointment", "DocTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.DocTemplate), "DocAppointment", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.DocAppointment), true)]
+[assembly: EdmRelationshipAttribute("smqdocModel", "DocumentDocAppointment", "Document", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.Document), "DocAppointment", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.DocAppointment), true)]
+[assembly: EdmRelationshipAttribute("smqdocModel", "DocAppointmentGroupTemplate", "DocAppointment", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(MvcFront.DB.DocAppointment), "GroupTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.GroupTemplate))]
 
 #endregion
 
@@ -223,6 +224,22 @@ namespace MvcFront.DB
             }
         }
         private ObjectSet<UserTags> _UserTags;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<DocAppointment> DocAppointments
+        {
+            get
+            {
+                if ((_DocAppointments == null))
+                {
+                    _DocAppointments = base.CreateObjectSet<DocAppointment>("DocAppointments");
+                }
+                return _DocAppointments;
+            }
+        }
+        private ObjectSet<DocAppointment> _DocAppointments;
 
         #endregion
         #region AddTo Methods
@@ -297,6 +314,14 @@ namespace MvcFront.DB
         public void AddToUserTags(UserTags userTags)
         {
             base.AddObject("UserTags", userTags);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the DocAppointments EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToDocAppointments(DocAppointment docAppointment)
+        {
+            base.AddObject("DocAppointments", docAppointment);
         }
 
         #endregion
@@ -474,6 +499,188 @@ namespace MvcFront.DB
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<FieldTemplate>("smqdocModel.ComputableFieldTemplatePartsFieldTemplate", "FieldTemplate", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="smqdocModel", Name="DocAppointment")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class DocAppointment : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new DocAppointment object.
+        /// </summary>
+        /// <param name="docappointmentid">Initial value of the docappointmentid property.</param>
+        /// <param name="docTemplate_docteplateid">Initial value of the DocTemplate_docteplateid property.</param>
+        public static DocAppointment CreateDocAppointment(global::System.Int64 docappointmentid, global::System.Int64 docTemplate_docteplateid)
+        {
+            DocAppointment docAppointment = new DocAppointment();
+            docAppointment.docappointmentid = docappointmentid;
+            docAppointment.DocTemplate_docteplateid = docTemplate_docteplateid;
+            return docAppointment;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int64 docappointmentid
+        {
+            get
+            {
+                return _docappointmentid;
+            }
+            set
+            {
+                if (_docappointmentid != value)
+                {
+                    OndocappointmentidChanging(value);
+                    ReportPropertyChanging("docappointmentid");
+                    _docappointmentid = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("docappointmentid");
+                    OndocappointmentidChanged();
+                }
+            }
+        }
+        private global::System.Int64 _docappointmentid;
+        partial void OndocappointmentidChanging(global::System.Int64 value);
+        partial void OndocappointmentidChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int64 DocTemplate_docteplateid
+        {
+            get
+            {
+                return _DocTemplate_docteplateid;
+            }
+            set
+            {
+                OnDocTemplate_docteplateidChanging(value);
+                ReportPropertyChanging("DocTemplate_docteplateid");
+                _DocTemplate_docteplateid = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DocTemplate_docteplateid");
+                OnDocTemplate_docteplateidChanged();
+            }
+        }
+        private global::System.Int64 _DocTemplate_docteplateid;
+        partial void OnDocTemplate_docteplateidChanging(global::System.Int64 value);
+        partial void OnDocTemplate_docteplateidChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "DocTemplateDocAppointment", "DocTemplate")]
+        public DocTemplate DocTemplate
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<DocTemplate>("smqdocModel.DocTemplateDocAppointment", "DocTemplate").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<DocTemplate>("smqdocModel.DocTemplateDocAppointment", "DocTemplate").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<DocTemplate> DocTemplateReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<DocTemplate>("smqdocModel.DocTemplateDocAppointment", "DocTemplate");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<DocTemplate>("smqdocModel.DocTemplateDocAppointment", "DocTemplate", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "DocumentDocAppointment", "Document")]
+        public EntityCollection<Document> Documents
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Document>("smqdocModel.DocumentDocAppointment", "Document");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Document>("smqdocModel.DocumentDocAppointment", "Document", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "DocAppointmentGroupTemplate", "GroupTemplate")]
+        public GroupTemplate GroupTemplate
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<GroupTemplate>("smqdocModel.DocAppointmentGroupTemplate", "GroupTemplate").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<GroupTemplate>("smqdocModel.DocAppointmentGroupTemplate", "GroupTemplate").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<GroupTemplate> GroupTemplateReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<GroupTemplate>("smqdocModel.DocAppointmentGroupTemplate", "GroupTemplate");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<GroupTemplate>("smqdocModel.DocAppointmentGroupTemplate", "GroupTemplate", value);
                 }
             }
         }
@@ -926,18 +1133,18 @@ namespace MvcFront.DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "GroupTemplateDocTemplate", "GroupTemplate")]
-        public EntityCollection<GroupTemplate> GroupTemplates
+        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "DocTemplateDocAppointment", "DocAppointment")]
+        public EntityCollection<DocAppointment> DocAppointments
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<GroupTemplate>("smqdocModel.GroupTemplateDocTemplate", "GroupTemplate");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<DocAppointment>("smqdocModel.DocTemplateDocAppointment", "DocAppointment");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<GroupTemplate>("smqdocModel.GroupTemplateDocTemplate", "GroupTemplate", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<DocAppointment>("smqdocModel.DocTemplateDocAppointment", "DocAppointment", value);
                 }
             }
         }
@@ -963,8 +1170,8 @@ namespace MvcFront.DB
         /// <param name="lastEditDate">Initial value of the LastEditDate property.</param>
         /// <param name="status">Initial value of the Status property.</param>
         /// <param name="userAccount_userid">Initial value of the UserAccount_userid property.</param>
-        /// <param name="groupTemplate_grouptemplateid">Initial value of the GroupTemplate_grouptemplateid property.</param>
-        public static Document CreateDocument(global::System.Int64 documentid, global::System.DateTime creationDate, global::System.DateTime lastEditDate, global::System.Int32 status, global::System.Int32 userAccount_userid, global::System.Int64 groupTemplate_grouptemplateid)
+        /// <param name="docAppointment_docappointmentid">Initial value of the DocAppointment_docappointmentid property.</param>
+        public static Document CreateDocument(global::System.Int64 documentid, global::System.DateTime creationDate, global::System.DateTime lastEditDate, global::System.Int32 status, global::System.Int32 userAccount_userid, global::System.Int64 docAppointment_docappointmentid)
         {
             Document document = new Document();
             document.documentid = documentid;
@@ -972,7 +1179,7 @@ namespace MvcFront.DB
             document.LastEditDate = lastEditDate;
             document.Status = status;
             document.UserAccount_userid = userAccount_userid;
-            document.GroupTemplate_grouptemplateid = groupTemplate_grouptemplateid;
+            document.DocAppointment_docappointmentid = docAppointment_docappointmentid;
             return document;
         }
 
@@ -1131,24 +1338,24 @@ namespace MvcFront.DB
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.Int64 GroupTemplate_grouptemplateid
+        public global::System.Int64 DocAppointment_docappointmentid
         {
             get
             {
-                return _GroupTemplate_grouptemplateid;
+                return _DocAppointment_docappointmentid;
             }
             set
             {
-                OnGroupTemplate_grouptemplateidChanging(value);
-                ReportPropertyChanging("GroupTemplate_grouptemplateid");
-                _GroupTemplate_grouptemplateid = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("GroupTemplate_grouptemplateid");
-                OnGroupTemplate_grouptemplateidChanged();
+                OnDocAppointment_docappointmentidChanging(value);
+                ReportPropertyChanging("DocAppointment_docappointmentid");
+                _DocAppointment_docappointmentid = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DocAppointment_docappointmentid");
+                OnDocAppointment_docappointmentidChanged();
             }
         }
-        private global::System.Int64 _GroupTemplate_grouptemplateid;
-        partial void OnGroupTemplate_grouptemplateidChanging(global::System.Int64 value);
-        partial void OnGroupTemplate_grouptemplateidChanged();
+        private global::System.Int64 _DocAppointment_docappointmentid;
+        partial void OnDocAppointment_docappointmentidChanging(global::System.Int64 value);
+        partial void OnDocAppointment_docappointmentidChanged();
 
         #endregion
     
@@ -1220,16 +1427,16 @@ namespace MvcFront.DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "DocumentGroupTemplate", "GroupTemplate")]
-        public GroupTemplate GroupTemplate
+        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "DocumentDocAppointment", "DocAppointment")]
+        public DocAppointment DocAppointment
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<GroupTemplate>("smqdocModel.DocumentGroupTemplate", "GroupTemplate").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<DocAppointment>("smqdocModel.DocumentDocAppointment", "DocAppointment").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<GroupTemplate>("smqdocModel.DocumentGroupTemplate", "GroupTemplate").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<DocAppointment>("smqdocModel.DocumentDocAppointment", "DocAppointment").Value = value;
             }
         }
         /// <summary>
@@ -1237,17 +1444,17 @@ namespace MvcFront.DB
         /// </summary>
         [BrowsableAttribute(false)]
         [DataMemberAttribute()]
-        public EntityReference<GroupTemplate> GroupTemplateReference
+        public EntityReference<DocAppointment> DocAppointmentReference
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<GroupTemplate>("smqdocModel.DocumentGroupTemplate", "GroupTemplate");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<DocAppointment>("smqdocModel.DocumentDocAppointment", "DocAppointment");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<GroupTemplate>("smqdocModel.DocumentGroupTemplate", "GroupTemplate", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<DocAppointment>("smqdocModel.DocumentDocAppointment", "DocAppointment", value);
                 }
             }
         }
@@ -1660,21 +1867,21 @@ namespace MvcFront.DB
         /// </summary>
         /// <param name="grouptemplateid">Initial value of the grouptemplateid property.</param>
         /// <param name="name">Initial value of the Name property.</param>
-        /// <param name="dateStart">Initial value of the DateStart property.</param>
-        /// <param name="dateEnd">Initial value of the DateEnd property.</param>
+        /// <param name="planedStartDate">Initial value of the PlanedStartDate property.</param>
+        /// <param name="planedEndDate">Initial value of the PlanedEndDate property.</param>
         /// <param name="status">Initial value of the Status property.</param>
-        /// <param name="userGroup_usergroupid">Initial value of the UserGroup_usergroupid property.</param>
-        /// <param name="docTemplate_docteplateid">Initial value of the DocTemplate_docteplateid property.</param>
-        public static GroupTemplate CreateGroupTemplate(global::System.Int64 grouptemplateid, global::System.String name, global::System.DateTime dateStart, global::System.DateTime dateEnd, global::System.Int32 status, global::System.Int32 userGroup_usergroupid, global::System.Int64 docTemplate_docteplateid)
+        /// <param name="actualStartDate">Initial value of the ActualStartDate property.</param>
+        /// <param name="actualEndDate">Initial value of the ActualEndDate property.</param>
+        public static GroupTemplate CreateGroupTemplate(global::System.Int64 grouptemplateid, global::System.String name, global::System.DateTime planedStartDate, global::System.DateTime planedEndDate, global::System.Int32 status, global::System.String actualStartDate, global::System.String actualEndDate)
         {
             GroupTemplate groupTemplate = new GroupTemplate();
             groupTemplate.grouptemplateid = grouptemplateid;
             groupTemplate.Name = name;
-            groupTemplate.DateStart = dateStart;
-            groupTemplate.DateEnd = dateEnd;
+            groupTemplate.PlanedStartDate = planedStartDate;
+            groupTemplate.PlanedEndDate = planedEndDate;
             groupTemplate.Status = status;
-            groupTemplate.UserGroup_usergroupid = userGroup_usergroupid;
-            groupTemplate.DocTemplate_docteplateid = docTemplate_docteplateid;
+            groupTemplate.ActualStartDate = actualStartDate;
+            groupTemplate.ActualEndDate = actualEndDate;
             return groupTemplate;
         }
 
@@ -1737,48 +1944,48 @@ namespace MvcFront.DB
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.DateTime DateStart
+        public global::System.DateTime PlanedStartDate
         {
             get
             {
-                return _DateStart;
+                return _PlanedStartDate;
             }
             set
             {
-                OnDateStartChanging(value);
-                ReportPropertyChanging("DateStart");
-                _DateStart = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("DateStart");
-                OnDateStartChanged();
+                OnPlanedStartDateChanging(value);
+                ReportPropertyChanging("PlanedStartDate");
+                _PlanedStartDate = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("PlanedStartDate");
+                OnPlanedStartDateChanged();
             }
         }
-        private global::System.DateTime _DateStart;
-        partial void OnDateStartChanging(global::System.DateTime value);
-        partial void OnDateStartChanged();
+        private global::System.DateTime _PlanedStartDate;
+        partial void OnPlanedStartDateChanging(global::System.DateTime value);
+        partial void OnPlanedStartDateChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.DateTime DateEnd
+        public global::System.DateTime PlanedEndDate
         {
             get
             {
-                return _DateEnd;
+                return _PlanedEndDate;
             }
             set
             {
-                OnDateEndChanging(value);
-                ReportPropertyChanging("DateEnd");
-                _DateEnd = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("DateEnd");
-                OnDateEndChanged();
+                OnPlanedEndDateChanging(value);
+                ReportPropertyChanging("PlanedEndDate");
+                _PlanedEndDate = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("PlanedEndDate");
+                OnPlanedEndDateChanged();
             }
         }
-        private global::System.DateTime _DateEnd;
-        partial void OnDateEndChanging(global::System.DateTime value);
-        partial void OnDateEndChanged();
+        private global::System.DateTime _PlanedEndDate;
+        partial void OnPlanedEndDateChanging(global::System.DateTime value);
+        partial void OnPlanedEndDateChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -1807,9 +2014,9 @@ namespace MvcFront.DB
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.Int32 UserGroup_usergroupid
+        public Nullable<global::System.Int32> UserGroup_usergroupid
         {
             get
             {
@@ -1824,8 +2031,8 @@ namespace MvcFront.DB
                 OnUserGroup_usergroupidChanged();
             }
         }
-        private global::System.Int32 _UserGroup_usergroupid;
-        partial void OnUserGroup_usergroupidChanging(global::System.Int32 value);
+        private Nullable<global::System.Int32> _UserGroup_usergroupid;
+        partial void OnUserGroup_usergroupidChanging(Nullable<global::System.Int32> value);
         partial void OnUserGroup_usergroupidChanged();
     
         /// <summary>
@@ -1833,24 +2040,48 @@ namespace MvcFront.DB
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.Int64 DocTemplate_docteplateid
+        public global::System.String ActualStartDate
         {
             get
             {
-                return _DocTemplate_docteplateid;
+                return _ActualStartDate;
             }
             set
             {
-                OnDocTemplate_docteplateidChanging(value);
-                ReportPropertyChanging("DocTemplate_docteplateid");
-                _DocTemplate_docteplateid = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("DocTemplate_docteplateid");
-                OnDocTemplate_docteplateidChanged();
+                OnActualStartDateChanging(value);
+                ReportPropertyChanging("ActualStartDate");
+                _ActualStartDate = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("ActualStartDate");
+                OnActualStartDateChanged();
             }
         }
-        private global::System.Int64 _DocTemplate_docteplateid;
-        partial void OnDocTemplate_docteplateidChanging(global::System.Int64 value);
-        partial void OnDocTemplate_docteplateidChanged();
+        private global::System.String _ActualStartDate;
+        partial void OnActualStartDateChanging(global::System.String value);
+        partial void OnActualStartDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String ActualEndDate
+        {
+            get
+            {
+                return _ActualEndDate;
+            }
+            set
+            {
+                OnActualEndDateChanging(value);
+                ReportPropertyChanging("ActualEndDate");
+                _ActualEndDate = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("ActualEndDate");
+                OnActualEndDateChanged();
+            }
+        }
+        private global::System.String _ActualEndDate;
+        partial void OnActualEndDateChanging(global::System.String value);
+        partial void OnActualEndDateChanged();
 
         #endregion
     
@@ -1900,16 +2131,16 @@ namespace MvcFront.DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "GroupTemplateDocTemplate", "DocTemplate")]
-        public DocTemplate DocTemplate
+        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "DocAppointmentGroupTemplate", "DocAppointment")]
+        public DocAppointment DocAppointment
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<DocTemplate>("smqdocModel.GroupTemplateDocTemplate", "DocTemplate").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<DocAppointment>("smqdocModel.DocAppointmentGroupTemplate", "DocAppointment").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<DocTemplate>("smqdocModel.GroupTemplateDocTemplate", "DocTemplate").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<DocAppointment>("smqdocModel.DocAppointmentGroupTemplate", "DocAppointment").Value = value;
             }
         }
         /// <summary>
@@ -1917,39 +2148,17 @@ namespace MvcFront.DB
         /// </summary>
         [BrowsableAttribute(false)]
         [DataMemberAttribute()]
-        public EntityReference<DocTemplate> DocTemplateReference
+        public EntityReference<DocAppointment> DocAppointmentReference
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<DocTemplate>("smqdocModel.GroupTemplateDocTemplate", "DocTemplate");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<DocAppointment>("smqdocModel.DocAppointmentGroupTemplate", "DocAppointment");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<DocTemplate>("smqdocModel.GroupTemplateDocTemplate", "DocTemplate", value);
-                }
-            }
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "DocumentGroupTemplate", "Document")]
-        public EntityCollection<Document> Documents
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Document>("smqdocModel.DocumentGroupTemplate", "Document");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Document>("smqdocModel.DocumentGroupTemplate", "Document", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<DocAppointment>("smqdocModel.DocAppointmentGroupTemplate", "DocAppointment", value);
                 }
             }
         }

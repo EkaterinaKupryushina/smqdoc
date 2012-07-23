@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
+using MvcFront.Enums;
 using MvcFront.Interfaces;
 using MvcFront.DB;
 using MvcFront.Models;
@@ -81,14 +82,14 @@ namespace MvcFront.Controllers
 
         public ActionResult Create()
         {
-            return View(new DocTemplateListEditModel(_templateRepository.GetDocTemplateById(0)));
+            return View(new DocTemplateEditModel(_templateRepository.GetDocTemplateById(0)));
         } 
 
         //
         // POST: /DocTemplate/Create
 
         [HttpPost]
-        public ActionResult Create(DocTemplateListEditModel model)
+        public ActionResult Create(DocTemplateEditModel model)
         {
             try
             {
@@ -119,14 +120,14 @@ namespace MvcFront.Controllers
  
         public ActionResult Edit(long id)
         {
-            return View(new DocTemplateListEditModel(_templateRepository.GetDocTemplateById(id)));
+            return View(new DocTemplateEditModel(_templateRepository.GetDocTemplateById(id)));
         }
 
         //
         // POST: /DocTemplate/Edit/5
 
         [HttpPost]
-        public ActionResult Edit(DocTemplateListEditModel model)
+        public ActionResult Edit(DocTemplateEditModel model)
         {
             try
             {
@@ -230,12 +231,12 @@ namespace MvcFront.Controllers
         {
             var field = _templateRepository.GetFieldTemplateById(0);
             field.DocTemplate_docteplateid = id;
-            var fModel = new FieldTemplateListEditModel(field);
+            var fModel = new FieldTemplateEditModel(field);
             return View(fModel);
         }
 
         [HttpPost]
-        public ActionResult AddField(FieldTemplateListEditModel model)
+        public ActionResult AddField(FieldTemplateEditModel model)
         {
             try
             {
@@ -265,11 +266,11 @@ namespace MvcFront.Controllers
         [HttpGet]
         public ActionResult EditField(long id)
         {
-            return View(new FieldTemplateListEditModel(_templateRepository.GetFieldTemplateById(id)));
+            return View(new FieldTemplateEditModel(_templateRepository.GetFieldTemplateById(id)));
         }
 
         [HttpPost]
-        public ActionResult EditField(FieldTemplateListEditModel model)
+        public ActionResult EditField(FieldTemplateEditModel model)
         {
             try
             {

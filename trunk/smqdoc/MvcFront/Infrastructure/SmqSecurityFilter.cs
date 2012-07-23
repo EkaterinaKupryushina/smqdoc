@@ -2,6 +2,8 @@
 using System.Web.Mvc;
 using MvcFront.Controllers;
 using System.Linq;
+using MvcFront.Entities;
+using MvcFront.Enums;
 using MvcFront.Helpers;
 using MvcFront.Interfaces;
 
@@ -45,7 +47,7 @@ namespace MvcFront.Infrastructure
                     if(user!= null)
                     {
                         //Читаем код последнего профиля пользовтаеля
-                        var userProfileType = SmqUserProfileType.User;
+                        var userProfileType = UserProfileTypes.User;
                         var userProfileName = "Пользователь";
                         string userProfileGroupName = null;
                         var userProfileGroupId = 0;
@@ -55,14 +57,14 @@ namespace MvcFront.Infrastructure
                         if (groupId == null && isManager)
                         {
                             userProfileGroupId = 0;
-                            userProfileType = SmqUserProfileType.Systemadmin;
+                            userProfileType = UserProfileTypes.Systemadmin;
                             userProfileName = "Администратор";
 
                         }
                         if (groupId == null && !isManager)
                         {
                             userProfileGroupId = 0;
-                            userProfileType = SmqUserProfileType.User;
+                            userProfileType = UserProfileTypes.User;
                             userProfileName = "Пользователь";
 
                         }
@@ -73,7 +75,7 @@ namespace MvcFront.Infrastructure
                             {
                                 userProfileGroupName = group.GroupName;
                                 userProfileGroupId = group.usergroupid;
-                                userProfileType = SmqUserProfileType.Groupmanager;
+                                userProfileType = UserProfileTypes.Groupmanager;
                                 userProfileName = "Менеджер " + userProfileGroupName;
                             }
                         }
@@ -84,11 +86,11 @@ namespace MvcFront.Infrastructure
                             {
                                 userProfileGroupName = group.GroupName;
                                 userProfileGroupId = group.usergroupid;
-                                userProfileType = SmqUserProfileType.Groupuser;
+                                userProfileType = UserProfileTypes.Groupuser;
                                 userProfileName = "Участник " + userProfileGroupName;
                             }
                         }
-                        sessData = new SmqUserSessionData {UserName = user.Login,UserId = user.userid,UserType = userProfileType,
+                        sessData = new UserSessionData {UserName = user.Login,UserId = user.userid,UserType = userProfileType,
                             CurrentProfileName = userProfileName,UserGroupName = userProfileGroupName,UserGroupId = userProfileGroupId};
                         SessionHelper.SetUserSessionData(filterContext.HttpContext.Session,sessData);
                         return;

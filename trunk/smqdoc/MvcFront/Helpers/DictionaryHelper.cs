@@ -3,6 +3,10 @@
 
 namespace MvcFront.Helpers
 {
+    /// <summary>
+    /// Хелпер для получения текста по значению конкретного enum
+    /// </summary>
+    //TODO[Оптимизация] Переместить названяи в ресурсы
     public static class DictionaryHelper
     {
         public static string GetEnumText(Type typeOfEnum, int item)

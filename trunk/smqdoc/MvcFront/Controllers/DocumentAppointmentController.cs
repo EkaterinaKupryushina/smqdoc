@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Web.Mvc;
 using MvcFront.DB;
+using MvcFront.Enums;
 using MvcFront.Helpers;
 using MvcFront.Interfaces;
 using MvcFront.Models;
