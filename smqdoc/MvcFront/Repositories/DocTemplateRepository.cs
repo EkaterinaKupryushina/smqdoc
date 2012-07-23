@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
+using MvcFront.Enums;
 using MvcFront.Interfaces;
 using MvcFront.DB;
-using System.Collections.Generic;
 
 namespace MvcFront.Repositories
 {
@@ -143,9 +143,9 @@ namespace MvcFront.Repositories
         //{
         //    return _unitOfWork.DbModel.DocTemplates.AsQueryable();
         //}
-        public void DeleteFieldTemplate(long TemplateFieldId)
+        public void DeleteFieldTemplate(long templateFieldId)
         {
-            var entity = GetFieldTemplateById(TemplateFieldId);
+            var entity = GetFieldTemplateById(templateFieldId);
             if (entity != null)
             {
                 entity.TemplateStatus = FieldTemplateStatus.Deleted;
@@ -159,9 +159,9 @@ namespace MvcFront.Repositories
             return _unitOfWork.DbModel.ComputableFieldTemplateParts.AsQueryable();
         }
 
-        public void SetFieldTemplateNumber(long TemplateFieldId, int newNumber)
+        public void SetFieldTemplateNumber(long templateFieldId, int newNumber)
         {
-            var enFirst = GetFieldTemplateById(TemplateFieldId);
+            var enFirst = GetFieldTemplateById(templateFieldId);
             if (enFirst != null)
             {
                 int oldNumber = enFirst.OrderNumber;

@@ -8,6 +8,9 @@ using MvcFront.Repositories;
 
 namespace MvcFront.Infrastructure
 {
+    /// <summary>
+    /// Класс помошник для IoC Ninject
+    /// </summary>
     public class NinjectDependencyResolver : IDependencyResolver
     {
         private readonly IKernel _kernel;

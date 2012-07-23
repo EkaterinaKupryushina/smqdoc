@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using ELW.Library.Math.Tools;
 using MvcFront.DB;
+using MvcFront.Enums;
 using MvcFront.Helpers;
 using MvcFront.Infrastructure;
 

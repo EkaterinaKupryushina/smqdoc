@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using MvcFront.DB;
+using MvcFront.Enums;
 using MvcFront.Interfaces;
 using MvcFront.Helpers;
 using MvcFront.Models;
@@ -17,6 +18,7 @@ namespace MvcFront.Controllers
         {
             _userRepository = userRepository;
         }
+
         #region Пользователи
 
         /// <summary>
@@ -34,6 +36,11 @@ namespace MvcFront.Controllers
             }
             return new JsonResult { Data = new SelectList(data.ToList().Select(x => new { Id = x.userid,Name = x.FullName + " ("+x.Login+")"}), "Id", "Name") };
         }
+
+        /// <summary>
+        /// Загрузка списка доступных пользователю профилей
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult AjaxUserAccountProfiles()
         {
@@ -43,15 +50,15 @@ namespace MvcFront.Controllers
             var user = _userRepository.GetById(sessData.UserId);
 
             var profDicts = new Dictionary<string, string>();
-            if(user.IsAdmin && sessData.UserType!= SmqUserProfileType.Systemadmin) profDicts.Add(SessionHelper.GenerateUserProfileCode(null,true),"Администратор");
+            if(user.IsAdmin && sessData.UserType!= UserProfileTypes.Systemadmin) profDicts.Add(SessionHelper.GenerateUserProfileCode(null,true),"Администратор");
             foreach (var mgroup in user.ManagedGroups.Where(x=>x.Status == (int)UserGroupStatus.Active))
             {
-                if(!(mgroup.usergroupid == sessData.UserGroupId && sessData.UserType == SmqUserProfileType.Groupmanager))
+                if(!(mgroup.usergroupid == sessData.UserGroupId && sessData.UserType == UserProfileTypes.Groupmanager))
                     profDicts.Add(SessionHelper.GenerateUserProfileCode(mgroup.usergroupid, true), "Менеджер " + mgroup.GroupName);
             }
             foreach (var mgroup in user.MemberGroups.Where(x => x.Status == (int)UserGroupStatus.Active))
             {
-                if (!(mgroup.usergroupid == sessData.UserGroupId && sessData.UserType == SmqUserProfileType.Groupuser))
+                if (!(mgroup.usergroupid == sessData.UserGroupId && sessData.UserType == UserProfileTypes.Groupuser))
                  profDicts.Add(SessionHelper.GenerateUserProfileCode(mgroup.usergroupid, false), "Участник " + mgroup.GroupName);
             }
 
@@ -59,28 +66,41 @@ namespace MvcFront.Controllers
             return new JsonResult { Data = new SelectList(profDicts.Select(x => new {Id = x.Key, Name = x.Value}).ToList(),"Id","Name")};
 
         }
+
         #endregion
 
-
+        /// <summary>
+        /// Запрос списка групп
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult AjaxUserGroupList()
         {
-            var repGroup = DependencyResolver.Current.GetService<IUserGroupRepository>();
-            var model = repGroup.GetAll().Where(x => x.Status != (int)UserGroupStatus.Deleted)
+            var groupRepository = DependencyResolver.Current.GetService<IUserGroupRepository>();
+            var model = groupRepository.GetAll().Where(x => x.Status != (int)UserGroupStatus.Deleted)
                         .Select(x => new UserGroupListViewModel { GroupId = x.usergroupid, Manager = x.Manager.SecondName + " " + x.Manager.FirstName + " " + x.Manager.LastName + " (" + x.Manager.Login + ")", GroupName = x.GroupName }).ToList();
 
             return new JsonResult { Data = new SelectList(model, "GroupId", "GroupName") };            
         }
 
+        /// <summary>
+        /// Запрос списка всех неудаленных DocTemplates
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult AjaxDocTemplateList()
         {
-            var repTemplates = DependencyResolver.Current.GetService<IDocTemplateRepository>();
-            var model = repTemplates.GetAllDocTeplates().Where(x => x.Status != (int)DocTemplateStatus.Deleted).ToList().ConvertAll(DocTemplateListViewModel.DocTemplateToModelConverter).ToList();
+            var docTemplateRepository = DependencyResolver.Current.GetService<IDocTemplateRepository>();
+            var model = docTemplateRepository.GetAllDocTeplates().Where(x => x.Status != (int)DocTemplateStatus.Deleted).ToList().ConvertAll(DocTemplateListViewModel.DocTemplateToModelConverter).ToList();
 
             return new JsonResult { Data = new SelectList(model, "DocTemplateId", "DocTemplateName") };
         }
 
+        /// <summary>
+        /// Запрос списка Тэгов пользователей содержащих текст
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult AjaxUserTagsList(string text)
         {
@@ -89,7 +109,7 @@ namespace MvcFront.Controllers
             {
                 data = data.Where(p => p.Name != null && p.Name.ToLower().Contains(text.ToLower())).Take(20);
             }
-            return new JsonResult { Data = new SelectList(data.ToList().Select(x => new { Id = x.Id, Name = x.Name}), "Id", "Name") };
+            return new JsonResult { Data = new SelectList(data.ToList().Select(x => new { x.Id, x.Name}), "Id", "Name") };
         }
     }
 }

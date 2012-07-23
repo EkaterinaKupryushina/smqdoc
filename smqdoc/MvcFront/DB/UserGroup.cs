@@ -1,18 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using MvcFront.Enums;
 using MvcFront.Helpers;
 
 namespace MvcFront.DB
 {
-    public enum UserGroupStatus
-    {
-        Active,
-        Unactive,
-        Deleted
-    }
     [MetadataType(typeof(UserGroupMetadata))]
     public partial class UserGroup
     {
-        [Display(Name="Статус")]
+        [Display(Name = "Статус")]
         public UserGroupStatus GroupStatus
         {
             get
@@ -35,11 +30,13 @@ namespace MvcFront.DB
 
     public class UserGroupMetadata
     {
-        [Display(Name="ID группы")]
+        // ReSharper disable UnusedMember.Global
+        // ReSharper disable InconsistentNaming
+        [Display(Name = "ID группы")]
         [Required]
         public int usergroupid { get; set; }
 
-        [Display(Name="Краткое имя группы")]
+        [Display(Name = "Краткое имя группы")]
         [Required]
         public string GroupName { get; set; }
 
@@ -54,5 +51,7 @@ namespace MvcFront.DB
         [UIHint("UserAccountFilter")]
         [Required]
         public int Managerid { get; set; }
+        // ReSharper restore InconsistentNaming
+        // ReSharper restore UnusedMember.Global
     }
 }

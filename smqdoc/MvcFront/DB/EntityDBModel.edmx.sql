@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 06/13/2012 11:54:38
--- Generated from EDMX file: D:\Work\smqdoc.net\smqdoc\MvcFront\DB\EntityDBModel.edmx
+-- Date Created: 07/22/2012 09:53:05
+-- Generated from EDMX file: D:\Work\smqDoc\smqdoc.net\smqdoc\MvcFront\DB\EntityDBModel.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -17,8 +17,20 @@ GO
 -- Dropping existing FOREIGN KEY constraints
 -- --------------------------------------------------
 
-IF OBJECT_ID(N'[dbo].[FK_ComputableFieldTemplatePartsFieldTemplate]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[ComputableFieldTemplateParts] DROP CONSTRAINT [FK_ComputableFieldTemplatePartsFieldTemplate];
+IF OBJECT_ID(N'[dbo].[FK_GroupManager]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[UserGroups] DROP CONSTRAINT [FK_GroupManager];
+GO
+IF OBJECT_ID(N'[dbo].[FK_GroupUsers_UserGroup]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[GroupUsers] DROP CONSTRAINT [FK_GroupUsers_UserGroup];
+GO
+IF OBJECT_ID(N'[dbo].[FK_GroupUsers_UserAccount]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[GroupUsers] DROP CONSTRAINT [FK_GroupUsers_UserAccount];
+GO
+IF OBJECT_ID(N'[dbo].[FK_FieldTeplateDocTemplate]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[FieldTemplates] DROP CONSTRAINT [FK_FieldTeplateDocTemplate];
+GO
+IF OBJECT_ID(N'[dbo].[FK_DocumentUserAccount]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Documents] DROP CONSTRAINT [FK_DocumentUserAccount];
 GO
 IF OBJECT_ID(N'[dbo].[FK_DocFieldDocument]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[DocFields] DROP CONSTRAINT [FK_DocFieldDocument];
@@ -26,29 +38,17 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_DocFieldFieldTemplate]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[DocFields] DROP CONSTRAINT [FK_DocFieldFieldTemplate];
 GO
-IF OBJECT_ID(N'[dbo].[FK_DocumentGroupTemplate]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Documents] DROP CONSTRAINT [FK_DocumentGroupTemplate];
-GO
-IF OBJECT_ID(N'[dbo].[FK_DocumentUserAccount]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Documents] DROP CONSTRAINT [FK_DocumentUserAccount];
-GO
-IF OBJECT_ID(N'[dbo].[FK_FieldTeplateDocTemplate]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[FieldTemplates] DROP CONSTRAINT [FK_FieldTeplateDocTemplate];
-GO
-IF OBJECT_ID(N'[dbo].[FK_GroupManager]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[UserGroups] DROP CONSTRAINT [FK_GroupManager];
+IF OBJECT_ID(N'[dbo].[FK_GroupTemplateUserGroup]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[GroupTemplates] DROP CONSTRAINT [FK_GroupTemplateUserGroup];
 GO
 IF OBJECT_ID(N'[dbo].[FK_GroupTemplateDocTemplate]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[GroupTemplates] DROP CONSTRAINT [FK_GroupTemplateDocTemplate];
 GO
-IF OBJECT_ID(N'[dbo].[FK_GroupTemplateUserGroup]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[GroupTemplates] DROP CONSTRAINT [FK_GroupTemplateUserGroup];
+IF OBJECT_ID(N'[dbo].[FK_DocumentGroupTemplate]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Documents] DROP CONSTRAINT [FK_DocumentGroupTemplate];
 GO
-IF OBJECT_ID(N'[dbo].[FK_GroupUsers_UserAccount]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[GroupUsers] DROP CONSTRAINT [FK_GroupUsers_UserAccount];
-GO
-IF OBJECT_ID(N'[dbo].[FK_GroupUsers_UserGroup]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[GroupUsers] DROP CONSTRAINT [FK_GroupUsers_UserGroup];
+IF OBJECT_ID(N'[dbo].[FK_ComputableFieldTemplatePartsFieldTemplate]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ComputableFieldTemplateParts] DROP CONSTRAINT [FK_ComputableFieldTemplatePartsFieldTemplate];
 GO
 IF OBJECT_ID(N'[dbo].[FK_UserAccountUserTags_UserAccount]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[UserAccountUserTags] DROP CONSTRAINT [FK_UserAccountUserTags_UserAccount];
@@ -61,38 +61,38 @@ GO
 -- Dropping existing tables
 -- --------------------------------------------------
 
-IF OBJECT_ID(N'[dbo].[ComputableFieldTemplateParts]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[ComputableFieldTemplateParts];
-GO
-IF OBJECT_ID(N'[dbo].[DocFields]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[DocFields];
-GO
-IF OBJECT_ID(N'[dbo].[DocTemplates]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[DocTemplates];
-GO
-IF OBJECT_ID(N'[dbo].[Documents]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Documents];
-GO
-IF OBJECT_ID(N'[dbo].[FieldTemplates]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[FieldTemplates];
-GO
-IF OBJECT_ID(N'[dbo].[GroupTemplates]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[GroupTemplates];
-GO
-IF OBJECT_ID(N'[dbo].[GroupUsers]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[GroupUsers];
-GO
 IF OBJECT_ID(N'[dbo].[UserAccounts]', 'U') IS NOT NULL
     DROP TABLE [dbo].[UserAccounts];
-GO
-IF OBJECT_ID(N'[dbo].[UserAccountUserTags]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[UserAccountUserTags];
 GO
 IF OBJECT_ID(N'[dbo].[UserGroups]', 'U') IS NOT NULL
     DROP TABLE [dbo].[UserGroups];
 GO
+IF OBJECT_ID(N'[dbo].[DocTemplates]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[DocTemplates];
+GO
+IF OBJECT_ID(N'[dbo].[FieldTemplates]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[FieldTemplates];
+GO
+IF OBJECT_ID(N'[dbo].[Documents]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Documents];
+GO
+IF OBJECT_ID(N'[dbo].[DocFields]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[DocFields];
+GO
+IF OBJECT_ID(N'[dbo].[GroupTemplates]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[GroupTemplates];
+GO
+IF OBJECT_ID(N'[dbo].[ComputableFieldTemplateParts]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ComputableFieldTemplateParts];
+GO
 IF OBJECT_ID(N'[dbo].[UserTags]', 'U') IS NOT NULL
     DROP TABLE [dbo].[UserTags];
+GO
+IF OBJECT_ID(N'[dbo].[GroupUsers]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[GroupUsers];
+GO
+IF OBJECT_ID(N'[dbo].[UserAccountUserTags]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[UserAccountUserTags];
 GO
 
 -- --------------------------------------------------
@@ -159,7 +159,7 @@ CREATE TABLE [dbo].[Documents] (
     [Status] int  NOT NULL,
     [LastComment] nvarchar(max)  NULL,
     [UserAccount_userid] int  NOT NULL,
-    [GroupTemplate_grouptemplateid] bigint  NOT NULL
+    [DocAppointment_docappointmentid] bigint  NOT NULL
 );
 GO
 
@@ -178,11 +178,12 @@ GO
 CREATE TABLE [dbo].[GroupTemplates] (
     [grouptemplateid] bigint IDENTITY(1,1) NOT NULL,
     [Name] nvarchar(max)  NOT NULL,
-    [DateStart] datetime  NOT NULL,
-    [DateEnd] datetime  NOT NULL,
+    [PlanedStartDate] datetime  NOT NULL,
+    [PlanedEndDate] datetime  NOT NULL,
     [Status] int  NOT NULL,
-    [UserGroup_usergroupid] int  NOT NULL,
-    [DocTemplate_docteplateid] bigint  NOT NULL
+    [UserGroup_usergroupid] int  NULL,
+    [ActualStartDate] nvarchar(max)  NOT NULL,
+    [ActualEndDate] nvarchar(max)  NOT NULL
 );
 GO
 
@@ -200,6 +201,14 @@ CREATE TABLE [dbo].[UserTags] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [Name] nvarchar(max)  NOT NULL,
     [Status] int  NOT NULL
+);
+GO
+
+-- Creating table 'DocAppointments'
+CREATE TABLE [dbo].[DocAppointments] (
+    [docappointmentid] bigint IDENTITY(1,1) NOT NULL,
+    [DocTemplate_docteplateid] bigint  NOT NULL,
+    [GroupTemplate_grouptemplateid] bigint  NOT NULL
 );
 GO
 
@@ -273,6 +282,12 @@ GO
 ALTER TABLE [dbo].[UserTags]
 ADD CONSTRAINT [PK_UserTags]
     PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [docappointmentid] in table 'DocAppointments'
+ALTER TABLE [dbo].[DocAppointments]
+ADD CONSTRAINT [PK_DocAppointments]
+    PRIMARY KEY CLUSTERED ([docappointmentid] ASC);
 GO
 
 -- Creating primary key on [MemberGroups_usergroupid], [Members_userid] in table 'GroupUsers'
@@ -398,34 +413,6 @@ ON [dbo].[GroupTemplates]
     ([UserGroup_usergroupid]);
 GO
 
--- Creating foreign key on [DocTemplate_docteplateid] in table 'GroupTemplates'
-ALTER TABLE [dbo].[GroupTemplates]
-ADD CONSTRAINT [FK_GroupTemplateDocTemplate]
-    FOREIGN KEY ([DocTemplate_docteplateid])
-    REFERENCES [dbo].[DocTemplates]
-        ([docteplateid])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- Creating non-clustered index for FOREIGN KEY 'FK_GroupTemplateDocTemplate'
-CREATE INDEX [IX_FK_GroupTemplateDocTemplate]
-ON [dbo].[GroupTemplates]
-    ([DocTemplate_docteplateid]);
-GO
-
--- Creating foreign key on [GroupTemplate_grouptemplateid] in table 'Documents'
-ALTER TABLE [dbo].[Documents]
-ADD CONSTRAINT [FK_DocumentGroupTemplate]
-    FOREIGN KEY ([GroupTemplate_grouptemplateid])
-    REFERENCES [dbo].[GroupTemplates]
-        ([grouptemplateid])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- Creating non-clustered index for FOREIGN KEY 'FK_DocumentGroupTemplate'
-CREATE INDEX [IX_FK_DocumentGroupTemplate]
-ON [dbo].[Documents]
-    ([GroupTemplate_grouptemplateid]);
-GO
-
 -- Creating foreign key on [FieldTemplate_fieldteplateid] in table 'ComputableFieldTemplateParts'
 ALTER TABLE [dbo].[ComputableFieldTemplateParts]
 ADD CONSTRAINT [FK_ComputableFieldTemplatePartsFieldTemplate]
@@ -461,6 +448,48 @@ ADD CONSTRAINT [FK_UserAccountUserTags_UserTags]
 CREATE INDEX [IX_FK_UserAccountUserTags_UserTags]
 ON [dbo].[UserAccountUserTags]
     ([UserTags_Id]);
+GO
+
+-- Creating foreign key on [DocTemplate_docteplateid] in table 'DocAppointments'
+ALTER TABLE [dbo].[DocAppointments]
+ADD CONSTRAINT [FK_DocTemplateDocAppointment]
+    FOREIGN KEY ([DocTemplate_docteplateid])
+    REFERENCES [dbo].[DocTemplates]
+        ([docteplateid])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_DocTemplateDocAppointment'
+CREATE INDEX [IX_FK_DocTemplateDocAppointment]
+ON [dbo].[DocAppointments]
+    ([DocTemplate_docteplateid]);
+GO
+
+-- Creating foreign key on [DocAppointment_docappointmentid] in table 'Documents'
+ALTER TABLE [dbo].[Documents]
+ADD CONSTRAINT [FK_DocumentDocAppointment]
+    FOREIGN KEY ([DocAppointment_docappointmentid])
+    REFERENCES [dbo].[DocAppointments]
+        ([docappointmentid])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_DocumentDocAppointment'
+CREATE INDEX [IX_FK_DocumentDocAppointment]
+ON [dbo].[Documents]
+    ([DocAppointment_docappointmentid]);
+GO
+
+-- Creating foreign key on [GroupTemplate_grouptemplateid] in table 'DocAppointments'
+ALTER TABLE [dbo].[DocAppointments]
+ADD CONSTRAINT [FK_DocAppointmentGroupTemplate]
+    FOREIGN KEY ([GroupTemplate_grouptemplateid])
+    REFERENCES [dbo].[GroupTemplates]
+        ([grouptemplateid])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_DocAppointmentGroupTemplate'
+CREATE INDEX [IX_FK_DocAppointmentGroupTemplate]
+ON [dbo].[DocAppointments]
+    ([GroupTemplate_grouptemplateid]);
 GO
 
 -- --------------------------------------------------

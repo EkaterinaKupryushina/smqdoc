@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using MvcFront.DB;
+using MvcFront.Enums;
 using MvcFront.Helpers;
 using MvcFront.Interfaces;
 using MvcFront.Models;

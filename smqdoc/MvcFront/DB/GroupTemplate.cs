@@ -1,20 +1,16 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.Data.Objects.DataClasses;
+using MvcFront.Enums;
 using MvcFront.Helpers;
+
 
 namespace MvcFront.DB
 {
-    public enum GroupTemplateStatus
-    {
-        Active,
-        Unactive,
-        Deleted
-    }
-
     [MetadataType(typeof(GroupTemplateMetadata))]
     public partial class GroupTemplate
     {
+        // ReSharper disable UnusedMember.Global
+        // ReSharper disable InconsistentNaming
         [Display(Name = "Статус Связи")]
         public GroupTemplateStatus GroupTemplateStatus
         {
@@ -35,9 +31,13 @@ namespace MvcFront.DB
                 return DictionaryHelper.GetEnumText(typeof(GroupTemplateStatus), Status);
             }
         }
+        // ReSharper restore InconsistentNaming
+        // ReSharper restore UnusedMember.Global
     }
     public class GroupTemplateMetadata
     {
+        // ReSharper disable UnusedMember.Global
+        // ReSharper disable InconsistentNaming
         [Required]
         [UIHint("Hidden")]
         public long grouptemplateid { get; set; }
@@ -56,7 +56,9 @@ namespace MvcFront.DB
         [Display(Name = "Родительский шаблон")]
         public DocTemplate DocTemplate { get; set; }
         [Display(Name = "Родительская группа")]
-        public UserGroup UserGroup { get; set; }        
+        public UserGroup UserGroup { get; set; }
+        // ReSharper restore InconsistentNaming
+        // ReSharper restore UnusedMember.Global
     }
 
 }

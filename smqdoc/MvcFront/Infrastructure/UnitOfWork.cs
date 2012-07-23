@@ -3,6 +3,9 @@ using MvcFront.DB;
 
 namespace MvcFront.Infrastructure
 {
+    /// <summary>
+    /// Помошник для IoC
+    /// </summary>
     public class UnitOfWork : IUnitOfWork
     {
         private readonly smqdocEntities _dbModel;

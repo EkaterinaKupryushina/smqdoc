@@ -1,4 +1,5 @@
-﻿@using MvcFront.Helpers
+﻿@using MvcFront.Enums
+@using MvcFront.Helpers
 @using Telerik.Web.Mvc.UI
 @{
     UICulture = "ru-RU";
@@ -44,26 +45,21 @@
                         {
                             switch (sessState.UserType)
                             {
-                                case SmqUserProfileType.Systemadmin:
+                                case UserProfileTypes.Systemadmin:
                                     <li>@Html.ActionLink("Пользователи", "Index", "UserAccountList")</li>
                                     <li>@Html.ActionLink("Группы", "Index", "UserGroupList")</li>
                                     <li>@Html.ActionLink("Шаблоны", "Index", "DocTemplateList")</li>
-                                    <li>@Html.ActionLink("Связи шаблонов и групп", "Index", "GroupTemplateList")</li>
-                                    @*<li>@Html.ActionLink("Профиль пользователя", "Index", "Account")</li>*@
                                    break;
-                                case SmqUserProfileType.Groupmanager:
+                                case UserProfileTypes.Groupmanager:
                                     <li>@Html.ActionLink("Типы документов группы", "Index", "DocumentAppointment")</li>
                                     <li>@Html.ActionLink("Документы группы", "GroupDocumentsList", "DocumentAppointment",new {id=0},null)</li>
-                                    @*<li>@Html.ActionLink("Профиль пользователя", "Index", "Account")</li>*@
                                    break;
-                                case SmqUserProfileType.Groupuser:
+                                case UserProfileTypes.Groupuser:
                                     <li>@Html.ActionLink("Документы", "Index", "UserDocument")</li>
-                                    @*<li>@Html.ActionLink("Профиль пользователя", "Index", "Account")</li>*@
                                    break;
-                                case SmqUserProfileType.User:
-                                    @*<li>@Html.ActionLink("Профиль пользователя", "Index", "Account")</li>*@
+                                case UserProfileTypes.User:
                                    break;
-                                case SmqUserProfileType.Anonymous:
+                                case UserProfileTypes.Anonymous:
                                    break;
                                 default:
                                    throw new ArgumentOutOfRangeException();

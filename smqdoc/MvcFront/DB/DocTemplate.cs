@@ -1,66 +1,27 @@
 ﻿using System;
+using System.Linq;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Objects.DataClasses;
+using MvcFront.Enums;
 using MvcFront.Helpers;
-using System.Linq;
 
-namespace MvcFront.DB
-{
-    public enum DocTemplateStatus
+    namespace MvcFront.DB
     {
-        Active,
-        Unactive,
-        Deleted
-    }
-    public enum FieldTemplateType
-    {
-        BOOL,
-        NUMBER,
-        STRING,
-        CALCULATED
-    }
-    public enum FieldTemplateStatus
-    {
-        Active,
-        Unactive,
-        Deleted
-    }
-    public enum CalculationOperationType
-    {
-        NONE,
-        AGGREGATE,
-        AVERAGE
-    }
-
     [MetadataType(typeof(DocTemplateMetadata))]
     public partial class DocTemplate
     {
-        private bool? isEditable = null;
-
         public Boolean IsEditable 
         {
             get 
             {
-                if (isEditable.HasValue) 
-                    return (bool)isEditable;
-                
                 if (docteplateid > 0)
                 {
 
-                    int cnt = (from gt in GroupTemplates from doc in gt.Documents where doc.Status != (int)DocumentStatus.Deleted select doc).Count();
-                    if (cnt > 0)
-                    {
-                        isEditable = false;
-                        return (bool)isEditable;
-                    }
+                    return
+                        DocAppointments.Any(
+                            da => da.Documents.Any(doc => doc.Status != (int) DocumentStatus.Deleted));
                 }
-                
-                isEditable = true;
-                return (bool)isEditable;
-            }
-            set 
-            { 
-                isEditable = value;  
+                return true;
             }
         }
 
@@ -86,6 +47,8 @@ namespace MvcFront.DB
     }
     public class DocTemplateMetadata
     {
+        // ReSharper disable UnusedMember.Global
+        // ReSharper disable InconsistentNaming
         [Required]
         [UIHint("Hidden")]
         public long docteplateid { get; set; }
@@ -106,11 +69,15 @@ namespace MvcFront.DB
         public DocTemplateStatus TemplateStatus { get; set; }
         [Display(Name = "Список полей шаблона")]
         public EntityCollection<FieldTemplate>  FieldTeplates { get; set; }
+        // ReSharper restore InconsistentNaming
+        // ReSharper restore UnusedMember.Global
     }
 
     [MetadataType(typeof(FieldTemplateMetadata))]
     public partial class FieldTemplate
     {
+        // ReSharper disable UnusedMember.Global
+        // ReSharper disable InconsistentNaming
         [Display(Name = "Статус поля шаблона")]
         public FieldTemplateStatus TemplateStatus
         {
@@ -151,31 +118,13 @@ namespace MvcFront.DB
                 return DictionaryHelper.GetEnumText(typeof(FieldTemplateType), Status);
             }
         }
-
-        //[Display(Name = "Операция для вычисления значения")]
-        //public CalculationOperationType CalculationType
-        //{
-        //    get
-        //    {
-        //        return (CalculationOperationType)OperationType;
-        //    }
-        //    set
-        //    {
-        //        OperationType = (int)value;
-        //    }
-        //}
-        //[Display(Name = "Операция для вычисления значения")]
-        //public string CalculationTypeText
-        //{
-        //    get
-        //    {
-        //        return DictionaryHelper.GetEnumText(typeof(CalculationOperationType), (int)OperationType);
-        //    }
-        //}
-
+        // ReSharper restore InconsistentNaming
+        // ReSharper restore UnusedMember.Global
     }
     public class FieldTemplateMetadata
     {
+        // ReSharper disable UnusedMember.Global
+        // ReSharper disable InconsistentNaming
         [Required]
         [UIHint("Hidden")]
         public long fieldteplateid { get; set; }
@@ -202,5 +151,7 @@ namespace MvcFront.DB
         public DocTemplate DocTemplate { get; set; }
         [Display(Name = "Операция для вычисления значения")]
         public int OperationType { get; set; }
+        // ReSharper restore InconsistentNaming
+        // ReSharper restore UnusedMember.Global
     }
 }
