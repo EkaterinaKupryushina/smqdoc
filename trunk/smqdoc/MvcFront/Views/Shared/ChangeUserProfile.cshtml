@@ -1,0 +1,26 @@
+﻿@using Telerik.Web.Mvc.UI
+ <script src="@Url.Content("~/Scripts/jquery-1.5.1.js")" type="text/javascript"> </script>
+ <script src="@Url.Content("~/Scripts/2012.1.214/telerik.all.min.js")" type="text/javascript"> </script>
+@Html.Telerik().Window()
+    .Name("ChangeUserProfileWindow")
+    .Title("Выбор роли пользователя")
+    .Content(
+                      Test
+                  )
+    .Visible(true)
+    .Modal(true)
+    .Width(400)
+               .Height(100).Render()
+    
+    
+        <script type="text/javascript">
+            $(document).ready(function () {
+                var link = $("#chProfileLink");
+                if (link != undefined) {
+                    link.click(function () {
+                        var chWindow = $("#ChangeUserProfileWindow").data("tWindow");
+                        chWindow.center().open();
+                    });
+                }
+            });
+</script>
