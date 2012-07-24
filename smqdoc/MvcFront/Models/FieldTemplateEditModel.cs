@@ -1,5 +1,7 @@
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using MvcFront.DB;
+using MvcFront.Enums;
 
 namespace MvcFront.Models
 {
@@ -29,6 +31,10 @@ namespace MvcFront.Models
         public double? MinVal { get; set; }
         [Display(Name = "Формула")]
         public string OperationExpression { get; set; }
+        [Display(Name = "Фактическое значение")]
+        public long? FactFieldTemplateId { get; set; }
+
+        public bool CanBePlaned { get; set; }
 
         public FieldTemplateEditModel()
         {
@@ -46,6 +52,10 @@ namespace MvcFront.Models
             MaxVal = templ.MaxVal;
             MinVal = templ.MinVal;
             OperationExpression = templ.OperationExpression;
+            FactFieldTemplateId = templ.FactFieldTemplate_fieldteplateid;
+            CanBePlaned = templ.DocTemplate.FieldTeplates.Any(x => (x.FiledType != (int)FieldTemplateType.Planned && x.PlanFieldTemplates.Any(y => y.Status == (int)FieldTemplateStatus.Active) 
+                && x.Status == (int)FieldTemplateStatus.Active) && x.fieldteplateid > 0 || (FactFieldTemplateId.HasValue && x.fieldteplateid == FactFieldTemplateId));
+            
         }
         
         public FieldTemplate Update(FieldTemplate templ)
@@ -61,12 +71,11 @@ namespace MvcFront.Models
             templ.MinVal = MinVal;
 
             templ.OperationExpression = OperationExpression;
+            templ.FactFieldTemplate_fieldteplateid = templ.TemplateType == FieldTemplateType.Planned
+                                                         ? FactFieldTemplateId
+                                                         : null;
+
             return templ;
-        }
-        
-        public static FieldTemplateEditModel FieldToModelConverter(FieldTemplate templ)
-        {
-            return new FieldTemplateEditModel(templ);
         }
     }
 }

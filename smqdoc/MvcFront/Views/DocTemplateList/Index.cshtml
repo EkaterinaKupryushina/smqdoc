@@ -6,9 +6,9 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Шаблоны документов</h2>
+<h2>Формы документов</h2>
 
-@Html.ActionLink("Добавить шаблон", "Create")
+@Html.ActionLink("Добавить форму", "Create")
 @(Html.Telerik().Grid(Model)
         .Name("DocTemplateListGrid")
                    .Columns(columns =>

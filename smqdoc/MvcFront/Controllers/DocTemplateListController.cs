@@ -16,57 +16,18 @@ namespace MvcFront.Controllers
         {
             _templateRepository = templateRepository;
         }
+        
+        #region DocTemplates
+        
         //
         // GET: /DocTemplate/
-
         public ActionResult Index()
         {
             return View(_templateRepository.GetAllDocTeplates().Where(x => x.Status != (int)DocTemplateStatus.Deleted).ToList().ConvertAll(DocTemplateListViewModel.DocTemplateToModelConverter).ToList());
         }
 
-        //Возращает список полей форма
-        [GridAction]
-        public ActionResult _FieldTemplateList(long templId)
-        {
-            var data = _templateRepository.GetDocTemplateById(templId).FieldTeplates.Where(x => x.Status != (int)FieldTemplateStatus.Deleted).OrderBy(x => x.OrderNumber).ToList()
-                .ConvertAll(FieldTemplateListViewModel.FieldToModelConverter);
-            return View(new GridModel<FieldTemplateListViewModel> { Data = data });
-        }
-
-        //Возращает список полей формы использованных для создания вычислимого поля
-        [GridAction]
-        public ActionResult _FieldTemplateListUsedForCalc(long docTemplID, long fieldTemplID)
-        {
-            var tpl = _templateRepository.GetFieldTemplateById(fieldTemplID);
-            var lst = _templateRepository.GetAllComputableFieldTempalteParts().Where(x => x.FieldTemplate_fieldteplateid == tpl.fieldteplateid).ToList();
-            var userTemplatesIDs = lst.Select(item => item.fkCalculatedFieldTemplateID).ToList();
-
-            var data = _templateRepository.GetDocTemplateById(docTemplID).FieldTeplates.Where(x => userTemplatesIDs.Contains((int)x.fieldteplateid)).OrderBy(x => x.OrderNumber).ToList()
-                .ConvertAll(FieldTemplateListViewModel.FieldToModelConverter);
-            return View(new GridModel<FieldTemplateListViewModel> { Data = data });
-        }
-
-        //Возращает список полей формы не использованных доступных для создания вычислимого поля
-        [GridAction]
-        public ActionResult _FieldTemplateListNotUsedForCalc(long docTemplID, long fieldTemplID)
-        {
-
-            var tpl = _templateRepository.GetFieldTemplateById(fieldTemplID);
-            var lst = _templateRepository.GetAllComputableFieldTempalteParts().Where(x => x.FieldTemplate_fieldteplateid == tpl.fieldteplateid).ToList();
-            var userTemplatesIDs = lst.Select(item => item.fkCalculatedFieldTemplateID).ToList();
-
-            var data = _templateRepository.GetDocTemplateById(docTemplID).FieldTeplates.Where(x => !userTemplatesIDs.Contains((int)x.fieldteplateid) && x.FiledType == (int)FieldTemplateType.NUMBER ).OrderBy(x => x.OrderNumber).ToList()
-                .ConvertAll(FieldTemplateListViewModel.FieldToModelConverter);
-
-            //var data = _templateRepository.GetDocTemplateById(docTemplID).FieldTeplates.Where(x => x.Status != (int)FieldTemplateStatus.Deleted && x.FiledType == (int)FieldTemplateType.NUMBER).OrderBy(x => x.OrderNumber).ToList()
-            //                .ConvertAll(FieldTemplateListViewModel.FieldToModelConverter);
-            return View(new GridModel<FieldTemplateListViewModel> { Data = data });
-        }
-
-
         //
         // GET: /DocTemplate/Details/5
-
         public ActionResult Details(long id)
         {
             return View(_templateRepository.GetDocTemplateById(id));
@@ -74,7 +35,6 @@ namespace MvcFront.Controllers
 
         //
         // GET: /DocTemplate/Create
-
         public ActionResult Create()
         {
             return View(new DocTemplateEditModel(_templateRepository.GetDocTemplateById(0)));
@@ -82,7 +42,6 @@ namespace MvcFront.Controllers
 
         //
         // POST: /DocTemplate/Create
-
         [HttpPost]
         public ActionResult Create(DocTemplateEditModel model)
         {
@@ -112,7 +71,6 @@ namespace MvcFront.Controllers
         
         //
         // GET: /DocTemplate/Edit/5
- 
         public ActionResult Edit(long id)
         {
             return View(new DocTemplateEditModel(_templateRepository.GetDocTemplateById(id)));
@@ -120,7 +78,6 @@ namespace MvcFront.Controllers
 
         //
         // POST: /DocTemplate/Edit/5
-
         [HttpPost]
         public ActionResult Edit(DocTemplateEditModel model)
         {
@@ -150,7 +107,6 @@ namespace MvcFront.Controllers
 
         //
         // GET: /DocTemplate/Delete/5
- 
         public ActionResult Delete(long id)
         {
             return View(_templateRepository.GetDocTemplateById(id));
@@ -158,7 +114,6 @@ namespace MvcFront.Controllers
 
         //
         // POST: /DocTemplate/Delete/5
-
         [HttpPost]
         public ActionResult Delete(long id, FormCollection collection)
         {
@@ -175,56 +130,95 @@ namespace MvcFront.Controllers
             }
         }
 
+        #region JSon
+
+        /// <summary>
+        /// Возращает список полей форма
+        /// </summary>
+        /// <param name="templId"></param>
+        /// <returns></returns>
+        [GridAction]
+        public ActionResult _FieldTemplateList(long templId)
+        {
+            var data = _templateRepository.GetDocTemplateById(templId).FieldTeplates.Where(x => x.Status != (int)FieldTemplateStatus.Deleted).OrderBy(x => x.OrderNumber).ToList()
+                .ConvertAll(FieldTemplateListViewModel.FieldToModelConverter);
+            return View(new GridModel<FieldTemplateListViewModel> { Data = data });
+        }
+
+        /// <summary>
+        /// Возращает список полей формы использованных для создания вычислимого поля
+        /// </summary>
+        /// <param name="docTemplID"></param>
+        /// <param name="fieldTemplID"></param>
+        /// <returns></returns>
+        [GridAction]
+        public ActionResult _FieldTemplateListUsedForCalc(long docTemplID, long fieldTemplID)
+        {
+            var tpl = _templateRepository.GetFieldTemplateById(fieldTemplID);
+            var lst = _templateRepository.GetAllComputableFieldTempalteParts().Where(x => x.FieldTemplate_fieldteplateid == tpl.fieldteplateid).ToList();
+            var userTemplatesIDs = lst.Select(item => item.fkCalculatedFieldTemplateID).ToList();
+
+            var data = _templateRepository.GetDocTemplateById(docTemplID).FieldTeplates.Where(x => userTemplatesIDs.Contains((int)x.fieldteplateid) && x.Status == (int)FieldTemplateStatus.Active).OrderBy(x => x.OrderNumber).ToList()
+                .ConvertAll(FieldTemplateListViewModel.FieldToModelConverter);
+            return View(new GridModel<FieldTemplateListViewModel> { Data = data });
+        }
+
+        /// <summary>
+        /// Возращает список полей формы не использованных доступных для создания вычислимого поля
+        /// </summary>
+        /// <param name="docTemplID"></param>
+        /// <param name="fieldTemplID"></param>
+        /// <returns></returns>
+        [GridAction]
+        public ActionResult _FieldTemplateListNotUsedForCalc(long docTemplID, long fieldTemplID)
+        {
+
+            var tpl = _templateRepository.GetFieldTemplateById(fieldTemplID);
+            var lst = _templateRepository.GetAllComputableFieldTempalteParts().Where(x => x.FieldTemplate_fieldteplateid == tpl.fieldteplateid).ToList();
+            var userTemplatesIDs = lst.Select(item => item.fkCalculatedFieldTemplateID).ToList();
+
+            var data = _templateRepository.GetDocTemplateById(docTemplID).FieldTeplates.Where(x => !userTemplatesIDs.Contains((int)x.fieldteplateid) && x.FiledType == (int)FieldTemplateType.Number && x.Status == (int)FieldTemplateStatus.Active).OrderBy(x => x.OrderNumber).ToList()
+                .ConvertAll(FieldTemplateListViewModel.FieldToModelConverter);
+
+            //var data = _templateRepository.GetDocTemplateById(docTemplID).FieldTeplates.Where(x => x.Status != (int)FieldTemplateStatus.Deleted && x.FiledType == (int)FieldTemplateType.NUMBER).OrderBy(x => x.OrderNumber).ToList()
+            //                .ConvertAll(FieldTemplateListViewModel.FieldToModelConverter);
+            return View(new GridModel<FieldTemplateListViewModel> { Data = data });
+        }
+
+        /// <summary>
+        /// Запрос списка доступных полей для которых можно сделать планируемое поле
+        /// </summary>
+        /// <param name="docTemplID"></param>
+        /// <param name="factFieldId"> </param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult _FactFieldTemplatesList(long docTemplID, long? factFieldId)
+        {
+            var data =
+                _templateRepository.GetDocTemplateById(docTemplID).FieldTeplates.Where(x =>
+                    (x.FiledType != (int)FieldTemplateType.Planned && x.Status == (int)FieldTemplateStatus.Active && x.PlanFieldTemplates.Any(y => y.Status == (int)FieldTemplateStatus.Active)) || (factFieldId.HasValue && x.fieldteplateid == factFieldId));
+
+            return new JsonResult { Data = new SelectList(data.ToList().Select(x => new { Id = x.fieldteplateid, Name = x.FieldName }), "Id", "Name", factFieldId) };
+        }
+
+        #endregion
+
+        #endregion
+
+        #region FieldTemplates
+
         public ActionResult DocTemplateFieldsManagment(long id)
         {
             return View(_templateRepository.GetDocTemplateById(id));
         }
 
-        public JsonResult DeleteField(long id,long fieldTemplateId)
-        {
-            _templateRepository.DeleteFieldTemplate(fieldTemplateId);
-            return Json(new { result = true });
-        }
-
-        public JsonResult AddFieldToCalc(long id, long fieldTemplateId)
-        {
-            var entity = _templateRepository.GetFieldTemplateById(id);
-            entity.ComputableFieldTemplateParts.Add(new ComputableFieldTemplateParts { FieldTemplate = entity, fkCalculatedFieldTemplateID = fieldTemplateId});
-            _templateRepository.SaveFieldTemplate(entity);
-
-            return Json(new { result = true });
-        }
-
-        public JsonResult DeleteFieldFromCalc(long id,  long fieldTemplateId)
-        {
-            var entity = _templateRepository.GetFieldTemplateById(id);
-            _templateRepository.SaveFieldTemplate(entity);
-            return Json(new { result = true });
-        }
-
-        public JsonResult UpField(long id)
-        {
-            var entity = _templateRepository.GetFieldTemplateById(id);
-            if (entity.OrderNumber > 1)
-            {
-                _templateRepository.SetFieldTemplateNumber(entity.fieldteplateid, entity.OrderNumber - 1);
-            }
-            return Json(new { result = true });
-        }
-
-        public JsonResult DownField(long id)
-        {
-            var entity = _templateRepository.GetFieldTemplateById(id);
-
-            _templateRepository.SetFieldTemplateNumber(entity.fieldteplateid, entity.OrderNumber + 1);
-
-            return Json(new { result = true });
-        }
         [HttpGet]
         public ActionResult AddField(long id)
         {
             var field = _templateRepository.GetFieldTemplateById(0);
+
             field.DocTemplate_docteplateid = id;
+            field.DocTemplate = _templateRepository.GetDocTemplateById(id);
             var fModel = new FieldTemplateEditModel(field);
             return View(fModel);
         }
@@ -289,5 +283,52 @@ namespace MvcFront.Controllers
             }
             return View();
         }
+
+        #region JSon
+
+        public JsonResult DeleteField(long id, long fieldTemplateId)
+        {
+            _templateRepository.DeleteFieldTemplate(fieldTemplateId);
+            return Json(new { result = true });
+        }
+
+        public JsonResult AddFieldToCalc(long id, long fieldTemplateId)
+        {
+            var entity = _templateRepository.GetFieldTemplateById(id);
+            entity.ComputableFieldTemplateParts.Add(new ComputableFieldTemplateParts { FieldTemplate = entity, fkCalculatedFieldTemplateID = fieldTemplateId });
+            _templateRepository.SaveFieldTemplate(entity);
+
+            return Json(new { result = true });
+        }
+
+        public JsonResult DeleteFieldFromCalc(long id, long fieldTemplateId)
+        {
+            var entity = _templateRepository.GetFieldTemplateById(id);
+            _templateRepository.SaveFieldTemplate(entity);
+            return Json(new { result = true });
+        }
+
+        public JsonResult UpField(long id)
+        {
+            var entity = _templateRepository.GetFieldTemplateById(id);
+            if (entity.OrderNumber > 1)
+            {
+                _templateRepository.SetFieldTemplateNumber(entity.fieldteplateid, entity.OrderNumber - 1);
+            }
+            return Json(new { result = true });
+        }
+
+        public JsonResult DownField(long id)
+        {
+            var entity = _templateRepository.GetFieldTemplateById(id);
+
+            _templateRepository.SetFieldTemplateNumber(entity.fieldteplateid, entity.OrderNumber + 1);
+
+            return Json(new { result = true });
+        }
+
+        #endregion
+
+        #endregion
     }
 }

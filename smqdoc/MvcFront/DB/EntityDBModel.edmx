@@ -74,6 +74,10 @@
       <End Role="DocAppointment" EntitySet="DocAppointments" />
       <End Role="GroupTemplate" EntitySet="GroupTemplates" />
     </AssociationSet>
+    <AssociationSet Name="FK_FieldTemplates_FieldTemplates1" Association="smqdocModel.Store.FK_FieldTemplates_FieldTemplates1">
+      <End Role="FieldTemplate" EntitySet="FieldTemplates" />
+      <End Role="FieldTemplate1" EntitySet="FieldTemplates" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="UserAccounts">
     <Key>
@@ -126,6 +130,7 @@
     <Property Name="Status" Type="int" Nullable="false" />
     <Property Name="OperationExpression" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Integer" Type="bit" Nullable="true" />
+    <Property Name="FactFieldTemplate_fieldteplateid" Type="bigint" Nullable="true" />
   </EntityType>
   <EntityType Name="Documents">
     <Key>
@@ -324,6 +329,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_FieldTemplates_FieldTemplates1">
+    <End Role="FieldTemplate" Type="smqdocModel.Store.FieldTemplates" Multiplicity="0..1" />
+    <End Role="FieldTemplate1" Type="smqdocModel.Store.FieldTemplates" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FieldTemplate">
+        <PropertyRef Name="fieldteplateid" />
+      </Principal>
+      <Dependent Role="FieldTemplate1">
+        <PropertyRef Name="FactFieldTemplate_fieldteplateid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_GroupUsers_UserGroup">
     <End Role="UserGroup" Type="smqdocModel.Store.UserGroups" Multiplicity="1" />
     <End Role="GroupUsers" Type="smqdocModel.Store.GroupUsers" Multiplicity="*" />
@@ -435,6 +452,10 @@
             <End Role="DocAppointment" EntitySet="DocAppointments" />
             <End Role="GroupTemplate" EntitySet="GroupTemplates" />
           </AssociationSet>
+          <AssociationSet Name="FK_FieldTemplates_FieldTemplates1" Association="smqdocModel.FK_FieldTemplates_FieldTemplates1">
+            <End Role="FieldTemplate" EntitySet="FieldTemplates" />
+            <End Role="FieldTemplate1" EntitySet="FieldTemplates" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="UserAccount">
           <Key>
@@ -515,6 +536,9 @@
           <NavigationProperty Name="ComputableFieldTemplateParts" Relationship="smqdocModel.ComputableFieldTemplatePartsFieldTemplate" FromRole="FieldTemplate" ToRole="ComputableFieldTemplateParts" />
           <Property Type="String" Name="OperationExpression" Nullable="true" />
           <Property Type="Boolean" Name="Integer" Nullable="true" />
+          <Property Type="Int64" Name="FactFieldTemplate_fieldteplateid" />
+          <NavigationProperty Name="PlanFieldTemplates" Relationship="smqdocModel.FK_FieldTemplates_FieldTemplates1" FromRole="FieldTemplate" ToRole="FieldTemplate1" />
+          <NavigationProperty Name="FactFieldTemplate" Relationship="smqdocModel.FK_FieldTemplates_FieldTemplates1" FromRole="FieldTemplate1" ToRole="FieldTemplate" />
         </EntityType>
         <Association Name="FieldTeplateDocTemplate">
           <End Type="smqdocModel.FieldTemplate" Role="FieldTeplate" Multiplicity="*" />
@@ -694,6 +718,18 @@
           <End Type="smqdocModel.DocAppointment" Role="DocAppointment" Multiplicity="0..1" />
           <End Type="smqdocModel.GroupTemplate" Role="GroupTemplate" Multiplicity="1" />
         </Association>
+        <Association Name="FK_FieldTemplates_FieldTemplates1">
+          <End Type="smqdocModel.FieldTemplate" Role="FieldTemplate" Multiplicity="0..1" />
+          <End Type="smqdocModel.FieldTemplate" Role="FieldTemplate1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FieldTemplate">
+              <PropertyRef Name="fieldteplateid" />
+            </Principal>
+            <Dependent Role="FieldTemplate1">
+              <PropertyRef Name="FactFieldTemplate_fieldteplateid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -753,6 +789,7 @@
           <ScalarProperty Name="Status" ColumnName="Status" />
           <ScalarProperty Name="OperationExpression" ColumnName="OperationExpression" />
           <ScalarProperty Name="Integer" ColumnName="Integer" />
+          <ScalarProperty Name="FactFieldTemplate_fieldteplateid" ColumnName="FactFieldTemplate_fieldteplateid" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -903,9 +940,8 @@
         </AssociationConnector>
         <EntityTypeShape EntityType="smqdocModel.ComputableFieldTemplateParts" Width="2.375" PointX="5.5" PointY="11.75" Height="1.9802864583333317" />
         <AssociationConnector Association="smqdocModel.ComputableFieldTemplatePartsFieldTemplate">
-          <ConnectorPoint PointX="5.5" PointY="12.783143403645831" />
-          <ConnectorPoint PointX="3.6875" PointY="12.783143403645831" />
-          <ConnectorPoint PointX="3.6875" PointY="11.835999348958334" />
+          <ConnectorPoint PointX="5.5" PointY="12.081451822916666" />
+          <ConnectorPoint PointX="4.75" PointY="12.081451822916666" />
         </AssociationConnector>
         <EntityTypeShape EntityType="smqdocModel.UserTags" Width="1.5" PointX="0.625" PointY="0.75" Height="1.59568359375" />
         <AssociationConnector Association="smqdocModel.UserAccountUserTags">
@@ -924,6 +960,12 @@
         <AssociationConnector Association="smqdocModel.DocAppointmentGroupTemplate">
           <ConnectorPoint PointX="11.4375" PointY="6.875" />
           <ConnectorPoint PointX="11.4375" PointY="5.0571907552083326" />
+        </AssociationConnector>
+        <AssociationConnector Association="smqdocModel.FK_FieldTemplates_FieldTemplates1" >
+          <ConnectorPoint PointX="3.3785576923076923" PointY="12.412903645833334" />
+          <ConnectorPoint PointX="3.3785576923076923" PointY="12.662903645833332" />
+          <ConnectorPoint PointX="4.0111538461538458" PointY="12.662903645833332" />
+          <ConnectorPoint PointX="4.0111538461538458" PointY="12.412903645833334" />
         </AssociationConnector>
         </Diagram>
     </Diagrams>

@@ -1,16 +1,16 @@
-﻿@using MvcFront.DB
+﻿@using MvcFront.Enums
 @model MvcFront.DB.Document
 
-<legend>@Html.DisplayFor(model => model.GroupTemplate.Name)</legend>
+<legend>@Html.DisplayFor(model => model.DocAppointment.Name)</legend>
 
     @*<div class="display-label">@Html.LabelFor(model => model.DocumentName)</div>
 <div class="display-field">
     @Html.DisplayFor(model => model.DocumentName)
 </div>*@
 
-<div class="display-label">@Html.LabelFor(model => model.GroupTemplate.Name)</div>
+<div class="display-label">@Html.LabelFor(model => model.DocAppointment.Name)</div>
 <div class="display-field">
-    @Html.DisplayFor(model => model.GroupTemplate.Name)
+    @Html.DisplayFor(model => model.DocAppointment.Name)
 </div>
 
 <div class="display-label">@Html.LabelFor(model => model.CreationDate)</div>

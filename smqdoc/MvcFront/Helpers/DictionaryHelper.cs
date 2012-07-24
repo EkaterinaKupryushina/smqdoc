@@ -84,6 +84,11 @@ namespace MvcFront.Helpers
                                         retVal = "Вычислимое";
                                         break;
                                     }
+                                case 4:
+                                    {
+                                        retVal = "Планируемое";
+                                        break;
+                                    }
                             }
                             break;
                         }
@@ -159,7 +164,6 @@ namespace MvcFront.Helpers
                             
                          break;   
                         }
-
                     case "DocAppointmentStatus":
                         {
                             switch (item)
@@ -182,24 +186,18 @@ namespace MvcFront.Helpers
                             }
                             break;
                         }
-
-                    case "CalculationOperationType":
+                    case "UserTagStatus":
                         {
                             switch (item)
                             {
                                 case 0:
                                     {
-                                        retVal = "-";
+                                        retVal = "Активна";
                                         break;
                                     }
                                 case 1:
                                     {
-                                        retVal = "Сумма";
-                                        break;
-                                    }
-                                case 2:
-                                    {
-                                        retVal = "Среднее арифметическое";
+                                        retVal = "Удалена";
                                         break;
                                     }
                             }

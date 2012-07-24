@@ -30,6 +30,7 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("smqdocModel", "DocTemplateDocAppointment", "DocTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.DocTemplate), "DocAppointment", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.DocAppointment), true)]
 [assembly: EdmRelationshipAttribute("smqdocModel", "DocumentDocAppointment", "Document", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.Document), "DocAppointment", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.DocAppointment), true)]
 [assembly: EdmRelationshipAttribute("smqdocModel", "DocAppointmentGroupTemplate", "DocAppointment", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(MvcFront.DB.DocAppointment), "GroupTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.GroupTemplate))]
+[assembly: EdmRelationshipAttribute("smqdocModel", "FK_FieldTemplates_FieldTemplates1", "FieldTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(MvcFront.DB.FieldTemplate), "FieldTemplate1", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.FieldTemplate), true)]
 
 #endregion
 
@@ -1814,6 +1815,30 @@ namespace MvcFront.DB
         private Nullable<global::System.Boolean> _Integer;
         partial void OnIntegerChanging(Nullable<global::System.Boolean> value);
         partial void OnIntegerChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int64> FactFieldTemplate_fieldteplateid
+        {
+            get
+            {
+                return _FactFieldTemplate_fieldteplateid;
+            }
+            set
+            {
+                OnFactFieldTemplate_fieldteplateidChanging(value);
+                ReportPropertyChanging("FactFieldTemplate_fieldteplateid");
+                _FactFieldTemplate_fieldteplateid = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("FactFieldTemplate_fieldteplateid");
+                OnFactFieldTemplate_fieldteplateidChanged();
+            }
+        }
+        private Nullable<global::System.Int64> _FactFieldTemplate_fieldteplateid;
+        partial void OnFactFieldTemplate_fieldteplateidChanging(Nullable<global::System.Int64> value);
+        partial void OnFactFieldTemplate_fieldteplateidChanged();
 
         #endregion
     
@@ -1897,6 +1922,66 @@ namespace MvcFront.DB
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<ComputableFieldTemplateParts>("smqdocModel.ComputableFieldTemplatePartsFieldTemplate", "ComputableFieldTemplateParts", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "FK_FieldTemplates_FieldTemplates1", "FieldTemplate1")]
+        public EntityCollection<FieldTemplate> PlanFieldTemplates
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<FieldTemplate>("smqdocModel.FK_FieldTemplates_FieldTemplates1", "FieldTemplate1");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<FieldTemplate>("smqdocModel.FK_FieldTemplates_FieldTemplates1", "FieldTemplate1", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "FK_FieldTemplates_FieldTemplates1", "FieldTemplate")]
+        public FieldTemplate FactFieldTemplate
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<FieldTemplate>("smqdocModel.FK_FieldTemplates_FieldTemplates1", "FieldTemplate").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<FieldTemplate>("smqdocModel.FK_FieldTemplates_FieldTemplates1", "FieldTemplate").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<FieldTemplate> FactFieldTemplateReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<FieldTemplate>("smqdocModel.FK_FieldTemplates_FieldTemplates1", "FieldTemplate");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<FieldTemplate>("smqdocModel.FK_FieldTemplates_FieldTemplates1", "FieldTemplate", value);
                 }
             }
         }

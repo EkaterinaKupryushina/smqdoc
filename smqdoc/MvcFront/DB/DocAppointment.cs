@@ -47,7 +47,7 @@ namespace MvcFront.DB
         [Required]
         [Display(Name = "Код статуса")]
         public int Status { get; set; }
-        [Display(Name = "Родительский шаблон")]
+        [Display(Name = "Родительская форма")]
         public DocTemplate DocTemplate { get; set; }
         // ReSharper restore InconsistentNaming
         // ReSharper restore UnusedMember.Global

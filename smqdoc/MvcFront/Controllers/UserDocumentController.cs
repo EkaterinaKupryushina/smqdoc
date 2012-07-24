@@ -90,13 +90,13 @@ namespace MvcFront.Controllers
             try
             {
                 var doc = _documentRepository.GetDocumentById(model.DocumentId);
-                foreach (var field in model.Fields.Where(x => x.FieldType != (int)FieldTemplateType.CALCULATED))
+                foreach (var field in model.Fields.Where(x => x.FieldType != (int)FieldTemplateType.Calculated))
                 {
                     {
                         field.Update(doc.DocFields.Single(x => x.docfieldid == field.FieldId));
                     } 
                 }
-                foreach (var field in model.Fields.Where(x => x.FieldType == (int)FieldTemplateType.CALCULATED))
+                foreach (var field in model.Fields.Where(x => x.FieldType == (int)FieldTemplateType.Calculated))
                 {
                     {
                         field.Update(doc.DocFields.Single(x => x.docfieldid == field.FieldId), doc);

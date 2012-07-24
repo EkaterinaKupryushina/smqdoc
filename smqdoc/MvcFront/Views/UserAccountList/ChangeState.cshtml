@@ -6,7 +6,7 @@
 
 <h2>Включение/Отключение</h2>
 @{
-    var newStatusText = Model.UserStatus == MvcFront.DB.UserAccountStatus.Active ? "Неактивный" : "Активный";    
+    var newStatusText = Model.UserStatus == MvcFront.Enums.UserAccountStatus.Active ? "Неактивный" : "Активный";    
 }
 <h3>Вы действительно желаете сменить статус @Html.DisplayFor(model => model.FullName) c @Model.UserStatusText на @newStatusText?</h3>
 <fieldset>

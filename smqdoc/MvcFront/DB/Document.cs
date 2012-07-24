@@ -50,13 +50,13 @@ namespace MvcFront.DB
         {
             switch(FieldTemplate.TemplateType)
             {
-                case FieldTemplateType.BOOL:
+                case FieldTemplateType.Bool:
                     return BoolValue == null ? "" : BoolValue.Value ? "Да" : "Нет";
-                case FieldTemplateType.NUMBER:
+                case FieldTemplateType.Number:
                     return DoubleValue == null ? "" : string.Format("{0}",DoubleValue);
-                case FieldTemplateType.STRING:
+                case FieldTemplateType.String:
                     return StringValue ?? "";
-                case FieldTemplateType.CALCULATED:
+                case FieldTemplateType.Calculated:
                     return DoubleValue == null ? "" : string.Format("{0}", DoubleValue);
                 default:
                     throw new ArgumentOutOfRangeException();

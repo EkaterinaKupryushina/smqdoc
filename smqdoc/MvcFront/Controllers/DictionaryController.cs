@@ -27,7 +27,7 @@ namespace MvcFront.Controllers
         /// </summary>
         /// <param name="text"> Маска для поиска по названию. </param>
         [HttpPost]
-        public ActionResult AjaxUserAccountList(string text)
+        public JsonResult AjaxUserAccountList(string text)
         {
             var data = _userRepository.GetAll();
             if (!String.IsNullOrEmpty(text))
@@ -75,7 +75,7 @@ namespace MvcFront.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult AjaxUserGroupList()
+        public JsonResult AjaxUserGroupList()
         {
             var groupRepository = DependencyResolver.Current.GetService<IUserGroupRepository>();
             var model = groupRepository.GetAll().Where(x => x.Status != (int)UserGroupStatus.Deleted)
@@ -89,7 +89,7 @@ namespace MvcFront.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult AjaxDocTemplateList()
+        public JsonResult AjaxDocTemplateList()
         {
             var docTemplateRepository = DependencyResolver.Current.GetService<IDocTemplateRepository>();
             var model = docTemplateRepository.GetAllDocTeplates().Where(x => x.Status != (int)DocTemplateStatus.Deleted).ToList().ConvertAll(DocTemplateListViewModel.DocTemplateToModelConverter).ToList();
@@ -103,7 +103,7 @@ namespace MvcFront.Controllers
         /// <param name="text"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult AjaxUserTagsList(string text)
+        public JsonResult AjaxUserTagsList(string text)
         {
             var data = _userTagRepository.GetAllUserTags();
             if (!String.IsNullOrEmpty(text))
@@ -112,5 +112,6 @@ namespace MvcFront.Controllers
             }
             return new JsonResult { Data = new SelectList(data.ToList().Select(x => new { x.Id, x.Name}), "Id", "Name") };
         }
+
     }
 }

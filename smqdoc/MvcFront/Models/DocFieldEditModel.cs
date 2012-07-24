@@ -86,12 +86,12 @@ namespace MvcFront.Models
         {
             switch ((FieldTemplateType)FieldType)
             {
-                case FieldTemplateType.BOOL:
+                case FieldTemplateType.Bool:
                     item.BoolValue = BoolValue;
                     item.StringValue = null;
                     item.DoubleValue = null;
                     break;
-                case FieldTemplateType.NUMBER:
+                case FieldTemplateType.Number:
                     item.BoolValue = null;
                     item.StringValue = null;
                     if (item.FieldTemplate.Integer.HasValue && item.FieldTemplate.Integer.Value)
@@ -103,12 +103,12 @@ namespace MvcFront.Models
                         item.DoubleValue = DoubleValue;
                     }
                     break;
-                case FieldTemplateType.STRING:
+                case FieldTemplateType.String:
                     item.BoolValue = null;
                     item.StringValue = StringValue;
                     item.DoubleValue = null;
                     break;
-                case FieldTemplateType.CALCULATED:
+                case FieldTemplateType.Calculated:
                     if (doc != null)
                         DoubleValue = CalculateValue(doc, item);
 

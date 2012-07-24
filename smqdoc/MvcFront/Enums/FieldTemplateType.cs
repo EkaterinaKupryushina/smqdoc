@@ -2,9 +2,10 @@ namespace MvcFront.Enums
 {
     public enum FieldTemplateType
     {
-        BOOL,
-        NUMBER,
-        STRING,
-        CALCULATED
+        Bool,
+        Number,
+        String,
+        Calculated,
+        Planned
     }
 }
