@@ -7,7 +7,7 @@ namespace MvcFront.Entities
     /// Хранит информацию о текущем профиле пользователя
     /// </summary>
     [Serializable]
-    public class UserSessionData
+    public class UserSessionData 
     {   
         public string UserName { get; set; }
         public int UserId { get; set; }
