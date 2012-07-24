@@ -17,15 +17,13 @@ using MvcFront.Helpers;
                 if (docteplateid > 0)
                 {
 
-                    return
-                        DocAppointments.Any(
-                            da => da.Documents.Any(doc => doc.Status != (int) DocumentStatus.Deleted));
+                    return !DocAppointments.Any( da => da.Documents.Any(doc => doc.Status != (int) DocumentStatus.Deleted));
                 }
                 return true;
             }
         }
 
-        [Display(Name = "Статус шаблона")]
+        [Display(Name = "Статус Формы")]
         public DocTemplateStatus TemplateStatus
         {
             get
@@ -53,10 +51,10 @@ using MvcFront.Helpers;
         [UIHint("Hidden")]
         public long docteplateid { get; set; }
         [Required]
-        [Display(Name = "Название шаблона")]
+        [Display(Name = "Название Формы")]
         public string TemplateName { get; set; }
         [Required]
-        [Display(Name = "Описание шаблона")]
+        [Display(Name = "Описание Формы")]
         [DataType(DataType.MultilineText)]
         public string Comment { get; set; }
         [Required]
@@ -65,9 +63,9 @@ using MvcFront.Helpers;
         [Required]
         [Display(Name = "Код статуса")]
         public int Status { get; set; }
-        [Display(Name = "Статус шаблона")]
+        [Display(Name = "Статус Формы")]
         public DocTemplateStatus TemplateStatus { get; set; }
-        [Display(Name = "Список полей шаблона")]
+        [Display(Name = "Список полей Формы")]
         public EntityCollection<FieldTemplate>  FieldTeplates { get; set; }
         // ReSharper restore InconsistentNaming
         // ReSharper restore UnusedMember.Global
@@ -78,7 +76,7 @@ using MvcFront.Helpers;
     {
         // ReSharper disable UnusedMember.Global
         // ReSharper disable InconsistentNaming
-        [Display(Name = "Статус поля шаблона")]
+        [Display(Name = "Статус поля Формы")]
         public FieldTemplateStatus TemplateStatus
         {
             get
@@ -90,7 +88,7 @@ using MvcFront.Helpers;
                 Status = (int)value;
             }
         }
-        [Display(Name = "Статус поля шаблона")]
+        [Display(Name = "Статус поля Формы")]
         public string TemplateStatusText
         {
             get
@@ -98,7 +96,7 @@ using MvcFront.Helpers;
                 return DictionaryHelper.GetEnumText(typeof(FieldTemplateStatus), Status);
             }
         }
-        [Display(Name = "Тип поля шаблона")]
+        [Display(Name = "Тип поля Формы")]
         public FieldTemplateType TemplateType
         {
             get
@@ -110,7 +108,7 @@ using MvcFront.Helpers;
                 FiledType = (int)value;
             }
         }
-        [Display(Name = "Тип поля шаблона")]
+        [Display(Name = "Тип поля Формы")]
         public string TemplateTypeText
         {
             get

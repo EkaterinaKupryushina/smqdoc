@@ -9,19 +9,15 @@
 <h2>Детальная информация</h2>
 <fieldset>
 @Html.DisplayForModel()
-<div class="display-label">Поля шаблона</div>
+<div class="display-label">Поля Формы</div>
  @(Html.Telerik().Grid<FieldTemplateListViewModel>()
              .DataBinding(dataBinding => dataBinding.Ajax().Select("_FieldTemplateList", "DocTemplateList", new { templId = Model.docteplateid }))
              .Name("FieldTeplateListGrid")
-                   .Columns(columns =>
-                   {
-                       columns.AutoGenerate(column =>
-                       {
-                           //column.Width = "150px";
-                           if (column.Member == "FieldTemplateId")
-                               column.Visible = false;
-                       });
-                   })
+                   .Columns(columns => columns.AutoGenerate(column =>
+                                                                {
+                                                                    if (column.Member == "FieldTemplateId")
+                                                                        column.Visible = false;
+                                                                }))
     ) 
 </fieldset>
 <p>

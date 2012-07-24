@@ -115,7 +115,6 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DictionaryController.cs" />
     <Compile Include="Controllers\DocTemplateListController.cs" />
-    <Compile Include="Controllers\DocumentAppointmentController.cs" />
     <Compile Include="Controllers\UserDocumentController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UserAccountListController.cs" />
@@ -128,7 +127,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>EntityDBModel.edmx</DependentUpon>
     </Compile>
-    <Compile Include="DB\GroupTemplate.cs" />
+    <Compile Include="DB\DocAppointment.cs" />
     <Compile Include="DB\UserAccount.cs" />
     <Compile Include="DB\UserGroup.cs" />
     <Compile Include="Entities\UserSessionData.cs" />
@@ -136,7 +135,7 @@
     <Compile Include="Enums\DocumentStatus.cs" />
     <Compile Include="Enums\FieldTemplateStatus.cs" />
     <Compile Include="Enums\FieldTemplateType.cs" />
-    <Compile Include="Enums\GroupTemplateStatus.cs" />
+    <Compile Include="Enums\DocAppointmentStatus.cs" />
     <Compile Include="Enums\UserAccountStatus.cs" />
     <Compile Include="Enums\UserGroupStatus.cs" />
     <Compile Include="Enums\UserProfileTypes.cs" />
@@ -158,14 +157,16 @@
     <Compile Include="Interfaces\IUserAccountRepository.cs" />
     <Compile Include="Interfaces\IUserGroupRepository.cs" />
     <Compile Include="Interfaces\IUserTagRepository.cs" />
+    <Compile Include="Models\DocFieldEditModel.cs" />
     <Compile Include="Models\DocTemplateEditModel.cs" />
+    <Compile Include="Models\DocumentEditModel.cs" />
     <Compile Include="Models\FieldTemplateEditModel.cs" />
     <Compile Include="Models\FieldTemplateListViewModel.cs" />
     <Compile Include="Models\MiscUserAccountModels.cs" />
     <Compile Include="Models\DocTemplateListViewModel.cs" />
-    <Compile Include="Models\DocumentAppointmentModels.cs" />
-    <Compile Include="Models\DocumentModel.cs" />
+    <Compile Include="Models\DocumentListViewModel.cs" />
     <Compile Include="Models\EditUserAccountForUserModel.cs" />
+    <Compile Include="Models\SelfDocAppointment.cs" />
     <Compile Include="Models\UserAccountEditModel.cs" />
     <Compile Include="Models\UserAccountListViewModel .cs" />
     <Compile Include="Models\UserGroupEditModel.cs" />
@@ -565,12 +566,12 @@
     <Content Include="Views\DocTemplateList\Index.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\DocTemplate.cshtml" />
     <Content Include="Views\DocTemplateList\Details.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\DocTemplateListEditModel.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\DocTemplateEditModel.cshtml" />
     <Content Include="Views\DocTemplateList\Create.cshtml" />
     <Content Include="Views\DocTemplateList\Edit.cshtml" />
     <Content Include="Views\DocTemplateList\Delete.cshtml" />
     <Content Include="Views\DocTemplateList\DocTemplateFieldsManagment.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\FieldTemplateListEditModel.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\FieldTemplateEditModel.cshtml" />
     <Content Include="Views\DocTemplateList\AddField.cshtml" />
     <Content Include="Views\DocTemplateList\EditField.cshtml" />
     <Content Include="Views\Account\Index.cshtml" />
@@ -584,15 +585,6 @@
     <Content Include="Views\GroupTemplateList\Create.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\UserGroupComboBox.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\DocTemplateComboBox.cshtml" />
-    <Content Include="Views\DocumentAppointment\Index.cshtml" />
-    <Content Include="Views\DocumentAppointment\Delete.cshtml" />
-    <Content Include="Views\DocumentAppointment\ChangeState.cshtml" />
-    <Content Include="Views\DocumentAppointment\Create.cshtml" />
-    <Content Include="Views\DocumentAppointment\Edit.cshtml" />
-    <Content Include="Views\DocumentAppointment\DocumentDetails.cshtml">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Views\DocumentAppointment\GroupDocumentsList.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\UserTagFilter.cshtml" />
     <None Include="Views\UserAccountList\ChangeState.cshtml" />
     <Content Include="Views\UserGroupList\Index.cshtml" />

@@ -76,21 +76,22 @@ namespace MvcFront.Repositories
             var groupTempl = _groupTemplateRepository.GetGroupTemplateById(groupTemplId);
             if(groupTempl != null)
             {
-                var doc = new Document();                
-                doc.UserAccount_userid = userId;
-                doc.GroupTemplate_grouptemplateid = groupTemplId;
-                doc = SaveDocument(doc);
-                foreach (var fieldTempl in groupTempl.DocTemplate.FieldTeplates)
-                {
-                    var fld = new DocField
-                                  {
-                                      Document = doc,
-                                      FieldTemplate_fieldteplateid = fieldTempl.fieldteplateid
-                                  };
-                    _unitOfWork.DbModel.DocFields.AddObject(fld);
-                }
-                _unitOfWork.DbModel.SaveChanges();
-                return doc;
+                //TODO uncomment
+                //var doc = new Document();                
+                //doc.UserAccount_userid = userId;
+                //doc.GroupTemplate_grouptemplateid = groupTemplId;
+                //doc = SaveDocument(doc);
+                //foreach (var fieldTempl in groupTempl.DocTemplate.FieldTeplates)
+                //{
+                //    var fld = new DocField
+                //                  {
+                //                      Document = doc,
+                //                      FieldTemplate_fieldteplateid = fieldTempl.fieldteplateid
+                //                  };
+                //    _unitOfWork.DbModel.DocFields.AddObject(fld);
+                //}
+                //_unitOfWork.DbModel.SaveChanges();
+                //return doc;
             }
             return null;
         }

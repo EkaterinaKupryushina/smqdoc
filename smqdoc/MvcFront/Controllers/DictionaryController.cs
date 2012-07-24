@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using MvcFront.DB;
 using MvcFront.Enums;
 using MvcFront.Interfaces;
 using MvcFront.Helpers;
@@ -13,10 +12,12 @@ namespace MvcFront.Controllers
     public class DictionaryController : Controller
     {
         private readonly IUserAccountRepository _userRepository;
+        private readonly IUserTagRepository _userTagRepository;
 
-        public DictionaryController(IUserAccountRepository userRepository)
+        public DictionaryController(IUserAccountRepository userRepository, IUserTagRepository userTagRepository)
         {
             _userRepository = userRepository;
+            _userTagRepository = userTagRepository;
         }
 
         #region Пользователи
@@ -104,7 +105,7 @@ namespace MvcFront.Controllers
         [HttpPost]
         public ActionResult AjaxUserTagsList(string text)
         {
-            var data = _userRepository.GetAllUserTags();
+            var data = _userTagRepository.GetAllUserTags();
             if (!String.IsNullOrEmpty(text))
             {
                 data = data.Where(p => p.Name != null && p.Name.ToLower().Contains(text.ToLower())).Take(20);

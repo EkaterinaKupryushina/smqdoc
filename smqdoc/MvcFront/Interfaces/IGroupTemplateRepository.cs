@@ -25,7 +25,7 @@ namespace MvcFront.Interfaces
         IEnumerable<GroupTemplate> GetGroupTemplateByGroupId(Int64 id);
 
         /// <summary>
-        /// Возвращает групповое  назначение по ID шаблона
+        /// Возвращает групповое  назначение по ID Формы
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -49,6 +49,6 @@ namespace MvcFront.Interfaces
         /// </summary>
         /// <param name="id"></param>
         /// <param name="status"></param>
-        void ChangeGroupTemplateState(Int64 id, GroupTemplateStatus status);
+        void ChangeGroupTemplateState(Int64 id, DocAppointmentStatus status);
     }
 }

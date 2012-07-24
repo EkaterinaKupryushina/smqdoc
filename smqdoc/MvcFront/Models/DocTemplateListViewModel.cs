@@ -9,7 +9,7 @@ namespace MvcFront.Models
         [Display(Name = "ID")]
         [UIHint("Hidden")]
         public long DocTemplateId { get; set; }
-        [Display(Name = "Название шаблона")]
+        [Display(Name = "Название Формы")]
         public string DocTemplateName { get; set; }
         [Display(Name = "Дата последнего изменения")]
         public DateTime LastEditDate { get; set; }

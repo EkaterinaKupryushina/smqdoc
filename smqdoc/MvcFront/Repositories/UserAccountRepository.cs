@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.Objects;
 using System.Linq;
+using MvcFront.Enums;
 using MvcFront.Interfaces;
 using MvcFront.DB;
 

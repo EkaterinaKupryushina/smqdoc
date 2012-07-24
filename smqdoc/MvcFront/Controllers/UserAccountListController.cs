@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
+using MvcFront.Enums;
 using MvcFront.Interfaces;
 using MvcFront.Models;
-using MvcFront.DB;
 using Telerik.Web.Mvc;
 
 namespace MvcFront.Controllers
@@ -11,10 +11,11 @@ namespace MvcFront.Controllers
     public class UserAccountListController : Controller
     {
         private readonly IUserAccountRepository _userRepository;
-
-        public UserAccountListController(IUserAccountRepository userRepository)
+        private readonly IUserTagRepository _userTagRepository;
+        public UserAccountListController(IUserAccountRepository userRepository, IUserTagRepository userTagRepository)
         {
             _userRepository = userRepository;
+            _userTagRepository = userTagRepository;
         }
         //
         // GET: /UserAccountList/
@@ -165,12 +166,12 @@ namespace MvcFront.Controllers
 
         public JsonResult RemoveUserTag(int id, int tagId)
         {            
-            return Json(new { result = _userRepository.RemoveUserTag(id, tagId) });
+            return Json(new { result = _userTagRepository.RemoveUserTag(id, tagId) });
         }
 
         public JsonResult AddUserTag(int userId, int tagId)
         {            
-            return Json(new { result = _userRepository.AddUserTag(userId, tagId) });
+            return Json(new { result = _userTagRepository.AddUserTag(userId, tagId) });
         }
 
         //список меток пользователя

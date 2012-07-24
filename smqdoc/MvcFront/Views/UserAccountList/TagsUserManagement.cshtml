@@ -22,44 +22,45 @@
 
     <a href="#" onclick="ShowAddTagWindow()">Добавить метку</a>
     @(Html.Telerik().Grid<UserTagsListViewModel>()
-                .DataBinding(dataBinding => dataBinding.Ajax().Select("_UserTagList", "UserAccountList", new { userId = Model.userid }))
-        .Name("UserTagsListGrid")
-                .ClientEvents(events => events.OnComplete("onComplete"))
-                   .Columns(columns =>
-                   {
-                       columns.AutoGenerate(column =>
-                       {
-                           column.Width = "150px";
-                           if (column.Member == "Status" || column.Member == "UserTagNameId")
-                               column.Visible = false;
-                       });
-                       columns.Command(command =>
-                       {
-                           command.Custom("DeleteTag")
-                            .Text("Удалить метку")
-                            .DataRouteValues(route => route.Add(o => o.UserTagNameId).RouteKey("tagId"))
-                            .Ajax(true)
-                            .Action("RemoveUserTag", "UserAccountList")
-                            .HtmlAttributes(new { style = "text-align: center" });
-                       }).Width(40);
-                   })
-    ) 
+           .DataBinding(dataBinding => dataBinding.Ajax().Select("_UserTagList", "UserAccountList", new { userId = Model.userid }))
+           .Name("UserTagsListGrid")
+           .ClientEvents(events => events.OnComplete("onComplete"))
+           .Columns(columns =>
+                        {
+                            columns.AutoGenerate(column =>
+                                                     {
+                                                         column.Width = "150px";
+                                                         if (column.Member == "Status" || column.Member == "UserTagNameId")
+                                                             column.Visible = false;
+                                                     });
+                            columns.Command(command => command.Custom("DeleteTag")
+                                                           .Text("Удалить метку")
+                                                           .DataRouteValues(route => route.Add(o => o.UserTagNameId).RouteKey("tagId"))
+                                                           .Ajax(true)
+                                                           .Action("RemoveUserTag", "UserAccountList")
+                                                           .HtmlAttributes(new { style = "text-align: center" })).Width(40);
+                        })
+          ) 
     @(Html.Telerik().Window()
-    .Name("AddUserTagWindow")
-    .Visible(false)
-    .Title("Добавить метку")
-    .Modal(true)
-    .Width(400)
-    .Height(100)
-    .Content( 
-                @<text>                
-                @Html.Editor("addingUserTag", "UserTagFilter")
-                  <div style="text-align: center;" >
-                      <input type="button" value="Добавить" onclick="SendRequest()"/> 
-                  </div>
-              </text>)
-)
+           .Name("AddUserTagWindow")
+           .Visible(false)
+           .Title("Добавить метку")
+           .Modal(true)
+           .Width(400)
+           .Height(100)
+           .Content( 
+               @<text>                
+                    @Html.Editor("addingUserTag", "UserTagFilter")
+                    <div style="text-align: center;" >
+                        <input type="button" value="Добавить" onclick="SendRequest()"/> 
+                    </div>
+                </text>)
+          )
 </fieldset>
+<p>
+    @Html.ActionLink("Редактировать", "Edit", new { id=Model.userid }) |
+    @Html.ActionLink("Отмена", "Index")
+</p>
 <script type="text/javascript">
 function onComplete(e) {
     if (e.name == "DeleteTag") {

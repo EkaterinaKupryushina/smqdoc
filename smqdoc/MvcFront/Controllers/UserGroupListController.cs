@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
+using MvcFront.Enums;
 using MvcFront.Interfaces;
-using MvcFront.DB;
 using MvcFront.Models;
 using Telerik.Web.Mvc;
 

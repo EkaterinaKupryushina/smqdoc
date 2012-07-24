@@ -1,4 +1,6 @@
-﻿@model MvcFront.DB.UserAccount
+﻿@using MvcFront.Models
+@using Telerik.Web.Mvc.UI
+@model MvcFront.DB.UserAccount
 
 @{
     ViewBag.Title = "Details";
@@ -56,6 +58,20 @@
     <div class="display-label">Email</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.Email)
+    </div>
+    
+    <div class="display-label">Метки</div>
+    <div class="display-field">
+        @(Html.Telerik().Grid<UserTagsListViewModel>()
+                .DataBinding(dataBinding => dataBinding.Ajax().Select("_UserTagList", "UserAccountList", new { userId = Model.userid }))
+        .Name("UserTagsListGrid")
+                   .Columns(columns => columns.AutoGenerate(column =>
+                                                                {
+                                                                    column.Width = "150px";
+                                                                    if (column.Member == "Status" || column.Member == "UserTagNameId")
+                                                                        column.Visible = false;
+                                                                }))
+    ) 
     </div>
 </fieldset>
 <p>

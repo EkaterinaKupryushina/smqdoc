@@ -521,11 +521,15 @@ namespace MvcFront.DB
         /// </summary>
         /// <param name="docappointmentid">Initial value of the docappointmentid property.</param>
         /// <param name="docTemplate_docteplateid">Initial value of the DocTemplate_docteplateid property.</param>
-        public static DocAppointment CreateDocAppointment(global::System.Int64 docappointmentid, global::System.Int64 docTemplate_docteplateid)
+        /// <param name="name">Initial value of the Name property.</param>
+        /// <param name="status">Initial value of the Status property.</param>
+        public static DocAppointment CreateDocAppointment(global::System.Int64 docappointmentid, global::System.Int64 docTemplate_docteplateid, global::System.String name, global::System.Int32 status)
         {
             DocAppointment docAppointment = new DocAppointment();
             docAppointment.docappointmentid = docappointmentid;
             docAppointment.DocTemplate_docteplateid = docTemplate_docteplateid;
+            docAppointment.Name = name;
+            docAppointment.Status = status;
             return docAppointment;
         }
 
@@ -582,6 +586,54 @@ namespace MvcFront.DB
         private global::System.Int64 _DocTemplate_docteplateid;
         partial void OnDocTemplate_docteplateidChanging(global::System.Int64 value);
         partial void OnDocTemplate_docteplateidChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Name
+        {
+            get
+            {
+                return _Name;
+            }
+            set
+            {
+                OnNameChanging(value);
+                ReportPropertyChanging("Name");
+                _Name = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Name");
+                OnNameChanged();
+            }
+        }
+        private global::System.String _Name;
+        partial void OnNameChanging(global::System.String value);
+        partial void OnNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 Status
+        {
+            get
+            {
+                return _Status;
+            }
+            set
+            {
+                OnStatusChanging(value);
+                ReportPropertyChanging("Status");
+                _Status = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Status");
+                OnStatusChanged();
+            }
+        }
+        private global::System.Int32 _Status;
+        partial void OnStatusChanging(global::System.Int32 value);
+        partial void OnStatusChanged();
 
         #endregion
     
@@ -1866,20 +1918,12 @@ namespace MvcFront.DB
         /// Create a new GroupTemplate object.
         /// </summary>
         /// <param name="grouptemplateid">Initial value of the grouptemplateid property.</param>
-        /// <param name="name">Initial value of the Name property.</param>
-        /// <param name="planedStartDate">Initial value of the PlanedStartDate property.</param>
-        /// <param name="planedEndDate">Initial value of the PlanedEndDate property.</param>
-        /// <param name="status">Initial value of the Status property.</param>
         /// <param name="actualStartDate">Initial value of the ActualStartDate property.</param>
         /// <param name="actualEndDate">Initial value of the ActualEndDate property.</param>
-        public static GroupTemplate CreateGroupTemplate(global::System.Int64 grouptemplateid, global::System.String name, global::System.DateTime planedStartDate, global::System.DateTime planedEndDate, global::System.Int32 status, global::System.String actualStartDate, global::System.String actualEndDate)
+        public static GroupTemplate CreateGroupTemplate(global::System.Int64 grouptemplateid, global::System.DateTime actualStartDate, global::System.DateTime actualEndDate)
         {
             GroupTemplate groupTemplate = new GroupTemplate();
             groupTemplate.grouptemplateid = grouptemplateid;
-            groupTemplate.Name = name;
-            groupTemplate.PlanedStartDate = planedStartDate;
-            groupTemplate.PlanedEndDate = planedEndDate;
-            groupTemplate.Status = status;
             groupTemplate.ActualStartDate = actualStartDate;
             groupTemplate.ActualEndDate = actualEndDate;
             return groupTemplate;
@@ -1918,33 +1962,9 @@ namespace MvcFront.DB
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String Name
-        {
-            get
-            {
-                return _Name;
-            }
-            set
-            {
-                OnNameChanging(value);
-                ReportPropertyChanging("Name");
-                _Name = StructuralObject.SetValidValue(value, false);
-                ReportPropertyChanged("Name");
-                OnNameChanged();
-            }
-        }
-        private global::System.String _Name;
-        partial void OnNameChanging(global::System.String value);
-        partial void OnNameChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.DateTime PlanedStartDate
+        public Nullable<global::System.DateTime> PlanedStartDate
         {
             get
             {
@@ -1959,16 +1979,16 @@ namespace MvcFront.DB
                 OnPlanedStartDateChanged();
             }
         }
-        private global::System.DateTime _PlanedStartDate;
-        partial void OnPlanedStartDateChanging(global::System.DateTime value);
+        private Nullable<global::System.DateTime> _PlanedStartDate;
+        partial void OnPlanedStartDateChanging(Nullable<global::System.DateTime> value);
         partial void OnPlanedStartDateChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.DateTime PlanedEndDate
+        public Nullable<global::System.DateTime> PlanedEndDate
         {
             get
             {
@@ -1983,33 +2003,9 @@ namespace MvcFront.DB
                 OnPlanedEndDateChanged();
             }
         }
-        private global::System.DateTime _PlanedEndDate;
-        partial void OnPlanedEndDateChanging(global::System.DateTime value);
+        private Nullable<global::System.DateTime> _PlanedEndDate;
+        partial void OnPlanedEndDateChanging(Nullable<global::System.DateTime> value);
         partial void OnPlanedEndDateChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int32 Status
-        {
-            get
-            {
-                return _Status;
-            }
-            set
-            {
-                OnStatusChanging(value);
-                ReportPropertyChanging("Status");
-                _Status = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("Status");
-                OnStatusChanged();
-            }
-        }
-        private global::System.Int32 _Status;
-        partial void OnStatusChanging(global::System.Int32 value);
-        partial void OnStatusChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -2040,7 +2036,7 @@ namespace MvcFront.DB
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.String ActualStartDate
+        public global::System.DateTime ActualStartDate
         {
             get
             {
@@ -2050,13 +2046,13 @@ namespace MvcFront.DB
             {
                 OnActualStartDateChanging(value);
                 ReportPropertyChanging("ActualStartDate");
-                _ActualStartDate = StructuralObject.SetValidValue(value, false);
+                _ActualStartDate = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("ActualStartDate");
                 OnActualStartDateChanged();
             }
         }
-        private global::System.String _ActualStartDate;
-        partial void OnActualStartDateChanging(global::System.String value);
+        private global::System.DateTime _ActualStartDate;
+        partial void OnActualStartDateChanging(global::System.DateTime value);
         partial void OnActualStartDateChanged();
     
         /// <summary>
@@ -2064,7 +2060,7 @@ namespace MvcFront.DB
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.String ActualEndDate
+        public global::System.DateTime ActualEndDate
         {
             get
             {
@@ -2074,13 +2070,13 @@ namespace MvcFront.DB
             {
                 OnActualEndDateChanging(value);
                 ReportPropertyChanging("ActualEndDate");
-                _ActualEndDate = StructuralObject.SetValidValue(value, false);
+                _ActualEndDate = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("ActualEndDate");
                 OnActualEndDateChanged();
             }
         }
-        private global::System.String _ActualEndDate;
-        partial void OnActualEndDateChanging(global::System.String value);
+        private global::System.DateTime _ActualEndDate;
+        partial void OnActualEndDateChanging(global::System.DateTime value);
         partial void OnActualEndDateChanged();
 
         #endregion

@@ -1,12 +1,12 @@
 ﻿@model MvcFront.DB.UserGroup
-
+@using MvcFront.Enums
 @{
     ViewBag.Title = "ChangeState";
 }
 
 <h2>Включение/Отключение</h2>
 @{
-    var newStatusText = Model.GroupStatus == MvcFront.DB.UserGroupStatus.Active ? "Неактивный" : "Активный";    
+    var newStatusText = Model.GroupStatus == UserGroupStatus.Active ? "Неактивный" : "Активный";    
 }
 <h3>Вы действительно желаете сменить статус @Html.DisplayFor(model => model.GroupName) c @Model.GroupStatusText на @newStatusText?</h3>
 <fieldset>

@@ -1,28 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
+using MvcFront.Enums;
 using MvcFront.Models;
-using MvcFront.DB;
 using MvcFront.Interfaces;
 
 namespace MvcFront.Controllers
 {
     public class UserTagsListController : Controller
     {
-        private readonly IUserAccountRepository _userRepository;
-
-        public UserTagsListController(IUserAccountRepository userRepository)
+        private readonly IUserTagRepository _userTagRepository;
+        public UserTagsListController( IUserTagRepository userTagRepository)
         {
-            _userRepository = userRepository;
+            _userTagRepository = userTagRepository;
         }
         //
         // GET: /UserAccountList/
 
         public ActionResult Index()
         {
-            return View(_userRepository.GetAllUserTags().Where(x=>x.Status != (int)UserTagStatus.Deleted).ToList()
+            return View(_userTagRepository.GetAllUserTags().Where(x=>x.Status != (int)UserTagStatus.Deleted).ToList()
                 .ConvertAll(UserTagsListViewModel.UserTagNamesToModelConverter).ToList());
         }
         
@@ -31,7 +28,7 @@ namespace MvcFront.Controllers
 
         public ActionResult Create()
         {
-            return View(new UserTagsEditModel(_userRepository.GetUserTagByID(0)));
+            return View(new UserTagsEditModel(_userTagRepository.GetUserTagById(0)));
         } 
 
         //
@@ -44,9 +41,9 @@ namespace MvcFront.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var tag = _userRepository.GetUserTagByID(0);
+                    var tag = _userTagRepository.GetUserTagById(0);
                     tag = model.Update(tag);
-                    if (!_userRepository.SaveUserTag(tag))
+                    if (!_userTagRepository.SaveUserTag(tag))
                     {
                         throw new Exception("Ошибка сохранения метки");
                     }
@@ -69,7 +66,7 @@ namespace MvcFront.Controllers
  
         public ActionResult Edit(int id)
         {
-            return View(new UserTagsEditModel(_userRepository.GetUserTagByID(id)));
+            return View(new UserTagsEditModel(_userTagRepository.GetUserTagById(id)));
         }
 
         //
@@ -82,9 +79,9 @@ namespace MvcFront.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var tag = _userRepository.GetUserTagByID(model.UserTagNameId);
+                    var tag = _userTagRepository.GetUserTagById(model.UserTagNameId);
                     tag = model.Update(tag);
-                    if (!_userRepository.SaveUserTag(tag))
+                    if (!_userTagRepository.SaveUserTag(tag))
                     {
                         throw new Exception("Ошибка сохранения метки");
                     }
@@ -107,7 +104,7 @@ namespace MvcFront.Controllers
  
         public ActionResult Delete(int id)
         {
-            return View(new UserTagsEditModel(_userRepository.GetUserTagByID(id)));
+            return View(new UserTagsEditModel(_userTagRepository.GetUserTagById(id)));
         }
 
         //
@@ -118,7 +115,7 @@ namespace MvcFront.Controllers
         {
             try
             {
-                _userRepository.DeleteUserTag(id);
+                _userTagRepository.DeleteUserTag(id);
  
                 return RedirectToAction("Index");
             }

@@ -44,7 +44,7 @@ namespace MvcFront.Interfaces
         void ChangeDocumentStatus(long id, DocumentStatus state);
 
         /// <summary>
-        /// Создает документ из шаблона документа
+        /// Создает документ из Формы документа
         /// </summary>
         /// <param name="groupTemplId"></param>
         /// <param name="userId"></param>

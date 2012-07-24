@@ -6,7 +6,6 @@ using MvcFront.Interfaces;
 using MvcFront.DB;
 using MvcFront.Models;
 using Telerik.Web.Mvc;
-using System.Collections.Generic;
 
 namespace MvcFront.Controllers
 {
@@ -25,7 +24,7 @@ namespace MvcFront.Controllers
             return View(_templateRepository.GetAllDocTeplates().Where(x => x.Status != (int)DocTemplateStatus.Deleted).ToList().ConvertAll(DocTemplateListViewModel.DocTemplateToModelConverter).ToList());
         }
 
-        //Возращает список полей шаблона
+        //Возращает список полей форма
         [GridAction]
         public ActionResult _FieldTemplateList(long templId)
         {
@@ -34,31 +33,27 @@ namespace MvcFront.Controllers
             return View(new GridModel<FieldTemplateListViewModel> { Data = data });
         }
 
-        //Возращает список полей шаблона использованных для создания вычислимого поля
+        //Возращает список полей формы использованных для создания вычислимого поля
         [GridAction]
         public ActionResult _FieldTemplateListUsedForCalc(long docTemplID, long fieldTemplID)
         {
             var tpl = _templateRepository.GetFieldTemplateById(fieldTemplID);
-            List<ComputableFieldTemplateParts> lst = _templateRepository.GetAllComputableFieldTempalteParts().Where(x => x.FieldTemplate_fieldteplateid == tpl.fieldteplateid).ToList();
-            List<long> userTemplatesIDs = new List<long>();
-            foreach (ComputableFieldTemplateParts item in lst)
-                userTemplatesIDs.Add(item.fkCalculatedFieldTemplateID);
+            var lst = _templateRepository.GetAllComputableFieldTempalteParts().Where(x => x.FieldTemplate_fieldteplateid == tpl.fieldteplateid).ToList();
+            var userTemplatesIDs = lst.Select(item => item.fkCalculatedFieldTemplateID).ToList();
 
             var data = _templateRepository.GetDocTemplateById(docTemplID).FieldTeplates.Where(x => userTemplatesIDs.Contains((int)x.fieldteplateid)).OrderBy(x => x.OrderNumber).ToList()
                 .ConvertAll(FieldTemplateListViewModel.FieldToModelConverter);
             return View(new GridModel<FieldTemplateListViewModel> { Data = data });
         }
 
-        //Возращает список полей шаблона не использованных доступных для создания вычислимого поля
+        //Возращает список полей формы не использованных доступных для создания вычислимого поля
         [GridAction]
         public ActionResult _FieldTemplateListNotUsedForCalc(long docTemplID, long fieldTemplID)
         {
 
             var tpl = _templateRepository.GetFieldTemplateById(fieldTemplID);
-            List<ComputableFieldTemplateParts> lst = _templateRepository.GetAllComputableFieldTempalteParts().Where(x => x.FieldTemplate_fieldteplateid == tpl.fieldteplateid).ToList();
-            List<long> userTemplatesIDs = new List<long>();
-            foreach (ComputableFieldTemplateParts item in lst)
-                userTemplatesIDs.Add(item.fkCalculatedFieldTemplateID);
+            var lst = _templateRepository.GetAllComputableFieldTempalteParts().Where(x => x.FieldTemplate_fieldteplateid == tpl.fieldteplateid).ToList();
+            var userTemplatesIDs = lst.Select(item => item.fkCalculatedFieldTemplateID).ToList();
 
             var data = _templateRepository.GetDocTemplateById(docTemplID).FieldTeplates.Where(x => !userTemplatesIDs.Contains((int)x.fieldteplateid) && x.FiledType == (int)FieldTemplateType.NUMBER ).OrderBy(x => x.OrderNumber).ToList()
                 .ConvertAll(FieldTemplateListViewModel.FieldToModelConverter);
@@ -99,7 +94,7 @@ namespace MvcFront.Controllers
                     templ = model.Update(templ);
                     if (!_templateRepository.SaveDocTemplate(templ))
                     {
-                        throw new Exception("Ошибка сохранения Шаблона");
+                        throw new Exception("Ошибка сохранения Формы");
                     }
                 }
                 else
@@ -137,7 +132,7 @@ namespace MvcFront.Controllers
                     templ = model.Update(templ);
                     if (!_templateRepository.SaveDocTemplate(templ))
                     {
-                        throw new Exception("Ошибка сохранения Шаблона");
+                        throw new Exception("Ошибка сохранения Формы");
                     }
                 }
                 else
@@ -194,7 +189,7 @@ namespace MvcFront.Controllers
         public JsonResult AddFieldToCalc(long id, long fieldTemplateId)
         {
             var entity = _templateRepository.GetFieldTemplateById(id);
-            entity.ComputableFieldTemplateParts.Add(new ComputableFieldTemplateParts() { FieldTemplate = entity, fkCalculatedFieldTemplateID = fieldTemplateId});
+            entity.ComputableFieldTemplateParts.Add(new ComputableFieldTemplateParts { FieldTemplate = entity, fkCalculatedFieldTemplateID = fieldTemplateId});
             _templateRepository.SaveFieldTemplate(entity);
 
             return Json(new { result = true });
@@ -202,8 +197,7 @@ namespace MvcFront.Controllers
 
         public JsonResult DeleteFieldFromCalc(long id,  long fieldTemplateId)
         {
-            var entity = _templateRepository.GetFieldTemplateById(id);            
-            var delTpl = entity.ComputableFieldTemplateParts.Where(x => x.fkCalculatedFieldTemplateID == fieldTemplateId).FirstOrDefault();           
+            var entity = _templateRepository.GetFieldTemplateById(id);
             _templateRepository.SaveFieldTemplate(entity);
             return Json(new { result = true });
         }
@@ -246,7 +240,7 @@ namespace MvcFront.Controllers
                     templ = model.Update(templ);
                     if (!_templateRepository.SaveFieldTemplate(templ))
                     {
-                        throw new Exception("Ошибка сохранения Шаблона");
+                        throw new Exception("Ошибка сохранения Формы");
                     }
                 }
                 else
@@ -280,7 +274,7 @@ namespace MvcFront.Controllers
                     templ = model.Update(templ);
                     if (!_templateRepository.SaveFieldTemplate(templ))
                     {
-                        throw new Exception("Ошибка сохранения Шаблона");
+                        throw new Exception("Ошибка сохранения Формы");
                     }
                 }
                 else

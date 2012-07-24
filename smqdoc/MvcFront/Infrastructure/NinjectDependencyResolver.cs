@@ -49,6 +49,7 @@ namespace MvcFront.Infrastructure
         {
             Bind<IUserAccountRepository>().To<UserAccountRepository>();
             Bind<IUserGroupRepository>().To<UserGroupRepository>();
+            Bind<IUserTagRepository>().To<UserTagRepository>();
             Bind<IDocTemplateRepository>().To<DocTemplateRepository>();
             Bind<IDocumentRepository>().To <DocumentRepository>();
             Bind<IGroupTemplateRepository>().To<GroupTemplateRepository>();
