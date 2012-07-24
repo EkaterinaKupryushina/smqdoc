@@ -19,19 +19,19 @@ namespace MvcFront.Repositories
         {
             return GetAllGroupTemplates().Where(x => x.UserGroup_usergroupid == id).ToList();
         }
-        public IQueryable<DB.GroupTemplate> GetAllGroupTemplates()
+        public IQueryable<GroupTemplate> GetAllGroupTemplates()
         {
             return _unitOfWork.DbModel.GroupTemplates.AsQueryable();            
         }
 
-        public DB.GroupTemplate GetGroupTemplateById(long id)
+        public GroupTemplate GetGroupTemplateById(long id)
         {
             if (id == 0)
-                return new GroupTemplate() { DateStart = DateTime.Now, DateEnd = DateTime.Now };
+                return new GroupTemplate { ActualStartDate = DateTime.Now, PlanedStartDate = DateTime.Now, ActualEndDate = DateTime.Now, PlanedEndDate = DateTime.Now };
             return _unitOfWork.DbModel.GroupTemplates.SingleOrDefault(x=> x.grouptemplateid == id);
         }
 
-        public bool SaveGroupTemplate(DB.GroupTemplate entity)
+        public bool SaveGroupTemplate(GroupTemplate entity)
         {
             if (entity.grouptemplateid == 0)
             {                                
@@ -48,11 +48,11 @@ namespace MvcFront.Repositories
                 if (oldEntity != null)
                 {
                     oldEntity.UserGroup_usergroupid = entity.UserGroup_usergroupid;
-                    oldEntity.DocTemplate_docteplateid = entity.DocTemplate_docteplateid;
-                    oldEntity.Name = entity.Name;
-                    oldEntity.DateStart = entity.DateStart;
-                    oldEntity.DateEnd = entity.DateEnd;
-                    oldEntity.Status = entity.Status;
+                    oldEntity.DocAppointment = entity.DocAppointment;
+                    oldEntity.ActualStartDate= entity.ActualStartDate;
+                    oldEntity.ActualEndDate= entity.ActualEndDate;
+                    oldEntity.PlanedStartDate = entity.PlanedStartDate;
+                    oldEntity.PlanedEndDate = entity.PlanedEndDate;
                 }
             }
             _unitOfWork.DbModel.SaveChanges();
@@ -64,17 +64,17 @@ namespace MvcFront.Repositories
             var entity = GetGroupTemplateById(id);
             if (entity != null)
             {
-                entity.GroupTemplateStatus = GroupTemplateStatus.Deleted;
+                entity.DocAppointment.DocAppointmentStatus = DocAppointmentStatus.Deleted;
             }
             _unitOfWork.DbModel.SaveChanges();            
         }
 
-        public void ChangeGroupTemplateState(long id, GroupTemplateStatus status)
+        public void ChangeGroupTemplateState(long id, DocAppointmentStatus status)
         {
             var entity = GetGroupTemplateById(id);
             if (entity != null)
             {
-                entity.GroupTemplateStatus = status;
+                entity.DocAppointment.DocAppointmentStatus = status;
             }
             _unitOfWork.DbModel.SaveChanges();
         }

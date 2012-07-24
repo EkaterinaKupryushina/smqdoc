@@ -33,7 +33,7 @@ namespace MvcFront.Interfaces
         void DeleteDocTemplate(Int64 id);
 
         /// <summary>
-        /// Меняет стутус шаблона с Active на unactive
+        /// Меняет стутус Формы с Active на unactive
         /// </summary>
         /// <param name="id"></param>
         void ChangeDocTemplateState(Int64 id);
@@ -65,7 +65,7 @@ namespace MvcFront.Interfaces
         void DeleteFieldTemplate(Int64 templateFieldId);
 
         /// <summary>
-        /// Изменить номер шаблона поля 
+        /// Изменить номер Формы поля 
         /// </summary>
         /// <param name="templateFieldId"></param>
         /// <param name="newNumber"></param>

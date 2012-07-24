@@ -11,7 +11,7 @@ namespace MvcFront.Models
         public long FieldTemplateId { get; set; }
         [Display(Name = "№")]
         public long OrderNumber { get; set; }
-        [Display(Name = "Название шаблона")]
+        [Display(Name = "Название Формы")]
         public string FieldTemplateName { get; set; }
         [Display(Name = "Тип поля")]
         public string FieldTypeText { get; set; }

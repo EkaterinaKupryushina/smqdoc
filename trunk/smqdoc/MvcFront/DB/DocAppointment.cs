@@ -6,17 +6,17 @@ using MvcFront.Helpers;
 
 namespace MvcFront.DB
 {
-    [MetadataType(typeof(GroupTemplateMetadata))]
-    public partial class GroupTemplate
+    [MetadataType(typeof(DocAppointmentMetadata))]
+    public partial class DocAppointment
     {
         // ReSharper disable UnusedMember.Global
         // ReSharper disable InconsistentNaming
         [Display(Name = "Статус Связи")]
-        public GroupTemplateStatus GroupTemplateStatus
+        public DocAppointmentStatus DocAppointmentStatus
         {
             get
             {
-                return (GroupTemplateStatus)Status;
+                return (DocAppointmentStatus)Status;
             }
             set
             {
@@ -24,39 +24,31 @@ namespace MvcFront.DB
             }
         }
         [Display(Name = "Статус Связи")]
-        public string GroupTemplateStatusText
+        public string DocAppointmentStatusText
         {
             get
             {
-                return DictionaryHelper.GetEnumText(typeof(GroupTemplateStatus), Status);
+                return DictionaryHelper.GetEnumText(typeof(DocAppointmentStatus), Status);
             }
         }
         // ReSharper restore InconsistentNaming
         // ReSharper restore UnusedMember.Global
     }
-    public class GroupTemplateMetadata
+    public class DocAppointmentMetadata
     {
         // ReSharper disable UnusedMember.Global
         // ReSharper disable InconsistentNaming
         [Required]
         [UIHint("Hidden")]
-        public long grouptemplateid { get; set; }
+        public long docappointmentid { get; set; }
         [Required]
-        [Display(Name = "Наименование назначения шаблона документа для группы")]
+        [Display(Name = "Наименование назначения Формы")]
         public string Name { get; set; }
-        [Required]
-        [Display(Name = "Дата начала периода заполенния документов")]
-        public DateTime DateStart { get; set; }
-        [Required]
-        [Display(Name = "Дата окончания периода заполенния документов")]
-        public DateTime DateEnd { get; set; }
         [Required]
         [Display(Name = "Код статуса")]
         public int Status { get; set; }
         [Display(Name = "Родительский шаблон")]
         public DocTemplate DocTemplate { get; set; }
-        [Display(Name = "Родительская группа")]
-        public UserGroup UserGroup { get; set; }
         // ReSharper restore InconsistentNaming
         // ReSharper restore UnusedMember.Global
     }

@@ -9,64 +9,68 @@
 <fieldset>
     @Html.DisplayForModel()
     <div class="display-label">
-        Поля шаблона</div>
+        Поля Формы</div>
     
     @{
         if (Model.IsEditable)
         {
-            @Html.ActionLink("Добавить поле", "AddField", new { id = Model.docteplateid });
+            @Html.ActionLink("Добавить поле", "AddField", new { id = Model.docteplateid })
         }
         else
         {   
-             <div class="display-label">
-                <span style="color: red;">Для выбранного шаблона уже заполнены документы. Редактирование невозможно.</span>
+            <div class="display-label">
+                <span style="color: red;">Для выбранной формы уже заполнены документы. Редактирование невозможно.</span>
             </div>
         }
     }
 
     @(Html.Telerik().Grid<FieldTemplateListViewModel>()
-             .DataBinding(dataBinding => dataBinding.Ajax().Select("_FieldTemplateList", "DocTemplateList", new { templId = Model.docteplateid }))
-             .Name("FieldTeplateListGrid")
-                  .ClientEvents(events => events.OnComplete("onComplete"))
-                   .Columns(columns =>
-                   {
-                       columns.AutoGenerate(column =>
-                       {
-                           if (column.Member == "FieldTemplateId")
-                               column.Visible = false;
-                       });
-                       columns.Command(command =>
-                       {
-                           command.Custom("EditDetails")
-                            .Text("Редактировать")
-                            .DataRouteValues(route => route.Add(o => o.FieldTemplateId).RouteKey("id"))
-                            .Action("EditField", "DocTemplateList")
-                            .HtmlAttributes(new { style = "text-align: center" });
-                           command.Custom("DeleteDetails")
-                            .Text("Удалить")
-                            .DataRouteValues(route => route.Add(o => o.FieldTemplateId).RouteKey("fieldTemplateId"))
-                            .Ajax(true)
-                            .Action("DeleteField", "DocTemplateList")
-                            .HtmlAttributes(new { style = "text-align: center" });
-                       }).Width(80).Visible(Model.IsEditable);
-                       columns.Command(command =>
-                       {
-                           command.Custom("UpDetails")
-                            .Text("Вверх")
-                            .DataRouteValues(route => route.Add(o => o.FieldTemplateId).RouteKey("id"))
-                            .Ajax(true)
-                            .Action("UpField", "DocTemplateList")
-                            .HtmlAttributes(new { style = "text-align: center" });
-                           command.Custom("DownDetails")
-                            .Text("Вниз")
-                            .DataRouteValues(route => route.Add(o => o.FieldTemplateId).RouteKey("id"))
-                            .Ajax(true)
-                            .Action("DownField", "DocTemplateList")
-                            .HtmlAttributes(new { style = "text-align: center" });
-                       }).Width(80).Visible(Model.IsEditable);
-                   })
-    )
+           .DataBinding(dataBinding => dataBinding.Ajax().Select("_FieldTemplateList", "DocTemplateList", new { templId = Model.docteplateid }))
+           .Name("FieldTeplateListGrid")
+           .ClientEvents(events => events.OnComplete("onComplete"))
+           .Columns(columns =>
+                        {
+                            columns.AutoGenerate(column =>
+                                                     {
+                                                         if (column.Member == "FieldTemplateId")
+                                                             column.Visible = false;
+                                                     });
+                            columns.Command(command =>
+                                                {
+                                                    command.Custom("EditDetails")
+                                                        .Text("Редактировать")
+                                                        .DataRouteValues(route => route.Add(o => o.FieldTemplateId).RouteKey("id"))
+                                                        .Action("EditField", "DocTemplateList")
+                                                        .HtmlAttributes(new { style = "text-align: center" });
+                                                    command.Custom("DeleteDetails")
+                                                        .Text("Удалить")
+                                                        .DataRouteValues(route => route.Add(o => o.FieldTemplateId).RouteKey("fieldTemplateId"))
+                                                        .Ajax(true)
+                                                        .Action("DeleteField", "DocTemplateList")
+                                                        .HtmlAttributes(new { style = "text-align: center" });
+                                                }).Width(80).Visible(Model.IsEditable);
+                            columns.Command(command =>
+                                                {
+                                                    command.Custom("UpDetails")
+                                                        .Text("Вверх")
+                                                        .DataRouteValues(route => route.Add(o => o.FieldTemplateId).RouteKey("id"))
+                                                        .Ajax(true)
+                                                        .Action("UpField", "DocTemplateList")
+                                                        .HtmlAttributes(new { style = "text-align: center" });
+                                                    command.Custom("DownDetails")
+                                                        .Text("Вниз")
+                                                        .DataRouteValues(route => route.Add(o => o.FieldTemplateId).RouteKey("id"))
+                                                        .Ajax(true)
+                                                        .Action("DownField", "DocTemplateList")
+                                                        .HtmlAttributes(new { style = "text-align: center" });
+                                                }).Width(80).Visible(Model.IsEditable);
+                        })
+          )
 </fieldset>
+<p>
+    @Html.ActionLink("Редактировать", "Edit", new { id=Model.docteplateid }) |
+    @Html.ActionLink("Отмена", "Index")
+</p>
 <script type="text/javascript">
     function onComplete(e) {
         if (e.name == "DeleteDetails" || e.name == "DownDetails" || e.name == "UpDetails") {

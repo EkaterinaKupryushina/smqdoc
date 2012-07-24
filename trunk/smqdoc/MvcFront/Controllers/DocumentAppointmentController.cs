@@ -27,7 +27,7 @@ namespace MvcFront.Controllers
         public ActionResult Index()
         {
             var sessData = SessionHelper.GetUserSessionData(Session);
-            return View(_groupTemplateRepository.GetGroupTemplateByGroupId(sessData.UserGroupId).Where(x => x.Status != (int)GroupTemplateStatus.Deleted && x.DocTemplate.Status != (int)DocTemplateStatus.Deleted)
+            return View(_groupTemplateRepository.GetGroupTemplateByGroupId(sessData.UserGroupId).Where(x => x.Status != (int)DocAppointmentStatus.Deleted && x.DocTemplate.Status != (int)DocTemplateStatus.Deleted)
                 .ToList().ConvertAll(DocumentAppointmentListViewModel.GroupTemplateToModelConverter).ToList());
         }
 
@@ -56,7 +56,7 @@ namespace MvcFront.Controllers
                                      {
                                          DocTemplate_docteplateid = templ.docteplateid,
                                          Name = templ.TemplateName,
-                                         Status = (int) GroupTemplateStatus.Unactive,
+                                         Status = (int) DocAppointmentStatus.Unactive,
                                          DateStart = DateTime.Now,
                                          DateEnd = DateTime.Now + new TimeSpan(7, 0, 0, 0),
                                          UserGroup_usergroupid = sesData.UserGroupId
@@ -149,9 +149,9 @@ namespace MvcFront.Controllers
             try
             {
                 var grTempl = _groupTemplateRepository.GetGroupTemplateById(id);
-                var newStatus = GroupTemplateStatus.Active;
-                if(grTempl.Status == (int)GroupTemplateStatus.Active)
-                    newStatus = GroupTemplateStatus.Unactive;
+                var newStatus = DocAppointmentStatus.Active;
+                if(grTempl.Status == (int)DocAppointmentStatus.Active)
+                    newStatus = DocAppointmentStatus.Unactive;
          
                 _groupTemplateRepository.ChangeGroupTemplateState(id,newStatus);
 

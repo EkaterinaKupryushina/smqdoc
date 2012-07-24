@@ -1,6 +1,6 @@
 namespace MvcFront.Enums
 {
-    public enum GroupTemplateStatus
+    public enum DocAppointmentStatus
     {
         Active,
         Unactive,

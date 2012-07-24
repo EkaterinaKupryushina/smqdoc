@@ -8,9 +8,9 @@ namespace MvcFront.Models
         [Display(Name = "ID")]
         [UIHint("Hidden")]
         public long DocTemplateId { get; set; }
-        [Display(Name = "Название шаблона")]
+        [Display(Name = "Название Формы")]
         public string DocTemplateName { get; set; }
-        [Display(Name = "Описание шаблона")]
+        [Display(Name = "Описание Формы")]
         [DataType(DataType.MultilineText)]
         public string Comment { get; set; }
         

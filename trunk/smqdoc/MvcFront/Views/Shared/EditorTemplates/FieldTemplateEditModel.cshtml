@@ -65,7 +65,7 @@
     <div class="editor-field">
         @Html.EditorFor(model => model.OperationExpression)
         <div class="display-label">
-            Поля шаблона</div>
+            Поля Формы</div>
        @(Html.Telerik().Grid<MvcFront.Models.FieldTemplateListViewModel>()
                   .DataBinding(dataBinding => dataBinding.Ajax().Select("_FieldTemplateListNotUsedForCalc", "DocTemplateList", new { docTemplID = Model.DocTemplateId, fieldTemplId = Model.FieldTemplateId }))
                   .Name("NotAddedFieldTemplatesListGrid")
@@ -79,15 +79,12 @@
                            if (column.Member == "FieldTemplateId" || column.Member == "OperationTypeText" || column.Member == "FieldTypeText")
                                column.Visible = false;
                        });
-                       columns.Command(command =>
-                       {
-                           command.Custom("AddFieldToCalc")
-                            .Text("Добавить для вычисления")
-                            .DataRouteValues(route => route.Add(o => o.FieldTemplateId).RouteKey("fieldTemplateId"))
-                            .Ajax(true)
-                            .Action("AddFieldToCalc", "DocTemplateList")
-                            .HtmlAttributes(new { style = "text-align: center" });
-                       }).Width(160);
+                       columns.Command(command => command.Custom("AddFieldToCalc")
+                                                      .Text("Добавить для вычисления")
+                                                      .DataRouteValues(route => route.Add(o => o.FieldTemplateId).RouteKey("fieldTemplateId"))
+                                                      .Ajax(true)
+                                                      .Action("AddFieldToCalc", "DocTemplateList")
+                                                      .HtmlAttributes(new { style = "text-align: center" })).Width(160);
                    })
     )
 
@@ -104,15 +101,12 @@
                                if (column.Member == "FieldTypeText")
                                    column.Visible = false;
                            });
-                           columns.Command(command =>
-                           {
-                               command.Custom("DeleteFieldFromCalc")
-                                .Text("Удалить из вычисления")
-                                .DataRouteValues(route => route.Add(o => o.FieldTemplateId).RouteKey("fieldTemplateId"))
-                                .Ajax(true)
-                                .Action("DeleteFieldFromCalc", "DocTemplateList")
-                                .HtmlAttributes(new { style = "text-align: center" });
-                           }).Width(160);
+                           columns.Command(command => command.Custom("DeleteFieldFromCalc")
+                                                          .Text("Удалить из вычисления")
+                                                          .DataRouteValues(route => route.Add(o => o.FieldTemplateId).RouteKey("fieldTemplateId"))
+                                                          .Ajax(true)
+                                                          .Action("DeleteFieldFromCalc", "DocTemplateList")
+                                                          .HtmlAttributes(new { style = "text-align: center" })).Width(160);
                        })
         )
     </div>

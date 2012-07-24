@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 07/22/2012 09:53:05
--- Generated from EDMX file: D:\Work\smqDoc\smqdoc.net\smqdoc\MvcFront\DB\EntityDBModel.edmx
+-- Date Created: 07/24/2012 17:12:52
+-- Generated from EDMX file: D:\Work\smqdoc.net\smqdoc\MvcFront\DB\EntityDBModel.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -41,12 +41,6 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_GroupTemplateUserGroup]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[GroupTemplates] DROP CONSTRAINT [FK_GroupTemplateUserGroup];
 GO
-IF OBJECT_ID(N'[dbo].[FK_GroupTemplateDocTemplate]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[GroupTemplates] DROP CONSTRAINT [FK_GroupTemplateDocTemplate];
-GO
-IF OBJECT_ID(N'[dbo].[FK_DocumentGroupTemplate]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Documents] DROP CONSTRAINT [FK_DocumentGroupTemplate];
-GO
 IF OBJECT_ID(N'[dbo].[FK_ComputableFieldTemplatePartsFieldTemplate]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[ComputableFieldTemplateParts] DROP CONSTRAINT [FK_ComputableFieldTemplatePartsFieldTemplate];
 GO
@@ -55,6 +49,15 @@ IF OBJECT_ID(N'[dbo].[FK_UserAccountUserTags_UserAccount]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_UserAccountUserTags_UserTags]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[UserAccountUserTags] DROP CONSTRAINT [FK_UserAccountUserTags_UserTags];
+GO
+IF OBJECT_ID(N'[dbo].[FK_DocTemplateDocAppointment]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[DocAppointments] DROP CONSTRAINT [FK_DocTemplateDocAppointment];
+GO
+IF OBJECT_ID(N'[dbo].[FK_DocumentDocAppointment]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Documents] DROP CONSTRAINT [FK_DocumentDocAppointment];
+GO
+IF OBJECT_ID(N'[dbo].[FK_DocAppointmentGroupTemplate]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[DocAppointments] DROP CONSTRAINT [FK_DocAppointmentGroupTemplate];
 GO
 
 -- --------------------------------------------------
@@ -87,6 +90,9 @@ IF OBJECT_ID(N'[dbo].[ComputableFieldTemplateParts]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[UserTags]', 'U') IS NOT NULL
     DROP TABLE [dbo].[UserTags];
+GO
+IF OBJECT_ID(N'[dbo].[DocAppointments]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[DocAppointments];
 GO
 IF OBJECT_ID(N'[dbo].[GroupUsers]', 'U') IS NOT NULL
     DROP TABLE [dbo].[GroupUsers];
@@ -177,13 +183,11 @@ GO
 -- Creating table 'GroupTemplates'
 CREATE TABLE [dbo].[GroupTemplates] (
     [grouptemplateid] bigint IDENTITY(1,1) NOT NULL,
-    [Name] nvarchar(max)  NOT NULL,
-    [PlanedStartDate] datetime  NOT NULL,
-    [PlanedEndDate] datetime  NOT NULL,
-    [Status] int  NOT NULL,
+    [PlanedStartDate] datetime  NULL,
+    [PlanedEndDate] datetime  NULL,
     [UserGroup_usergroupid] int  NULL,
-    [ActualStartDate] nvarchar(max)  NOT NULL,
-    [ActualEndDate] nvarchar(max)  NOT NULL
+    [ActualStartDate] datetime  NOT NULL,
+    [ActualEndDate] datetime  NOT NULL
 );
 GO
 
@@ -208,6 +212,8 @@ GO
 CREATE TABLE [dbo].[DocAppointments] (
     [docappointmentid] bigint IDENTITY(1,1) NOT NULL,
     [DocTemplate_docteplateid] bigint  NOT NULL,
+    [Name] nvarchar(max)  NOT NULL,
+    [Status] int  NOT NULL,
     [GroupTemplate_grouptemplateid] bigint  NOT NULL
 );
 GO
