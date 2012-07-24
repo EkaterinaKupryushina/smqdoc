@@ -140,7 +140,7 @@ namespace MvcFront.Controllers
         [GridAction]
         public ActionResult _FieldTemplateList(long templId)
         {
-            var data = _templateRepository.GetDocTemplateById(templId).FieldTeplates.Where(x => x.Status != (int)FieldTemplateStatus.Deleted).OrderBy(x => x.OrderNumber).ToList()
+            var data = _templateRepository.GetDocTemplateById(templId).FieldTeplates.OrderBy(x => x.OrderNumber).ToList()
                 .ConvertAll(FieldTemplateListViewModel.FieldToModelConverter);
             return View(new GridModel<FieldTemplateListViewModel> { Data = data });
         }
@@ -158,7 +158,7 @@ namespace MvcFront.Controllers
             var lst = _templateRepository.GetAllComputableFieldTempalteParts().Where(x => x.FieldTemplate_fieldteplateid == tpl.fieldteplateid).ToList();
             var userTemplatesIDs = lst.Select(item => item.fkCalculatedFieldTemplateID).ToList();
 
-            var data = _templateRepository.GetDocTemplateById(docTemplID).FieldTeplates.Where(x => userTemplatesIDs.Contains((int)x.fieldteplateid) && x.Status == (int)FieldTemplateStatus.Active).OrderBy(x => x.OrderNumber).ToList()
+            var data = _templateRepository.GetDocTemplateById(docTemplID).FieldTeplates.Where(x => userTemplatesIDs.Contains((int)x.fieldteplateid)).OrderBy(x => x.OrderNumber).ToList()
                 .ConvertAll(FieldTemplateListViewModel.FieldToModelConverter);
             return View(new GridModel<FieldTemplateListViewModel> { Data = data });
         }
@@ -177,11 +177,9 @@ namespace MvcFront.Controllers
             var lst = _templateRepository.GetAllComputableFieldTempalteParts().Where(x => x.FieldTemplate_fieldteplateid == tpl.fieldteplateid).ToList();
             var userTemplatesIDs = lst.Select(item => item.fkCalculatedFieldTemplateID).ToList();
 
-            var data = _templateRepository.GetDocTemplateById(docTemplID).FieldTeplates.Where(x => !userTemplatesIDs.Contains((int)x.fieldteplateid) && x.FiledType == (int)FieldTemplateType.Number && x.Status == (int)FieldTemplateStatus.Active).OrderBy(x => x.OrderNumber).ToList()
+            var data = _templateRepository.GetDocTemplateById(docTemplID).FieldTeplates.Where(x => !userTemplatesIDs.Contains((int)x.fieldteplateid) && x.FiledType == (int)FieldTemplateType.Number ).OrderBy(x => x.OrderNumber).ToList()
                 .ConvertAll(FieldTemplateListViewModel.FieldToModelConverter);
 
-            //var data = _templateRepository.GetDocTemplateById(docTemplID).FieldTeplates.Where(x => x.Status != (int)FieldTemplateStatus.Deleted && x.FiledType == (int)FieldTemplateType.NUMBER).OrderBy(x => x.OrderNumber).ToList()
-            //                .ConvertAll(FieldTemplateListViewModel.FieldToModelConverter);
             return View(new GridModel<FieldTemplateListViewModel> { Data = data });
         }
 
@@ -196,7 +194,7 @@ namespace MvcFront.Controllers
         {
             var data =
                 _templateRepository.GetDocTemplateById(docTemplID).FieldTeplates.Where(x =>
-                    (x.FiledType != (int)FieldTemplateType.Planned && x.Status == (int)FieldTemplateStatus.Active && x.PlanFieldTemplates.Any(y => y.Status == (int)FieldTemplateStatus.Active)) || (factFieldId.HasValue && x.fieldteplateid == factFieldId));
+                    (x.FiledType != (int)FieldTemplateType.Planned && x.PlanFieldTemplates.Any()) || (factFieldId.HasValue && x.fieldteplateid == factFieldId));
 
             return new JsonResult { Data = new SelectList(data.ToList().Select(x => new { Id = x.fieldteplateid, Name = x.FieldName }), "Id", "Name", factFieldId) };
         }

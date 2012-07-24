@@ -15,8 +15,6 @@ namespace MvcFront.Models
         public string FieldTemplateName { get; set; }
         [Display(Name = "Тип поля")]
         public string FieldTypeText { get; set; }
-        [Display(Name = "Статус поля")]
-        public string FieldStatusText { get; set; }
 
         public FieldTemplateListViewModel()
         {
@@ -27,7 +25,6 @@ namespace MvcFront.Models
             FieldTemplateId = templ.fieldteplateid;
             OrderNumber = templ.OrderNumber;
             FieldTemplateName =  templ.FieldName;
-            FieldStatusText = DictionaryHelper.GetEnumText(typeof(FieldTemplateStatus),templ.Status);
             FieldTypeText = DictionaryHelper.GetEnumText(typeof(FieldTemplateType),templ.FiledType);
         }
         

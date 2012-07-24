@@ -74,28 +74,6 @@ using MvcFront.Helpers;
     [MetadataType(typeof(FieldTemplateMetadata))]
     public partial class FieldTemplate
     {
-        // ReSharper disable UnusedMember.Global
-        // ReSharper disable InconsistentNaming
-        [Display(Name = "Статус поля Формы")]
-        public FieldTemplateStatus TemplateStatus
-        {
-            get
-            {
-                return (FieldTemplateStatus)Status;
-            }
-            set
-            {
-                Status = (int)value;
-            }
-        }
-        [Display(Name = "Статус поля Формы")]
-        public string TemplateStatusText
-        {
-            get
-            {
-                return DictionaryHelper.GetEnumText(typeof(FieldTemplateStatus), Status);
-            }
-        }
         [Display(Name = "Тип поля Формы")]
         public FieldTemplateType TemplateType
         {
@@ -113,7 +91,7 @@ using MvcFront.Helpers;
         {
             get
             {
-                return DictionaryHelper.GetEnumText(typeof(FieldTemplateType), Status);
+                return DictionaryHelper.GetEnumText(typeof(FieldTemplateType),FiledType);
             }
         }
         // ReSharper restore InconsistentNaming

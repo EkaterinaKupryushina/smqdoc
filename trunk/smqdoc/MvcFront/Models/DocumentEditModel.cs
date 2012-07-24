@@ -39,8 +39,7 @@ namespace MvcFront.Models
             LastEditDate = templ.LastEditDate;
             LastComment = templ.LastComment;
             DocumentStatusText = templ.DocStatusText;
-            Fields = templ.DocFields.Where(x => x.FieldTemplate.TemplateStatus == FieldTemplateStatus.Active)
-                .OrderBy(x => x.FieldTemplate.OrderNumber).ToList().ConvertAll(DocFieldEditModel.FieldToModelConverter).ToList();
+            Fields = templ.DocFields.OrderBy(x => x.FieldTemplate.OrderNumber).ToList().ConvertAll(DocFieldEditModel.FieldToModelConverter).ToList();
         }
         public static DocumentEditModel DocumentToModelConverter(Document templ)
         {

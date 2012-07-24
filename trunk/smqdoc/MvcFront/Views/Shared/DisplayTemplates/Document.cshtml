@@ -36,7 +36,7 @@
      <table id="FieldsTable">
         <tr><th>Наименование</th><th>Значение</th></tr>
         @{
-            foreach (var field in Model.DocFields.Where(x => x.FieldTemplate.Status != (int)FieldTemplateStatus.Deleted && x.FieldTemplate.Status != (int)FieldTemplateStatus.Unactive).OrderBy(x=>x.FieldTemplate.OrderNumber))
+            foreach (var field in Model.DocFields.OrderBy(x=>x.FieldTemplate.OrderNumber))
             {
                 <tr>
                     <td>@field.FieldTemplate.FieldName</td>

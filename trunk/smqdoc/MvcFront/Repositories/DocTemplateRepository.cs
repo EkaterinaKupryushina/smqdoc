@@ -96,7 +96,7 @@ namespace MvcFront.Repositories
                 var docTempl = GetDocTemplateById(entity.DocTemplate_docteplateid);
                 if (docTempl != null)
                 {
-                    entity.OrderNumber = docTempl.FieldTeplates.Count(x => x.Status != (int)FieldTemplateStatus.Deleted) + 1;
+                    entity.OrderNumber = docTempl.FieldTeplates.Count + 1;
                     _unitOfWork.DbModel.FieldTemplates.AddObject(entity);
                 }
             }
@@ -117,7 +117,6 @@ namespace MvcFront.Repositories
                     oldEntity.MinVal = entity.MinVal;
                     oldEntity.OrderNumber = entity.OrderNumber;
                     oldEntity.Restricted = entity.Restricted;
-                    oldEntity.Status = entity.Status;
                 }
             }            
             _unitOfWork.DbModel.SaveChanges();
@@ -139,24 +138,21 @@ namespace MvcFront.Repositories
             _unitOfWork.DbModel.SaveChanges();
         }
 
-        //public IQueryable<DocTemplate> GetAllDocTeplates()
-        //{
-        //    return _unitOfWork.DbModel.DocTemplates.AsQueryable();
-        //}
         public void DeleteFieldTemplate(long templateFieldId)
         {
             var entity = GetFieldTemplateById(templateFieldId);
+            
             if (entity != null)
             {
-                entity.TemplateStatus = FieldTemplateStatus.Deleted;
                 if (entity.PlanFieldTemplates != null)
                 {
-                    foreach (var plan in entity.PlanFieldTemplates)
+                    for (var i = 0; i < entity.PlanFieldTemplates.Count; i++ )
                     {
-                        plan.TemplateStatus = FieldTemplateStatus.Deleted;   
+                        _unitOfWork.DbModel.FieldTemplates.DeleteObject(entity.PlanFieldTemplates.ElementAt(i));
                     }
                 }
             }
+            _unitOfWork.DbModel.FieldTemplates.DeleteObject(entity);
             _unitOfWork.DbModel.SaveChanges();
             if (entity != null) ReoderFields(entity.DocTemplate_docteplateid);
         }
@@ -173,7 +169,7 @@ namespace MvcFront.Repositories
             {
                 int oldNumber = enFirst.OrderNumber;
 
-                var enSecond = enFirst.DocTemplate.FieldTeplates.FirstOrDefault(x => x.Status != (int)FieldTemplateStatus.Deleted && x.OrderNumber == newNumber);
+                var enSecond = enFirst.DocTemplate.FieldTeplates.FirstOrDefault(x =>  x.OrderNumber == newNumber);
                 if (enSecond == null)
                 {
                     enFirst.OrderNumber = newNumber;
@@ -193,12 +189,12 @@ namespace MvcFront.Repositories
             var docTempl = GetDocTemplateById(docTemplId);
             if (docTempl != null)
             {
-                var items = docTempl.FieldTeplates.Where(x => x.Status != (int)FieldTemplateStatus.Deleted).OrderBy(x => x.OrderNumber);
+                var items = docTempl.FieldTeplates.OrderBy(x => x.OrderNumber);
                 for (int i = 0; i < items.Count();i++ )
                 {
                     items.ElementAt(i).OrderNumber = i+1;
                 }
-                docTempl.FieldTeplates.Where(x => x.Status == (int)FieldTemplateStatus.Deleted).ToList().ForEach(x => x.OrderNumber = int.MaxValue);
+                docTempl.FieldTeplates.ToList().ForEach(x => x.OrderNumber = int.MaxValue);
 
                 _unitOfWork.DbModel.SaveChanges();
             }
