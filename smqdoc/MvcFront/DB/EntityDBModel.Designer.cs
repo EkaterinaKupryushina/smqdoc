@@ -1533,8 +1533,7 @@ namespace MvcFront.DB
         /// <param name="filedType">Initial value of the FiledType property.</param>
         /// <param name="docTemplate_docteplateid">Initial value of the DocTemplate_docteplateid property.</param>
         /// <param name="orderNumber">Initial value of the OrderNumber property.</param>
-        /// <param name="status">Initial value of the Status property.</param>
-        public static FieldTemplate CreateFieldTemplate(global::System.Int64 fieldteplateid, global::System.String fieldName, global::System.Int32 filedType, global::System.Int64 docTemplate_docteplateid, global::System.Int32 orderNumber, global::System.Int32 status)
+        public static FieldTemplate CreateFieldTemplate(global::System.Int64 fieldteplateid, global::System.String fieldName, global::System.Int32 filedType, global::System.Int64 docTemplate_docteplateid, global::System.Int32 orderNumber)
         {
             FieldTemplate fieldTemplate = new FieldTemplate();
             fieldTemplate.fieldteplateid = fieldteplateid;
@@ -1542,7 +1541,6 @@ namespace MvcFront.DB
             fieldTemplate.FiledType = filedType;
             fieldTemplate.DocTemplate_docteplateid = docTemplate_docteplateid;
             fieldTemplate.OrderNumber = orderNumber;
-            fieldTemplate.Status = status;
             return fieldTemplate;
         }
 
@@ -1743,30 +1741,6 @@ namespace MvcFront.DB
         private global::System.Int32 _OrderNumber;
         partial void OnOrderNumberChanging(global::System.Int32 value);
         partial void OnOrderNumberChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int32 Status
-        {
-            get
-            {
-                return _Status;
-            }
-            set
-            {
-                OnStatusChanging(value);
-                ReportPropertyChanging("Status");
-                _Status = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("Status");
-                OnStatusChanged();
-            }
-        }
-        private global::System.Int32 _Status;
-        partial void OnStatusChanging(global::System.Int32 value);
-        partial void OnStatusChanged();
     
         /// <summary>
         /// No Metadata Documentation available.

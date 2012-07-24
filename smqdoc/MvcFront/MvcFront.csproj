@@ -133,7 +133,6 @@
     <Compile Include="Entities\UserSessionData.cs" />
     <Compile Include="Enums\DocTemplateStatus.cs" />
     <Compile Include="Enums\DocumentStatus.cs" />
-    <Compile Include="Enums\FieldTemplateStatus.cs" />
     <Compile Include="Enums\FieldTemplateType.cs" />
     <Compile Include="Enums\DocAppointmentStatus.cs" />
     <Compile Include="Enums\UserAccountStatus.cs" />

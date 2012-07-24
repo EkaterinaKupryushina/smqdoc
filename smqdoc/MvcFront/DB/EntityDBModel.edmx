@@ -127,7 +127,6 @@
     <Property Name="MinVal" Type="float" Nullable="true" />
     <Property Name="DocTemplate_docteplateid" Type="bigint" Nullable="false" />
     <Property Name="OrderNumber" Type="int" Nullable="false" />
-    <Property Name="Status" Type="int" Nullable="false" />
     <Property Name="OperationExpression" Type="nvarchar(max)" Nullable="true" />
     <Property Name="Integer" Type="bit" Nullable="true" />
     <Property Name="FactFieldTemplate_fieldteplateid" Type="bigint" Nullable="true" />
@@ -531,7 +530,6 @@
           <NavigationProperty Name="DocTemplate" Relationship="smqdocModel.FieldTeplateDocTemplate" FromRole="FieldTeplate" ToRole="DocTemplate" />
           <Property Type="Int64" Name="DocTemplate_docteplateid" Nullable="false" />
           <Property Type="Int32" Name="OrderNumber" Nullable="false" />
-          <Property Type="Int32" Name="Status" Nullable="false" />
           <NavigationProperty Name="DocFields" Relationship="smqdocModel.DocFieldFieldTemplate" FromRole="FieldTemplate" ToRole="DocField" />
           <NavigationProperty Name="ComputableFieldTemplateParts" Relationship="smqdocModel.ComputableFieldTemplatePartsFieldTemplate" FromRole="FieldTemplate" ToRole="ComputableFieldTemplateParts" />
           <Property Type="String" Name="OperationExpression" Nullable="true" />
@@ -786,7 +784,6 @@
           <ScalarProperty Name="MinVal" ColumnName="MinVal" />
           <ScalarProperty Name="DocTemplate_docteplateid" ColumnName="DocTemplate_docteplateid" />
           <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
-          <ScalarProperty Name="Status" ColumnName="Status" />
           <ScalarProperty Name="OperationExpression" ColumnName="OperationExpression" />
           <ScalarProperty Name="Integer" ColumnName="Integer" />
           <ScalarProperty Name="FactFieldTemplate_fieldteplateid" ColumnName="FactFieldTemplate_fieldteplateid" />
@@ -914,7 +911,7 @@
           <ConnectorPoint PointX="5.25" PointY="1.7017976888020834" />
         </AssociationConnector>
         <EntityTypeShape EntityType="smqdocModel.DocTemplate" Width="1.5" PointX="5.875" PointY="8.625" Height="2.3648893229166656" />
-        <EntityTypeShape EntityType="smqdocModel.FieldTemplate" Width="2.125" PointX="2.625" PointY="8.125" Height="3.7109993489583335" />
+        <EntityTypeShape EntityType="smqdocModel.FieldTemplate" Width="2.125" PointX="2.625" PointY="8.125" Height="4.0956022135416656" />
         <AssociationConnector Association="smqdocModel.FieldTeplateDocTemplate">
           <ConnectorPoint PointX="4.75" PointY="9.8074446614583337" />
           <ConnectorPoint PointX="5.875" PointY="9.8074446614583337" />
@@ -940,8 +937,8 @@
         </AssociationConnector>
         <EntityTypeShape EntityType="smqdocModel.ComputableFieldTemplateParts" Width="2.375" PointX="5.5" PointY="11.75" Height="1.9802864583333317" />
         <AssociationConnector Association="smqdocModel.ComputableFieldTemplatePartsFieldTemplate">
-          <ConnectorPoint PointX="5.5" PointY="12.081451822916666" />
-          <ConnectorPoint PointX="4.75" PointY="12.081451822916666" />
+          <ConnectorPoint PointX="5.5" PointY="11.985301106770834" />
+          <ConnectorPoint PointX="4.75" PointY="11.985301106770834" />
         </AssociationConnector>
         <EntityTypeShape EntityType="smqdocModel.UserTags" Width="1.5" PointX="0.625" PointY="0.75" Height="1.59568359375" />
         <AssociationConnector Association="smqdocModel.UserAccountUserTags">
@@ -962,10 +959,10 @@
           <ConnectorPoint PointX="11.4375" PointY="5.0571907552083326" />
         </AssociationConnector>
         <AssociationConnector Association="smqdocModel.FK_FieldTemplates_FieldTemplates1" >
-          <ConnectorPoint PointX="3.3785576923076923" PointY="12.412903645833334" />
-          <ConnectorPoint PointX="3.3785576923076923" PointY="12.662903645833332" />
-          <ConnectorPoint PointX="4.0111538461538458" PointY="12.662903645833332" />
-          <ConnectorPoint PointX="4.0111538461538458" PointY="12.412903645833334" />
+          <ConnectorPoint PointX="3.3785576923076923" PointY="12.220602213541666" />
+          <ConnectorPoint PointX="3.3785576923076923" PointY="12.470602213541667" />
+          <ConnectorPoint PointX="4.0111538461538458" PointY="12.470602213541667" />
+          <ConnectorPoint PointX="4.0111538461538458" PointY="12.220602213541666" />
         </AssociationConnector>
         </Diagram>
     </Diagrams>

@@ -37,28 +37,6 @@ namespace MvcFront.Helpers
                             }
                             break;
                         }
-                    case "FieldTemplateStatus":
-                        {
-                            switch (item)
-                            {
-                                case 0:
-                                    {
-                                        retVal = "Активно";
-                                        break;
-                                    }
-                                case 1:
-                                    {
-                                        retVal = "Отключено";
-                                        break;
-                                    }
-                                case 2:
-                                    {
-                                        retVal = "Удалено";
-                                        break;
-                                    }
-                            }
-                            break;
-                        }
                     case "FieldTemplateType":
                         {
                             switch (item)
