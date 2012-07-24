@@ -84,7 +84,7 @@ namespace MvcFront.Repositories
 
         public bool SaveFieldTemplate(FieldTemplate entity)
         {
-            if (entity.TemplateType != FieldTemplateType.NUMBER)
+            if (entity.TemplateType != FieldTemplateType.Number)
             {
                 entity.Restricted = null;
                 entity.MaxVal = null;
@@ -149,6 +149,13 @@ namespace MvcFront.Repositories
             if (entity != null)
             {
                 entity.TemplateStatus = FieldTemplateStatus.Deleted;
+                if (entity.PlanFieldTemplates != null)
+                {
+                    foreach (var plan in entity.PlanFieldTemplates)
+                    {
+                        plan.TemplateStatus = FieldTemplateStatus.Deleted;   
+                    }
+                }
             }
             _unitOfWork.DbModel.SaveChanges();
             if (entity != null) ReoderFields(entity.DocTemplate_docteplateid);

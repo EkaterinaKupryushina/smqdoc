@@ -48,11 +48,11 @@
                                 case UserProfileTypes.Systemadmin:
                                     <li>@Html.ActionLink("Пользователи", "Index", "UserAccountList")</li>
                                     <li>@Html.ActionLink("Группы", "Index", "UserGroupList")</li>
-                                    <li>@Html.ActionLink("Шаблоны", "Index", "DocTemplateList")</li>
+                                    <li>@Html.ActionLink("Формы", "Index", "DocTemplateList")</li>
                                    break;
                                 case UserProfileTypes.Groupmanager:
-                                    <li>@Html.ActionLink("Типы документов группы", "Index", "DocumentAppointment")</li>
-                                    <li>@Html.ActionLink("Документы группы", "GroupDocumentsList", "DocumentAppointment",new {id=0},null)</li>
+                                   @* <li>@Html.ActionLink("Типы документов группы", "Index", "DocumentAppointment")</li>
+                                    <li>@Html.ActionLink("Документы группы", "GroupDocumentsList", "DocumentAppointment",new {id=0},null)</li>*@
                                    break;
                                 case UserProfileTypes.Groupuser:
                                     <li>@Html.ActionLink("Документы", "Index", "UserDocument")</li>

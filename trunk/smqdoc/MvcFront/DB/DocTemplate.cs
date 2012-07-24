@@ -133,22 +133,25 @@ using MvcFront.Helpers;
         [Display(Name = "Тип поля")]
         public int FiledType { get; set; }
         [Required]
-        [Display(Name = "Огрничено поле?")]
+        [Display(Name = "Ограничено?")]
         public bool Restricted { get; set; }
         [Display(Name = "Максимальное значение поля")]
         public int MaxVal { get; set; }
         [Display(Name = "Минимальное значение поля")]
         public int MinVal { get; set; }
         [Required]
-        [Display(Name = "Порядковый номер в шаблоне")]
+        [Display(Name = "Порядковый номер в форме")]
         public int OrderNumber { get; set; }
         [Required]
         [Display(Name = "Статус поля")]
         public int Status { get; set; }
-        [Display(Name = "Родительский шаблон")]
+        [Display(Name = "Родительская Форма")]
         public DocTemplate DocTemplate { get; set; }
         [Display(Name = "Операция для вычисления значения")]
         public int OperationType { get; set; }
+        [Required]
+        [Display(Name = "Целое?")]
+        public bool Integer { get; set; }
         // ReSharper restore InconsistentNaming
         // ReSharper restore UnusedMember.Global
     }

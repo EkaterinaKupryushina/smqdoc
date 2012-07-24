@@ -23,6 +23,7 @@
         item.Add().Text("Число").Value("1").Selected(@Model.FieldType == 1);
         item.Add().Text("Строка").Value("2").Selected(@Model.FieldType == 2);
         item.Add().Text("Вычислимое").Value("3").Selected(@Model.FieldType == 3);
+        if(Model.CanBePlaned) {item.Add().Text("Планируемое").Value("4").Selected(@Model.FieldType == 4);}
     }).ClientEvents(events => events.OnChange("FieldType_onChange"))
     @Html.ValidationMessageFor(model => model.FieldType)
 </div>
@@ -66,55 +67,66 @@
         @Html.EditorFor(model => model.OperationExpression)
         <div class="display-label">
             Поля Формы</div>
-       @(Html.Telerik().Grid<MvcFront.Models.FieldTemplateListViewModel>()
-                  .DataBinding(dataBinding => dataBinding.Ajax().Select("_FieldTemplateListNotUsedForCalc", "DocTemplateList", new { docTemplID = Model.DocTemplateId, fieldTemplId = Model.FieldTemplateId }))
-                  .Name("NotAddedFieldTemplatesListGrid")
+        @(Html.Telerik().Grid<MvcFront.Models.FieldTemplateListViewModel>()
+           .DataBinding(dataBinding => dataBinding.Ajax().Select("_FieldTemplateListNotUsedForCalc", "DocTemplateList", new { docTemplID = Model.DocTemplateId, fieldTemplId = Model.FieldTemplateId }))
+           .Name("NotAddedFieldTemplatesListGrid")
                   
-                  .ClientEvents(events => events.OnComplete("onComplete"))
-                  .HtmlAttributes(new { style = Model.FieldTemplateId > 0 ? "display: block; " : "display: none; " })
-                   .Columns(columns =>
-                   {
-                       columns.AutoGenerate(column =>
-                       {
-                           if (column.Member == "FieldTemplateId" || column.Member == "OperationTypeText" || column.Member == "FieldTypeText")
-                               column.Visible = false;
-                       });
-                       columns.Command(command => command.Custom("AddFieldToCalc")
-                                                      .Text("Добавить для вычисления")
-                                                      .DataRouteValues(route => route.Add(o => o.FieldTemplateId).RouteKey("fieldTemplateId"))
-                                                      .Ajax(true)
-                                                      .Action("AddFieldToCalc", "DocTemplateList")
-                                                      .HtmlAttributes(new { style = "text-align: center" })).Width(160);
-                   })
-    )
+           .ClientEvents(events => events.OnComplete("onComplete"))
+           .HtmlAttributes(new { style = Model.FieldTemplateId > 0 ? "display: block; " : "display: none; " })
+           .Columns(columns =>
+                        {
+                            columns.AutoGenerate(column =>
+                                                     {
+                                                         if (column.Member == "FieldTemplateId" || column.Member == "OperationTypeText" || column.Member == "FieldTypeText")
+                                                             column.Visible = false;
+                                                     });
+                            columns.Command(command => command.Custom("AddFieldToCalc")
+                                                           .Text("Добавить для вычисления")
+                                                           .DataRouteValues(route => route.Add(o => o.FieldTemplateId).RouteKey("fieldTemplateId"))
+                                                           .Ajax(true)
+                                                           .Action("AddFieldToCalc", "DocTemplateList")
+                                                           .HtmlAttributes(new { style = "text-align: center" })).Width(160);
+                        })
+              )
 
         <br />
         @(Html.Telerik().Grid<MvcFront.Models.FieldTemplateListViewModel>()
-                              .DataBinding(dataBinding => dataBinding.Ajax().Select("_FieldTemplateListUsedForCalc", "DocTemplateList", new { docTemplID = Model.DocTemplateId, fieldTemplId = Model.FieldTemplateId }))
-                 .Name("AddedFieldTemplatesListGrid")
-                      .ClientEvents(events => events.OnComplete("onComplete"))
-                      .HtmlAttributes(new { style = Model.FieldTemplateId > 0 ? "display: block; " : "display: none; " })
-                       .Columns(columns =>
-                       {
-                           columns.AutoGenerate(column =>
-                           {
-                               if (column.Member == "FieldTypeText")
-                                   column.Visible = false;
-                           });
-                           columns.Command(command => command.Custom("DeleteFieldFromCalc")
-                                                          .Text("Удалить из вычисления")
-                                                          .DataRouteValues(route => route.Add(o => o.FieldTemplateId).RouteKey("fieldTemplateId"))
-                                                          .Ajax(true)
-                                                          .Action("DeleteFieldFromCalc", "DocTemplateList")
-                                                          .HtmlAttributes(new { style = "text-align: center" })).Width(160);
-                       })
-        )
+           .DataBinding(dataBinding => dataBinding.Ajax().Select("_FieldTemplateListUsedForCalc", "DocTemplateList", new { docTemplID = Model.DocTemplateId, fieldTemplId = Model.FieldTemplateId }))
+           .Name("AddedFieldTemplatesListGrid")
+           .ClientEvents(events => events.OnComplete("onComplete"))
+           .HtmlAttributes(new { style = Model.FieldTemplateId > 0 ? "display: block; " : "display: none; " })
+           .Columns(columns =>
+                        {
+                            columns.AutoGenerate(column =>
+                                                     {
+                                                         if (column.Member == "FieldTypeText")
+                                                             column.Visible = false;
+                                                     });
+                            columns.Command(command => command.Custom("DeleteFieldFromCalc")
+                                                           .Text("Удалить из вычисления")
+                                                           .DataRouteValues(route => route.Add(o => o.FieldTemplateId).RouteKey("fieldTemplateId"))
+                                                           .Ajax(true)
+                                                           .Action("DeleteFieldFromCalc", "DocTemplateList")
+                                                           .HtmlAttributes(new { style = "text-align: center" })).Width(160);
+                        })
+              )
+    </div>
+</div>
+<div id="PlannedBlockId">
+    <div class="editor-label">
+        @Html.LabelFor(model => model.FactFieldTemplateId) 
+    </div>
+    <div class="editor-field">
+        @(Html.Telerik().DropDownListFor(x => x.FactFieldTemplateId).ClientEvents(events => events.OnLoad("onFactLoad"))
+               .DataBinding(binding => binding.Ajax().Select("_FactFieldTemplatesList", "DocTemplateList", new { docTemplID = Model.DocTemplateId, factFieldId = Model.FactFieldTemplateId}))
+              )
     </div>
 </div>
 <script type="text/javascript">
     $(document).ready(function () {
         $('#IntBlockId').hide();
         $('#RestictId').hide();
+        $('#PlannedBlockId').hide();
         FieldType_onChange();
         //SHMinMax();
         if ($('#IsRestricted').is(':checked')) {
@@ -136,15 +148,27 @@
         if (ddl.value() == 1) {
             $('#IntBlockId').show();
             $('#CalcBlockId').hide();
+            $('#PlannedBlockId').hide();
         } else {
             $('#IntBlockId').hide();
         }
 
         if (ddl.value() == 3) {
-            $('#CalcBlockId').show();
+            if('@(Model.FieldTemplateId > 0)' != 'False') {
+                $('#CalcBlockId').show();
+            }
             $('#IntBlockId').hide();
+            $('#PlannedBlockId').hide();
         } else {
             $('#CalcBlockId').hide();
+        }
+        
+        if (ddl.value() == 4) {
+            $('#PlannedBlockId').show();
+            $('#CalcBlockId').hide();
+            $('#IntBlockId').hide();
+        } else {
+            $('#PlannedBlockId').hide();
         }
     }
 
@@ -160,5 +184,9 @@
                 grid2.rebind();
             }
         }
+    }
+
+    function onFactLoad(e) {
+        $(this).data('tDropDownList').fill();
     }
 </script>

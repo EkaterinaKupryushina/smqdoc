@@ -26,7 +26,7 @@ namespace MvcFront.Models
         {
             FieldTemplateId = templ.fieldteplateid;
             OrderNumber = templ.OrderNumber;
-            FieldTemplateName = templ.FieldName;
+            FieldTemplateName =  templ.FieldName;
             FieldStatusText = DictionaryHelper.GetEnumText(typeof(FieldTemplateStatus),templ.Status);
             FieldTypeText = DictionaryHelper.GetEnumText(typeof(FieldTemplateType),templ.FiledType);
         }

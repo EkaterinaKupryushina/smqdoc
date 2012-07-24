@@ -2,11 +2,11 @@
 @using Telerik.Web.Mvc.UI
 @model MvcFront.Models.UserAccountListViewModel
 @(Html.Telerik().ComboBox()
-                                                               .Name(ViewData.TemplateInfo.GetFullHtmlFieldName("") ?? "ManagerId")
-                                                               .DataBinding(binding => binding.Ajax().Select("AjaxUserAccountList", "Dictionary").Cache(true))
-                                                               .HtmlAttributes(new { style = "width:100%" })
-                                                               .Filterable(filtering => filtering.FilterMode(AutoCompleteFilterMode.Contains).MinimumChars(2))
-                                                               .HighlightFirstMatch(true)
-                                                               .ClientEvents(e => e.OnLoad(string.Format("function (e) {{ $(e.target).parent().find('.t-input').watermark('Введите несколько букв имени пользователя', 'watermark');" +
-                                                                                                         " $(e.target).data('tComboBox').value({0}); $(e.target).data('tComboBox').text('{1}');  }}", Model == null ? "null" : Model.UserId.ToString(CultureInfo.InvariantCulture), Model == null ? string.Empty : Model.FullName + " (" + Model.Login + ")")))
-                                                               .HiddenInputHtmlAttributes(new { @class = "field" }))
+                        .Name(ViewData.TemplateInfo.GetFullHtmlFieldName("") ?? "ManagerId")
+                        .DataBinding(binding => binding.Ajax().Select("AjaxUserAccountList", "Dictionary").Cache(true))
+                        .HtmlAttributes(new { style = "width:100%" })
+                        .Filterable(filtering => filtering.FilterMode(AutoCompleteFilterMode.Contains).MinimumChars(2))
+                        .HighlightFirstMatch(true)
+                        .ClientEvents(e => e.OnLoad(string.Format("function (e) {{ $(e.target).parent().find('.t-input').watermark('Введите несколько букв имени пользователя', 'watermark');" +
+                                                                    " $(e.target).data('tComboBox').value({0}); $(e.target).data('tComboBox').text('{1}');  }}", Model == null ? "null" : Model.UserId.ToString(CultureInfo.InvariantCulture), Model == null ? string.Empty : Model.FullName + " (" + Model.Login + ")")))
+                        .HiddenInputHtmlAttributes(new { @class = "field" }))

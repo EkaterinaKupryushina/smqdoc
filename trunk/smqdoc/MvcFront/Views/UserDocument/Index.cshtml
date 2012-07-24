@@ -24,7 +24,7 @@
 </script>
 <h2>Необходимо начать заполнять документы:</h2>
 @* ReSharper disable ConvertToLambdaExpression *@
-@(Html.Telerik().Grid<GroupTemplateListViewModel>()
+@*@(Html.Telerik().Grid<GroupTemplateListViewModel>()
      .DataBinding(dataBinding => dataBinding.Ajax().Select("_UserGroupTeplatesList", "UserDocument", new {  }))
         .Name("GroupTemplateListGrid")
                 .ClientEvents(events => events.OnRowDataBound("onGroupTemplateListGridRowDataBound"))
@@ -46,7 +46,7 @@
                  .Sortable()
                 .Pageable()
 
-    ) 
+    ) *@
 @* ReSharper restore ConvertToLambdaExpression *@
 <h2>Список документов</h2>
 

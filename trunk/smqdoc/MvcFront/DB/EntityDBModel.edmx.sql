@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 07/24/2012 17:12:52
--- Generated from EDMX file: D:\Work\smqdoc.net\smqdoc\MvcFront\DB\EntityDBModel.edmx
+-- Date Created: 07/24/2012 22:50:25
+-- Generated from EDMX file: D:\Work\smqDoc\smqdoc.net\smqdoc\MvcFront\DB\EntityDBModel.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -17,20 +17,11 @@ GO
 -- Dropping existing FOREIGN KEY constraints
 -- --------------------------------------------------
 
-IF OBJECT_ID(N'[dbo].[FK_GroupManager]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[UserGroups] DROP CONSTRAINT [FK_GroupManager];
+IF OBJECT_ID(N'[dbo].[FK_ComputableFieldTemplatePartsFieldTemplate]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ComputableFieldTemplateParts] DROP CONSTRAINT [FK_ComputableFieldTemplatePartsFieldTemplate];
 GO
-IF OBJECT_ID(N'[dbo].[FK_GroupUsers_UserGroup]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[GroupUsers] DROP CONSTRAINT [FK_GroupUsers_UserGroup];
-GO
-IF OBJECT_ID(N'[dbo].[FK_GroupUsers_UserAccount]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[GroupUsers] DROP CONSTRAINT [FK_GroupUsers_UserAccount];
-GO
-IF OBJECT_ID(N'[dbo].[FK_FieldTeplateDocTemplate]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[FieldTemplates] DROP CONSTRAINT [FK_FieldTeplateDocTemplate];
-GO
-IF OBJECT_ID(N'[dbo].[FK_DocumentUserAccount]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Documents] DROP CONSTRAINT [FK_DocumentUserAccount];
+IF OBJECT_ID(N'[dbo].[FK_DocAppointmentGroupTemplate]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[DocAppointments] DROP CONSTRAINT [FK_DocAppointmentGroupTemplate];
 GO
 IF OBJECT_ID(N'[dbo].[FK_DocFieldDocument]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[DocFields] DROP CONSTRAINT [FK_DocFieldDocument];
@@ -38,11 +29,32 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_DocFieldFieldTemplate]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[DocFields] DROP CONSTRAINT [FK_DocFieldFieldTemplate];
 GO
+IF OBJECT_ID(N'[dbo].[FK_DocTemplateDocAppointment]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[DocAppointments] DROP CONSTRAINT [FK_DocTemplateDocAppointment];
+GO
+IF OBJECT_ID(N'[dbo].[FK_DocumentDocAppointment]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Documents] DROP CONSTRAINT [FK_DocumentDocAppointment];
+GO
+IF OBJECT_ID(N'[dbo].[FK_DocumentUserAccount]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Documents] DROP CONSTRAINT [FK_DocumentUserAccount];
+GO
+IF OBJECT_ID(N'[dbo].[FK_FieldTemplates_FieldTemplates1]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[FieldTemplates] DROP CONSTRAINT [FK_FieldTemplates_FieldTemplates1];
+GO
+IF OBJECT_ID(N'[dbo].[FK_FieldTeplateDocTemplate]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[FieldTemplates] DROP CONSTRAINT [FK_FieldTeplateDocTemplate];
+GO
+IF OBJECT_ID(N'[dbo].[FK_GroupManager]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[UserGroups] DROP CONSTRAINT [FK_GroupManager];
+GO
 IF OBJECT_ID(N'[dbo].[FK_GroupTemplateUserGroup]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[GroupTemplates] DROP CONSTRAINT [FK_GroupTemplateUserGroup];
 GO
-IF OBJECT_ID(N'[dbo].[FK_ComputableFieldTemplatePartsFieldTemplate]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[ComputableFieldTemplateParts] DROP CONSTRAINT [FK_ComputableFieldTemplatePartsFieldTemplate];
+IF OBJECT_ID(N'[dbo].[FK_GroupUsers_UserAccount]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[GroupUsers] DROP CONSTRAINT [FK_GroupUsers_UserAccount];
+GO
+IF OBJECT_ID(N'[dbo].[FK_GroupUsers_UserGroup]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[GroupUsers] DROP CONSTRAINT [FK_GroupUsers_UserGroup];
 GO
 IF OBJECT_ID(N'[dbo].[FK_UserAccountUserTags_UserAccount]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[UserAccountUserTags] DROP CONSTRAINT [FK_UserAccountUserTags_UserAccount];
@@ -50,55 +62,46 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_UserAccountUserTags_UserTags]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[UserAccountUserTags] DROP CONSTRAINT [FK_UserAccountUserTags_UserTags];
 GO
-IF OBJECT_ID(N'[dbo].[FK_DocTemplateDocAppointment]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[DocAppointments] DROP CONSTRAINT [FK_DocTemplateDocAppointment];
-GO
-IF OBJECT_ID(N'[dbo].[FK_DocumentDocAppointment]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Documents] DROP CONSTRAINT [FK_DocumentDocAppointment];
-GO
-IF OBJECT_ID(N'[dbo].[FK_DocAppointmentGroupTemplate]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[DocAppointments] DROP CONSTRAINT [FK_DocAppointmentGroupTemplate];
-GO
 
 -- --------------------------------------------------
 -- Dropping existing tables
 -- --------------------------------------------------
 
-IF OBJECT_ID(N'[dbo].[UserAccounts]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[UserAccounts];
-GO
-IF OBJECT_ID(N'[dbo].[UserGroups]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[UserGroups];
-GO
-IF OBJECT_ID(N'[dbo].[DocTemplates]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[DocTemplates];
-GO
-IF OBJECT_ID(N'[dbo].[FieldTemplates]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[FieldTemplates];
-GO
-IF OBJECT_ID(N'[dbo].[Documents]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Documents];
-GO
-IF OBJECT_ID(N'[dbo].[DocFields]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[DocFields];
-GO
-IF OBJECT_ID(N'[dbo].[GroupTemplates]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[GroupTemplates];
-GO
 IF OBJECT_ID(N'[dbo].[ComputableFieldTemplateParts]', 'U') IS NOT NULL
     DROP TABLE [dbo].[ComputableFieldTemplateParts];
-GO
-IF OBJECT_ID(N'[dbo].[UserTags]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[UserTags];
 GO
 IF OBJECT_ID(N'[dbo].[DocAppointments]', 'U') IS NOT NULL
     DROP TABLE [dbo].[DocAppointments];
 GO
+IF OBJECT_ID(N'[dbo].[DocFields]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[DocFields];
+GO
+IF OBJECT_ID(N'[dbo].[DocTemplates]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[DocTemplates];
+GO
+IF OBJECT_ID(N'[dbo].[Documents]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Documents];
+GO
+IF OBJECT_ID(N'[dbo].[FieldTemplates]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[FieldTemplates];
+GO
+IF OBJECT_ID(N'[dbo].[GroupTemplates]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[GroupTemplates];
+GO
 IF OBJECT_ID(N'[dbo].[GroupUsers]', 'U') IS NOT NULL
     DROP TABLE [dbo].[GroupUsers];
 GO
+IF OBJECT_ID(N'[dbo].[UserAccounts]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[UserAccounts];
+GO
 IF OBJECT_ID(N'[dbo].[UserAccountUserTags]', 'U') IS NOT NULL
     DROP TABLE [dbo].[UserAccountUserTags];
+GO
+IF OBJECT_ID(N'[dbo].[UserGroups]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[UserGroups];
+GO
+IF OBJECT_ID(N'[dbo].[UserTags]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[UserTags];
 GO
 
 -- --------------------------------------------------
@@ -153,7 +156,8 @@ CREATE TABLE [dbo].[FieldTemplates] (
     [OrderNumber] int  NOT NULL,
     [Status] int  NOT NULL,
     [OperationExpression] nvarchar(max)  NULL,
-    [Integer] bit  NULL
+    [Integer] bit  NULL,
+    [FactFieldTemplate_fieldteplateid] bigint  NULL
 );
 GO
 
@@ -496,6 +500,20 @@ ADD CONSTRAINT [FK_DocAppointmentGroupTemplate]
 CREATE INDEX [IX_FK_DocAppointmentGroupTemplate]
 ON [dbo].[DocAppointments]
     ([GroupTemplate_grouptemplateid]);
+GO
+
+-- Creating foreign key on [FactFieldTemplate_fieldteplateid] in table 'FieldTemplates'
+ALTER TABLE [dbo].[FieldTemplates]
+ADD CONSTRAINT [FK_FieldTemplates_FieldTemplates1]
+    FOREIGN KEY ([FactFieldTemplate_fieldteplateid])
+    REFERENCES [dbo].[FieldTemplates]
+        ([fieldteplateid])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_FieldTemplates_FieldTemplates1'
+CREATE INDEX [IX_FK_FieldTemplates_FieldTemplates1]
+ON [dbo].[FieldTemplates]
+    ([FactFieldTemplate_fieldteplateid]);
 GO
 
 -- --------------------------------------------------
