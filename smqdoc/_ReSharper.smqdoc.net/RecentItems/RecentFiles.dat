@@ -1,0 +1,66 @@
+﻿<RecentFiles>
+  <RecentFiles>
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Enums/f:DocTemplateStatus.cs" caret="18" fromTop="0" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Enums/f:FieldTemplateType.cs" caret="69" fromTop="3" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Enums/f:GroupTemplateStatus.cs" caret="0" fromTop="0" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Enums/f:DocumentStatus.cs" caret="0" fromTop="0" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Enums/f:UserAccountStatus.cs" caret="0" fromTop="0" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Enums/f:UserTagStatus.cs" caret="0" fromTop="0" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Enums/f:UserGroupStatus.cs" caret="0" fromTop="0" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Helpers/f:DictionaryHelper.cs" caret="442" fromTop="16" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:DB/f:Document.cs" caret="671" fromTop="3" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:DB/f:GroupTemplate.cs" caret="1034" fromTop="36" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:DB/f:UserAccount.cs" caret="0" fromTop="0" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:DB/f:UserGroup.cs" caret="0" fromTop="0" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:DB/f:DocTemplate.cs" caret="333" fromTop="12" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Controllers/f:UserDocumentController.cs" caret="0" fromTop="0" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Models/f:EditUserAccountForUserModel.cs" caret="125" fromTop="5" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Controllers/f:AccountController.cs" caret="10735" fromTop="28" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Models/f:DocTemplateListViewModel.cs" caret="540" fromTop="17" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Models/f:DocTemplateEditModel.cs" caret="566" fromTop="19" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Models/f:UserTagsListViewModel.cs" caret="0" fromTop="0" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Models/f:UserTagsEditModel.cs" caret="710" fromTop="28" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Models/f:UserGroupEditModel.cs" caret="0" fromTop="0" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Models/f:UserGroupListModels.cs" caret="508" fromTop="19" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Models/f:UserAccountListViewModel .cs" caret="1523" fromTop="18" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Models/f:UserAccountEditModel.cs" caret="0" fromTop="0" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Models/f:MiscUserAccountModels.cs" caret="1368" fromTop="45" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Models/f:FieldTemplateListViewModel.cs" caret="0" fromTop="0" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Controllers/f:DocTemplateListController.cs" caret="854" fromTop="21" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Models/f:FieldTemplateEditModel.cs" caret="2398" fromTop="39" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Models/f:DocumentAppointmentModels.cs" caret="3208" fromTop="98" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Controllers/f:DocumentAppointmentController.cs" caret="1990" fromTop="25" />
+  </RecentFiles>
+  <RecentEdits>
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Models/f:UserAccountListViewModel .cs" caret="2767" fromTop="8" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Models/f:UserTagsListViewModel.cs" caret="537" fromTop="20" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Models/f:UserTagsListViewModel.cs" caret="802" fromTop="30" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Models/f:UserGroupListModels.cs" caret="821" fromTop="20" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Models/f:UserGroupEditModel.cs" caret="524" fromTop="18" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Models/f:UserGroupEditModel.cs" caret="396" fromTop="15" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Models/f:UserGroupEditModel.cs" caret="279" fromTop="12" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Models/f:DocTemplateListViewModel.cs" caret="161" fromTop="0" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Models/f:DocTemplateListViewModel.cs" caret="984" fromTop="15" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Models/f:DocTemplateListViewModel.cs" caret="984" fromTop="30" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Models/f:DocTemplateListViewModel.cs" caret="984" fromTop="38" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Models/f:DocTemplateListViewModel.cs" caret="984" fromTop="47" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Models/f:DocTemplateListViewModel.cs" caret="984" fromTop="24" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Models/f:DocTemplateListViewModel.cs" caret="985" fromTop="22" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Models/f:DocTemplateListViewModel.cs" caret="571" fromTop="20" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Models/f:DocTemplateListViewModel.cs" caret="811" fromTop="27" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Models/f:FieldTemplateEditModel.cs" caret="1205" fromTop="36" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Models/f:FieldTemplateEditModel.cs" caret="1793" fromTop="50" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Models/f:FieldTemplateEditModel.cs" caret="2340" fromTop="48" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Models/f:UserGroupListModels.cs" caret="79" fromTop="2" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Models/f:UserTagsEditModel.cs" caret="529" fromTop="21" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Models/f:UserTagsEditModel.cs" caret="710" fromTop="28" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Models/f:UserGroupListModels.cs" caret="518" fromTop="20" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Models/f:UserAccountListViewModel .cs" caret="973" fromTop="31" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Models/f:UserAccountListViewModel .cs" caret="1350" fromTop="43" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Models/f:UserAccountListViewModel .cs" caret="1904" fromTop="33" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Models/f:UserAccountListViewModel .cs" caret="2327" fromTop="43" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Models/f:UserAccountListViewModel .cs" caret="1523" fromTop="30" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Models/f:MiscUserAccountModels.cs" caret="143" fromTop="5" />
+    <File id="2A973376-5271-4B32-8A4C-417DBA865978/d:Models/f:MiscUserAccountModels.cs" caret="1368" fromTop="45" />
+  </RecentEdits>
+</RecentFiles>

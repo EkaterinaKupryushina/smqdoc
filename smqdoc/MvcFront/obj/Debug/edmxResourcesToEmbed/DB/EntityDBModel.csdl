@@ -1,0 +1,337 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="smqdocModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+  <EntityContainer Name="smqdocEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="UserAccounts" EntityType="smqdocModel.UserAccount" />
+    <EntitySet Name="UserGroups" EntityType="smqdocModel.UserGroup" />
+    <AssociationSet Name="GroupManager" Association="smqdocModel.GroupManager">
+      <End Role="UserGroup" EntitySet="UserGroups" />
+      <End Role="UserAccount" EntitySet="UserAccounts" />
+    </AssociationSet>
+    <AssociationSet Name="GroupUsers" Association="smqdocModel.GroupUsers">
+      <End Role="UserGroup" EntitySet="UserGroups" />
+      <End Role="UserAccount" EntitySet="UserAccounts" />
+    </AssociationSet>
+    <EntitySet Name="DocTemplates" EntityType="smqdocModel.DocTemplate" />
+    <EntitySet Name="FieldTemplates" EntityType="smqdocModel.FieldTemplate" />
+    <AssociationSet Name="FieldTeplateDocTemplate" Association="smqdocModel.FieldTeplateDocTemplate">
+      <End Role="FieldTeplate" EntitySet="FieldTemplates" />
+      <End Role="DocTemplate" EntitySet="DocTemplates" />
+    </AssociationSet>
+    <EntitySet Name="Documents" EntityType="smqdocModel.Document" />
+    <AssociationSet Name="DocumentUserAccount" Association="smqdocModel.DocumentUserAccount">
+      <End Role="Document" EntitySet="Documents" />
+      <End Role="UserAccount" EntitySet="UserAccounts" />
+    </AssociationSet>
+    <EntitySet Name="DocFields" EntityType="smqdocModel.DocField" />
+    <AssociationSet Name="DocFieldDocument" Association="smqdocModel.DocFieldDocument">
+      <End Role="DocField" EntitySet="DocFields" />
+      <End Role="Document" EntitySet="Documents" />
+    </AssociationSet>
+    <AssociationSet Name="DocFieldFieldTemplate" Association="smqdocModel.DocFieldFieldTemplate">
+      <End Role="DocField" EntitySet="DocFields" />
+      <End Role="FieldTemplate" EntitySet="FieldTemplates" />
+    </AssociationSet>
+    <EntitySet Name="GroupTemplates" EntityType="smqdocModel.GroupTemplate" />
+    <AssociationSet Name="GroupTemplateUserGroup" Association="smqdocModel.GroupTemplateUserGroup">
+      <End Role="GroupTemplate" EntitySet="GroupTemplates" />
+      <End Role="UserGroup" EntitySet="UserGroups" />
+    </AssociationSet>
+    <EntitySet Name="ComputableFieldTemplateParts" EntityType="smqdocModel.ComputableFieldTemplateParts" />
+    <AssociationSet Name="ComputableFieldTemplatePartsFieldTemplate" Association="smqdocModel.ComputableFieldTemplatePartsFieldTemplate">
+      <End Role="ComputableFieldTemplateParts" EntitySet="ComputableFieldTemplateParts" />
+      <End Role="FieldTemplate" EntitySet="FieldTemplates" />
+    </AssociationSet>
+    <EntitySet Name="UserTags" EntityType="smqdocModel.UserTags" />
+    <AssociationSet Name="UserAccountUserTags" Association="smqdocModel.UserAccountUserTags">
+      <End Role="UserAccount" EntitySet="UserAccounts" />
+      <End Role="UserTags" EntitySet="UserTags" />
+    </AssociationSet>
+    <EntitySet Name="DocAppointments" EntityType="smqdocModel.DocAppointment" />
+    <AssociationSet Name="DocTemplateDocAppointment" Association="smqdocModel.DocTemplateDocAppointment">
+      <End Role="DocTemplate" EntitySet="DocTemplates" />
+      <End Role="DocAppointment" EntitySet="DocAppointments" />
+    </AssociationSet>
+    <AssociationSet Name="DocumentDocAppointment" Association="smqdocModel.DocumentDocAppointment">
+      <End Role="Document" EntitySet="Documents" />
+      <End Role="DocAppointment" EntitySet="DocAppointments" />
+    </AssociationSet>
+    <AssociationSet Name="DocAppointmentGroupTemplate" Association="smqdocModel.DocAppointmentGroupTemplate">
+      <End Role="DocAppointment" EntitySet="DocAppointments" />
+      <End Role="GroupTemplate" EntitySet="GroupTemplates" />
+    </AssociationSet>
+    <AssociationSet Name="FK_FieldTemplates_FieldTemplates1" Association="smqdocModel.FK_FieldTemplates_FieldTemplates1">
+      <End Role="FieldTemplate" EntitySet="FieldTemplates" />
+      <End Role="FieldTemplate1" EntitySet="FieldTemplates" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="UserAccount">
+    <Key>
+      <PropertyRef Name="userid" />
+    </Key>
+    <Property Name="userid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Login" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="FirstName" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="SecondName" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="LastName" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="Status" Type="Int32" Nullable="false" />
+    <Property Name="LastAccess" Type="DateTime" Nullable="true" />
+    <Property Name="IsAdmin" Type="Boolean" Nullable="false" />
+    <Property Type="String" Name="Password" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="Email" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="ManagedGroups" Relationship="smqdocModel.GroupManager" FromRole="UserAccount" ToRole="UserGroup" />
+    <NavigationProperty Name="MemberGroups" Relationship="smqdocModel.GroupUsers" FromRole="UserAccount" ToRole="UserGroup" />
+    <Property Type="String" Name="LastAccessProfileCode" Nullable="true" />
+    <NavigationProperty Name="Documents" Relationship="smqdocModel.DocumentUserAccount" FromRole="UserAccount" ToRole="Document" />
+    <NavigationProperty Name="UserTags" Relationship="smqdocModel.UserAccountUserTags" FromRole="UserAccount" ToRole="UserTags" />
+  </EntityType>
+  <EntityType Name="UserGroup">
+    <Key>
+      <PropertyRef Name="usergroupid" />
+    </Key>
+    <Property Type="Int32" Name="usergroupid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="FullGroupName" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="GroupName" Nullable="false" Unicode="true" FixedLength="false" MaxLength="50" />
+    <NavigationProperty Name="Manager" Relationship="smqdocModel.GroupManager" FromRole="UserGroup" ToRole="UserAccount" />
+    <Property Type="Int32" Name="Managerid" Nullable="false" />
+    <NavigationProperty Name="Members" Relationship="smqdocModel.GroupUsers" FromRole="UserGroup" ToRole="UserAccount" />
+    <Property Type="Int32" Name="Status" Nullable="false" />
+    <NavigationProperty Name="GroupTemplates" Relationship="smqdocModel.GroupTemplateUserGroup" FromRole="UserGroup" ToRole="GroupTemplate" />
+  </EntityType>
+  <Association Name="GroupManager">
+    <End Type="smqdocModel.UserGroup" Role="UserGroup" Multiplicity="*" />
+    <End Type="smqdocModel.UserAccount" Role="UserAccount" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="UserAccount">
+        <PropertyRef Name="userid" />
+      </Principal>
+      <Dependent Role="UserGroup">
+        <PropertyRef Name="Managerid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="GroupUsers">
+    <End Type="smqdocModel.UserGroup" Role="UserGroup" Multiplicity="*" />
+    <End Type="smqdocModel.UserAccount" Role="UserAccount" Multiplicity="*" />
+  </Association>
+  <EntityType Name="DocTemplate">
+    <Key>
+      <PropertyRef Name="docteplateid" />
+    </Key>
+    <Property Type="Int64" Name="docteplateid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="TemplateName" Nullable="false" FixedLength="false" Unicode="true" MaxLength="Max" />
+    <Property Type="Int32" Name="Status" Nullable="false" />
+    <Property Type="String" Name="Comment" Nullable="false" FixedLength="false" MaxLength="Max" Unicode="true" />
+    <NavigationProperty Name="FieldTeplates" Relationship="smqdocModel.FieldTeplateDocTemplate" FromRole="DocTemplate" ToRole="FieldTeplate" />
+    <Property Type="DateTime" Name="LastEditDate" Nullable="false" />
+    <NavigationProperty Name="DocAppointments" Relationship="smqdocModel.DocTemplateDocAppointment" FromRole="DocTemplate" ToRole="DocAppointment" />
+  </EntityType>
+  <EntityType Name="FieldTemplate">
+    <Key>
+      <PropertyRef Name="fieldteplateid" />
+    </Key>
+    <Property Type="Int64" Name="fieldteplateid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="FieldName" Nullable="false" FixedLength="false" MaxLength="Max" Unicode="true" />
+    <Property Type="Int32" Name="FiledType" Nullable="false" />
+    <Property Type="Boolean" Name="Restricted" Nullable="true" />
+    <Property Type="Double" Name="MaxVal" Nullable="true" />
+    <Property Type="Double" Name="MinVal" Nullable="true" />
+    <NavigationProperty Name="DocTemplate" Relationship="smqdocModel.FieldTeplateDocTemplate" FromRole="FieldTeplate" ToRole="DocTemplate" />
+    <Property Type="Int64" Name="DocTemplate_docteplateid" Nullable="false" />
+    <Property Type="Int32" Name="OrderNumber" Nullable="false" />
+    <NavigationProperty Name="DocFields" Relationship="smqdocModel.DocFieldFieldTemplate" FromRole="FieldTemplate" ToRole="DocField" />
+    <NavigationProperty Name="ComputableFieldTemplateParts" Relationship="smqdocModel.ComputableFieldTemplatePartsFieldTemplate" FromRole="FieldTemplate" ToRole="ComputableFieldTemplateParts" />
+    <Property Type="String" Name="OperationExpression" Nullable="true" />
+    <Property Type="Boolean" Name="Integer" Nullable="true" />
+    <Property Type="Int64" Name="FactFieldTemplate_fieldteplateid" />
+    <NavigationProperty Name="PlanFieldTemplates" Relationship="smqdocModel.FK_FieldTemplates_FieldTemplates1" FromRole="FieldTemplate" ToRole="FieldTemplate1" />
+    <NavigationProperty Name="FactFieldTemplate" Relationship="smqdocModel.FK_FieldTemplates_FieldTemplates1" FromRole="FieldTemplate1" ToRole="FieldTemplate" />
+  </EntityType>
+  <Association Name="FieldTeplateDocTemplate">
+    <End Type="smqdocModel.FieldTemplate" Role="FieldTeplate" Multiplicity="*" />
+    <End Type="smqdocModel.DocTemplate" Role="DocTemplate" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="DocTemplate">
+        <PropertyRef Name="docteplateid" />
+      </Principal>
+      <Dependent Role="FieldTeplate">
+        <PropertyRef Name="DocTemplate_docteplateid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Document">
+    <Key>
+      <PropertyRef Name="documentid" />
+    </Key>
+    <Property Type="Int64" Name="documentid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="DateTime" Name="CreationDate" Nullable="false" />
+    <Property Type="DateTime" Name="LastEditDate" Nullable="false" />
+    <Property Type="Int32" Name="Status" Nullable="false" />
+    <Property Type="String" Name="LastComment" Nullable="true" MaxLength="Max" FixedLength="false" />
+    <NavigationProperty Name="UserAccount" Relationship="smqdocModel.DocumentUserAccount" FromRole="Document" ToRole="UserAccount" />
+    <Property Type="Int32" Name="UserAccount_userid" Nullable="false" />
+    <NavigationProperty Name="DocFields" Relationship="smqdocModel.DocFieldDocument" FromRole="Document" ToRole="DocField" />
+    <NavigationProperty Name="DocAppointment" Relationship="smqdocModel.DocumentDocAppointment" FromRole="Document" ToRole="DocAppointment" />
+    <Property Type="Int64" Name="DocAppointment_docappointmentid" Nullable="false" />
+  </EntityType>
+  <Association Name="DocumentUserAccount">
+    <End Type="smqdocModel.Document" Role="Document" Multiplicity="*" />
+    <End Type="smqdocModel.UserAccount" Role="UserAccount" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="UserAccount">
+        <PropertyRef Name="userid" />
+      </Principal>
+      <Dependent Role="Document">
+        <PropertyRef Name="UserAccount_userid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="DocField">
+    <Key>
+      <PropertyRef Name="docfieldid" />
+    </Key>
+    <Property Type="Int64" Name="docfieldid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <NavigationProperty Name="Document" Relationship="smqdocModel.DocFieldDocument" FromRole="DocField" ToRole="Document" />
+    <Property Type="Int64" Name="Document_documentid" Nullable="false" />
+    <NavigationProperty Name="FieldTemplate" Relationship="smqdocModel.DocFieldFieldTemplate" FromRole="DocField" ToRole="FieldTemplate" />
+    <Property Type="Int64" Name="FieldTemplate_fieldteplateid" Nullable="false" />
+    <Property Type="String" Name="StringValue" Nullable="true" />
+    <Property Type="Boolean" Name="BoolValue" Nullable="true" />
+    <Property Type="Double" Name="DoubleValue" Nullable="true" />
+  </EntityType>
+  <Association Name="DocFieldDocument">
+    <End Type="smqdocModel.DocField" Role="DocField" Multiplicity="*" />
+    <End Type="smqdocModel.Document" Role="Document" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Document">
+        <PropertyRef Name="documentid" />
+      </Principal>
+      <Dependent Role="DocField">
+        <PropertyRef Name="Document_documentid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="DocFieldFieldTemplate">
+    <End Type="smqdocModel.DocField" Role="DocField" Multiplicity="*" />
+    <End Type="smqdocModel.FieldTemplate" Role="FieldTemplate" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="FieldTemplate">
+        <PropertyRef Name="fieldteplateid" />
+      </Principal>
+      <Dependent Role="DocField">
+        <PropertyRef Name="FieldTemplate_fieldteplateid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="GroupTemplate">
+    <Key>
+      <PropertyRef Name="grouptemplateid" />
+    </Key>
+    <Property Type="Int64" Name="grouptemplateid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="DateTime" Name="PlanedStartDate" Nullable="true" />
+    <Property Type="DateTime" Name="PlanedEndDate" Nullable="true" />
+    <NavigationProperty Name="UserGroup" Relationship="smqdocModel.GroupTemplateUserGroup" FromRole="GroupTemplate" ToRole="UserGroup" />
+    <Property Type="Int32" Name="UserGroup_usergroupid" Nullable="true" />
+    <Property Type="DateTime" Name="ActualStartDate" Nullable="false" />
+    <Property Type="DateTime" Name="ActualEndDate" Nullable="false" />
+    <NavigationProperty Name="DocAppointment" Relationship="smqdocModel.DocAppointmentGroupTemplate" FromRole="GroupTemplate" ToRole="DocAppointment" />
+  </EntityType>
+  <Association Name="GroupTemplateUserGroup">
+    <End Type="smqdocModel.GroupTemplate" Role="GroupTemplate" Multiplicity="*" />
+    <End Type="smqdocModel.UserGroup" Role="UserGroup" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="UserGroup">
+        <PropertyRef Name="usergroupid" />
+      </Principal>
+      <Dependent Role="GroupTemplate">
+        <PropertyRef Name="UserGroup_usergroupid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="ComputableFieldTemplateParts">
+    <Key>
+      <PropertyRef Name="computableFieldTemplatePartsID" />
+    </Key>
+    <Property Type="Int64" Name="computableFieldTemplatePartsID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="Int64" Name="fkCalculatedFieldTemplateID" Nullable="false" />
+    <NavigationProperty Name="FieldTemplate" Relationship="smqdocModel.ComputableFieldTemplatePartsFieldTemplate" FromRole="ComputableFieldTemplateParts" ToRole="FieldTemplate" />
+    <Property Type="Int64" Name="FieldTemplate_fieldteplateid" Nullable="false" />
+    <Property Type="Int32" Name="OrderNumber" Nullable="false" />
+  </EntityType>
+  <Association Name="ComputableFieldTemplatePartsFieldTemplate">
+    <End Type="smqdocModel.ComputableFieldTemplateParts" Role="ComputableFieldTemplateParts" Multiplicity="*" />
+    <End Type="smqdocModel.FieldTemplate" Role="FieldTemplate" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="FieldTemplate">
+        <PropertyRef Name="fieldteplateid" />
+      </Principal>
+      <Dependent Role="ComputableFieldTemplateParts">
+        <PropertyRef Name="FieldTemplate_fieldteplateid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="UserTags">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="Name" Nullable="false" />
+    <Property Type="Int32" Name="Status" Nullable="false" />
+    <NavigationProperty Name="UserAccounts" Relationship="smqdocModel.UserAccountUserTags" FromRole="UserTags" ToRole="UserAccount" />
+  </EntityType>
+  <Association Name="UserAccountUserTags">
+    <End Type="smqdocModel.UserAccount" Role="UserAccount" Multiplicity="*" />
+    <End Type="smqdocModel.UserTags" Role="UserTags" Multiplicity="*" />
+  </Association>
+  <EntityType Name="DocAppointment">
+    <Key>
+      <PropertyRef Name="docappointmentid" />
+    </Key>
+    <Property Type="Int64" Name="docappointmentid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <NavigationProperty Name="DocTemplate" Relationship="smqdocModel.DocTemplateDocAppointment" FromRole="DocAppointment" ToRole="DocTemplate" />
+    <Property Type="Int64" Name="DocTemplate_docteplateid" Nullable="false" />
+    <NavigationProperty Name="Documents" Relationship="smqdocModel.DocumentDocAppointment" FromRole="DocAppointment" ToRole="Document" />
+    <NavigationProperty Name="GroupTemplate" Relationship="smqdocModel.DocAppointmentGroupTemplate" FromRole="DocAppointment" ToRole="GroupTemplate" />
+    <Property Type="String" Name="Name" Nullable="false" />
+    <Property Type="Int32" Name="Status" Nullable="false" />
+  </EntityType>
+  <Association Name="DocTemplateDocAppointment">
+    <End Type="smqdocModel.DocTemplate" Role="DocTemplate" Multiplicity="1" />
+    <End Type="smqdocModel.DocAppointment" Role="DocAppointment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DocTemplate">
+        <PropertyRef Name="docteplateid" />
+      </Principal>
+      <Dependent Role="DocAppointment">
+        <PropertyRef Name="DocTemplate_docteplateid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="DocumentDocAppointment">
+    <End Type="smqdocModel.Document" Role="Document" Multiplicity="*" />
+    <End Type="smqdocModel.DocAppointment" Role="DocAppointment" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="DocAppointment">
+        <PropertyRef Name="docappointmentid" />
+      </Principal>
+      <Dependent Role="Document">
+        <PropertyRef Name="DocAppointment_docappointmentid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="DocAppointmentGroupTemplate">
+    <End Type="smqdocModel.DocAppointment" Role="DocAppointment" Multiplicity="0..1" />
+    <End Type="smqdocModel.GroupTemplate" Role="GroupTemplate" Multiplicity="1" />
+  </Association>
+  <Association Name="FK_FieldTemplates_FieldTemplates1">
+    <End Type="smqdocModel.FieldTemplate" Role="FieldTemplate" Multiplicity="0..1" />
+    <End Type="smqdocModel.FieldTemplate" Role="FieldTemplate1" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FieldTemplate">
+        <PropertyRef Name="fieldteplateid" />
+      </Principal>
+      <Dependent Role="FieldTemplate1">
+        <PropertyRef Name="FactFieldTemplate_fieldteplateid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

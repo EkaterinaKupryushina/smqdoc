@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="smqdocModelStoreContainer" CdmEntityContainer="smqdocEntities">
+    <EntitySetMapping Name="UserAccounts">
+      <EntityTypeMapping TypeName="IsTypeOf(smqdocModel.UserAccount)">
+        <MappingFragment StoreEntitySet="UserAccounts">
+          <ScalarProperty Name="userid" ColumnName="userid" />
+          <ScalarProperty Name="Login" ColumnName="Login" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="SecondName" ColumnName="SecondName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="LastAccess" ColumnName="LastAccess" />
+          <ScalarProperty Name="IsAdmin" ColumnName="IsAdmin" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="LastAccessProfileCode" ColumnName="LastAccessProfileCode" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserGroups">
+      <EntityTypeMapping TypeName="IsTypeOf(smqdocModel.UserGroup)">
+        <MappingFragment StoreEntitySet="UserGroups">
+          <ScalarProperty Name="usergroupid" ColumnName="usergroupid" />
+          <ScalarProperty Name="FullGroupName" ColumnName="FullGroupName" />
+          <ScalarProperty Name="GroupName" ColumnName="GroupName" />
+          <ScalarProperty Name="Managerid" ColumnName="Managerid" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DocTemplates">
+      <EntityTypeMapping TypeName="IsTypeOf(smqdocModel.DocTemplate)">
+        <MappingFragment StoreEntitySet="DocTemplates">
+          <ScalarProperty Name="docteplateid" ColumnName="docteplateid" />
+          <ScalarProperty Name="TemplateName" ColumnName="TemplateName" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Comment" ColumnName="Comment" />
+          <ScalarProperty Name="LastEditDate" ColumnName="LastEditDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FieldTemplates">
+      <EntityTypeMapping TypeName="IsTypeOf(smqdocModel.FieldTemplate)">
+        <MappingFragment StoreEntitySet="FieldTemplates">
+          <ScalarProperty Name="fieldteplateid" ColumnName="fieldteplateid" />
+          <ScalarProperty Name="FieldName" ColumnName="FieldName" />
+          <ScalarProperty Name="FiledType" ColumnName="FiledType" />
+          <ScalarProperty Name="Restricted" ColumnName="Restricted" />
+          <ScalarProperty Name="MaxVal" ColumnName="MaxVal" />
+          <ScalarProperty Name="MinVal" ColumnName="MinVal" />
+          <ScalarProperty Name="DocTemplate_docteplateid" ColumnName="DocTemplate_docteplateid" />
+          <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
+          <ScalarProperty Name="OperationExpression" ColumnName="OperationExpression" />
+          <ScalarProperty Name="Integer" ColumnName="Integer" />
+          <ScalarProperty Name="FactFieldTemplate_fieldteplateid" ColumnName="FactFieldTemplate_fieldteplateid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Documents">
+      <EntityTypeMapping TypeName="IsTypeOf(smqdocModel.Document)">
+        <MappingFragment StoreEntitySet="Documents">
+          <ScalarProperty Name="documentid" ColumnName="documentid" />
+          <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+          <ScalarProperty Name="LastEditDate" ColumnName="LastEditDate" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="LastComment" ColumnName="LastComment" />
+          <ScalarProperty Name="UserAccount_userid" ColumnName="UserAccount_userid" />
+          <ScalarProperty Name="DocAppointment_docappointmentid" ColumnName="DocAppointment_docappointmentid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DocFields">
+      <EntityTypeMapping TypeName="IsTypeOf(smqdocModel.DocField)">
+        <MappingFragment StoreEntitySet="DocFields">
+          <ScalarProperty Name="docfieldid" ColumnName="docfieldid" />
+          <ScalarProperty Name="Document_documentid" ColumnName="Document_documentid" />
+          <ScalarProperty Name="FieldTemplate_fieldteplateid" ColumnName="FieldTemplate_fieldteplateid" />
+          <ScalarProperty Name="StringValue" ColumnName="StringValue" />
+          <ScalarProperty Name="BoolValue" ColumnName="BoolValue" />
+          <ScalarProperty Name="DoubleValue" ColumnName="DoubleValue" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="GroupTemplates">
+      <EntityTypeMapping TypeName="IsTypeOf(smqdocModel.GroupTemplate)">
+        <MappingFragment StoreEntitySet="GroupTemplates">
+          <ScalarProperty Name="grouptemplateid" ColumnName="grouptemplateid" />
+          <ScalarProperty Name="PlanedStartDate" ColumnName="PlanedStartDate" />
+          <ScalarProperty Name="PlanedEndDate" ColumnName="PlanedEndDate" />
+          <ScalarProperty Name="UserGroup_usergroupid" ColumnName="UserGroup_usergroupid" />
+          <ScalarProperty Name="ActualStartDate" ColumnName="ActualStartDate" />
+          <ScalarProperty Name="ActualEndDate" ColumnName="ActualEndDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ComputableFieldTemplateParts">
+      <EntityTypeMapping TypeName="IsTypeOf(smqdocModel.ComputableFieldTemplateParts)">
+        <MappingFragment StoreEntitySet="ComputableFieldTemplateParts">
+          <ScalarProperty Name="computableFieldTemplatePartsID" ColumnName="computableFieldTemplatePartsID" />
+          <ScalarProperty Name="fkCalculatedFieldTemplateID" ColumnName="fkCalculatedFieldTemplateID" />
+          <ScalarProperty Name="FieldTemplate_fieldteplateid" ColumnName="FieldTemplate_fieldteplateid" />
+          <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserTags">
+      <EntityTypeMapping TypeName="IsTypeOf(smqdocModel.UserTags)">
+        <MappingFragment StoreEntitySet="UserTags">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DocAppointments">
+      <EntityTypeMapping TypeName="IsTypeOf(smqdocModel.DocAppointment)">
+        <MappingFragment StoreEntitySet="DocAppointments">
+          <ScalarProperty Name="docappointmentid" ColumnName="docappointmentid" />
+          <ScalarProperty Name="DocTemplate_docteplateid" ColumnName="DocTemplate_docteplateid" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="GroupUsers" TypeName="smqdocModel.GroupUsers" StoreEntitySet="GroupUsers">
+      <EndProperty Name="UserGroup">
+        <ScalarProperty Name="usergroupid" ColumnName="MemberGroups_usergroupid" />
+      </EndProperty>
+      <EndProperty Name="UserAccount">
+        <ScalarProperty Name="userid" ColumnName="Members_userid" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="UserAccountUserTags" TypeName="smqdocModel.UserAccountUserTags" StoreEntitySet="UserAccountUserTags">
+      <EndProperty Name="UserAccount">
+        <ScalarProperty Name="userid" ColumnName="UserAccounts_userid" />
+      </EndProperty>
+      <EndProperty Name="UserTags">
+        <ScalarProperty Name="Id" ColumnName="UserTags_Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="DocAppointmentGroupTemplate" TypeName="smqdocModel.DocAppointmentGroupTemplate" StoreEntitySet="DocAppointments">
+      <EndProperty Name="GroupTemplate">
+        <ScalarProperty Name="grouptemplateid" ColumnName="GroupTemplate_grouptemplateid" />
+      </EndProperty>
+      <EndProperty Name="DocAppointment">
+        <ScalarProperty Name="docappointmentid" ColumnName="docappointmentid" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping>
