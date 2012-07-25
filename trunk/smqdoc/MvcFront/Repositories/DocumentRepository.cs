@@ -41,18 +41,7 @@ namespace MvcFront.Repositories
             }
             else
             {
-                var oldEntity = GetDocumentById(entity.documentid);
-                if (oldEntity == null)
-                {
-                    entity.documentid = 0;
-                    SaveDocument(entity);
-                }
-                if (oldEntity != null)
-                {                    
-                    oldEntity.LastComment = entity.LastComment;
-                    oldEntity.LastEditDate = DateTime.Now;
-                    entity = oldEntity;
-                }
+                _unitOfWork.DbModel.Documents.ApplyCurrentValues(entity);
             }
             _unitOfWork.DbModel.SaveChanges();
             return entity;

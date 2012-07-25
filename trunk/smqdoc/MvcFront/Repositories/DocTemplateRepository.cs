@@ -35,19 +35,7 @@ namespace MvcFront.Repositories
             }
             else
             {
-                var oldEntity = GetDocTemplateById(entity.docteplateid);
-                if (oldEntity == null)
-                {
-                    entity.docteplateid = 0;
-                    SaveDocTemplate(entity);
-                }
-                if (oldEntity != null)
-                {
-                    oldEntity.Comment = entity.Comment;
-                    oldEntity.LastEditDate = DateTime.Now;
-                    oldEntity.Status = entity.Status;
-                    oldEntity.TemplateName = entity.TemplateName;
-                }
+                _unitOfWork.DbModel.DocTemplates.ApplyCurrentValues(entity);
             }
             _unitOfWork.DbModel.SaveChanges();
             return true;
@@ -102,22 +90,7 @@ namespace MvcFront.Repositories
             }
             else
             {
-                var oldEntity = GetFieldTemplateById(entity.fieldteplateid);
-                if (oldEntity == null)
-                {
-                    entity.fieldteplateid = 0;
-                    SaveFieldTemplate(entity);
-                }
-                if (oldEntity != null)
-                {
-                    oldEntity.DocTemplate_docteplateid = entity.DocTemplate_docteplateid;
-                    oldEntity.FieldName = entity.FieldName;
-                    oldEntity.FiledType = entity.FiledType;
-                    oldEntity.MaxVal = entity.MaxVal;
-                    oldEntity.MinVal = entity.MinVal;
-                    oldEntity.OrderNumber = entity.OrderNumber;
-                    oldEntity.Restricted = entity.Restricted;
-                }
+                _unitOfWork.DbModel.FieldTemplates.ApplyCurrentValues(entity);
             }            
             _unitOfWork.DbModel.SaveChanges();
             return true;
