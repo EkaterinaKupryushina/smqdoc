@@ -49,15 +49,7 @@ namespace MvcFront.Repositories
             }
             else
             {
-                var item = _unitOfWork.DbModel.UserGroups.SingleOrDefault(x => x.usergroupid == entity.usergroupid);
-                if (item != null)
-                {
-                    item.FullGroupName = entity.FullGroupName;
-                    item.GroupName = entity.GroupName;
-                    item.Managerid = entity.Managerid;
-                    item.Status = entity.Status;
-                    item.usergroupid = entity.usergroupid;
-                }
+                _unitOfWork.DbModel.UserGroups.ApplyCurrentValues(entity);
             }
             _unitOfWork.DbModel.SaveChanges();
             return true;

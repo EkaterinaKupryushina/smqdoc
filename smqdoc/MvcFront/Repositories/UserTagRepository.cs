@@ -27,13 +27,9 @@ namespace MvcFront.Repositories
             }
             else
             {
-                var item = _unitOfWork.DbModel.UserTags.SingleOrDefault(x => x.Id == tag.Id);
-                if (item != null)
-                {
-                    item.Name = tag.Name;
-                    _unitOfWork.DbModel.SaveChanges();
-                    _unitOfWork.DbModel.Refresh(RefreshMode.StoreWins, item);
-                }
+                _unitOfWork.DbModel.UserTags.ApplyCurrentValues(tag);
+                _unitOfWork.DbModel.SaveChanges();
+                _unitOfWork.DbModel.Refresh(RefreshMode.StoreWins, tag);
             }
 
             return true;
@@ -46,7 +42,6 @@ namespace MvcFront.Repositories
             {
                 _unitOfWork.DbModel.UserTags.DeleteObject(item);
                 _unitOfWork.DbModel.SaveChanges();
-                //_unitOfWork.DbModel.Refresh(RefreshMode.StoreWins, item);
             }
         }
 

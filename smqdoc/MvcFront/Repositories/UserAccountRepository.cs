@@ -67,23 +67,11 @@ namespace MvcFront.Repositories
             }
             else
             {
-                var item = _unitOfWork.DbModel.UserAccounts.SingleOrDefault(x => x.userid == entity.userid);
-                if (item != null)
-                {
-                    item.IsAdmin = entity.IsAdmin;
-                    item.Email = entity.Email;
-                    item.FirstName = entity.FirstName;
-                    item.LastAccess = entity.LastAccess;
-                    item.LastName = entity.LastName;
-                    item.Login = entity.Login;
-                    item.Password = entity.Password;
-                    item.SecondName = entity.SecondName;
-                    item.Status = entity.Status;
-                    item.userid = entity.userid;
-                    item.LastAccessProfileCode = entity.LastAccessProfileCode;
-                    _unitOfWork.DbModel.SaveChanges();
-                    _unitOfWork.DbModel.Refresh(RefreshMode.StoreWins, item);
-                }
+
+                _unitOfWork.DbModel.UserAccounts.ApplyCurrentValues(entity);
+                _unitOfWork.DbModel.SaveChanges();
+                _unitOfWork.DbModel.Refresh(RefreshMode.StoreWins, entity);
+                
             }
 
             return true;

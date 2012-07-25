@@ -39,21 +39,7 @@ namespace MvcFront.Repositories
             }
             else
             {
-                var oldEntity = GetGroupTemplateById(entity.grouptemplateid);
-                if (oldEntity == null)
-                {
-                    entity.grouptemplateid = 0;
-                    SaveGroupTemplate(entity);
-                }
-                if (oldEntity != null)
-                {
-                    oldEntity.UserGroup_usergroupid = entity.UserGroup_usergroupid;
-                    oldEntity.DocAppointment = entity.DocAppointment;
-                    oldEntity.ActualStartDate= entity.ActualStartDate;
-                    oldEntity.ActualEndDate= entity.ActualEndDate;
-                    oldEntity.PlanedStartDate = entity.PlanedStartDate;
-                    oldEntity.PlanedEndDate = entity.PlanedEndDate;
-                }
+                _unitOfWork.DbModel.GroupTemplates.ApplyCurrentValues(entity);
             }
             _unitOfWork.DbModel.SaveChanges();
             return true;
