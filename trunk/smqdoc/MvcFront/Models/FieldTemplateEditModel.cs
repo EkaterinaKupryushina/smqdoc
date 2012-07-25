@@ -53,7 +53,7 @@ namespace MvcFront.Models
             MinVal = templ.MinVal;
             OperationExpression = templ.OperationExpression;
             FactFieldTemplateId = templ.FactFieldTemplate_fieldteplateid;
-            CanBePlaned = templ.DocTemplate.FieldTeplates.Any(x => (x.FiledType != (int)FieldTemplateType.Planned && x.PlanFieldTemplates.Any()) && x.fieldteplateid > 0 
+            CanBePlaned = templ.DocTemplate.FieldTeplates.Any(x => (x.FiledType != (int)FieldTemplateType.Planned && !x.PlanFieldTemplates.Any() && x.fieldteplateid > 0 )
                 || (FactFieldTemplateId.HasValue && x.fieldteplateid == FactFieldTemplateId));
             
         }

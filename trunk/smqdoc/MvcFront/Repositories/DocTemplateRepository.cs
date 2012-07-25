@@ -194,8 +194,6 @@ namespace MvcFront.Repositories
                 {
                     items.ElementAt(i).OrderNumber = i+1;
                 }
-                docTempl.FieldTeplates.ToList().ForEach(x => x.OrderNumber = int.MaxValue);
-
                 _unitOfWork.DbModel.SaveChanges();
             }
         }

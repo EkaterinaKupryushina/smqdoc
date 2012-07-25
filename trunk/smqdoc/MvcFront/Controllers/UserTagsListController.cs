@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
-using MvcFront.Enums;
 using MvcFront.Models;
 using MvcFront.Interfaces;
 
@@ -19,7 +18,7 @@ namespace MvcFront.Controllers
 
         public ActionResult Index()
         {
-            return View(_userTagRepository.GetAllUserTags().Where(x=>x.Status != (int)UserTagStatus.Deleted).ToList()
+            return View(_userTagRepository.GetAllUserTags().ToList()
                 .ConvertAll(UserTagsListViewModel.UserTagNamesToModelConverter).ToList());
         }
         
