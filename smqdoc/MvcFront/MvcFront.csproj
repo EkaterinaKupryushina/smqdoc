@@ -138,7 +138,6 @@
     <Compile Include="Enums\UserAccountStatus.cs" />
     <Compile Include="Enums\UserGroupStatus.cs" />
     <Compile Include="Enums\UserProfileTypes.cs" />
-    <Compile Include="Enums\UserTagStatus.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

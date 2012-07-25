@@ -178,7 +178,7 @@ namespace MvcFront.Controllers
         [GridAction]
         public ActionResult _UserTagList(int userId)
         {            
-            var data = _userRepository.GetById(userId).UserTags.Where(x => x.Status != (int)UserTagStatus.Deleted).ToList()
+            var data = _userRepository.GetById(userId).UserTags.ToList()
                 .ConvertAll(UserTagsListViewModel.UserTagNamesToModelConverter).ToList();
 
             return View(new GridModel<UserTagsListViewModel> { Data = data });

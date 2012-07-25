@@ -2882,13 +2882,11 @@ namespace MvcFront.DB
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="name">Initial value of the Name property.</param>
-        /// <param name="status">Initial value of the Status property.</param>
-        public static UserTags CreateUserTags(global::System.Int32 id, global::System.String name, global::System.Int32 status)
+        public static UserTags CreateUserTags(global::System.Int32 id, global::System.String name)
         {
             UserTags userTags = new UserTags();
             userTags.Id = id;
             userTags.Name = name;
-            userTags.Status = status;
             return userTags;
         }
 
@@ -2945,30 +2943,6 @@ namespace MvcFront.DB
         private global::System.String _Name;
         partial void OnNameChanging(global::System.String value);
         partial void OnNameChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int32 Status
-        {
-            get
-            {
-                return _Status;
-            }
-            set
-            {
-                OnStatusChanging(value);
-                ReportPropertyChanging("Status");
-                _Status = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("Status");
-                OnStatusChanged();
-            }
-        }
-        private global::System.Int32 _Status;
-        partial void OnStatusChanging(global::System.Int32 value);
-        partial void OnStatusChanged();
 
         #endregion
     

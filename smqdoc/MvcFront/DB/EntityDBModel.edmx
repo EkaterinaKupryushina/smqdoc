@@ -180,7 +180,6 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Status" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="DocAppointments">
     <Key>
@@ -669,12 +668,13 @@
           </Key>
           <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="String" Name="Name" Nullable="false" />
-          <Property Type="Int32" Name="Status" Nullable="false" />
           <NavigationProperty Name="UserAccounts" Relationship="smqdocModel.UserAccountUserTags" FromRole="UserTags" ToRole="UserAccount" />
         </EntityType>
         <Association Name="UserAccountUserTags">
-          <End Type="smqdocModel.UserAccount" Role="UserAccount" Multiplicity="*" />
-          <End Type="smqdocModel.UserTags" Role="UserTags" Multiplicity="*" />
+          <End Type="smqdocModel.UserAccount" Role="UserAccount" Multiplicity="*" >
+          </End>
+          <End Type="smqdocModel.UserTags" Role="UserTags" Multiplicity="*" >
+          </End>
         </Association>
         <EntityType Name="DocAppointment">
           <Key>
@@ -842,7 +842,6 @@
         <MappingFragment StoreEntitySet="UserTags">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="Status" ColumnName="Status" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -942,8 +941,8 @@
         </AssociationConnector>
         <EntityTypeShape EntityType="smqdocModel.UserTags" Width="1.5" PointX="0.625" PointY="0.75" Height="1.59568359375" />
         <AssociationConnector Association="smqdocModel.UserAccountUserTags">
-          <ConnectorPoint PointX="3.75" PointY="1.6439925130208337" />
-          <ConnectorPoint PointX="2.125" PointY="1.6439925130208337" />
+          <ConnectorPoint PointX="3.75" PointY="1.5478417968750002" />
+          <ConnectorPoint PointX="2.125" PointY="1.5478417968750002" />
         </AssociationConnector>
         <EntityTypeShape EntityType="smqdocModel.DocAppointment" Width="2" PointX="10.25" PointY="6.875" Height="2.3648893229166656" />
         <AssociationConnector Association="smqdocModel.DocTemplateDocAppointment">

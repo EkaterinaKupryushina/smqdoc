@@ -164,23 +164,6 @@ namespace MvcFront.Helpers
                             }
                             break;
                         }
-                    case "UserTagStatus":
-                        {
-                            switch (item)
-                            {
-                                case 0:
-                                    {
-                                        retVal = "Активна";
-                                        break;
-                                    }
-                                case 1:
-                                    {
-                                        retVal = "Удалена";
-                                        break;
-                                    }
-                            }
-                            break;
-                        }
                 }
             }
             catch (Exception)

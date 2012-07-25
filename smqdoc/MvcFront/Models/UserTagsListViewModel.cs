@@ -11,10 +11,7 @@ namespace MvcFront.Models
         public Int32 UserTagNameId { get; set; }
         [Display(Name = "Название")]
         public string Name { get; set; }        
-        [Display(Name = "Статус")]
-        [UIHint("Hidden")]
-        public Int32 Status { get; set; }
-        
+
         public UserTagsListViewModel()
         {
         }
@@ -24,8 +21,7 @@ namespace MvcFront.Models
             if (tag != null)
             {
                 UserTagNameId = tag.Id;
-                Name = tag.Name;
-                Status = tag.Status;                
+                Name = tag.Name;        
             }
         }
 
