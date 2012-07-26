@@ -18,6 +18,23 @@ namespace MvcFront.Interfaces
         /// <returns></returns>
         IQueryable<DocAppointment> GetAllGroupDocAppointments(long groupId);
 
+        /// <summary>
+        /// Возвращает объет назначение по Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        DocAppointment GetDocAppointmentById(long id);
 
+        /// <summary>
+        /// Сохраняем объект назначение в базу
+        /// </summary>
+        /// <param name="entity"></param>
+        void SaveDocAppointment(DocAppointment entity);
+
+        /// <summary>
+        /// Сохраняем объект назначение в базу
+        /// </summary>
+        /// <param name="id"></param>
+        void DeleteDocAppointment(long id);
     }
 }

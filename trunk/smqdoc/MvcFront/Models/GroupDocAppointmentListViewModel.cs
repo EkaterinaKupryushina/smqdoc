@@ -6,31 +6,31 @@ using MvcFront.Enums;
 
 namespace MvcFront.Models
 {
-    public class UserDocAppointmentListViewModel
+    public class GroupDocAppointmentListViewModel
     {
         [Required]
         [UIHint("Hidden")]
         public long ID { get; set; }
 
         [Required]
-        [Display(Name = "Наименование документа")]
+        [Display(Name = "Наименование")]
         public string Name { get; set; }
 
         [Required]
         [Display(Name = "Статус")]
         public String Status { get; set; }
 
-        [Display(Name = "Форма")]
+        [Display(Name = "Название формы")]
         public String DocTemplateName { get; set; }
 
         [Display(Name = "Док-ты")]
         public int DocCount { get; set; }
 
-        public UserDocAppointmentListViewModel()
+        public GroupDocAppointmentListViewModel()
         {
         }
 
-        public UserDocAppointmentListViewModel(DocAppointment tpl)
+        public GroupDocAppointmentListViewModel(DocAppointment tpl)
         {
             ID = tpl.docappointmentid;
             Name = tpl.Name;
@@ -39,9 +39,9 @@ namespace MvcFront.Models
             DocCount = tpl.Documents.Count(x=>x.Status != (int)DocumentStatus.Deleted);
         }
 
-        public static UserDocAppointmentListViewModel DocAppointmentToModelConverter(DocAppointment tpl)
+        public static GroupDocAppointmentListViewModel DocAppointmentToModelConverter(DocAppointment tpl)
         {
-            return new UserDocAppointmentListViewModel(tpl);
+            return new GroupDocAppointmentListViewModel(tpl);
         }
     }
 }

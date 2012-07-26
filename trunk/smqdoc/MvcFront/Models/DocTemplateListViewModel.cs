@@ -11,6 +11,8 @@ namespace MvcFront.Models
         public long DocTemplateId { get; set; }
         [Display(Name = "Название Формы")]
         public string DocTemplateName { get; set; }
+        [Display(Name = "Описание формы")]
+        public string Comment { get; set; }
         [Display(Name = "Дата последнего изменения")]
         public DateTime LastEditDate { get; set; }
         
@@ -23,6 +25,7 @@ namespace MvcFront.Models
             DocTemplateId = templ.docteplateid;
             DocTemplateName = templ.TemplateName;
             LastEditDate = templ.LastEditDate;
+            Comment = templ.Comment;
         }
         
         public static DocTemplateListViewModel DocTemplateToModelConverter(DocTemplate templ)

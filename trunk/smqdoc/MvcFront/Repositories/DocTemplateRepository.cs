@@ -35,6 +35,16 @@ namespace MvcFront.Repositories
             }
             else
             {
+                
+                if (entity.DocTemplatesForUser == null)
+                {
+                    var dtForUser = _unitOfWork.DbModel.DocTemplatesForUsers.SingleOrDefault(
+                        x => x.DocTemplate.docteplateid == entity.docteplateid);
+                    if(dtForUser != null)
+                    {
+                        _unitOfWork.DbModel.DocTemplatesForUsers.DeleteObject(dtForUser);
+                    }
+                }
                 _unitOfWork.DbModel.DocTemplates.ApplyCurrentValues(entity);
             }
             _unitOfWork.DbModel.SaveChanges();

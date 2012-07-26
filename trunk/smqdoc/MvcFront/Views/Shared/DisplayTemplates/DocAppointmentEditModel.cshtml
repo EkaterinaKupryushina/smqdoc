@@ -1,0 +1,58 @@
+﻿@model MvcFront.Models.DocAppointmentEditModel
+
+    <legend>Назначение документа</legend>
+
+   <div class="editor-label">
+    @Html.LabelFor(model => model.TemplateName)
+</div>
+<div class="editor-field">
+    @Html.DisplayFor(model => model.TemplateName)
+</div>
+<div class="editor-label">
+    @Html.LabelFor(model => model.Name)
+</div>
+<div class="editor-field">
+    @Html.DisplayFor(model => model.Name)
+</div>
+<div id="PlannedBlockId">
+    <div class="editor-label">
+        @Html.LabelFor(model => model.PlanedStartDate)
+    </div>
+    <div class="editor-field">
+        @Html.DisplayFor(model => model.PlanedStartDate)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.PlanedEndDate)
+    </div>
+    <div class="editor-field">
+        @Html.DisplayFor(model => model.PlanedEndDate)
+    </div>
+</div>
+<div class="editor-label">
+    @Html.LabelFor(model => model.ActualStartDate)
+</div>
+<div class="editor-field">
+    @Html.DisplayFor(model => model.ActualStartDate)
+</div>
+<div class="editor-label">
+    @Html.LabelFor(model => model.ActualEndDate)
+</div>
+<div class="editor-field">
+    @Html.DisplayFor(model => model.ActualEndDate)
+</div>
+<div class="editor-label">
+    @Html.LabelFor(model => model.NeedPlanDates)
+</div>
+<div class="editor-field">
+    @Html.DisplayFor(model => model.NeedPlanDates)
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        if ($("#NeedPlanDates").is(":checked")) {
+            $("#PlannedBlockId").show();
+        } else {
+            $("#PlannedBlockId").hide();
+        }
+    })
+</script>

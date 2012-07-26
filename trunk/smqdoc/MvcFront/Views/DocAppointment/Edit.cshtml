@@ -1,0 +1,19 @@
+﻿@model MvcFront.Models.DocAppointmentEditModel
+@{
+    ViewBag.Title = "Редактирование назначения";
+}
+<h2>
+    Редактор документа</h2>
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <fieldset>
+        @Html.EditorForModel()
+    </fieldset>
+    <p>
+        <input type="submit" value="Сохранить" />
+        @Html.ActionLink("Отмена", "Index")
+    </p>
+}

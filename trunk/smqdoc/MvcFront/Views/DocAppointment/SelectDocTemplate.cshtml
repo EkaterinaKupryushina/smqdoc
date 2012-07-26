@@ -1,0 +1,29 @@
+﻿@using Telerik.Web.Mvc.UI
+@using MvcFront.Models
+@model IEnumerable<DocTemplateListViewModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Формы документов</h2>
+
+@(Html.Telerik().Grid(Model)
+        .Name("DocTemplateListGrid")
+                   .Columns(columns =>
+                   {
+                       columns.AutoGenerate(column =>
+                       {
+                           column.Width = "150px";
+                           if (column.Member == "DocTemplateId")
+                               column.Visible = false;
+                       });
+                       columns.Command(command => command.Custom("Create").Text("Выбрать")
+                                                      .DataRouteValues(route => route.Add(o => o.DocTemplateId).RouteKey("docTemplateId"))
+                                                      .Action("CreateGroupAppointment", "DocAppointment")
+                                                      .HtmlAttributes(new { style = "text-align: center" })).Width(50);
+                   })
+                 .Sortable()
+                .Pageable()
+
+    ) 

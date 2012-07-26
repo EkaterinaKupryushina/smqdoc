@@ -114,6 +114,7 @@
     </Compile>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DictionaryController.cs" />
+    <Compile Include="Controllers\DocAppointmentController.cs" />
     <Compile Include="Controllers\DocTemplateListController.cs" />
     <Compile Include="Controllers\UserDocumentController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -153,11 +154,11 @@
     <Compile Include="Interfaces\IDocAppointmentRepository.cs" />
     <Compile Include="Interfaces\IDocTemplateRepository.cs" />
     <Compile Include="Interfaces\IDocumentRepository.cs" />
-    <Compile Include="Interfaces\IGroupTemplateRepository.cs" />
     <Compile Include="Interfaces\IUnitOfWork.cs" />
     <Compile Include="Interfaces\IUserAccountRepository.cs" />
     <Compile Include="Interfaces\IUserGroupRepository.cs" />
     <Compile Include="Interfaces\IUserTagRepository.cs" />
+    <Compile Include="Models\DocAppointmentEditModel.cs" />
     <Compile Include="Models\DocFieldEditModel.cs" />
     <Compile Include="Models\DocTemplateEditModel.cs" />
     <Compile Include="Models\DocumentEditModel.cs" />
@@ -167,7 +168,7 @@
     <Compile Include="Models\DocTemplateListViewModel.cs" />
     <Compile Include="Models\DocumentListViewModel.cs" />
     <Compile Include="Models\EditUserAccountForUserModel.cs" />
-    <Compile Include="Models\UserDocAppointmentListViewModel.cs" />
+    <Compile Include="Models\GroupDocAppointmentListViewModel.cs" />
     <Compile Include="Models\UserAccountEditModel.cs" />
     <Compile Include="Models\UserAccountListViewModel .cs" />
     <Compile Include="Models\UserGroupEditModel.cs" />
@@ -178,7 +179,6 @@
     <Compile Include="Repositories\DocAppointmentRepository.cs" />
     <Compile Include="Repositories\DocTemplateRepository.cs" />
     <Compile Include="Repositories\DocumentRepository.cs" />
-    <Compile Include="Repositories\GroupTemplateRepository.cs" />
     <Compile Include="Repositories\UserAccountRepository.cs" />
     <Compile Include="Repositories\UserGroupRepository.cs" />
     <Compile Include="Repositories\UserTagRepository.cs" />
@@ -585,6 +585,14 @@
     <Content Include="Views\Shared\EditorTemplates\UserGroupComboBox.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\DocTemplateComboBox.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\UserTagFilter.cshtml" />
+    <Content Include="Views\DocAppointment\Index.cshtml" />
+    <Content Include="Views\DocAppointment\CreateGroupAppointment.cshtml" />
+    <Content Include="Views\DocAppointment\Details.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\DocAppointmentEditModel.cshtml" />
+    <Content Include="Views\DocAppointment\SelectDocTemplate.cshtml" />
+    <Content Include="Views\DocAppointment\Edit.cshtml" />
+    <Content Include="Views\DocAppointment\Delete.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\DocAppointmentEditModel.cshtml" />
     <None Include="Views\UserAccountList\ChangeState.cshtml" />
     <Content Include="Views\UserGroupList\Index.cshtml" />
     <Content Include="Views\UserGroupList\Delete.cshtml" />

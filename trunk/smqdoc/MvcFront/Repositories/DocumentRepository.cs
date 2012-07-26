@@ -9,12 +9,10 @@ namespace MvcFront.Repositories
     public class DocumentRepository : IDocumentRepository
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IGroupTemplateRepository _groupTemplateRepository;
 
-        public DocumentRepository(IUnitOfWork unitOfWork,IGroupTemplateRepository groupTemplateRepository)
+        public DocumentRepository(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _groupTemplateRepository = groupTemplateRepository;
         }
 
         public IQueryable<Document> GetAll()
@@ -62,26 +60,26 @@ namespace MvcFront.Repositories
         }
         public Document CreateDocumentFromGroupDocument(long groupTemplId,int userId)
         {
-            var groupTempl = _groupTemplateRepository.GetGroupTemplateById(groupTemplId);
-            if(groupTempl != null)
-            {
-                //TODO uncomment
-                //var doc = new Document();                
-                //doc.UserAccount_userid = userId;
-                //doc.GroupTemplate_grouptemplateid = groupTemplId;
-                //doc = SaveDocument(doc);
-                //foreach (var fieldTempl in groupTempl.DocTemplate.FieldTeplates)
-                //{
-                //    var fld = new DocField
-                //                  {
-                //                      Document = doc,
-                //                      FieldTemplate_fieldteplateid = fieldTempl.fieldteplateid
-                //                  };
-                //    _unitOfWork.DbModel.DocFields.AddObject(fld);
-                //}
-                //_unitOfWork.DbModel.SaveChanges();
-                //return doc;
-            }
+            //var groupTempl = _groupTemplateRepository.GetGroupTemplateById(groupTemplId);
+            //if(groupTempl != null)
+            //{
+            //    //TODO uncomment
+            //    //var doc = new Document();                
+            //    //doc.UserAccount_userid = userId;
+            //    //doc.GroupTemplate_grouptemplateid = groupTemplId;
+            //    //doc = SaveDocument(doc);
+            //    //foreach (var fieldTempl in groupTempl.DocTemplate.FieldTeplates)
+            //    //{
+            //    //    var fld = new DocField
+            //    //                  {
+            //    //                      Document = doc,
+            //    //                      FieldTemplate_fieldteplateid = fieldTempl.fieldteplateid
+            //    //                  };
+            //    //    _unitOfWork.DbModel.DocFields.AddObject(fld);
+            //    //}
+            //    //_unitOfWork.DbModel.SaveChanges();
+            //    //return doc;
+            //}
             return null;
         }
     }

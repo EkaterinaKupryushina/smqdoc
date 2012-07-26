@@ -1,0 +1,63 @@
+﻿@using Telerik.Web.Mvc.UI
+@model MvcFront.Models.DocAppointmentEditModel
+<legend>Назначение формы</legend>
+@Html.HiddenFor(model => model.DocAppointmentId)
+@Html.HiddenFor(model => model.DocTemplateId)
+<div class="editor-label">
+    @Html.LabelFor(model => model.TemplateName)
+</div>
+<div class="editor-field">
+    @Html.DisplayFor(model => model.TemplateName)
+</div>
+<div class="editor-label">
+    @Html.LabelFor(model => model.Name)
+</div>
+<div class="editor-field">
+    @Html.EditorFor(model => model.Name)
+    @Html.ValidationMessageFor(model => model.Name)
+</div>
+<div id="PlannedBlockId">
+    <div class="editor-label">
+        @Html.LabelFor(model => model.PlanedStartDate)
+    </div>
+    <div class="editor-field">
+        @Html.Telerik().DateTimePickerFor(model => model.PlanedStartDate)
+        @Html.ValidationMessageFor(model => model.PlanedStartDate)
+    </div>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.PlanedEndDate)
+    </div>
+    <div class="editor-field">
+        @Html.Telerik().DateTimePickerFor(model => model.PlanedEndDate)
+        @Html.ValidationMessageFor(model => model.PlanedEndDate)
+    </div>
+</div>
+<div class="editor-label">
+    @Html.LabelFor(model => model.ActualStartDate)
+</div>
+<div class="editor-field">
+    @Html.Telerik().DateTimePickerFor(model => model.ActualStartDate)
+    @Html.ValidationMessageFor(model => model.ActualStartDate)
+</div>
+<div class="editor-label">
+    @Html.LabelFor(model => model.ActualEndDate)
+</div>
+<div class="editor-field">
+    @Html.Telerik().DateTimePickerFor(model => model.ActualEndDate)
+    @Html.ValidationMessageFor(model => model.ActualEndDate)
+</div>
+<div class="editor-label">
+    @Html.LabelFor(model => model.NeedPlanDates)
+</div>
+<div class="editor-field">
+    @Html.DisplayFor(model => model.NeedPlanDates)
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        if ($("#NeedPlanDates").is(":checked")) {
+            $("#PlannedBlockId").show();
+        } else {
+            $("#PlannedBlockId").hide();
+        }
+    })
+</script>

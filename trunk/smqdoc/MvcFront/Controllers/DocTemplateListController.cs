@@ -77,7 +77,7 @@ namespace MvcFront.Controllers
             {
                 ModelState.AddModelError("Ошибка при сохранении", ex.InnerException != null ? ex.InnerException.Message : ex.Message);
             }
-            return View();
+            return View(model);
         }
         
         /// <summary>
@@ -120,7 +120,7 @@ namespace MvcFront.Controllers
             {
                 ModelState.AddModelError("Ошибка при сохранении", ex.InnerException != null ? ex.InnerException.Message : ex.Message);
             }
-            return View();
+            return View(model);
         }
 
         /// <summary>
