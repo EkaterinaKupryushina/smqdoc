@@ -11,11 +11,9 @@ namespace MvcFront.Controllers
     public class UserDocumentController : Controller
     {
         private readonly IDocumentRepository _documentRepository;
-        private readonly IGroupTemplateRepository _groupTemplateRepository;
-        public UserDocumentController(IDocumentRepository documentRepository,IGroupTemplateRepository groupTemplateRepository)
+        public UserDocumentController(IDocumentRepository documentRepository)
         {
             _documentRepository = documentRepository;
-            _groupTemplateRepository = groupTemplateRepository;
         }
 
         //

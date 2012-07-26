@@ -11,7 +11,7 @@ namespace MvcFront.DB
     {
         // ReSharper disable UnusedMember.Global
         // ReSharper disable InconsistentNaming
-        [Display(Name = "Статус Связи")]
+        [Display(Name = "Статус")]
         public DocAppointmentStatus DocAppointmentStatus
         {
             get
@@ -23,7 +23,7 @@ namespace MvcFront.DB
                 Status = (int)value;
             }
         }
-        [Display(Name = "Статус Связи")]
+        [Display(Name = "Статус")]
         public string DocAppointmentStatusText
         {
             get
@@ -47,8 +47,17 @@ namespace MvcFront.DB
         [Required]
         [Display(Name = "Код статуса")]
         public int Status { get; set; }
-        [Display(Name = "Родительская форма")]
-        public DocTemplate DocTemplate { get; set; }
+        
+        [Display(Name = "Начало заполнения Планируемых данных")]
+        public DateTime? PlanedStartDate { get; set; }
+        [Display(Name = "Окончание заполнения Планируемых данных")]
+        public DateTime? PlanedEndDate { get; set; }
+        [Required]
+        [Display(Name = "Начало заполнения Фактических данных")]
+        public DateTime ActualStartDate { get; set; }
+        [Required]
+        [Display(Name = "Окончание заполнения Фактических данных")]
+        public DateTime ActualEndDate { get; set; }
         // ReSharper restore InconsistentNaming
         // ReSharper restore UnusedMember.Global
     }

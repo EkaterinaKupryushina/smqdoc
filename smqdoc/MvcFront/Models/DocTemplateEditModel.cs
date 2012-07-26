@@ -13,7 +13,11 @@ namespace MvcFront.Models
         [Display(Name = "Описание Формы")]
         [DataType(DataType.MultilineText)]
         public string Comment { get; set; }
-        
+        [Display(Name = "Разрешить самоназначение")]
+        public bool AllowUserUse { get; set; }
+         [Display(Name = "Разрешить много документов")]
+        public bool AllowMultyDocs { get; set; }
+
         public DocTemplateEditModel()
         {
         }
@@ -23,6 +27,11 @@ namespace MvcFront.Models
             DocTemplateId = templ.docteplateid;
             DocTemplateName = templ.TemplateName;
             Comment = templ.Comment;
+            if(templ.DocTemplatesForUser != null)
+            {
+                AllowUserUse = true;
+                AllowMultyDocs = templ.DocTemplatesForUser.AllowManyInstances;
+            }
         }
         
         public DocTemplate Update(DocTemplate templ)
@@ -30,6 +39,18 @@ namespace MvcFront.Models
             templ.docteplateid = DocTemplateId;
             templ.TemplateName = DocTemplateName;
             templ.Comment = Comment;
+            if(AllowUserUse)
+            {
+               if(templ.DocTemplatesForUser == null)
+               {
+                   templ.DocTemplatesForUser = new DocTemplatesForUser();
+               }
+                templ.DocTemplatesForUser.AllowManyInstances = AllowMultyDocs;
+            }
+            else
+            {
+                templ.DocTemplatesForUser = null;
+            }
             return templ;
         }
     }

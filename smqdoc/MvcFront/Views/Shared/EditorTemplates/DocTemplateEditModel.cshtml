@@ -1,17 +1,35 @@
 ﻿@model MvcFront.Models.DocTemplateEditModel
+<legend>Формы документа</legend>
+@Html.HiddenFor(model => model.DocTemplateId)
+<div class="display-label">@Html.LabelFor(model => model.DocTemplateName)</div>
+<div class="display-field">
+    @Html.EditorFor(model => model.DocTemplateName)
+</div>
+<div class="display-label">@Html.LabelFor(model => model.Comment)</div>
+<div class="display-field">
+    @Html.EditorFor(model => model.Comment)
+</div>
+<div class="display-label">@Html.LabelFor(model => model.AllowUserUse)</div>
+<div class="display-field">
+    @Html.EditorFor(model => model.AllowUserUse)
+</div>
 
-
-    <legend>Формы документа</legend>
-
-    @Html.HiddenFor(model => model.DocTemplateId)
-
-    <div class="display-label">@Html.LabelFor(model => model.DocTemplateName)</div>
+<div id="AllowMulty">
+    <div class="display-label">@Html.LabelFor(model => model.AllowMultyDocs)</div>
     <div class="display-field">
-        @Html.EditorFor(model => model.DocTemplateName)
-    </div>
-
-    <div class="display-label">@Html.LabelFor(model => model.Comment)</div>
-    <div class="display-field">
-        @Html.EditorFor(model => model.Comment)
-    </div>
-
+        @Html.EditorFor(model => model.AllowMultyDocs)
+</div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        shMultyUse();
+        $("#AllowUserUse").click(shMultyUse);
+    });
+    function shMultyUse() {
+        if ($("#AllowUserUse").is(':checked')) {
+            $("#AllowMulty").show();
+        } else {
+            $("#AllowMulty").hide();
+        }
+    }
+</script>

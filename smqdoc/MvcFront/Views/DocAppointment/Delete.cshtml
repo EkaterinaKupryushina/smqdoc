@@ -1,0 +1,18 @@
+﻿@model MvcFront.Models.DocAppointmentEditModel
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Удаление</h2>
+
+<h3>Вы действиетльно желаете удалить данное назначение формы?</h3>
+<fieldset>
+@Html.DisplayForModel()
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" value="Удалить" /> |
+        @Html.ActionLink("Отмена", "Index")
+    </p>
+}

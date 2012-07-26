@@ -46,13 +46,6 @@ namespace MvcFront.Models
             IsReadOnly = templ.DocStatus != DocumentStatus.Editing;
 
             //TODO сделать заполенние
-            if (templ.DocAppointment.GroupTemplate != null)
-            {
-                //DateEnd = templ.DocAppointment.GroupTemplate.DateEnd;
-            
-            //IsRed = templ.GroupTemplate.DateEnd < DateTime.Now.AddDays(SmqSettings.Instance.DocumentsDedlineWarning) &&
-                   // templ.Status == (int) DocumentStatus.Editing;
-            }
 
         Name = templ.DocAppointment.Name;
 
