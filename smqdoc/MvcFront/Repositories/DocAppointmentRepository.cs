@@ -57,5 +57,15 @@ namespace MvcFront.Repositories
             }
             _unitOfWork.DbModel.SaveChanges();
         }
+
+        public void ChangeDocAppointmentState(long id)
+        {
+            var entity = GetDocAppointmentById(id);
+            if (entity != null)
+            {
+                entity.DocAppointmentStatus = entity.DocAppointmentStatus != DocAppointmentStatus.Active ? DocAppointmentStatus.Active : DocAppointmentStatus.Unactive;
+            }
+            _unitOfWork.DbModel.SaveChanges();
+        }
     }
 }

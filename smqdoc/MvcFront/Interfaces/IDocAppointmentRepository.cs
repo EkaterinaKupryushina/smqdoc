@@ -36,5 +36,11 @@ namespace MvcFront.Interfaces
         /// </summary>
         /// <param name="id"></param>
         void DeleteDocAppointment(long id);
+
+        /// <summary>
+        /// Меняет стутус назначение с Active на unactive
+        /// </summary>
+        /// <param name="id"></param>
+        void ChangeDocAppointmentState(long id);
     }
 }

@@ -15,7 +15,9 @@ namespace MvcFront.Models
         public string Comment { get; set; }
         [Display(Name = "Дата последнего изменения")]
         public DateTime LastEditDate { get; set; }
-        
+        [Display(Name = "Статус")]
+        public string StatusText { get; set; }
+
         public DocTemplateListViewModel()
         {
         }
@@ -26,6 +28,7 @@ namespace MvcFront.Models
             DocTemplateName = templ.TemplateName;
             LastEditDate = templ.LastEditDate;
             Comment = templ.Comment;
+            StatusText = templ.TemplateStatusText;
         }
         
         public static DocTemplateListViewModel DocTemplateToModelConverter(DocTemplate templ)

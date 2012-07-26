@@ -25,7 +25,7 @@ namespace MvcFront.Controllers
        /// <returns></returns>
         public ActionResult Index()
         {
-            return View(_templateRepository.GetAllDocTeplates().Where(x => x.Status != (int)DocTemplateStatus.Deleted).ToList().ConvertAll(DocTemplateListViewModel.DocTemplateToModelConverter).ToList());
+            return View();
         }
 
         /// <summary>
@@ -155,6 +155,45 @@ namespace MvcFront.Controllers
                 return View();
             }
         }
+
+        #region JSon
+        
+        /// <summary>
+        /// Меняет стутс формы 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActionResult ChangeState(long id)
+        {
+            try
+            {
+                _templateRepository.ChangeDocTemplateState(id);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("Ошибка", ex.Message);
+            }
+            return Json(new { result = true });
+        }
+
+        #endregion
+
+        #region GridActions
+
+        /// <summary>
+        /// Возвращает список  форм
+        /// </summary>
+        /// <returns></returns>
+        [GridAction]
+        public ActionResult _DocTemplatesList()
+        {
+            var data =
+                _templateRepository.GetAllDocTeplates().Where(x => x.Status != (int)DocTemplateStatus.Deleted).ToList()
+                    .ConvertAll(DocTemplateListViewModel.DocTemplateToModelConverter).ToList();
+            return View(new GridModel<DocTemplateListViewModel> { Data = data });
+        }
+
+        #endregion
 
         #endregion
 
@@ -333,6 +372,26 @@ namespace MvcFront.Controllers
         }
 
         /// <summary>
+        /// Запрос списка доступных полей для которых можно сделать планируемое поле
+        /// </summary>
+        /// <param name="docTemplID"></param>
+        /// <param name="factFieldId"> </param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult _FactFieldTemplatesList(long docTemplID, long? factFieldId)
+        {
+            var data =
+                _templateRepository.GetDocTemplateById(docTemplID).FieldTeplates.Where(x =>
+                    (x.FiledType != (int)FieldTemplateType.Planned && !x.PlanFieldTemplates.Any()) || (factFieldId.HasValue && x.fieldteplateid == factFieldId));
+
+            return new JsonResult { Data = new SelectList(data.ToList().Select(x => new { Id = x.fieldteplateid, Name = x.FieldName }), "Id", "Name", factFieldId) };
+        }
+
+        #endregion
+
+        #region GridActions
+
+        /// <summary>
         /// Возращает список полей формы
         /// </summary>
         /// <param name="templId"></param>
@@ -381,22 +440,6 @@ namespace MvcFront.Controllers
                 .ConvertAll(FieldTemplateListViewModel.FieldToModelConverter);
 
             return View(new GridModel<FieldTemplateListViewModel> { Data = data });
-        }
-
-        /// <summary>
-        /// Запрос списка доступных полей для которых можно сделать планируемое поле
-        /// </summary>
-        /// <param name="docTemplID"></param>
-        /// <param name="factFieldId"> </param>
-        /// <returns></returns>
-        [HttpPost]
-        public JsonResult _FactFieldTemplatesList(long docTemplID, long? factFieldId)
-        {
-            var data =
-                _templateRepository.GetDocTemplateById(docTemplID).FieldTeplates.Where(x =>
-                    (x.FiledType != (int)FieldTemplateType.Planned && !x.PlanFieldTemplates.Any()) || (factFieldId.HasValue && x.fieldteplateid == factFieldId));
-
-            return new JsonResult { Data = new SelectList(data.ToList().Select(x => new { Id = x.fieldteplateid, Name = x.FieldName }), "Id", "Name", factFieldId) };
         }
 
         #endregion

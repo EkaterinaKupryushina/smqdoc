@@ -6,6 +6,7 @@ using MvcFront.Enums;
 using MvcFront.Helpers;
 using MvcFront.Interfaces;
 using MvcFront.Models;
+using Telerik.Web.Mvc;
 
 namespace MvcFront.Controllers
 {
@@ -25,8 +26,7 @@ namespace MvcFront.Controllers
         /// <returns></returns>
         public ActionResult Index()
         {
-            var sessData = SessionHelper.GetUserSessionData(Session);
-            return View(_appointmentRepository.GetAllGroupDocAppointments(sessData.UserGroupId).Where(x => x.Status != (int)DocAppointmentStatus.Deleted).ToList().ConvertAll(GroupDocAppointmentListViewModel.DocAppointmentToModelConverter));
+            return View();
         }
 
         /// <summary>
@@ -138,9 +138,12 @@ namespace MvcFront.Controllers
             return View(new DocAppointmentEditModel(_appointmentRepository.GetDocAppointmentById(id)));
         }
 
-        //
-        // POST: /DocAppintment/Delete/5
-
+       /// <summary>
+       /// Удаление назначения
+       /// </summary>
+       /// <param name="id"></param>
+       /// <param name="collection"></param>
+       /// <returns></returns>
         [HttpPost]
         public ActionResult Delete(long id, FormCollection collection)
         {
@@ -155,5 +158,44 @@ namespace MvcFront.Controllers
                 return View();
             }
         }
+
+        #region JSon
+
+        /// <summary>
+        /// Меняет стутс формы 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActionResult ChangeState(long id)
+        {
+            try
+            {
+                _appointmentRepository.ChangeDocAppointmentState(id);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("Ошибка", ex.Message);
+            }
+            return Json(new { result = true });
+        }
+
+        #endregion
+
+        #region GridActions
+
+        /// <summary>
+        /// Возвращает список  назначений
+        /// </summary>
+        /// <returns></returns>
+        [GridAction]
+        public ActionResult _GroupDocAppointmentList()
+        {
+            var sessData = SessionHelper.GetUserSessionData(Session);
+            var data = _appointmentRepository.GetAllGroupDocAppointments(sessData.UserGroupId).Where(x => x.Status != (int)DocAppointmentStatus.Deleted).ToList()
+                .ConvertAll(GroupDocAppointmentListViewModel.DocAppointmentToModelConverter);
+            return View(new GridModel<GroupDocAppointmentListViewModel> { Data = data });
+        }
+
+        #endregion
     }
 }

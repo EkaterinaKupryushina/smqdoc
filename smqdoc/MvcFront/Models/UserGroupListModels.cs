@@ -13,6 +13,8 @@ namespace MvcFront.Models
         public string Manager { get; set; }
         [Display(Name = "Имя группы")]
         public string GroupName { get; set; }
+        [Display(Name = "Статус")]
+        public string Status { get; set; }
 
         public UserGroupListViewModel()
         {
@@ -23,6 +25,7 @@ namespace MvcFront.Models
             GroupId = grr.usergroupid;
             Manager = string.Format("{1} {0} {2} ({3})", grr.Manager.FirstName, grr.Manager.SecondName, grr.Manager.LastName, grr.Manager.Login);
             GroupName = grr.GroupName;
+            Status = grr.GroupStatusText;
         }
     }
 }
