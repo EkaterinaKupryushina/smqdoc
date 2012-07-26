@@ -10,11 +10,11 @@ using Telerik.Web.Mvc;
 
 namespace MvcFront.Controllers
 {
-    public class DocAppointmentController : Controller
+    public class GroupDocAppointmentController : Controller
     {
         private readonly IDocAppointmentRepository _appointmentRepository;
         private readonly IDocTemplateRepository _docTemplateRepository;
-        public DocAppointmentController(IDocAppointmentRepository appointmentRepository, IDocTemplateRepository docTemplateRepository)
+        public GroupDocAppointmentController(IDocAppointmentRepository appointmentRepository, IDocTemplateRepository docTemplateRepository)
         {
             _appointmentRepository = appointmentRepository;
             _docTemplateRepository = docTemplateRepository;

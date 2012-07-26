@@ -114,7 +114,7 @@
     </Compile>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DictionaryController.cs" />
-    <Compile Include="Controllers\DocAppointmentController.cs" />
+    <Compile Include="Controllers\GroupDocAppointmentController.cs" />
     <Compile Include="Controllers\DocTemplateListController.cs" />
     <Compile Include="Controllers\UserDocumentController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -585,13 +585,13 @@
     <Content Include="Views\Shared\EditorTemplates\UserGroupComboBox.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\DocTemplateComboBox.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\UserTagFilter.cshtml" />
-    <Content Include="Views\DocAppointment\Index.cshtml" />
-    <Content Include="Views\DocAppointment\CreateGroupAppointment.cshtml" />
-    <Content Include="Views\DocAppointment\Details.cshtml" />
+    <Content Include="Views\GroupDocAppointment\Index.cshtml" />
+    <Content Include="Views\GroupDocAppointment\CreateGroupAppointment.cshtml" />
+    <Content Include="Views\GroupDocAppointment\Details.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\DocAppointmentEditModel.cshtml" />
-    <Content Include="Views\DocAppointment\SelectDocTemplate.cshtml" />
-    <Content Include="Views\DocAppointment\Edit.cshtml" />
-    <Content Include="Views\DocAppointment\Delete.cshtml" />
+    <Content Include="Views\GroupDocAppointment\SelectDocTemplate.cshtml" />
+    <Content Include="Views\GroupDocAppointment\Edit.cshtml" />
+    <Content Include="Views\GroupDocAppointment\Delete.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\DocAppointmentEditModel.cshtml" />
     <None Include="Views\UserAccountList\ChangeState.cshtml" />
     <Content Include="Views\UserGroupList\Index.cshtml" />

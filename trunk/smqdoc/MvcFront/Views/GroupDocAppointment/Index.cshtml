@@ -10,7 +10,7 @@
 @Html.ActionLink("Назначить форму", "SelectDocTemplate")
 @(Html.Telerik().Grid<GroupDocAppointmentListViewModel>()
         .Name("GroupDocAppintmentListGrid")
-        .DataBinding(dataBinding => dataBinding.Ajax().Select("_GroupDocAppointmentList", "DocAppointment"))
+        .DataBinding(dataBinding => dataBinding.Ajax().Select("_GroupDocAppointmentList", "GroupDocAppointment"))
         .ClientEvents(events => events.OnComplete("onComplete"))
                    .Columns(columns =>
                    {
@@ -24,20 +24,20 @@
                        {
                            command.Custom("viewDetails").Text("Информация")
                             .DataRouteValues(route => route.Add(o => o.ID).RouteKey("id"))
-                            .Action("Details", "DocAppointment")
+                            .Action("Details", "GroupDocAppointment")
                             .HtmlAttributes(new { style = "text-align: center" });
                            command.Custom("EditDetails").Text("Редактировать")
                             .DataRouteValues(route => route.Add(o => o.ID).RouteKey("id"))
-                            .Action("Edit", "DocAppointment")
+                            .Action("Edit", "GroupDocAppointment")
                             .HtmlAttributes(new { style = "text-align: center" });
                            command.Custom("ChangeStateDetails").Text("Выключить/Выключить")
                             .DataRouteValues(route => route.Add(o => o.ID).RouteKey("id"))
                             .Ajax(true)
-                            .Action("ChangeState", "DocAppointment")
+                            .Action("ChangeState", "GroupDocAppointment")
                             .HtmlAttributes(new { style = "text-align: center" });
                            command.Custom("DeleteDetails").Text("Удалить")
                             .DataRouteValues(route => route.Add(o => o.ID).RouteKey("id"))
-                            .Action("Delete", "DocAppointment")
+                            .Action("Delete", "GroupDocAppointment")
                             .HtmlAttributes(new { style = "text-align: center" });
                        }).Width(50);
                    })
