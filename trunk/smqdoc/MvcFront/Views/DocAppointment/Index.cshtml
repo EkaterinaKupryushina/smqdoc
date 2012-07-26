@@ -1,16 +1,17 @@
 ﻿@using Telerik.Web.Mvc.UI
 @using MvcFront.Models
-@model IEnumerable<GroupDocAppointmentListViewModel>
 
 @{
     ViewBag.Title = "title";
 }
 
-<h2>Назначенные формы документов</h2>
+<h2>Назначенные группе формы документов</h2>
 
 @Html.ActionLink("Назначить форму", "SelectDocTemplate")
-@(Html.Telerik().Grid(Model)
+@(Html.Telerik().Grid<GroupDocAppointmentListViewModel>()
         .Name("GroupDocAppintmentListGrid")
+        .DataBinding(dataBinding => dataBinding.Ajax().Select("_GroupDocAppointmentList", "DocAppointment"))
+        .ClientEvents(events => events.OnComplete("onComplete"))
                    .Columns(columns =>
                    {
                        columns.AutoGenerate(column =>
@@ -29,6 +30,11 @@
                             .DataRouteValues(route => route.Add(o => o.ID).RouteKey("id"))
                             .Action("Edit", "DocAppointment")
                             .HtmlAttributes(new { style = "text-align: center" });
+                           command.Custom("ChangeStateDetails").Text("Выключить/Выключить")
+                            .DataRouteValues(route => route.Add(o => o.ID).RouteKey("id"))
+                            .Ajax(true)
+                            .Action("ChangeState", "DocAppointment")
+                            .HtmlAttributes(new { style = "text-align: center" });
                            command.Custom("DeleteDetails").Text("Удалить")
                             .DataRouteValues(route => route.Add(o => o.ID).RouteKey("id"))
                             .Action("Delete", "DocAppointment")
@@ -39,3 +45,14 @@
                 .Pageable()
 
     ) 
+      
+      <script type="text/javascript">
+          function onComplete(e) {
+              if (e.name == "ChangeStateDetails") {
+                  var grid = $('#GroupDocAppintmentListGrid').data("tGrid");
+                  if (grid != null) {
+                      grid.rebind();
+                  }
+              }
+          }
+</script>
