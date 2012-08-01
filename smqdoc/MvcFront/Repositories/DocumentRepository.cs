@@ -31,6 +31,13 @@ namespace MvcFront.Repositories
             return _unitOfWork.DbModel.Documents.SingleOrDefault(x=>x.documentid == id);
         }
 
+        public IQueryable<Document> GetUserDocuments(long id, DocumentStatus? status = null)
+        {
+            return status.HasValue
+                ? _unitOfWork.DbModel.Documents.Where(x => x.UserAccount_userid == id && x.Status == (int)status && x.DocAppointment.Status == (int)DocAppointmentStatus.Active)
+                : _unitOfWork.DbModel.Documents.Where(x => x.UserAccount_userid == id && x.DocAppointment.Status == (int)DocAppointmentStatus.Active);
+        }
+
         public Document SaveDocument(Document entity)
         {
             if (entity.documentid == 0)
@@ -61,14 +68,16 @@ namespace MvcFront.Repositories
             return doc;
         }
 
-        public Document CreateDocumentFromGroupDocument(long docAppointmentId,int userId)
+        public Document CreateDocumentFromDocAppointment(long docAppointmentId, int userId)
         {
             var docAppointment = _appointmentRepository.GetDocAppointmentById(docAppointmentId);
             if (docAppointment != null)
             {
-                var doc = new Document();                
-                doc.UserAccount_userid = userId;
-                doc.DocAppointment_docappointmentid = docAppointmentId;
+                var doc = new Document
+                              {
+                                  UserAccount_userid = userId, 
+                                  DocAppointment_docappointmentid = docAppointmentId
+                              };
                 doc = SaveDocument(doc);
                 foreach (var fieldTempl in docAppointment.DocTemplate.FieldTeplates)
                 {

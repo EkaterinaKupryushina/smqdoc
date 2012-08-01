@@ -1,13 +1,13 @@
 ﻿@using Telerik.Web.Mvc.UI
 @using MvcFront.Models
-@model IEnumerable<DocumentListViewModel>
 @{
     ViewBag.Title = "Index";
 }
 <h2>Необходимо начать заполнять документы:</h2>
-@* ReSharper disable ConvertToLambdaExpression *@
+
+<h3>Назначенные менеджером документы:</h3>
 @(Html.Telerik().Grid<DocAppointmentListViewModel>()
-     .DataBinding(dataBinding => dataBinding.Ajax().Select("_UserGroupTeplatesList", "UserDocument", new {  }))
+     .DataBinding(dataBinding => dataBinding.Ajax().Select("_GroupDocAppointList", "UserDocument", new {  }))
          .ClientEvents(events => events.OnRowDataBound("onGroupDocAppointmentListGridRowDataBound"))
             .Name("GroupDocAppointmentListGrid")
                    .Columns(columns =>
@@ -17,66 +17,44 @@
                            if (column.Member == "ID" || column.Member == "IsRed")
                                column.Visible = false;
                        });
-                       columns.Command(command =>
-                       {
-                           command.Custom("CreateDetails").Text("Начать заполнение")
-                            .DataRouteValues(route => route.Add(o => o.ID).RouteKey("id"))
-                            .Action("Create", "UserDocument")
-                            .HtmlAttributes(new { style = "text-align: center" });
-                       }).Width(40);
+                       columns.Command(command => command.Custom("CreateDetails").Text("Начать заполнение")
+                                                      .DataRouteValues(route => route.Add(o => o.ID).RouteKey("id"))
+                                                      .Action("CreateDocument", "UserDocument")
+                                                      .HtmlAttributes(new { style = "text-align: center" })).Width(40);
                    })
                  .Sortable()
                 .Pageable()
 
     ) 
-@* ReSharper restore ConvertToLambdaExpression *@
-<h2>Список документов</h2>
-
-@(Html.Telerik().Grid<DocumentListViewModel>()
-    .DataBinding(dataBinding => dataBinding.Ajax().Select("_UserDocumentsList", "UserDocument", new { }))
-        .Name("DocumentListGrid")
-                .ClientEvents(events => events.OnRowDataBound("onDocumentListGridRowDataBound"))
+    
+<h3>Самоназначенные документы:</h3>
+@(Html.Telerik().Grid<DocAppointmentListViewModel>()
+     .DataBinding(dataBinding => dataBinding.Ajax().Select("_UserDocAppointList", "UserDocument", new {  }))
+         .ClientEvents(events => events.OnRowDataBound("onGroupDocAppointmentListGridRowDataBound"))
+            .Name("GroupDocAppointmentListGrid")
                    .Columns(columns =>
                    {
                        columns.AutoGenerate(column =>
                        {
-                           column.Width = "150px";
-                           if (column.Member == "DocumentId" || column.Member == "IsReadOnly" || column.Member == "IsRed")
+                           if (column.Member == "ID" || column.Member == "IsRed")
                                column.Visible = false;
                        });
-                       columns.Command(command =>
-                       {
-                           command.Custom("viewDetails").Text("Просмотр")
-                            .DataRouteValues(route => route.Add(o => o.DocumentId).RouteKey("id"))
-                            .Action("Details", "UserDocument")
-                            .HtmlAttributes(new { style = "text-align: center" });
-                           command.Custom("EditDetails").Text("Редактировать")
-                            .DataRouteValues(route => route.Add(o => o.DocumentId).RouteKey("id"))
-                            .Action("Edit", "UserDocument")
-                            .HtmlAttributes(new { style = "text-align: center" });
-                       }).Width(50);
+                       columns.Command(command => command.Custom("CreateDetails").Text("Начать заполнение")
+                                                      .DataRouteValues(route => route.Add(o => o.ID).RouteKey("id"))
+                                                      .Action("CreateDocument", "UserDocument")
+                                                      .HtmlAttributes(new { style = "text-align: center" })).Width(40);
                    })
-
                  .Sortable()
                 .Pageable()
-                .Filterable()
 
-    ) 
-    <script type="text/javascript">
-        function onDocumentListGridRowDataBound(e) {
-            if (e.dataItem.IsReadOnly > 0) {
-                $(e.row).find('a.t-grid-EditDetails').remove();
-                $(e.row).find('a.t-grid-DeleteDetails').remove();
-            }
-            if (e.dataItem.IsRed > 0) {
-                $(e.row).css("color", "red");
-            }
+      ) 
+      
+@Html.ActionLink("Добавить документ", "SelectDocTemplate")
+<script type="text/javascript">
+    function onGroupDocAppointmentListGridRowDataBound(e) {
+        if (e.dataItem.IsRed > 0) {
+            $(e.row).css("color", "red");
         }
-    </script>
-    <script type="text/javascript">
-        function onGroupDocAppointmentListGridRowDataBound(e) {
-            if (e.dataItem.IsRed > 0) {
-                $(e.row).css("color", "red");
-            }
-        }
-    </script>
+    }
+</script>
+  

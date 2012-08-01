@@ -23,6 +23,14 @@ namespace MvcFront.Interfaces
         Document GetDocumentById(long id);
 
         /// <summary>
+        /// Возвращает документ по его Id
+        /// </summary>
+        /// <param name="id">UserId</param>
+        /// <param name="status"> </param>
+        /// <returns></returns>
+        IQueryable<Document> GetUserDocuments(long id, DocumentStatus? status = null);
+
+        /// <summary>
         /// Сохраняет документ в базу
         /// </summary>
         /// <param name="entity"></param>
@@ -46,9 +54,9 @@ namespace MvcFront.Interfaces
         /// <summary>
         /// Создает документ из Формы документа
         /// </summary>
-        /// <param name="groupTemplId"></param>
+        /// <param name="docAppointmentlId"></param>
         /// <param name="userId"></param>
         /// <returns></returns>
-        Document CreateDocumentFromGroupDocument(long groupTemplId,int userId);
+        Document CreateDocumentFromDocAppointment(long docAppointmentlId, int userId);
     }
 }

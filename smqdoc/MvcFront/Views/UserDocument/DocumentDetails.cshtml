@@ -1,6 +1,4 @@
-﻿@using MvcFront.DB
-@using MvcFront.Enums
-@using Telerik.Web.Mvc.UI
+﻿@using MvcFront.Enums
 @model MvcFront.DB.Document
 
 @{
@@ -14,7 +12,7 @@
 <p>
     @if (Model.DocStatus == DocumentStatus.PlanEditing || Model.DocStatus == DocumentStatus.FactEditing)
     {
-        @Html.ActionLink("Редактировать", "Edit", new {id = Model.documentid}) <text>|</text>
+        @Html.ActionLink("Редактировать", "EditDocument", new { id = Model.documentid }) <text>|</text>
     }
     @Html.ActionLink("Отмена", "Index")
 </p>
