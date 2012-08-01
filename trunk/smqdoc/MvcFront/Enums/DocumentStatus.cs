@@ -2,8 +2,10 @@ namespace MvcFront.Enums
 {
     public enum DocumentStatus
     {
-        Editing,
-        Sended,
+        PlanEditing,
+        PlanSended,
+        FactEditing,
+        FactSended,
         Submited,
         Deleted
     }

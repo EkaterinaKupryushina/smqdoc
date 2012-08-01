@@ -158,6 +158,7 @@
     <Compile Include="Interfaces\IUserAccountRepository.cs" />
     <Compile Include="Interfaces\IUserGroupRepository.cs" />
     <Compile Include="Interfaces\IUserTagRepository.cs" />
+    <Compile Include="Models\DocAppointmentListViewModel.cs" />
     <Compile Include="Models\DocAppointmentEditModel.cs" />
     <Compile Include="Models\DocFieldEditModel.cs" />
     <Compile Include="Models\DocTemplateEditModel.cs" />

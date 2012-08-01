@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Web.Mvc;
 using MvcFront.Enums;
 using MvcFront.Helpers;
@@ -11,9 +12,11 @@ namespace MvcFront.Controllers
     public class UserDocumentController : Controller
     {
         private readonly IDocumentRepository _documentRepository;
-        public UserDocumentController(IDocumentRepository documentRepository)
+        private readonly IDocAppointmentRepository _appointmentRepository;
+        public UserDocumentController(IDocAppointmentRepository appointmentRepository, IDocumentRepository documentRepository)
         {
             _documentRepository = documentRepository;
+            _appointmentRepository = appointmentRepository;
         }
 
         //
@@ -26,27 +29,30 @@ namespace MvcFront.Controllers
         [GridAction]
         public ActionResult _UserDocumentsList()
         {
-            //var sessData = SessionHelper.GetUserSessionData(Session);
-            //var data = _documentRepository.GetAll().Where(x => x.Status != (int)DocumentStatus.Deleted &&x.DocAppointment.Status != (int)DocAppointmentStatus.Deleted&& x.UserAccount_userid == sessData.UserId
-            //    && x.DocAppointment.UserGroup_usergroupid == sessData.UserGroupId).ToList().ConvertAll(DocumentListViewModel.DocumentToModelConverter).ToList();
+            var sessData = SessionHelper.GetUserSessionData(Session);
+            var data = _documentRepository.GetAll()
+                .Where(x => x.Status != (int)DocumentStatus.Deleted && x.DocAppointment.Status != (int)DocAppointmentStatus.Deleted 
+                    && x.UserAccount_userid == sessData.UserId && x.DocAppointment.UserGroup_usergroupid == sessData.UserGroupId)
+                    .ToList().ConvertAll(DocumentListViewModel.DocumentToModelConverter).ToList();
 
-            //return View(new GridModel<DocumentListViewModel> { Data = data });
-            return View();
+            return View(new GridModel<DocumentListViewModel> { Data = data });
         }
         
         [GridAction]
         public ActionResult _UserGroupTeplatesList()
         {
-            //var sessData = SessionHelper.GetUserSessionData(Session);
-            //var allUserGroupDocs =
-            //    _documentRepository.GetAll().Where(x => x.UserAccount_userid == sessData.UserId && x.Status != (int)DocumentStatus.Deleted && x.GroupTemplate.UserGroup_usergroupid == sessData.UserGroupId)
-            //        .Select(x => x.GroupTemplate_grouptemplateid).ToList();
+            var sessData = SessionHelper.GetUserSessionData(Session);
+            var allUserGroupDocs =
+                _documentRepository.GetAll().Where(x => x.UserAccount_userid == sessData.UserId && x.Status != (int)DocumentStatus.Deleted 
+                    && x.DocAppointment.UserGroup_usergroupid == sessData.UserGroupId)
+                    .Select(x => x.DocAppointment_docappointmentid).ToList();
 
-            //var data = _groupTemplateRepository.GetGroupTemplateByGroupId(sessData.UserGroupId).Where(x=>x.DateStart <= DateTime.Now 
-            //    && x.DocTemplate.Status == (int)DocTemplateStatus.Active && x.Status == (int)DocAppointmentStatus.Active && !allUserGroupDocs.Contains(x.grouptemplateid))
-            //    .ToList().ConvertAll(GroupTemplateListViewModel.GroupTemplateToModelConverter).ToList();
-            //return View(new GridModel<GroupTemplateListViewModel> { Data = data });
-            return View();
+            var data = _appointmentRepository.GetAllGroupDocAppointments(sessData.UserGroupId)
+                .Where(x => (x.PlanedStartDate <= DateTime.Now || x.ActualStartDate <= DateTime.Now)
+                && x.DocTemplate.Status == (int)DocTemplateStatus.Active && x.Status == (int)DocAppointmentStatus.Active 
+                && !allUserGroupDocs.Contains(x.docappointmentid))
+                .ToList().ConvertAll(DocAppointmentListViewModel.DocAppointmentToModelConverter).ToList();
+            return View(new GridModel<DocAppointmentListViewModel> { Data = data });
         }
         //
         // GET: /Document/Details/5
@@ -108,7 +114,7 @@ namespace MvcFront.Controllers
                 }
                 _documentRepository.SaveDocument(doc);
                 if (Request.Form["send"] != null)
-                    _documentRepository.ChangeDocumentStatus(doc.documentid, DocumentStatus.Sended);
+                    _documentRepository.ChangeDocumentStatus(doc.documentid, doc.DocStatus == DocumentStatus.PlanEditing ? DocumentStatus.PlanSended : DocumentStatus.FactSended);
                 return RedirectToAction("Index");
             }
             catch

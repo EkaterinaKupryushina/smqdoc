@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using MvcFront.DB;
 using MvcFront.Enums;
+using MvcFront.Infrastructure;
 
 namespace MvcFront.Models
 {
@@ -32,7 +33,7 @@ namespace MvcFront.Models
         
         [Display(Name = "Coloring")]
         [UIHint("Hidden")]
-        public bool IsRed { get; set; }
+        public bool IsRed    { get; set; }
         
         public DocumentListViewModel()
         {
@@ -40,15 +41,15 @@ namespace MvcFront.Models
         public DocumentListViewModel(Document templ)
         {
             DocumentId = templ.documentid;
+            Name = templ.DocAppointment.Name;
             LastEditDate = templ.LastEditDate;
             LastComment = templ.LastComment;
             DocumentStatusText = templ.DocStatusText;
-            IsReadOnly = templ.DocStatus != DocumentStatus.Editing;
-
-            //TODO сделать заполенние
-
-        Name = templ.DocAppointment.Name;
-
+            IsReadOnly = templ.DocStatus != DocumentStatus.PlanEditing && templ.DocStatus != DocumentStatus.FactEditing;
+            DateEnd = (templ.DocStatus == DocumentStatus.PlanEditing || templ.DocStatus == DocumentStatus.PlanSended) && templ.DocAppointment.PlanedEndDate.HasValue
+                          ? templ.DocAppointment.PlanedEndDate.Value
+                          : templ.DocAppointment.ActualEndDate;
+            IsRed = DateTime.Now.AddDays(SmqSettings.Instance.DocumentsDedlineWarning) >= DateEnd;
         }
         public static DocumentListViewModel DocumentToModelConverter(Document templ)
         {
