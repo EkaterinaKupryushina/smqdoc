@@ -578,7 +578,7 @@
     <Content Include="Views\DocTemplateList\AddField.cshtml" />
     <Content Include="Views\DocTemplateList\EditField.cshtml" />
     <Content Include="Views\Account\Index.cshtml" />
-    <Content Include="Views\UserDocument\Details.cshtml" />
+    <Content Include="Views\UserDocument\DocumentDetails.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\Document.cshtml" />
     <Content Include="Views\Account\EditUserInfo.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\DocumentEditModel.cshtml" />
@@ -603,12 +603,15 @@
     <Content Include="Views\UserGroupList\Edit.cshtml" />
     <Content Include="Views\UserGroupList\GroupUsersManagment.cshtml" />
     <Content Include="Views\UserDocument\Index.cshtml" />
-    <Content Include="Views\UserDocument\Edit.cshtml" />
+    <Content Include="Views\UserDocument\EditDocument.cshtml" />
     <Content Include="Views\UserAccountList\TagsUserManagement.cshtml" />
     <Content Include="Views\UserTagsList\Index.cshtml" />
     <Content Include="Views\UserTagsList\Create.cshtml" />
     <Content Include="Views\UserTagsList\Edit.cshtml" />
     <Content Include="Views\UserTagsList\Delete.cshtml" />
+    <Content Include="Views\UserDocument\UserDocuments.cshtml" />
+    <Content Include="Views\UserDocument\SelectDocTemplate.cshtml" />
+    <Content Include="Views\UserDocument\CreateUserAppointment.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ELW.Library.Math\ELW.Library.Math.csproj">
