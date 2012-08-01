@@ -9,10 +9,12 @@ namespace MvcFront.Repositories
     public class DocumentRepository : IDocumentRepository
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IDocAppointmentRepository _appointmentRepository;
 
-        public DocumentRepository(IUnitOfWork unitOfWork)
+        public DocumentRepository(IUnitOfWork unitOfWork, IDocAppointmentRepository appointmentRepository)
         {
             _unitOfWork = unitOfWork;
+            _appointmentRepository = appointmentRepository;
         }
 
         public IQueryable<Document> GetAll()
@@ -58,28 +60,28 @@ namespace MvcFront.Repositories
             _unitOfWork.DbModel.SaveChanges();
             return doc;
         }
-        public Document CreateDocumentFromGroupDocument(long groupTemplId,int userId)
+
+        public Document CreateDocumentFromGroupDocument(long docAppointmentId,int userId)
         {
-            //var groupTempl = _groupTemplateRepository.GetGroupTemplateById(groupTemplId);
-            //if(groupTempl != null)
-            //{
-            //    //TODO uncomment
-            //    //var doc = new Document();                
-            //    //doc.UserAccount_userid = userId;
-            //    //doc.GroupTemplate_grouptemplateid = groupTemplId;
-            //    //doc = SaveDocument(doc);
-            //    //foreach (var fieldTempl in groupTempl.DocTemplate.FieldTeplates)
-            //    //{
-            //    //    var fld = new DocField
-            //    //                  {
-            //    //                      Document = doc,
-            //    //                      FieldTemplate_fieldteplateid = fieldTempl.fieldteplateid
-            //    //                  };
-            //    //    _unitOfWork.DbModel.DocFields.AddObject(fld);
-            //    //}
-            //    //_unitOfWork.DbModel.SaveChanges();
-            //    //return doc;
-            //}
+            var docAppointment = _appointmentRepository.GetDocAppointmentById(docAppointmentId);
+            if (docAppointment != null)
+            {
+                var doc = new Document();                
+                doc.UserAccount_userid = userId;
+                doc.DocAppointment_docappointmentid = docAppointmentId;
+                doc = SaveDocument(doc);
+                foreach (var fieldTempl in docAppointment.DocTemplate.FieldTeplates)
+                {
+                    var fld = new DocField
+                                  {
+                                      Document = doc,
+                                      FieldTemplate_fieldteplateid = fieldTempl.fieldteplateid
+                                  };
+                    _unitOfWork.DbModel.DocFields.AddObject(fld);
+                }
+                _unitOfWork.DbModel.SaveChanges();
+                return doc;
+            }
             return null;
         }
     }

@@ -1,35 +1,40 @@
 ﻿@using MvcFront.Enums
 @using Telerik.Web.Mvc.UI
 @model MvcFront.Models.DocFieldEditModel
-
 @{
-    @Html.HiddenFor(x=>x.FieldId)
+    @Html.HiddenFor(x => x.FieldId)
     @Html.HiddenFor(x => x.FieldType)
     @Html.HiddenFor(x => x.IsRestricted)
     switch ((FieldTemplateType)Model.FieldType)
     {
         case FieldTemplateType.Bool:
-            @Html.RadioButtonFor(x => x.BoolValue, true) <text>ДА</text>@Html.RadioButtonFor(x => x.BoolValue, false)<text>Нет</text>
-                                                       break;
+                @Html.RadioButtonFor(x => x.BoolValue, true) <text>ДА</text>
+                @Html.RadioButtonFor(x => x.BoolValue, false)<text>Нет</text>
+                break;
         case FieldTemplateType.Number:
-            if (Model.IsInteger)
-            {
-                @(Model.IsRestricted ? (Html.Telerik().IntegerTextBoxFor(x => x.IntegerValue).MaxValue((int) Model.MaxVal).MinValue((int) Model.MinVal).EmptyMessage("Введите целое")) : (Html.Telerik().IntegerTextBoxFor(x => x.IntegerValue).EmptyMessage("Введите целое")))
-            }
-            else
-            {
-                @(Model.IsRestricted ? (Html.Telerik().NumericTextBoxFor(x => x.DoubleValue).MaxValue(Model.MaxVal).MinValue(Model.MinVal).EmptyMessage("Введите число")) : (Html.Telerik().NumericTextBoxFor(x => x.DoubleValue).EmptyMessage("Введите число")))
-            }
-            @*@(Model.IsInteger ? Model.IsRestricted ? (Html.Telerik().IntegerTextBoxFor(x => (int)x.DoubleValue).MaxValue((int)Model.MaxVal).MinValue((int)Model.MinVal).EmptyMessage("Введите число").ToHtmlString()) : (Html.Telerik().IntegerTextBoxFor(x => (int)x.DoubleValue).EmptyMessage("Введите число").ToHtmlString()) :  (Html.Telerik().NumericTextBoxFor(x => x.DoubleValue).MaxValue(Model.MaxVal).MinValue(Model.MinVal).EmptyMessage("Введите число").ToHtmlString()) : (Html.Telerik().NumericTextBoxFor(x => x.DoubleValue).EmptyMessage("Введите число").ToHtmlString());*@
-            break;
+                if (Model.IsInteger)
+                {
+                    @(Model.IsRestricted 
+                        ? (Html.Telerik().IntegerTextBoxFor(x => x.IntegerValue).MaxValue((int)Model.MaxVal).MinValue((int)Model.MinVal).EmptyMessage("Введите целое")) 
+                        : (Html.Telerik().IntegerTextBoxFor(x => x.IntegerValue).EmptyMessage("Введите целое")))
+                }
+                else
+                {
+                    @(Model.IsRestricted 
+                        ? (Html.Telerik().NumericTextBoxFor(x => x.DoubleValue).MaxValue(Model.MaxVal).MinValue(Model.MinVal).EmptyMessage("Введите число")) 
+                        : (Html.Telerik().NumericTextBoxFor(x => x.DoubleValue).EmptyMessage("Введите число")))
+                }
+                break;  
         case FieldTemplateType.String:
-            @Html.EditorFor(x => x.StringValue, new { @class = "stringfield" })
-       break;
+                @Html.EditorFor(x => x.StringValue, new { @class = "stringfield" })
+                break;
         case FieldTemplateType.Calculated:
-            @(Html.TextBox(Model.FieldId.ToString(),Model.DoubleValue, new Dictionary<string, object> { { "readonly", "true" } }))
-            @*@Html.TextBox(x => x.DoubleValue, new Dictionary<string, object> { { "readonly", "true" } })*@
-       break;     
+                @(Html.TextBox(Model.FieldId.ToString(), Model.DoubleValue, new Dictionary<string, object> { { "readonly", "true" } }))
+                break;
+        case FieldTemplateType.Planned:
+                //@(Html.TextBox(Model.FieldId.ToString(), Model.DoubleValue, new Dictionary<string, object> { { "readonly", "true" } }))
+                break;
         default:
-            throw new ArgumentOutOfRangeException();
+                throw new ArgumentOutOfRangeException();
     }
 }

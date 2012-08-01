@@ -24,15 +24,14 @@
 </script>
 <h2>Необходимо начать заполнять документы:</h2>
 @* ReSharper disable ConvertToLambdaExpression *@
-@*@(Html.Telerik().Grid<GroupTemplateListViewModel>()
+@(Html.Telerik().Grid<DocAppointmentListViewModel>()
      .DataBinding(dataBinding => dataBinding.Ajax().Select("_UserGroupTeplatesList", "UserDocument", new {  }))
-        .Name("GroupTemplateListGrid")
-                .ClientEvents(events => events.OnRowDataBound("onGroupTemplateListGridRowDataBound"))
+            .Name("GroupDocAppointmentListGrid")
                    .Columns(columns =>
                    {
                        columns.AutoGenerate(column =>
                        {
-                           if (column.Member == "ID" || column.Member == "DocTemplateName" || column.Member == "UserGroupName" || column.Member == "Status" ||column.Member == "IsRed")
+                           if (column.Member == "ID" || column.Member == "IsRed")
                                column.Visible = false;
                        });
                        columns.Command(command =>
@@ -46,13 +45,12 @@
                  .Sortable()
                 .Pageable()
 
-    ) *@
+    ) 
 @* ReSharper restore ConvertToLambdaExpression *@
 <h2>Список документов</h2>
 
 @(Html.Telerik().Grid<DocumentListViewModel>()
     .DataBinding(dataBinding => dataBinding.Ajax().Select("_UserDocumentsList", "UserDocument", new { }))
-        .ClientEvents(events => events.OnRowDataBound("onDocumentListGridRowDataBound"))
         .Name("DocumentListGrid")
                    .Columns(columns =>
                    {

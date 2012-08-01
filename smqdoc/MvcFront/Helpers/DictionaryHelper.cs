@@ -120,27 +120,37 @@ namespace MvcFront.Helpers
                             {
                                 case 0:
                                     {
-                                        retVal = "Редактируемый";
+                                        retVal = "Редактируемый (План)";
                                         break;
                                     }
                                 case 1:
                                     {
-                                        retVal = "Отправлен на рассмотрение";
+                                        retVal = "Отправлен на рассмотрение (План)";
                                         break;
                                     }
                                 case 2:
                                     {
-                                        retVal = "Одобрен";
+                                        retVal = "Редактируемый (Факт)";
                                         break;
                                     }
                                 case 3:
+                                    {
+                                        retVal = "Отправлен на рассмотрение (Факт)";
+                                        break;
+                                    }
+                                case 4:
+                                    {
+                                        retVal = "Одобрен";
+                                        break;
+                                    }
+                                case 5:
                                     {
                                         retVal = "Удален";
                                         break;
                                     }
                             }
-                            
-                         break;   
+
+                            break;
                         }
                     case "DocAppointmentStatus":
                         {
