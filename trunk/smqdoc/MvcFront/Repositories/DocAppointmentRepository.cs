@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using MvcFront.DB;
 using MvcFront.Enums;
 using MvcFront.Interfaces;
@@ -16,14 +14,14 @@ namespace MvcFront.Repositories
             _unitOfWork = unitOfWork;
         }
 
-        public IQueryable<DocAppointment> GetAllUserDocAppointments()
+        public IQueryable<DocAppointment> GetAllUserDocAppointments(long accountId)
         {
-            throw new NotImplementedException();
+            return _unitOfWork.DbModel.DocAppointments.Where(x => x.UserGroup == null && x.UserAccount != null && x.UserAccount_userid == accountId);
         }
 
         public IQueryable<DocAppointment> GetAllGroupDocAppointments(long groupId)
         {
-           return _unitOfWork.DbModel.DocAppointments.Where(x => x.UserGroup != null && x.UserGroup.usergroupid == groupId);
+            return _unitOfWork.DbModel.DocAppointments.Where(x => x.UserGroup != null && x.UserAccount == null && x.UserGroup.usergroupid == groupId);
         }
 
         public DocAppointment GetDocAppointmentById(long id)

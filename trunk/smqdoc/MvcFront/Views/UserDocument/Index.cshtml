@@ -4,28 +4,11 @@
 @{
     ViewBag.Title = "Index";
 }
-<script type="text/javascript">
-    function onDocumentListGridRowDataBound(e) {
-        if (e.dataItem.IsReadOnly > 0) {
-            $(e.row).find('a.t-grid-EditDetails').remove(); 
-            $(e.row).find('a.t-grid-DeleteDetails').remove();
-        }
-        if(e.dataItem.IsRed > 0) {
-            $(e.row).css("color","red");
-        }
-    }
-</script>
-<script type="text/javascript">
-    function onGroupTemplateListGridRowDataBound(e) {
-        if (e.dataItem.IsRed > 0) {
-            $(e.row).css("color", "red");
-        }
-    }
-</script>
 <h2>Необходимо начать заполнять документы:</h2>
 @* ReSharper disable ConvertToLambdaExpression *@
 @(Html.Telerik().Grid<DocAppointmentListViewModel>()
      .DataBinding(dataBinding => dataBinding.Ajax().Select("_UserGroupTeplatesList", "UserDocument", new {  }))
+         .ClientEvents(events => events.OnRowDataBound("onGroupDocAppointmentListGridRowDataBound"))
             .Name("GroupDocAppointmentListGrid")
                    .Columns(columns =>
                    {
@@ -52,6 +35,7 @@
 @(Html.Telerik().Grid<DocumentListViewModel>()
     .DataBinding(dataBinding => dataBinding.Ajax().Select("_UserDocumentsList", "UserDocument", new { }))
         .Name("DocumentListGrid")
+                .ClientEvents(events => events.OnRowDataBound("onDocumentListGridRowDataBound"))
                    .Columns(columns =>
                    {
                        columns.AutoGenerate(column =>
@@ -78,3 +62,21 @@
                 .Filterable()
 
     ) 
+    <script type="text/javascript">
+        function onDocumentListGridRowDataBound(e) {
+            if (e.dataItem.IsReadOnly > 0) {
+                $(e.row).find('a.t-grid-EditDetails').remove();
+                $(e.row).find('a.t-grid-DeleteDetails').remove();
+            }
+            if (e.dataItem.IsRed > 0) {
+                $(e.row).css("color", "red");
+            }
+        }
+    </script>
+    <script type="text/javascript">
+        function onGroupDocAppointmentListGridRowDataBound(e) {
+            if (e.dataItem.IsRed > 0) {
+                $(e.row).css("color", "red");
+            }
+        }
+    </script>
