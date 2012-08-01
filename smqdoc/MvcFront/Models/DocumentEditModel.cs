@@ -37,13 +37,9 @@ namespace MvcFront.Models
             DocumentId = templ.documentid;
             Name = templ.DocAppointment.Name;
             LastEditDate = templ.LastEditDate;
-            LastComment = templ.LastComment;
+            LastComment = string.IsNullOrWhiteSpace(templ.LastComment) ? "-" : templ.LastComment;
             DocumentStatusText = templ.DocStatusText;
             Fields = templ.DocFields.OrderBy(x => x.FieldTemplate.OrderNumber).ToList().ConvertAll(DocFieldEditModel.FieldToModelConverter).ToList();
-        }
-        public static DocumentEditModel DocumentToModelConverter(Document templ)
-        {
-            return new DocumentEditModel(templ);
         }
 
     }

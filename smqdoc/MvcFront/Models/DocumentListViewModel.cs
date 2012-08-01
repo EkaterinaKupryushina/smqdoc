@@ -43,7 +43,7 @@ namespace MvcFront.Models
             DocumentId = templ.documentid;
             Name = templ.DocAppointment.Name;
             LastEditDate = templ.LastEditDate;
-            LastComment = templ.LastComment;
+            LastComment = string.IsNullOrWhiteSpace(templ.LastComment) ? "-" : templ.LastComment;
             DocumentStatusText = templ.DocStatusText;
             IsReadOnly = templ.DocStatus != DocumentStatus.PlanEditing && templ.DocStatus != DocumentStatus.FactEditing;
             DateEnd = (templ.DocStatus == DocumentStatus.PlanEditing || templ.DocStatus == DocumentStatus.PlanSended) && templ.DocAppointment.PlanedEndDate.HasValue
