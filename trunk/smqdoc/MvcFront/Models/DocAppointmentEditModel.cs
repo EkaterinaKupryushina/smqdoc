@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using MvcFront.DB;
@@ -6,7 +7,7 @@ using MvcFront.Enums;
 
 namespace MvcFront.Models
 {
-    public class DocAppointmentEditModel
+    public class DocAppointmentEditModel :IValidatableObject
     {
         public long DocAppointmentId { get; set; }
         public long DocTemplateId { get; set; }
@@ -46,7 +47,7 @@ namespace MvcFront.Models
             ActualStartDate = entity.ActualStartDate;
             ActualEndDate = entity.ActualEndDate;
             NeedPlanDates = entity.DocTemplate.FieldTeplates.Any(x => x.FiledType == (int)FieldTemplateType.Planned);
-            PlanedEndDate = entity.PlanedEndDate.HasValue ? entity.PlanedEndDate.Value : DateTime.Now;
+            PlanedEndDate = entity.PlanedEndDate.HasValue ? entity.PlanedEndDate.Value : DateTime.Now.AddDays(1);
             PlanedStartDate = entity.PlanedStartDate.HasValue ? entity.PlanedStartDate.Value : DateTime.Now;
         }
 
@@ -61,6 +62,25 @@ namespace MvcFront.Models
 
             entity.DocTemplate_docteplateid = DocTemplateId;
             return entity;
+        }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (ActualStartDate > ActualEndDate)
+            {
+                yield return new ValidationResult("Проверьте период заполнения фактических значений");
+            }
+            if(NeedPlanDates)
+            {
+                if (PlanedStartDate > PlanedEndDate)
+                {
+                    yield return new ValidationResult("Проверьте период заполнения плинируемых значений");
+                }
+                if (PlanedEndDate> ActualStartDate)
+                {
+                    yield return new ValidationResult("Проверьте период заполнения плинируемых и фактических значений");
+                }
+            }
         }
     }
 }
