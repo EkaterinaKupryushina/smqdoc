@@ -1,50 +1,5 @@
-﻿@using MvcFront.DB
-@model MvcFront.Models.DocumentEditModel
+﻿@model MvcFront.Models.DocumentEditModel
 
-<script type="text/javascript">
-    function RecalcAll() {
-        var SElems = $('input[calcoper=1]');
-        for (var i = 0; i < SElems.length; i++) {
-            CalcSummValue(SElems[i]);
-        }
-        var MElems = $('input[calcoper=2]');
-        for (var i = 0; i < MElems.length; i++) {
-            CalcMulValue(SElems[i]);
-        }
-    }
-    function CalcSummValue(elem) {
-        var targetInput = $(elem);
-        targetInput.val('0');
-        var ids = targetInput.attr('calcids').split(';');
-        for(var i =0;i<ids.length;i++) {
-            if(ids[i].length != 0) {
-                var elem = $('input[docFieldId=' + ids[i] + ']');
-                if (elem != null && !isNaN(parseFloat(elem.val()))) {
-                    targetInput.val(parseFloat(targetInput.val()) + parseFloat(elem.val()));
-                }
-            }
-        }
-    }
-    function CalcMulValue(elem) {
-        var targetInput = $(elem);
-        targetInput.val('1');
-        var ids = targetInput.attr('calcids').split(';');
-        for (var i = 0; i < ids.length; i++) {
-            if (ids[i].length != 0) {
-                var elem = $('input[docFieldId=' + ids[i] + ']');
-                if (elem != null && !isNaN(parseFloat(elem.val()))) {
-                    targetInput.val(parseFloat(targetInput.val()) * parseFloat(elem.val()));
-                }
-            }
-        }
-    }
-
-    $(document).ready(function () {
-        $('input[docFieldId]').change(function () {
-            RecalcAll();
-        });
-    });
-</script>
 @{
     ViewBag.Title = "Document";
 }
@@ -69,15 +24,15 @@
         @Html.DisplayFor(model => model.LastComment)
     </div>
 
- <table id="FieldsTable" style="width: 100%">
-        <tr><th>Наименование</th><th>Значение</th></tr>
-        @{
-            for (int i = 0; i < Model.Fields.Count(); i++)
-            {
-                <tr>
-                    <td>@Model.Fields[i].FieldName</td>
-                    <td>@Html.EditorFor(x => x.Fields[i]) </td>
-                </tr>
-            }
+<table id="FieldsTable" style="width: 100%">
+    <tr><th>Наименование</th><th>Значение</th></tr>
+    @{
+        for (int i = 0; i < Model.Fields.Count(); i++)
+        {
+            <tr>
+                <td>@Model.Fields[i].FieldName</td>
+                <td>@Html.EditorFor(x => x.Fields[i]) </td>
+            </tr>
         }
-    </table>
+    }
+</table>

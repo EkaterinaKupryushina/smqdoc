@@ -1,4 +1,5 @@
-﻿@model MvcFront.Models.DocAppointmentEditModel
+﻿@using Telerik.Web.Mvc.UI
+@model MvcFront.Models.DocAppointmentEditModel
 
     <legend>Назначение документа</legend>
 
@@ -47,12 +48,12 @@
     @Html.DisplayFor(model => model.NeedPlanDates)
 </div>
 
-<script type="text/javascript">
-    $(document).ready(function () {
+@{ Html.Telerik().ScriptRegistrar().OnDocumentReady(
+    @<text>
         if ($("#NeedPlanDates").is(":checked")) {
             $("#PlannedBlockId").show();
         } else {
             $("#PlannedBlockId").hide();
         }
-    })
-</script>
+    </text>);
+}

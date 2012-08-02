@@ -53,12 +53,12 @@
 <div class="editor-field NeedPlanDates">
     @Html.DisplayFor(model => model.NeedPlanDates)
 </div>
-<script type="text/javascript">
-    $(document).ready(function () {
-        if ($(".NeedPlanDates > input").is(":checked")) {
+@{ Html.Telerik().ScriptRegistrar().OnDocumentReady(
+    @<text>
+       if ($(".NeedPlanDates > input").is(":checked")) {
             $("#PlannedBlockId").show();
         } else {
             $("#PlannedBlockId").hide();
-        }
-    })
-</script>
+        };
+    </text>);
+}

@@ -72,7 +72,7 @@ namespace MvcFront.Models
         {
             FieldId = item.docfieldid;
             FieldName = item.FieldTemplate.FieldName;
-            FieldType = item.FieldTemplate.FiledType;
+            
             
             if(item.FieldTemplate.TemplateType == FieldTemplateType.Planned)
             {
@@ -82,7 +82,7 @@ namespace MvcFront.Models
                 MinVal = factItem.MinVal;
                 OrderNumber = factItem.OrderNumber;
                 IsInteger = factItem.Integer.HasValue && factItem.Integer.Value;
-
+                FieldType = factItem.FiledType;
                 IsReadOnly = item.Document.DocStatus != DocumentStatus.PlanEditing;
             }
             else
@@ -92,7 +92,7 @@ namespace MvcFront.Models
                 MinVal = item.FieldTemplate.MinVal;
                 OrderNumber = item.FieldTemplate.OrderNumber;
                 IsInteger = item.FieldTemplate.Integer.HasValue && item.FieldTemplate.Integer.Value;
-
+                FieldType = item.FieldTemplate.FiledType;
                 IsReadOnly = item.FieldTemplate.PlanFieldTemplates != null
                                         && item.Document.DocStatus != DocumentStatus.FactEditing;
             }
@@ -141,7 +141,7 @@ namespace MvcFront.Models
                     item.DoubleValue = DoubleValue;
                     break;
                 case FieldTemplateType.Planned:
-                    switch (item.FieldTemplate.TemplateType)
+                    switch ((FieldTemplateType)FieldType)
                     {
                         case FieldTemplateType.Bool:
                              item.BoolValue = BoolValue;

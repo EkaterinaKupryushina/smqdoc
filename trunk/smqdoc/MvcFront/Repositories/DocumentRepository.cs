@@ -34,8 +34,8 @@ namespace MvcFront.Repositories
         public IQueryable<Document> GetUserDocuments(long id, DocumentStatus? status = null)
         {
             return status.HasValue
-                ? _unitOfWork.DbModel.Documents.Where(x => x.UserAccount_userid == id && x.Status == (int)status && x.DocAppointment.Status != (int)DocAppointmentStatus.Deleted)
-                : _unitOfWork.DbModel.Documents.Where(x => x.UserAccount_userid == id && x.DocAppointment.Status != (int)DocAppointmentStatus.Deleted);
+                ? _unitOfWork.DbModel.Documents.Where(x => x.UserAccount_userid == id && x.Status == (int)status && x.DocAppointment.Status != (int)DocAppointmentStatus.Deleted && x.DocAppointment.DocTemplate.Status != (int)DocTemplateStatus.Deleted)
+                : _unitOfWork.DbModel.Documents.Where(x => x.UserAccount_userid == id && x.DocAppointment.Status != (int)DocAppointmentStatus.Deleted && x.DocAppointment.DocTemplate.Status != (int)DocTemplateStatus.Deleted);
         }
 
         public Document SaveDocument(Document entity)

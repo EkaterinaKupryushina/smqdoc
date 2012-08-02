@@ -71,8 +71,9 @@
     @Html.ActionLink("Редактировать", "Edit", new { id=Model.docteplateid }) |
     @Html.ActionLink("Отмена", "Index")
 </p>
-<script type="text/javascript">
-    function onComplete(e) {
+@{ Html.Telerik().ScriptRegistrar().OnDocumentReady(
+    @<text>
+          function onComplete(e) {
         if (e.name == "DeleteDetails" || e.name == "DownDetails" || e.name == "UpDetails") {
             var grid = $('#FieldTeplateListGrid').data("tGrid");
             if (grid != null) {
@@ -80,4 +81,5 @@
             }
         }
     }
-</script>
+    </text>);
+}

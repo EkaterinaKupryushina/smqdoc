@@ -50,8 +50,9 @@
 
       ) 
       
-      <script type="text/javascript">
-          function onComplete(e) {
+      @{ Html.Telerik().ScriptRegistrar().OnDocumentReady(
+    @<text>
+        function onComplete(e) {
               if (e.name == "ChangeStateDetails") {
                   var grid = $('#DocTemplateListGrid').data("tGrid");
                   if (grid != null) {
@@ -59,4 +60,5 @@
                   }
               }
           }
-</script>
+    </text>);
+}

@@ -118,13 +118,14 @@
     </div>
     <div class="editor-field">
         @(Html.Telerik().DropDownListFor(x => x.FactFieldTemplateId).ClientEvents(events => events.OnLoad("onFactLoad"))
-               .DataBinding(binding => binding.Ajax().Select("_FactFieldTemplatesList", "DocTemplateList", new { docTemplID = Model.DocTemplateId, factFieldId = Model.FactFieldTemplateId}))
+           .DataBinding(binding => binding.Ajax().Select("_FactFieldTemplatesList", "DocTemplateList", new { docTemplID = Model.DocTemplateId, factFieldId = Model.FactFieldTemplateId}))
               )
     </div>
 </div>
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('#IntBlockId').hide();
+
+@{ Html.Telerik().ScriptRegistrar().OnDocumentReady(
+    @<text>
+           $('#IntBlockId').hide();
         $('#RestictId').hide();
         $('#PlannedBlockId').hide();
         FieldType_onChange();
@@ -140,10 +141,8 @@
             } else {
                 $('#RestictId').hide();
             }
-        });
-    });
-
-    function FieldType_onChange() {
+         });
+          function FieldType_onChange() {
         var ddl = $('#FieldType').data('tDropDownList');
         if (ddl.value() == 1) {
             $('#IntBlockId').show();
@@ -189,4 +188,5 @@
     function onFactLoad(e) {
         $(this).data('tDropDownList').fill();
     }
-</script>
+    </text>);
+}
