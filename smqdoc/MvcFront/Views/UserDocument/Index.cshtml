@@ -34,9 +34,10 @@
                 .Filterable()
 
     ) 
-
-<script type="text/javascript">
-    function onDocumentListGridRowDataBound(e) {
+    
+    @{ Html.Telerik().ScriptRegistrar().OnDocumentReady(
+    @<text>
+        function onDocumentListGridRowDataBound(e) {
         if (e.dataItem.IsReadOnly > 0) {
             $(e.row).find('a.t-grid-EditDetails').remove();
             $(e.row).find('a.t-grid-DeleteDetails').remove();
@@ -45,4 +46,5 @@
             $(e.row).css("color", "red");
         }
     }
-    </script>
+    </text>);
+    }
