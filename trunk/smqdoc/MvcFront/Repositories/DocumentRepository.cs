@@ -34,8 +34,8 @@ namespace MvcFront.Repositories
         public IQueryable<Document> GetUserDocuments(long id, DocumentStatus? status = null)
         {
             return status.HasValue
-                ? _unitOfWork.DbModel.Documents.Where(x => x.UserAccount_userid == id && x.Status == (int)status && x.DocAppointment.Status == (int)DocAppointmentStatus.Active)
-                : _unitOfWork.DbModel.Documents.Where(x => x.UserAccount_userid == id && x.DocAppointment.Status == (int)DocAppointmentStatus.Active);
+                ? _unitOfWork.DbModel.Documents.Where(x => x.UserAccount_userid == id && x.Status == (int)status && x.DocAppointment.Status != (int)DocAppointmentStatus.Deleted)
+                : _unitOfWork.DbModel.Documents.Where(x => x.UserAccount_userid == id && x.DocAppointment.Status != (int)DocAppointmentStatus.Deleted);
         }
 
         public Document SaveDocument(Document entity)
@@ -76,7 +76,10 @@ namespace MvcFront.Repositories
                 var doc = new Document
                               {
                                   UserAccount_userid = userId, 
-                                  DocAppointment_docappointmentid = docAppointmentId
+                                  DocAppointment_docappointmentid = docAppointmentId,
+                                  Status = docAppointment.DocTemplate.IsPlanneble 
+                                        ? (int)DocumentStatus.PlanEditing
+                                        : (int)DocumentStatus.FactEditing
                               };
                 doc = SaveDocument(doc);
                 foreach (var fieldTempl in docAppointment.DocTemplate.FieldTeplates)

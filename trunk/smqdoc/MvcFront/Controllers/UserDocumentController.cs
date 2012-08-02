@@ -35,7 +35,7 @@ namespace MvcFront.Controllers
         /// Страница документов пользователя
         /// </summary>
         /// <returns></returns>
-        public ActionResult UserDocuments()
+        public ActionResult UserDocAppointments()
         {
             return View();
         }
@@ -51,6 +51,36 @@ namespace MvcFront.Controllers
             return View(_documentRepository.GetDocumentById(id));
         }
 
+        /// <summary>
+        /// Отключение заполнения формы
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActionResult DisableDocAppointment(long id)
+        {
+            return View(new DocAppointmentEditModel(_appointmentRepository.GetDocAppointmentById(id)));
+        }
+
+        /// <summary>
+        /// Отключение заполнения формы
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="collection"> </param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult DisableDocAppointment(long id, FormCollection collection)
+        {
+            try
+            {
+                _appointmentRepository.ChangeDocAppointmentState(id);
+
+                return RedirectToAction("UserDocAppointments");
+            }
+            catch
+            {
+                return View();
+            }
+        }
         /// <summary>
         /// Выбор шаблона для создания назначения документа
         /// </summary>
@@ -98,7 +128,6 @@ namespace MvcFront.Controllers
                 {
                     throw new Exception("Проверьте введенные данные");
                 }
-                //TODO redirect to edit
                 return RedirectToAction("CreateDocument", new { id = docAppId }); ;
             }
             catch
@@ -173,7 +202,9 @@ namespace MvcFront.Controllers
                 }
                 _documentRepository.SaveDocument(doc);
                 if (Request.Form["send"] != null)
-                    _documentRepository.ChangeDocumentStatus(doc.documentid, doc.DocStatus == DocumentStatus.PlanEditing ? DocumentStatus.PlanSended : DocumentStatus.FactSended);
+                    _documentRepository.ChangeDocumentStatus(doc.documentid, doc.DocStatus == 
+                        DocumentStatus.PlanEditing 
+                        ? DocumentStatus.PlanSended : DocumentStatus.FactSended);
                 return RedirectToAction("Index");
             }
             catch
@@ -208,13 +239,12 @@ namespace MvcFront.Controllers
         {
             var sessData = SessionHelper.GetUserSessionData(Session);
             var allUserGroupDocs =
-                _documentRepository.GetUserDocuments(sessData.UserId).Where(x => x.Status != (int)DocumentStatus.Deleted && x.DocAppointment.UserGroup_usergroupid == sessData.UserGroupId)
+                _documentRepository.GetUserDocuments(sessData.UserId).Where(x => x.Status != (int)DocumentStatus.Deleted 
+                    && x.DocAppointment.UserGroup_usergroupid == sessData.UserGroupId)
                     .Select(x => x.DocAppointment_docappointmentid).ToList();
 
             var data = _appointmentRepository.GetAllGroupDocAppointments(sessData.UserGroupId)
-                .Where(x => (x.PlanedStartDate <= DateTime.Now || x.ActualStartDate <= DateTime.Now)
-                && x.DocTemplate.Status == (int)DocTemplateStatus.Active && x.Status == (int)DocAppointmentStatus.Active
-                && !allUserGroupDocs.Contains(x.docappointmentid))
+                .Where(x => !allUserGroupDocs.Contains(x.docappointmentid))
                 .ToList().ConvertAll(DocAppointmentListViewModel.DocAppointmentToModelConverter).ToList();
             return View(new GridModel<DocAppointmentListViewModel> { Data = data });
         }
@@ -224,18 +254,16 @@ namespace MvcFront.Controllers
         /// </summary>
         /// <returns></returns>
         [GridAction]
-        public ActionResult _UserDocAppointList()
+        public ActionResult _UserDocAppointmentList()
         {
             var sessData = SessionHelper.GetUserSessionData(Session);
             var allUserGroupDocs =
-                _documentRepository.GetAll().Where(x => x.UserAccount_userid == sessData.UserId && x.Status != (int)DocumentStatus.Deleted
-                    && x.DocAppointment.UserGroup_usergroupid == sessData.UserGroupId)
+                _documentRepository.GetUserDocuments(sessData.UserId).Where(x => x.Status != (int)DocumentStatus.Deleted
+                    && x.DocAppointment.UserAccount_userid == sessData.UserId)
                     .Select(x => x.DocAppointment_docappointmentid).ToList();
 
             var data = _appointmentRepository.GetAllUserDocAppointments(sessData.UserId)
-                .Where(x => (x.PlanedStartDate <= DateTime.Now || x.ActualStartDate <= DateTime.Now)
-                && x.DocTemplate.Status == (int)DocTemplateStatus.Active && x.Status == (int)DocAppointmentStatus.Active
-                && ((!allUserGroupDocs.Contains(x.docappointmentid) && !x.DocTemplate.DocTemplatesForUser.AllowManyInstances) || x.DocTemplate.DocTemplatesForUser.AllowManyInstances))
+                .Where(x => ((!allUserGroupDocs.Contains(x.docappointmentid) && !x.DocTemplate.DocTemplatesForUser.AllowManyInstances) || x.DocTemplate.DocTemplatesForUser.AllowManyInstances))
                 .ToList().ConvertAll(DocAppointmentListViewModel.DocAppointmentToModelConverter).ToList();
             return View(new GridModel<DocAppointmentListViewModel> { Data = data });
         }
