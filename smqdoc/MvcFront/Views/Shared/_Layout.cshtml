@@ -55,8 +55,8 @@
                                    @* <li>@Html.ActionLink("Документы группы", "GroupDocumentsList", "DocumentAppointment",new {id=0},null)</li>*@
                                    break;
                                 case UserProfileTypes.Groupuser:
-                                    <li>@Html.ActionLink("Документы для заполнения", "Index", "UserDocument")</li>
-                                    <li>@Html.ActionLink("Документы", "UserDocuments", "UserDocument")</li>
+                                    <li>@Html.ActionLink("Документы", "Index", "UserDocument")</li>
+                                    <li>@Html.ActionLink("Документы для заполнения", "UserDocAppointments", "UserDocument")</li>    
                                    break;
                                 case UserProfileTypes.User:
                                    break;

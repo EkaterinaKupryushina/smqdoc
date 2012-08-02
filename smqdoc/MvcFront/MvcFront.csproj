@@ -602,16 +602,17 @@
     <Content Include="Views\UserGroupList\Create.cshtml" />
     <Content Include="Views\UserGroupList\Edit.cshtml" />
     <Content Include="Views\UserGroupList\GroupUsersManagment.cshtml" />
-    <Content Include="Views\UserDocument\Index.cshtml" />
+    <Content Include="Views\UserDocument\UserDocAppointments.cshtml" />
     <Content Include="Views\UserDocument\EditDocument.cshtml" />
     <Content Include="Views\UserAccountList\TagsUserManagement.cshtml" />
     <Content Include="Views\UserTagsList\Index.cshtml" />
     <Content Include="Views\UserTagsList\Create.cshtml" />
     <Content Include="Views\UserTagsList\Edit.cshtml" />
     <Content Include="Views\UserTagsList\Delete.cshtml" />
-    <Content Include="Views\UserDocument\UserDocuments.cshtml" />
+    <Content Include="Views\UserDocument\Index.cshtml" />
     <Content Include="Views\UserDocument\SelectDocTemplate.cshtml" />
     <Content Include="Views\UserDocument\CreateUserAppointment.cshtml" />
+    <Content Include="Views\UserDocument\DisableDocAppointment.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ELW.Library.Math\ELW.Library.Math.csproj">

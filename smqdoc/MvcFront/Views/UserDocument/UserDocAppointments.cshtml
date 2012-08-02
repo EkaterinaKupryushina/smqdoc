@@ -1,0 +1,67 @@
+﻿@using Telerik.Web.Mvc.UI
+@using MvcFront.Models
+@{
+    ViewBag.Title = "Index";
+}
+<h2>Необходимо начать заполнять документы:</h2>
+
+<h3>Назначенные вашей группе документы:</h3>
+@(Html.Telerik().Grid<DocAppointmentListViewModel>()
+     .DataBinding(dataBinding => dataBinding.Ajax().Select("_GroupDocAppointList", "UserDocument", new {  }))
+             .ClientEvents(events => events.OnRowDataBound("onGroupDocAppointmentListGridRowDataBound"))
+            .Name("GroupDocAppointmentListGrid")
+                   .Columns(columns =>
+                   {
+                       columns.AutoGenerate(column =>
+                       {
+                           if (column.Member == "ID" || column.Member == "IsRed")
+                               column.Visible = false;
+                       });
+                       columns.Command(command => command.Custom("CreateDetails").Text("Начать заполнение")
+                                                      .DataRouteValues(route => route.Add(o => o.ID).RouteKey("id"))
+                                                      .Action("CreateDocument", "UserDocument")
+                                                      .HtmlAttributes(new { style = "text-align: center" })).Width(40);
+                   })
+                 .Sortable()
+                .Pageable()
+
+    ) 
+    
+<h3>Личные назначения документы:</h3>
+@(Html.Telerik().Grid<DocAppointmentListViewModel>()
+             .DataBinding(dataBinding => dataBinding.Ajax().Select("_UserDocAppointmentList", "UserDocument", new { }))
+             .ClientEvents(events => events.OnRowDataBound("onGroupDocAppointmentListGridRowDataBound"))
+            .Name("UserDocAppointmentListGrid")
+                   .Columns(columns =>
+                   {
+                       columns.AutoGenerate(column =>
+                       {
+                           if (column.Member == "ID" || column.Member == "IsRed")
+                               column.Visible = false;
+                       });
+                       columns.Command(command =>
+                                           {
+                                               command.Custom("CreateDetails").Text("Начать заполнение")
+                                                   .DataRouteValues(route => route.Add(o => o.ID).RouteKey("id"))
+                                                   .Action("CreateDocument", "UserDocument")
+                                                   .HtmlAttributes(new {style = "text-align: center"});
+                                               command.Custom("DisableDocAppointmentDetails").Text("Отключить заполнение")
+                                                   .DataRouteValues(route => route.Add(o => o.ID).RouteKey("id"))
+                                                   .Action("DisableDocAppointment", "UserDocument")
+                                                   .HtmlAttributes(new { style = "text-align: center" });
+                                           }).Width(40);
+                   })
+                 .Sortable()
+                .Pageable()
+
+      ) 
+<br/>
+@Html.ActionLink("Добавить назначение", "SelectDocTemplate")
+<script type="text/javascript">
+    function onGroupDocAppointmentListGridRowDataBound(e) {
+        if (e.dataItem.IsRed > 0) {
+            $(e.row).css("color", "red");
+        }
+    }
+</script>
+  

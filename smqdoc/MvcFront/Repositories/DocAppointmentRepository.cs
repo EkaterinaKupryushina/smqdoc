@@ -16,12 +16,14 @@ namespace MvcFront.Repositories
 
         public IQueryable<DocAppointment> GetAllUserDocAppointments(long accountId)
         {
-            return _unitOfWork.DbModel.DocAppointments.Where(x => x.UserGroup == null && x.UserAccount != null && x.UserAccount_userid == accountId);
+            return _unitOfWork.DbModel.DocAppointments.Where(x => x.UserGroup == null && x.UserAccount != null && x.UserAccount_userid == accountId && (x.PlanedStartDate <= DateTime.Now || x.ActualStartDate <= DateTime.Now)
+                && x.DocTemplate.Status == (int)DocTemplateStatus.Active && x.Status == (int)DocAppointmentStatus.Active);
         }
 
         public IQueryable<DocAppointment> GetAllGroupDocAppointments(long groupId)
         {
-            return _unitOfWork.DbModel.DocAppointments.Where(x => x.UserGroup != null && x.UserAccount == null && x.UserGroup.usergroupid == groupId);
+            return _unitOfWork.DbModel.DocAppointments.Where(x => x.UserGroup != null && x.UserAccount == null && x.UserGroup_usergroupid == groupId && (x.PlanedStartDate <= DateTime.Now || x.ActualStartDate <= DateTime.Now)
+                && x.DocTemplate.Status == (int)DocTemplateStatus.Active && x.Status == (int)DocAppointmentStatus.Active);
         }
 
         public DocAppointment GetDocAppointmentById(long id)

@@ -1,0 +1,18 @@
+﻿@model MvcFront.Models.DocAppointmentEditModel
+
+@{
+    ViewBag.Title = "Disable";
+}
+
+<h2>Отключение заполнения</h2>
+Вы действительно желаете отключить заполнение данной формы?
+(Вы больше не сможете создать документ на основе данного назначение, но документы остнутся активны)
+<fieldset>
+@Html.DisplayForModel()
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" value="Отключить" /> |
+        @Html.ActionLink("Отмена", "UserDocAppointments")
+    </p>
+}
