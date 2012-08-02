@@ -23,7 +23,21 @@ namespace MvcFront.Models
         
         [Display(Name = "Тип поля")]
         public int FieldType { get; set; }
-        
+
+        [Display(Name = "Поле ограничено?")]
+        public bool IsRestricted { get; set; }
+
+        [Display(Name = "Поле Целое?")]
+        public bool IsInteger { get; set; }
+
+        [Display(Name = "Максимальное значение")]
+        [DataType("Number")]
+        public double? MaxVal { get; set; }
+
+        [DataType("Number")]
+        [Display(Name = "Минимальное значение")]
+        public double? MinVal { get; set; }
+
         [Display(Name = "Значение")]
         [DataType(DataType.MultilineText)]
         [Required]
@@ -38,25 +52,14 @@ namespace MvcFront.Models
         [DataType("Number")]
         [Required]
         public int? IntegerValue { get; set; }
-        
-        [Display(Name = "Поле ограничено?")]
-        public bool IsRestricted { get; set; }
-        
-        [Display(Name = "Поле Целое?")]
-        public bool IsInteger { get; set; }
-        
-        [Display(Name = "Максимальное значение")]
-        [DataType("Number")]
-        public double? MaxVal { get; set; }
-        
-        [DataType("Number")]
-        [Display(Name = "Минимальное значение")]
-        public double? MinVal { get; set; }
-        
+
         [Display(Name = "Значение")]
         [Required]
         public bool BoolValue { get; set; }
 
+        [Display(Name = "IsEditable")]
+        [UIHint("Hidden")]
+        public bool IsReadOnly { get; set; }
 
         public DocFieldEditModel()
         {
@@ -64,27 +67,48 @@ namespace MvcFront.Models
             BoolValue = false;
             DoubleValue = 0;
         }
+
         public DocFieldEditModel(DocField item)
         {
             FieldId = item.docfieldid;
             FieldName = item.FieldTemplate.FieldName;
             FieldType = item.FieldTemplate.FiledType;
-            IsRestricted = item.FieldTemplate.Restricted.HasValue && item.FieldTemplate.Restricted.Value;
-            MaxVal = item.FieldTemplate.MaxVal;
-            MinVal = item.FieldTemplate.MinVal;
+            
+            if(item.FieldTemplate.TemplateType == FieldTemplateType.Planned)
+            {
+                var factItem = item.FieldTemplate.FactFieldTemplate;
+                IsRestricted = factItem.Restricted.HasValue && factItem.Restricted.Value;
+                MaxVal = factItem.MaxVal;
+                MinVal = factItem.MinVal;
+                OrderNumber = factItem.OrderNumber;
+                IsInteger = factItem.Integer.HasValue && factItem.Integer.Value;
+
+                IsReadOnly = item.Document.DocStatus != DocumentStatus.PlanEditing;
+            }
+            else
+            {
+                IsRestricted = item.FieldTemplate.Restricted.HasValue && item.FieldTemplate.Restricted.Value;
+                MaxVal = item.FieldTemplate.MaxVal;
+                MinVal = item.FieldTemplate.MinVal;
+                OrderNumber = item.FieldTemplate.OrderNumber;
+                IsInteger = item.FieldTemplate.Integer.HasValue && item.FieldTemplate.Integer.Value;
+
+                IsReadOnly = item.FieldTemplate.PlanFieldTemplates != null
+                                        && item.Document.DocStatus != DocumentStatus.FactEditing;
+            }
+
             StringValue = item.StringValue;
             BoolValue = item.BoolValue ?? false;
             DoubleValue = item.DoubleValue;
-            OrderNumber = item.FieldTemplate.OrderNumber;
-            IsInteger = item.FieldTemplate.Integer.HasValue && item.FieldTemplate.Integer.Value;
             if(IsInteger && item.DoubleValue.HasValue)
             {
                 IntegerValue = (int) item.DoubleValue.Value;
             }
         }
+
         public DocField Update(DocField item, Document doc = null)
         {
-            switch ((FieldTemplateType)FieldType)
+            switch (item.FieldTemplate.TemplateType)
             {
                 case FieldTemplateType.Bool:
                     item.BoolValue = BoolValue;
@@ -115,6 +139,44 @@ namespace MvcFront.Models
                     item.BoolValue = null;
                     item.StringValue = null;
                     item.DoubleValue = DoubleValue;
+                    break;
+                case FieldTemplateType.Planned:
+                    switch (item.FieldTemplate.TemplateType)
+                    {
+                        case FieldTemplateType.Bool:
+                             item.BoolValue = BoolValue;
+                             item.StringValue = null;
+                             item.DoubleValue = null;
+                            break;
+                        case FieldTemplateType.Number:
+                             item.BoolValue = null;
+                             item.StringValue = null;
+                             if (item.FieldTemplate.Integer.HasValue && item.FieldTemplate.Integer.Value)
+                             {
+                                 item.DoubleValue = IntegerValue;
+                             }
+                             else
+                             {
+                                item.DoubleValue = DoubleValue;
+                             }
+                            break;
+                        case FieldTemplateType.String:
+                             item.BoolValue = null;
+                             item.StringValue = StringValue;
+                             item.DoubleValue = null;
+                            break;
+                        case FieldTemplateType.Calculated:
+                             if (doc != null)
+                             {
+                                 DoubleValue = CalculateValue(doc, item);
+                             }
+                             item.BoolValue = null;
+                             item.StringValue = null;
+                             item.DoubleValue = DoubleValue;
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
