@@ -61,34 +61,33 @@
     @Html.ActionLink("Редактировать", "Edit", new { id=Model.userid }) |
     @Html.ActionLink("Отмена", "Index")
 </p>
-@{ Html.Telerik().ScriptRegistrar().OnDocumentReady(
-    @<text>
-      function onComplete(e) {
-    if (e.name == "DeleteTag") {
-        if (e.response.result) {
-           // alert("Метка удалена");
-        } else {
-            alert("Произошла ошибка при удалении метки!");
+<script type="text/javascript">
+    function onComplete(e) {
+        if (e.name == "DeleteTag") {
+            if (e.response.result) {
+                // alert("Метка удалена");
+            } else {
+                alert("Произошла ошибка при удалении метки!");
+            }
+            var grid = $('#UserTagsListGrid').data("tGrid");
+            if (grid != null) {
+                grid.rebind();
+            }
         }
-        var grid = $('#UserTagsListGrid').data("tGrid");
-        if (grid != null) {
-            grid.rebind();
-        }
-    }
 
-}
-function ShowAddTagWindow() {
-    var addWindow = $("#AddUserTagWindow").data("tWindow");
-    addWindow.center().open();
-}
-function SendRequest() {
-    var tagId = $("#addingUserTag").data('tComboBox').value();
-    if(isNaN( parseInt( tagId ) ))
+    }
+    function ShowAddTagWindow() {
+        var addWindow = $("#AddUserTagWindow").data("tWindow");
+        addWindow.center().open();
+    }
+    function SendRequest() {
+        var tagId = $("#addingUserTag").data('tComboBox').value();
+        if(isNaN( parseInt( tagId ) ))
         {alert("Необходимо выбрать метку!"); return;}
-    $.ajax({
-        type: "POST",
-        url: "../AddUserTag",
-        data: "userId="+ @Model.userid +"&tagId="+tagId,
+        $.ajax({
+            type: "POST",
+            url: "../AddUserTag",
+            data: "userId="+ @Model.userid +"&tagId="+tagId,
         success: function () {
            var grid = $('#UserTagsListGrid').data("tGrid");
         if (grid != null) {
@@ -99,5 +98,4 @@ function SendRequest() {
         }
     });
 }
-    </text>);
-}
+</script>

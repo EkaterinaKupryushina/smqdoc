@@ -17,6 +17,7 @@
                           .Combined(true)
                           .Compress(true))
           )
+    <script type="text/javascript" src='@Url.Content("~/Scripts/2012.1.214/jquery-1.7.1.min.js")'></script>
 </head>
 <body>
     <div class="page">
@@ -70,7 +71,7 @@
         <div id="footer">
         </div>
     </div>
-       @( Html.Telerik().ScriptRegistrar()
+       @( Html.Telerik().ScriptRegistrar().jQuery(false)
               .DefaultGroup(group => group
                                          .Add("telerik.all.min.js")
                                          .Add("~/Scripts/jquery.watermark.min.js")

@@ -10,20 +10,19 @@
     @Html.DisplayForModel()
     <div class="display-label">
         Поля Формы</div>
-    
     @{
         if (Model.IsEditable)
         {
-            @Html.ActionLink("Добавить поле", "AddField", new { id = Model.docteplateid })
+        @Html.ActionLink("Добавить поле", "AddField", new { id = Model.docteplateid })
         }
         else
         {   
-            <div class="display-label">
-                <span style="color: red;">Для выбранной формы уже заполнены документы. Редактирование невозможно.</span>
-            </div>
+        <div class="display-label">
+            <span style="color: red;">Для выбранной формы уже заполнены документы. Редактирование
+                невозможно.</span>
+        </div>
         }
     }
-
     @(Html.Telerik().Grid<FieldTemplateListViewModel>()
            .DataBinding(dataBinding => dataBinding.Ajax().Select("_FieldTemplateList", "DocTemplateList", new { templId = Model.docteplateid }))
            .Name("FieldTeplateListGrid")
@@ -68,12 +67,11 @@
           )
 </fieldset>
 <p>
-    @Html.ActionLink("Редактировать", "Edit", new { id=Model.docteplateid }) |
+    @Html.ActionLink("Редактировать", "Edit", new { id = Model.docteplateid }) |
     @Html.ActionLink("Отмена", "Index")
 </p>
-@{ Html.Telerik().ScriptRegistrar().OnDocumentReady(
-    @<text>
-          function onComplete(e) {
+<script type="text/javascript">
+    function onComplete(e) {
         if (e.name == "DeleteDetails" || e.name == "DownDetails" || e.name == "UpDetails") {
             var grid = $('#FieldTeplateListGrid').data("tGrid");
             if (grid != null) {
@@ -81,5 +79,4 @@
             }
         }
     }
-    </text>);
-}
+</script>

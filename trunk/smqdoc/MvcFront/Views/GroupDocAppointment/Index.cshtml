@@ -46,8 +46,7 @@
 
     ) 
       
-      @{ Html.Telerik().ScriptRegistrar().OnDocumentReady(
-    @<text>
+<script type="text/javascript">
        function onComplete(e) {
               if (e.name == "ChangeStateDetails") {
                   var grid = $('#GroupDocAppintmentListGrid').data("tGrid");
@@ -56,5 +55,4 @@
                   }
               }
           }
-    </text>);
-}
+</script>

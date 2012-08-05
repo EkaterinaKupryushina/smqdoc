@@ -23,7 +23,7 @@
         item.Add().Text("Число").Value("1").Selected(@Model.FieldType == 1);
         item.Add().Text("Строка").Value("2").Selected(@Model.FieldType == 2);
         item.Add().Text("Вычислимое").Value("3").Selected(@Model.FieldType == 3);
-        if(Model.CanBePlaned) {item.Add().Text("Планируемое").Value("4").Selected(@Model.FieldType == 4);}
+        if (Model.CanBePlaned) { item.Add().Text("Планируемое").Value("4").Selected(@Model.FieldType == 4); }
     }).ClientEvents(events => events.OnChange("FieldType_onChange"))
     @Html.ValidationMessageFor(model => model.FieldType)
 </div>
@@ -70,7 +70,7 @@
         @(Html.Telerik().Grid<MvcFront.Models.FieldTemplateListViewModel>()
            .DataBinding(dataBinding => dataBinding.Ajax().Select("_FieldTemplateListNotUsedForCalc", "DocTemplateList", new { docTemplID = Model.DocTemplateId, fieldTemplId = Model.FieldTemplateId }))
            .Name("NotAddedFieldTemplatesListGrid")
-                  
+
            .ClientEvents(events => events.OnComplete("onComplete"))
            .HtmlAttributes(new { style = Model.FieldTemplateId > 0 ? "display: block; " : "display: none; " })
            .Columns(columns =>
@@ -88,7 +88,6 @@
                                                            .HtmlAttributes(new { style = "text-align: center" })).Width(160);
                         })
               )
-
         <br />
         @(Html.Telerik().Grid<MvcFront.Models.FieldTemplateListViewModel>()
            .DataBinding(dataBinding => dataBinding.Ajax().Select("_FieldTemplateListUsedForCalc", "DocTemplateList", new { docTemplID = Model.DocTemplateId, fieldTemplId = Model.FieldTemplateId }))
@@ -114,18 +113,17 @@
 </div>
 <div id="PlannedBlockId">
     <div class="editor-label">
-        @Html.LabelFor(model => model.FactFieldTemplateId) 
+        @Html.LabelFor(model => model.FactFieldTemplateId)
     </div>
     <div class="editor-field">
         @(Html.Telerik().DropDownListFor(x => x.FactFieldTemplateId).ClientEvents(events => events.OnLoad("onFactLoad"))
-           .DataBinding(binding => binding.Ajax().Select("_FactFieldTemplatesList", "DocTemplateList", new { docTemplID = Model.DocTemplateId, factFieldId = Model.FactFieldTemplateId}))
+           .DataBinding(binding => binding.Ajax().Select("_FactFieldTemplatesList", "DocTemplateList", new { docTemplID = Model.DocTemplateId, factFieldId = Model.FactFieldTemplateId }))
               )
     </div>
 </div>
-
-@{ Html.Telerik().ScriptRegistrar().OnDocumentReady(
-    @<text>
-           $('#IntBlockId').hide();
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#IntBlockId').hide();
         $('#RestictId').hide();
         $('#PlannedBlockId').hide();
         FieldType_onChange();
@@ -135,14 +133,15 @@
         } else {
             $('#RestictId').hide();
         }
-        $('#IsRestricted').click(function () {
+        $('#IsRestricted').click(function() {
             if ($('#IsRestricted').is(':checked')) {
                 $('#RestictId').show();
             } else {
                 $('#RestictId').hide();
             }
-         });
-          function FieldType_onChange() {
+        });
+    });
+    function FieldType_onChange() {
         var ddl = $('#FieldType').data('tDropDownList');
         if (ddl.value() == 1) {
             $('#IntBlockId').show();
@@ -153,7 +152,7 @@
         }
 
         if (ddl.value() == 3) {
-            if('@(Model.FieldTemplateId > 0)' != 'False') {
+            if ('@(Model.FieldTemplateId > 0)' != 'False') {
                 $('#CalcBlockId').show();
             }
             $('#IntBlockId').hide();
@@ -161,7 +160,7 @@
         } else {
             $('#CalcBlockId').hide();
         }
-        
+
         if (ddl.value() == 4) {
             $('#PlannedBlockId').show();
             $('#CalcBlockId').hide();
@@ -188,5 +187,4 @@
     function onFactLoad(e) {
         $(this).data('tDropDownList').fill();
     }
-    </text>);
-}
+</script>

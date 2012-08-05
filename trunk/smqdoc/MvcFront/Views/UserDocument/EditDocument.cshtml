@@ -19,10 +19,8 @@
 </p>
 }
 
-@{ Html.Telerik().ScriptRegistrar().OnDocumentReady(
-    @<text>
-         $(document).ready(function () {
-              $(".multi-line").watermark("Введите текст");
-          });
-    </text>);
-}     
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".multi-line").watermark("Введите текст");
+    });
+</script>

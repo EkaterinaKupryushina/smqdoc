@@ -32,11 +32,11 @@
                  .Sortable()
                 .Pageable()
                 .Filterable()
+                )
 
-    ) 
-    
-    @{ Html.Telerik().ScriptRegistrar().OnDocumentReady(
-    @<text>
+                
+<script type="text/javascript">
+
         function onDocumentListGridRowDataBound(e) {
         if (e.dataItem.IsReadOnly > 0) {
             $(e.row).find('a.t-grid-EditDetails').remove();
@@ -46,5 +46,4 @@
             $(e.row).css("color", "red");
         }
     }
-    </text>);
-    }
+    </script>

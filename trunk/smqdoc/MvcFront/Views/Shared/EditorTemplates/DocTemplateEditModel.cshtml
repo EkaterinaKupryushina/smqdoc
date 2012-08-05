@@ -1,5 +1,4 @@
-﻿@using Telerik.Web.Mvc.UI
-@model MvcFront.Models.DocTemplateEditModel
+﻿@model MvcFront.Models.DocTemplateEditModel
 <legend>Формы документа</legend>
 @Html.HiddenFor(model => model.DocTemplateId)
 <div class="display-label">@Html.LabelFor(model => model.DocTemplateName)</div>
@@ -21,17 +20,16 @@
         @Html.EditorFor(model => model.AllowMultyDocs)
     </div>
 </div>
-@{ Html.Telerik().ScriptRegistrar().OnDocumentReady(
-    @<text>
-          shMultyUse();
-         $("#AllowUserUse").click(shMultyUse);
-         
-         function shMultyUse() {
+<script type="text/javascript">
+    $(document).ready(function() {
+        shMultyUse();
+        $("#AllowUserUse").click(shMultyUse);
+    });
+    function shMultyUse() {
         if ($("#AllowUserUse").is(':checked')) {
             $("#AllowMulty").show();
         } else {
             $("#AllowMulty").hide();
         }
     }
-    </text>);
-}
+</script>
