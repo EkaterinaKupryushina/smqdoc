@@ -48,12 +48,12 @@
     @Html.DisplayFor(model => model.NeedPlanDates)
 </div>
 
-@{ Html.Telerik().ScriptRegistrar().OnDocumentReady(
-    @<text>
+<script type="text/javascript">
+    $(document).ready(function() {
         if ($("#NeedPlanDates").is(":checked")) {
             $("#PlannedBlockId").show();
         } else {
             $("#PlannedBlockId").hide();
         }
-    </text>);
-}
+    });
+</script>

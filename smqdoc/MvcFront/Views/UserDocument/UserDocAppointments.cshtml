@@ -58,12 +58,10 @@
 <br/>
 @Html.ActionLink("Добавить назначение", "SelectDocTemplate")
 
-@{ Html.Telerik().ScriptRegistrar().OnDocumentReady(
-    @<text>
-           function onGroupDocAppointmentListGridRowDataBound(e) {
-        if (e.dataItem.IsRed > 0) {
-            $(e.row).css("color", "red");
+<script type="text/javascript">
+        function onGroupDocAppointmentListGridRowDataBound(e) {
+            if (e.dataItem.IsRed > 0) {
+                $(e.row).css("color", "red");
+            }
         }
-    }
-    </text>);
-}
+</script>

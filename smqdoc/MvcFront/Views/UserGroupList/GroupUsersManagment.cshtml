@@ -77,34 +77,33 @@
     @Html.ActionLink("Отмена", "Index")
 </p>
 
-@{ Html.Telerik().ScriptRegistrar().OnDocumentReady(
-    @<text>
-       function onComplete(e) {
-    if (e.name == "DeleteDetails") {
-        if (e.response.result) {
-            alert("Пользователь удален из группы");
-        } else {
-            alert("Пользователь НЕ удален из группы. Произошла ошибка.");
+<script type="text/javascript">
+    function onComplete(e) {
+        if (e.name == "DeleteDetails") {
+            if (e.response.result) {
+                alert("Пользователь удален из группы");
+            } else {
+                alert("Пользователь НЕ удален из группы. Произошла ошибка.");
+            }
+            var grid = $('#UserAccountListGrid').data("tGrid");
+            if (grid != null) {
+                grid.rebind();
+            }
         }
-        var grid = $('#UserAccountListGrid').data("tGrid");
-        if (grid != null) {
-            grid.rebind();
-        }
-    }
 
-}
-function ShowAddUserWindow() {
-    var addWindow = $("#AddUserWindow").data("tWindow");
-    addWindow.center().open();
-}
-function SendRequest() {
-    var userid = $("#addingUser").data('tComboBox').value();
-    if(isNaN( parseInt( userid ) ))
+    }
+    function ShowAddUserWindow() {
+        var addWindow = $("#AddUserWindow").data("tWindow");
+        addWindow.center().open();
+    }
+    function SendRequest() {
+        var userid = $("#addingUser").data('tComboBox').value();
+        if(isNaN( parseInt( userid ) ))
         {alert("Стоит выбрать пользователя!"); return;}
-    $.ajax({
-        type: "POST",
-        url: "../AddUser",
-        data: "groupId="+@Model.usergroupid+"&userId="+userid,
+        $.ajax({
+            type: "POST",
+            url: "../AddUser",
+            data: "groupId="+@Model.usergroupid+"&userId="+userid,
         success: function () {
            var grid = $('#UserAccountListGrid').data("tGrid");
         if (grid != null) {
@@ -115,5 +114,4 @@ function SendRequest() {
         }
     });
 }
-    </text>);
-}
+    </script>
