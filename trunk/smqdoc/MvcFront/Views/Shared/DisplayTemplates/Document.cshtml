@@ -1,12 +1,11 @@
-﻿@using MvcFront.Enums
-@model MvcFront.DB.Document
+﻿@model MvcFront.DB.Document
 
 <legend>@Html.DisplayFor(model => model.DocAppointment.Name)</legend>
 
-    @*<div class="display-label">@Html.LabelFor(model => model.DocumentName)</div>
+<div class="display-label">Владелец</div>
 <div class="display-field">
-    @Html.DisplayFor(model => model.DocumentName)
-</div>*@
+    @Html.DisplayFor(model => model.UserAccount.FullName)
+</div>
 
 <div class="display-label">@Html.LabelFor(model => model.DocAppointment.Name)</div>
 <div class="display-field">

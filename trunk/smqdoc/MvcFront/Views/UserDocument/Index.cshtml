@@ -13,7 +13,7 @@
                        columns.AutoGenerate(column =>
                        {
                            column.Width = "150px";
-                           if (column.Member == "DocumentId" || column.Member == "IsReadOnly" || column.Member == "IsRed")
+                           if (column.Member == "DocumentId" || column.Member == "IsReadOnly" || column.Member == "IsRed" || column.Member == "Owner")
                                column.Visible = false;
                        });
                        columns.Command(command =>
