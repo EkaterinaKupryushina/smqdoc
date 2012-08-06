@@ -45,19 +45,19 @@
                                     <li>@Html.ActionLink("Формы", "Index", "DocTemplateList")</li>
                                     break;
                                 case UserProfileTypes.Groupmanager:
+                                    <li>@Html.ActionLink("Документы группы", "Index", "ManagerDocument")</li>
                                     <li>@Html.ActionLink("Формы группы", "Index", "GroupDocAppointment")</li>
-                                   @* <li>@Html.ActionLink("Документы группы", "GroupDocumentsList", "DocumentAppointment",new {id=0},null)</li>*@
-                                    break;
+                                   break;
                                 case UserProfileTypes.Groupuser:
                                     <li>@Html.ActionLink("Документы", "Index", "UserDocument")</li>
                                     <li>@Html.ActionLink("Документы для заполнения", "UserDocAppointments", "UserDocument")</li>    
-                                    break;
+                                   break;
                                 case UserProfileTypes.User:
-                                    break;
+                                   break;
                                 case UserProfileTypes.Anonymous:
-                                    break;
+                                   break;
                                 default:
-                                    throw new ArgumentOutOfRangeException();
+                                   throw new ArgumentOutOfRangeException();
                             }
                         }
                     }

@@ -8,13 +8,13 @@ namespace MvcFront.DB
     [MetadataType(typeof(DocumentMetadata))]
     public partial class Document
     {
-        [Display(Name="Статус документа")]
+        [Display(Name="Статус")]
         public DocumentStatus DocStatus
         {
             get { return (DocumentStatus) Status; }
             set { Status = (int)value; }
         }
-        [Display(Name = "Статус документа")]
+        [Display(Name = "Статус")]
         public string DocStatusText
         {
             get { return DictionaryHelper.GetEnumText(typeof(DocumentStatus), Status); }
@@ -31,13 +31,13 @@ namespace MvcFront.DB
         [Display(Name = "Дата создания")]
         [Required]
         public DateTime CreationDate { get; set; }
-        [Display(Name = "Дата последнего изменения")]
+        [Display(Name = "Последнее изменение")]
         [Required]
         public DateTime LastEditDate { get; set; }
         [Display(Name = "Код статуса")]
         [Required]
         public Int32 Status { get; set; }
-        [Display(Name = "Послений коментарий")]
+        [Display(Name = "Последний коментарий")]
         [DataType(DataType.MultilineText)]
         public String LastComment { get; set; }
         // ReSharper restore InconsistentNaming

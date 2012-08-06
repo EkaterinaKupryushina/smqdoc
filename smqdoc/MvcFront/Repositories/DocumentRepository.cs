@@ -10,11 +10,13 @@ namespace MvcFront.Repositories
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IDocAppointmentRepository _appointmentRepository;
+        private readonly IUserGroupRepository _userGroupRepository;
 
-        public DocumentRepository(IUnitOfWork unitOfWork, IDocAppointmentRepository appointmentRepository)
+        public DocumentRepository(IUnitOfWork unitOfWork, IDocAppointmentRepository appointmentRepository, IUserGroupRepository userGroupRepository)
         {
             _unitOfWork = unitOfWork;
             _appointmentRepository = appointmentRepository;
+            _userGroupRepository = userGroupRepository;
         }
 
         public IQueryable<Document> GetAll()
@@ -36,6 +38,30 @@ namespace MvcFront.Repositories
             return status.HasValue
                 ? _unitOfWork.DbModel.Documents.Where(x => x.UserAccount_userid == id && x.Status == (int)status && x.DocAppointment.Status != (int)DocAppointmentStatus.Deleted && x.DocAppointment.DocTemplate.Status != (int)DocTemplateStatus.Deleted)
                 : _unitOfWork.DbModel.Documents.Where(x => x.UserAccount_userid == id && x.DocAppointment.Status != (int)DocAppointmentStatus.Deleted && x.DocAppointment.DocTemplate.Status != (int)DocTemplateStatus.Deleted);
+        }
+
+        public IQueryable<Document> GetGroupDocuments(long id, DocumentStatus? status = null)
+        {
+            return status.HasValue
+                ? _unitOfWork.DbModel.Documents.Where(x => x.DocAppointment.UserGroup_usergroupid == id && x.Status == (int)status && x.DocAppointment.Status != (int)DocAppointmentStatus.Deleted && x.DocAppointment.DocTemplate.Status != (int)DocTemplateStatus.Deleted)
+                : _unitOfWork.DbModel.Documents.Where(x => x.DocAppointment.UserGroup_usergroupid == id && x.DocAppointment.Status != (int)DocAppointmentStatus.Deleted && x.DocAppointment.DocTemplate.Status != (int)DocTemplateStatus.Deleted);
+        }
+
+        /// <summary>
+        /// Возвращает User  документы по id группы по его Id
+        /// </summary>
+        /// <param name="id">GroupId</param>
+        /// <param name="status"> </param>
+        /// <returns></returns>
+        public IQueryable<Document> GetUserDocumentsByGroupId(int id, DocumentStatus? status = null)
+        {
+            var query = status.HasValue
+                ? _unitOfWork.DbModel.Documents.Where(x => x.Status == (int)status && x.DocAppointment.Status != (int)DocAppointmentStatus.Deleted && x.DocAppointment.DocTemplate.Status != (int)DocTemplateStatus.Deleted)
+                : _unitOfWork.DbModel.Documents.Where(x =>  x.DocAppointment.Status != (int)DocAppointmentStatus.Deleted && x.DocAppointment.DocTemplate.Status != (int)DocTemplateStatus.Deleted);
+
+            var groupUserIds = _userGroupRepository.GetById(id).Members.Select(x => x.userid);
+
+            return query.Where(x => groupUserIds.Contains(x.UserAccount_userid));
         }
 
         public Document SaveDocument(Document entity)

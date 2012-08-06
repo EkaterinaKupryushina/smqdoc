@@ -12,16 +12,19 @@ namespace MvcFront.Models
         [UIHint("Hidden")]
         public long DocumentId { get; set; }
         
-        [Display(Name = "Название документа")]
+        [Display(Name = "Название")]
         public string Name { get; set; }
         
-        [Display(Name = "Статус документа")]
+        [Display(Name = "Статус")]
         public string DocumentStatusText { get; set; }
         
         [Display(Name = "Последний комментарий")]
         public string LastComment { get; set; }
-        
-        [Display(Name = "Дата последнего изменения")]
+
+        [Display(Name = "Владелец")]
+        public string Owner { get; set; }
+
+        [Display(Name = "Последнее изменение")]
         public DateTime LastEditDate { get; set; }
         
         [Display(Name = "Окончание заполенния")]
@@ -38,6 +41,7 @@ namespace MvcFront.Models
         public DocumentListViewModel()
         {
         }
+
         public DocumentListViewModel(Document templ)
         {
             DocumentId = templ.documentid;
@@ -50,6 +54,7 @@ namespace MvcFront.Models
                           ? templ.DocAppointment.PlanedEndDate.Value
                           : templ.DocAppointment.ActualEndDate;
             IsRed = DateTime.Now.AddDays(SmqSettings.Instance.DocumentsDedlineWarning) >= DateEnd;
+            Owner = templ.UserAccount.FullName;
         }
         public static DocumentListViewModel DocumentToModelConverter(Document templ)
         {
