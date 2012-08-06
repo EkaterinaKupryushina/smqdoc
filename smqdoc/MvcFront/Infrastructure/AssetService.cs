@@ -19,18 +19,19 @@ namespace MvcFront.Infrastructure
         /// Содает новый asset (создает запись в базе и файл на диске)
         /// </summary>
         /// <param name="file"></param>
-        /// <param name="name"></param>
         /// <param name="folderId"></param>
-        public void CreateNewAsset(HttpPostedFile file, string name, int folderId)
+        /// <param name="comment"></param>
+        public void CreateNewAsset(HttpPostedFileBase file, int folderId, string comment)
         {
             var newFileName = string.Format("{0}_{1}", DateTime.Now.ToString("ssmmHHMMddyyyy"), file.FileName);
-            file.SaveAs(VirtualPathUtility.Combine(SmqSettings.Instance.AssetFolder, newFileName));
+            file.SaveAs(Path.Combine(SmqSettings.Instance.AssetFolder, newFileName));
             var asset = new Asset
                             {
                                 assetid = 0, 
-                                Name = name, 
+                                Name = Path.GetFileName(file.FileName), 
                                 FileName = newFileName, 
-                                AssetFolder_assetfolderid = folderId
+                                AssetFolder_assetfolderid = folderId,
+                                Comment = comment
                             };
             _assetRepository.SaveAsset(asset);
         }
@@ -54,7 +55,7 @@ namespace MvcFront.Infrastructure
             {
                 try
                 {
-                    var assFile = new FileInfo(VirtualPathUtility.Combine(SmqSettings.Instance.AssetFolder, asset.FileName));
+                    var assFile = new FileInfo(Path.Combine(SmqSettings.Instance.AssetFolder, asset.FileName));
                     assFile.Delete();
                 }
                 catch (Exception)

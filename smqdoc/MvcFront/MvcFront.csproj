@@ -611,6 +611,8 @@
     <Content Include="Views\Library\CreateAssetFolder.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\AssetFolderEditModel.cshtml" />
     <Content Include="Views\Library\EditAssetFolder.cshtml" />
+    <Content Include="Views\Library\CreateAsset.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\AssetEditModel.cshtml" />
     <None Include="Views\UserAccountList\ChangeState.cshtml" />
     <Content Include="Views\UserGroupList\Index.cshtml" />
     <Content Include="Views\UserGroupList\Delete.cshtml" />
