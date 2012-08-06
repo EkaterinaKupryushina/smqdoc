@@ -116,6 +116,7 @@
     <Compile Include="Controllers\DictionaryController.cs" />
     <Compile Include="Controllers\GroupDocAppointmentController.cs" />
     <Compile Include="Controllers\DocTemplateListController.cs" />
+    <Compile Include="Controllers\LibraryController.cs" />
     <Compile Include="Controllers\ManagerDocumentController.cs" />
     <Compile Include="Controllers\UserDocumentController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -148,10 +149,12 @@
     <Compile Include="Helpers\CalculationHelper.cs" />
     <Compile Include="Helpers\DictionaryHelper.cs" />
     <Compile Include="Helpers\SessionHelper.cs" />
+    <Compile Include="Infrastructure\AssetService.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
     <Compile Include="Infrastructure\SmqSecurityFilter.cs" />
     <Compile Include="Infrastructure\SmqSettings.cs" />
     <Compile Include="Infrastructure\UnitOfWork.cs" />
+    <Compile Include="Interfaces\IAssetRepository.cs" />
     <Compile Include="Interfaces\IDocAppointmentRepository.cs" />
     <Compile Include="Interfaces\IDocTemplateRepository.cs" />
     <Compile Include="Interfaces\IDocumentRepository.cs" />
@@ -159,6 +162,10 @@
     <Compile Include="Interfaces\IUserAccountRepository.cs" />
     <Compile Include="Interfaces\IUserGroupRepository.cs" />
     <Compile Include="Interfaces\IUserTagRepository.cs" />
+    <Compile Include="Models\AssetListViewModel.cs" />
+    <Compile Include="Models\AssetEditModel.cs" />
+    <Compile Include="Models\AssetFolderEditModel.cs" />
+    <Compile Include="Models\AssetFolderListViewModel.cs" />
     <Compile Include="Models\DocAppointmentListViewModel.cs" />
     <Compile Include="Models\DocAppointmentEditModel.cs" />
     <Compile Include="Models\DocFieldEditModel.cs" />
@@ -178,6 +185,7 @@
     <Compile Include="Models\UserTagsEditModel.cs" />
     <Compile Include="Models\UserTagsListViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\AssetRepository.cs" />
     <Compile Include="Repositories\DocAppointmentRepository.cs" />
     <Compile Include="Repositories\DocTemplateRepository.cs" />
     <Compile Include="Repositories\DocumentRepository.cs" />
@@ -489,6 +497,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="MediaFolder\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -597,6 +606,11 @@
     <Content Include="Views\Shared\DisplayTemplates\DocAppointmentEditModel.cshtml" />
     <Content Include="Views\ManagerDocument\Index.cshtml" />
     <Content Include="Views\ManagerDocument\ViewDocumentDetails.cshtml" />
+    <Content Include="Views\Library\Index.cshtml" />
+    <Content Include="Views\Library\EditAssetLibrary.cshtml" />
+    <Content Include="Views\Library\CreateAssetFolder.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\AssetFolderEditModel.cshtml" />
+    <Content Include="Views\Library\EditAssetFolder.cshtml" />
     <None Include="Views\UserAccountList\ChangeState.cshtml" />
     <Content Include="Views\UserGroupList\Index.cshtml" />
     <Content Include="Views\UserGroupList\Delete.cshtml" />
@@ -616,6 +630,7 @@
     <Content Include="Views\UserDocument\SelectDocTemplate.cshtml" />
     <Content Include="Views\UserDocument\CreateUserAppointment.cshtml" />
     <Content Include="Views\UserDocument\DisableDocAppointment.cshtml" />
+    <Content Include="WebAppSettings.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ELW.Library.Math\ELW.Library.Math.csproj">

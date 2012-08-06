@@ -1,4 +1,6 @@
-﻿namespace MvcFront.Infrastructure
+﻿using System.Configuration;
+
+namespace MvcFront.Infrastructure
 {
     /// <summary>
     /// Класс хренения настроек и параметров системы
@@ -20,6 +22,11 @@
         {
             get { return _deadlineDays; }
             set { _deadlineDays = value; }
+        }
+
+        public string AssetFolder
+        {
+            get { return ConfigurationManager.AppSettings["AssetFolder"]; }
         }
     }
 }

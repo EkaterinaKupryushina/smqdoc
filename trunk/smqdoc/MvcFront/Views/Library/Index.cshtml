@@ -1,0 +1,70 @@
+﻿@using System.Globalization
+@using MvcFront.Models
+@using Telerik.Web.Mvc.UI
+@using MvcFront.DB
+@model IEnumerable<AssetFolder>
+           
+@{
+    ViewBag.Title = "Библиотека";
+}
+
+<table><tr>
+           <td>
+               <h3>Раздел</h3>
+               @(Html.Telerik().TreeView().ExpandAll(true)
+           .Name("FoldersTreeView")
+           .ClientEvents(events => events.OnSelect("onFolderSelected"))
+           .BindTo(Model, mappings => mappings.For<AssetFolder>(binding => binding
+                                                                               .ItemDataBound((item, category) =>
+                                                                                                  {
+                                                                                                      item.Text = category.Name;
+                                                                                                      item.Value = category.assetfolderid.ToString(CultureInfo.InvariantCulture);
+                                                                                                  })
+                                                                               .Children(category => category.ChildAssetFolders)))
+                     ) 
+           </td>
+           <td>
+               @(Html.Telerik().Grid<AssetListViewModel>()
+                .Name("AssetsListGrid")
+                .DataBinding(dataBinding => dataBinding.Ajax().Select("_AssetsFromFolder", "Library"))
+                .ClientEvents(events => events.OnDataBinding("onGridDataBinding"))
+                   .Columns(columns =>
+                   {
+                       columns.AutoGenerate(column =>
+                       {
+                           column.Width = "150px";
+                           if (column.Member == "AssetId" || column.Member == "FileName")
+                               column.Visible = false;
+                       });
+                       columns.Command(command => command.Custom("viewDownload").Text("Скачать")
+                                                      .DataRouteValues(route => route.Add(o => o.AssetId).RouteKey("assetId"))
+                                                      .Action("Download", "Library")
+                                                      .Ajax(true)
+                                                      .HtmlAttributes(new { style = "text-align: center" })).Width(50);
+                   })
+                           .Scrollable(c => c.Height("500px"))
+                           .Sortable()
+                           .Pageable()
+
+    ) 
+           </td>
+       </tr>
+</table>
+
+<script type="text/javascript">
+
+    var selectedFolder = 0;
+    
+    function onFolderSelected(e) {
+        selectedFolder = $('#FoldersTreeView').data('tTreeView').getItemValue(e.item);
+        var grid = $('#AssetsListGrid').data("tGrid");
+        if (grid != null) {
+            grid.rebind();
+        }
+    }
+    
+    function onGridDataBinding(e) {
+        e.data = { id: selectedFolder };
+    }
+    
+</script>

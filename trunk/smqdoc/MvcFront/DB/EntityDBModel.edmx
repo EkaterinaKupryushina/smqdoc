@@ -16,6 +16,8 @@
     <EntitySet Name="UserTags" EntityType="smqdocModel.Store.UserTags" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="DocAppointments" EntityType="smqdocModel.Store.DocAppointments" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="DocTemplatesForUsers" EntityType="smqdocModel.Store.DocTemplatesForUsers" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Assets" EntityType="smqdocModel.Store.Assets" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="AssetFolders" EntityType="smqdocModel.Store.AssetFolders" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="GroupUsers" EntityType="smqdocModel.Store.GroupUsers" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="UserAccountUserTags" EntityType="smqdocModel.Store.UserAccountUserTags" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="GroupManager" Association="smqdocModel.Store.GroupManager">
@@ -81,6 +83,14 @@
     <AssociationSet Name="DocTemplatesForUserDocTemplate" Association="smqdocModel.Store.DocTemplatesForUserDocTemplate">
       <End Role="DocTemplatesForUser" EntitySet="DocTemplatesForUsers" />
       <End Role="DocTemplate" EntitySet="DocTemplates" />
+    </AssociationSet>
+    <AssociationSet Name="AssetAssetFolder" Association="smqdocModel.Store.AssetAssetFolder">
+      <End Role="Asset" EntitySet="Assets" />
+      <End Role="AssetFolder" EntitySet="AssetFolders" />
+    </AssociationSet>
+    <AssociationSet Name="AssetFolderParentAssetFolder" Association="smqdocModel.Store.AssetFolderParentAssetFolder">
+      <End Role="AssetFolder" EntitySet="AssetFolders" />
+      <End Role="AssetFolder1" EntitySet="AssetFolders" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="UserAccounts">
@@ -196,6 +206,25 @@
     <Property Name="doctemplateforuseid" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="AllowManyInstances" Type="bit" Nullable="false" />
     <Property Name="DocTemplate_docteplateid" Type="bigint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Assets">
+    <Key>
+      <PropertyRef Name="assetid" />
+    </Key>
+    <Property Name="assetid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="LastEditDate" Type="datetime" Nullable="false" />
+    <Property Name="FileName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="AssetFolder_assetfolderid" Type="int" Nullable="false" />
+    <Property Name="Comment" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="AssetFolders">
+    <Key>
+      <PropertyRef Name="assetfolderid" />
+    </Key>
+    <Property Name="assetfolderid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="AssetFolder_assetfolderid" Type="int" Nullable="true" />
   </EntityType>
   <EntityType Name="GroupUsers">
     <Key>
@@ -359,6 +388,30 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="AssetAssetFolder">
+    <End Role="Asset" Type="smqdocModel.Store.Assets" Multiplicity="*" />
+    <End Role="AssetFolder" Type="smqdocModel.Store.AssetFolders" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="AssetFolder">
+        <PropertyRef Name="assetfolderid" />
+      </Principal>
+      <Dependent Role="Asset">
+        <PropertyRef Name="AssetFolder_assetfolderid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="AssetFolderParentAssetFolder">
+    <End Role="AssetFolder" Type="smqdocModel.Store.AssetFolders" Multiplicity="0..1" />
+    <End Role="AssetFolder1" Type="smqdocModel.Store.AssetFolders" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AssetFolder">
+        <PropertyRef Name="assetfolderid" />
+      </Principal>
+      <Dependent Role="AssetFolder1">
+        <PropertyRef Name="AssetFolder_assetfolderid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_GroupUsers_UserGroup">
     <End Role="UserGroup" Type="smqdocModel.Store.UserGroups" Multiplicity="1" />
     <End Role="GroupUsers" Type="smqdocModel.Store.GroupUsers" Multiplicity="*" />
@@ -477,6 +530,16 @@
           <AssociationSet Name="DocTemplatesForUserDocTemplate" Association="smqdocModel.DocTemplatesForUserDocTemplate">
             <End Role="DocTemplatesForUser" EntitySet="DocTemplatesForUsers" />
             <End Role="DocTemplate" EntitySet="DocTemplates" />
+          </AssociationSet>
+          <EntitySet Name="Assets" EntityType="smqdocModel.Asset" />
+          <EntitySet Name="AssetFolders" EntityType="smqdocModel.AssetFolder" />
+          <AssociationSet Name="AssetAssetFolder" Association="smqdocModel.AssetAssetFolder">
+            <End Role="Asset" EntitySet="Assets" />
+            <End Role="AssetFolder" EntitySet="AssetFolders" />
+          </AssociationSet>
+          <AssociationSet Name="AssetFolderParentAssetFolder" Association="smqdocModel.AssetFolderParentAssetFolder">
+            <End Role="AssetFolder" EntitySet="AssetFolders" />
+            <End Role="AssetFolder1" EntitySet="AssetFolders" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="UserAccount">
@@ -771,6 +834,53 @@
             <OnDelete Action="Cascade" />
           </End>
         </Association>
+        <EntityType Name="Asset">
+          <Key>
+            <PropertyRef Name="assetid" />
+          </Key>
+          <Property Type="Int32" Name="assetid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="DateTime" Name="LastEditDate" Nullable="false" />
+          <Property Type="String" Name="FileName" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" />
+          <NavigationProperty Name="AssetFolder" Relationship="smqdocModel.AssetAssetFolder" FromRole="Asset" ToRole="AssetFolder" />
+          <Property Type="Int32" Name="AssetFolder_assetfolderid" Nullable="false" />
+          <Property Type="String" Name="Comment" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AssetFolder">
+          <Key>
+            <PropertyRef Name="assetfolderid" />
+          </Key>
+          <Property Type="Int32" Name="assetfolderid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Assets" Relationship="smqdocModel.AssetAssetFolder" FromRole="AssetFolder" ToRole="Asset" />
+          <Property Type="String" Name="Name" Nullable="false" />
+          <NavigationProperty Name="ChildAssetFolders" Relationship="smqdocModel.AssetFolderParentAssetFolder" FromRole="AssetFolder" ToRole="AssetFolder1" />
+          <NavigationProperty Name="ParentAssetFolder" Relationship="smqdocModel.AssetFolderParentAssetFolder" FromRole="AssetFolder1" ToRole="AssetFolder" />
+          <Property Type="Int32" Name="AssetFolder_assetfolderid" Nullable="true" />
+        </EntityType>
+        <Association Name="AssetAssetFolder">
+          <End Type="smqdocModel.Asset" Role="Asset" Multiplicity="*" />
+          <End Type="smqdocModel.AssetFolder" Role="AssetFolder" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="AssetFolder">
+              <PropertyRef Name="assetfolderid" />
+            </Principal>
+            <Dependent Role="Asset">
+              <PropertyRef Name="AssetFolder_assetfolderid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AssetFolderParentAssetFolder">
+          <End Type="smqdocModel.AssetFolder" Role="AssetFolder" Multiplicity="0..1" />
+          <End Type="smqdocModel.AssetFolder" Role="AssetFolder1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AssetFolder">
+              <PropertyRef Name="assetfolderid" />
+            </Principal>
+            <Dependent Role="AssetFolder1">
+              <PropertyRef Name="AssetFolder_assetfolderid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -900,6 +1010,27 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="Assets">
+      <EntityTypeMapping TypeName="IsTypeOf(smqdocModel.Asset)">
+        <MappingFragment StoreEntitySet="Assets">
+          <ScalarProperty Name="assetid" ColumnName="assetid" />
+          <ScalarProperty Name="LastEditDate" ColumnName="LastEditDate" />
+          <ScalarProperty Name="FileName" ColumnName="FileName" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="AssetFolder_assetfolderid" ColumnName="AssetFolder_assetfolderid" />
+          <ScalarProperty Name="Comment" ColumnName="Comment" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AssetFolders">
+      <EntityTypeMapping TypeName="IsTypeOf(smqdocModel.AssetFolder)">
+        <MappingFragment StoreEntitySet="AssetFolders">
+          <ScalarProperty Name="assetfolderid" ColumnName="assetfolderid" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="AssetFolder_assetfolderid" ColumnName="AssetFolder_assetfolderid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <AssociationSetMapping Name="GroupUsers" TypeName="smqdocModel.GroupUsers" StoreEntitySet="GroupUsers">
       <EndProperty Name="UserGroup">
         <ScalarProperty Name="usergroupid" ColumnName="MemberGroups_usergroupid" />
@@ -943,7 +1074,7 @@
     </Options>
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
-      <Diagram Name="EntityDBModel" ZoomLevel="56">
+      <Diagram Name="EntityDBModel" ZoomLevel="77">
         <EntityTypeShape EntityType="smqdocModel.UserAccount" Width="1.5" PointX="3.75" PointY="0.75" Height="3.7109993489583326" IsExpanded="true" />
         <EntityTypeShape EntityType="smqdocModel.UserGroup" Width="1.5" PointX="8.875" PointY="3" Height="2.5571907552083331" />
         <AssociationConnector Association="smqdocModel.GroupManager">
@@ -1013,6 +1144,18 @@
         <AssociationConnector Association="smqdocModel.DocTemplatesForUserDocTemplate">
           <ConnectorPoint PointX="9.375" PointY="10.653595377604166" />
           <ConnectorPoint PointX="7.375" PointY="10.653595377604166" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="smqdocModel.Asset" Width="1.5" PointX="13.625" PointY="11.125" Height="2.3648893229166656" />
+        <EntityTypeShape EntityType="smqdocModel.AssetFolder" Width="2.5" PointX="15.75" PointY="10.25" Height="2.1725878906249996" />
+        <AssociationConnector Association="smqdocModel.AssetAssetFolder">
+          <ConnectorPoint PointX="15.125" PointY="11.7737939453125" />
+          <ConnectorPoint PointX="15.75" PointY="11.7737939453125" />
+        </AssociationConnector>
+        <AssociationConnector Association="smqdocModel.AssetFolderParentAssetFolder">
+          <ConnectorPoint PointX="16.631249496694711" PointY="12.422587890625" />
+          <ConnectorPoint PointX="16.631249496694711" PointY="12.672587890625" />
+          <ConnectorPoint PointX="17.386310051081733" PointY="12.672587890625" />
+          <ConnectorPoint PointX="17.386310051081733" PointY="12.422587890625" />
         </AssociationConnector>
         </Diagram>
     </Diagrams>
