@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Web;
 using System.Web.Mvc;
 using MvcFront.DB;
@@ -46,7 +47,28 @@ namespace MvcFront.Controllers
         [HttpGet]
         public ActionResult CreateAsset(int id)
         {
-            return View(new AssetEditModel());
+            return View(new AssetEditModel{AssetFolderId = id});
+        }
+
+        /// <summary>
+        /// Создание ассета
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult CreateAsset(AssetEditModel model)
+        {
+            try
+            {
+                if(ModelState.IsValid)
+                {
+                    (new AssetService(_assetRepository)).CreateNewAsset(model.Files.ElementAt(0), model.AssetFolderId,model.Comment);
+                }
+            }
+            catch (Exception)
+            {
+            }
+            return RedirectToAction("EditAssetLibrary");
         }
 
         /// <summary>
@@ -174,7 +196,7 @@ namespace MvcFront.Controllers
                 Inline = false, 
             };
             Response.AppendHeader("Content-Disposition", cd.ToString());
-            return File(VirtualPathUtility.Combine(SmqSettings.Instance.AssetFolder, document.FileName), "application", document.Name);
+            return File(Path.Combine(SmqSettings.Instance.AssetFolder, document.FileName), "application", document.Name);
         }
 
         #region JSon

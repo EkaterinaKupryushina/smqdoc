@@ -1,11 +1,13 @@
 using System;
+using System.Linq;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web;
 using MvcFront.DB;
 
 namespace MvcFront.Models
 {
-    public class AssetEditModel
+    public class AssetEditModel :IValidatableObject
     {
         [Display(Name = "ID")]
         [UIHint("Hidden")]
@@ -21,10 +23,18 @@ namespace MvcFront.Models
 
         [Required]
         [Display(Name = "Ôאיכ")]
-        public HttpPostedFile File { get; set; }
+        public IEnumerable<HttpPostedFileBase> Files { get; set; }
 
         public AssetEditModel()
         {
+        }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if(Files == null || Files.Count() != 1 )
+            {
+                    yield return new ValidationResult("Âûבונטעו פאיכ");
+            }
         }
     }
 }
