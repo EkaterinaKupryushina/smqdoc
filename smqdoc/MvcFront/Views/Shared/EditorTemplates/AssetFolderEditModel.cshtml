@@ -1,0 +1,59 @@
+﻿@using Telerik.Web.Mvc.UI
+@model MvcFront.Models.AssetFolderEditModel
+
+
+        <legend>Папка документов</legend>
+
+
+        @Html.HiddenFor(model => model.AssetFolderId)
+        @Html.ValidationMessageFor(model => model.AssetFolderId)
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Name)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Name)
+            @Html.ValidationMessageFor(model => model.Name)
+        </div>
+        
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IsRootFolder)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.IsRootFolder)
+        </div>
+        
+        <div id="ParentAssetFolderBlock">
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ParentAssetFolderId)
+        </div>
+        <div class="editor-field">
+               @(Html.Telerik().DropDownListFor(x => x.ParentAssetFolderId).ClientEvents(events => events.OnLoad("onParentFoldersLoad"))
+                                            .DataBinding(binding => binding.Ajax().Select("_AssetFoldersList", "Library", new { assetFolderId = Model.AssetFolderId }))
+              )
+            @Html.ValidationMessageFor(model => model.ParentAssetFolderId)
+        </div>
+        </div>
+  
+  <script type="text/javascript">
+      $(document).ready(function () {
+          if ($('#IsRootFolder').is(':checked')) {
+              $('#ParentAssetFolderBlock').hide();
+          } else {
+              $('#ParentAssetFolderBlock').show();
+
+          }
+
+          $('#IsRootFolder').click(function () {
+              if ($('#IsRootFolder').is(':checked')) {
+                  $('#ParentAssetFolderBlock').hide();
+              } else {
+                  $('#ParentAssetFolderBlock').show();
+                
+              }
+          });
+      });
+      
+      function onParentFoldersLoad(e) {
+          $(this).data('tDropDownList').fill();
+      }
+</script>

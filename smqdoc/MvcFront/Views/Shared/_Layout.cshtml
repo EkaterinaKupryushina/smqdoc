@@ -31,8 +31,8 @@
             </div>
             <div id="menucontainer">
                 <ul id="menu">
-                    @*   <li>@Html.ActionLink("Домой", "Index", "Home")</li>*@
                     <li>@Html.ActionLink("Профиль", "Index", "Account")</li>
+                    <li>@Html.ActionLink("Библиотека форм", "Index", "Library")</li>
                     @{
                         var sessState = SessionHelper.GetUserSessionData(Session);
                         if (sessState != null)
@@ -43,7 +43,8 @@
                                     <li>@Html.ActionLink("Пользователи", "Index", "UserAccountList")</li>
                                     <li>@Html.ActionLink("Группы", "Index", "UserGroupList")</li>
                                     <li>@Html.ActionLink("Формы", "Index", "DocTemplateList")</li>
-                                    break;
+                                    <li>@Html.ActionLink("Редактор библиотеки", "EditAssetLibrary", "Library")</li>
+                                   break;
                                 case UserProfileTypes.Groupmanager:
                                     <li>@Html.ActionLink("Документы группы", "Index", "ManagerDocument")</li>
                                     <li>@Html.ActionLink("Формы группы", "Index", "GroupDocAppointment")</li>

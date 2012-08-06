@@ -1,0 +1,15 @@
+﻿@model MvcFront.Models.AssetFolderEditModel
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <fieldset>
+        @Html.EditorForModel()
+    </fieldset>
+         <p>
+                <input type="submit" value="Сохранить" />|
+             @Html.ActionLink("Отмена", "Index")|<br/>
+             @Html.ActionLink("Удалить", "DeleteAssetFolder", new {id = Model.AssetFolderId})
+        </p>
+}
+
+
