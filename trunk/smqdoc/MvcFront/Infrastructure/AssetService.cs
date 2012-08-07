@@ -42,8 +42,8 @@ namespace MvcFront.Infrastructure
         /// <param name="asset"></param>
         public void DeleteAsset(Asset asset)
         {
-            var file = new FileInfo(asset.FileName);
-            file.Delete();
+            var file = new FileInfo(Path.Combine(SmqSettings.Instance.AssetFolder, asset.FileName));
+            file.Delete(); 
             _assetRepository.DeleteAsset(asset.assetid);
            
         }

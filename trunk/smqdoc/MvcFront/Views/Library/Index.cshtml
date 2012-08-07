@@ -39,7 +39,6 @@
                        columns.Command(command => command.Custom("viewDownload").Text("Скачать")
                                                       .DataRouteValues(route => route.Add(o => o.AssetId).RouteKey("assetId"))
                                                       .Action("Download", "Library")
-                                                      .Ajax(true)
                                                       .HtmlAttributes(new { style = "text-align: center" })).Width(50);
                    })
                            .Scrollable(c => c.Height("500px"))

@@ -127,7 +127,7 @@
         $('#RestictId').hide();
         $('#PlannedBlockId').hide();
         FieldType_onChange();
-        //SHMinMax();
+
         if ($('#IsRestricted').is(':checked')) {
             $('#RestictId').show();
         } else {
@@ -142,8 +142,8 @@
         });
     });
     function FieldType_onChange() {
-        var ddl = $('#FieldType').data('tDropDownList');
-        if (ddl.value() == 1) {
+        var ddl = $('#FieldType');
+        if (ddl.val() == 1) {
             $('#IntBlockId').show();
             $('#CalcBlockId').hide();
             $('#PlannedBlockId').hide();
@@ -151,7 +151,7 @@
             $('#IntBlockId').hide();
         }
 
-        if (ddl.value() == 3) {
+        if (ddl.val() == 3) {
             if ('@(Model.FieldTemplateId > 0)' != 'False') {
                 $('#CalcBlockId').show();
             }
@@ -161,7 +161,7 @@
             $('#CalcBlockId').hide();
         }
 
-        if (ddl.value() == 4) {
+        if (ddl.val() == 4) {
             $('#PlannedBlockId').show();
             $('#CalcBlockId').hide();
             $('#IntBlockId').hide();

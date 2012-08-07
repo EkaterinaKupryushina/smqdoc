@@ -27,7 +27,9 @@
                @(Html.Telerik().Grid<AssetListViewModel>()
                 .Name("AssetsListGrid")
                 .DataBinding(dataBinding => dataBinding.Ajax().Select("_AssetsFromFolder", "Library"))
-                .ClientEvents(events => events.OnDataBinding("onGridDataBinding"))
+                                        .ClientEvents(events => events
+                                                    .OnComplete("onGridComplete")
+                                                    .OnDataBinding("onGridDataBinding"))
                    .Columns(columns =>
                    {
                        columns.AutoGenerate(column =>
@@ -38,19 +40,17 @@
                        });
                        columns.Command(command =>
                                            {
+                                               command.Custom("DeleteDetails").Text("Удалить")
+                                                  .DataRouteValues(route => route.Add(o => o.AssetId).RouteKey("id"))
+                                                  .Action("DeleteAsset", "Library")
+                                                  .Ajax(true)
+                                                  .HtmlAttributes(new { style = "text-align: center" });
                                                command.Custom("viewDownload").Text("Скачать")
                                                    .DataRouteValues(route => route.Add(o => o.AssetId).RouteKey("assetId"))
                                                    .Action("Download", "Library")
-                                                   .Ajax(true)
                                                    .HtmlAttributes(new {style = "text-align: center"});
-                                               command.Custom("viewDelete").Text("Удалить")
-                                                   .DataRouteValues(route => route.Add(o => o.AssetId).RouteKey("id"))
-                                                   .Action("DeleteAsset", "Library")
-                                                   .Ajax(true)
-                                                   .HtmlAttributes(new { style = "text-align: center" });
                                            }).Width(50);
                    })
-                           .Scrollable(c => c.Height("500px"))
                            .Sortable()
                            .Pageable()
 
@@ -92,18 +92,31 @@
 </p>
 <script type="text/javascript">
 
-    var selectedFolder = 0;
+    $(document).ready(function () {
+        window.selectedFolder = 0;
+    });
+    window.selectedFolder = 0;
     
-    function onFolderSelected(e) {
-        selectedFolder = $('#FoldersTreeView').data('tTreeView').getItemValue(e.item);
+    function rebindGrid() {
         var grid = $('#AssetsListGrid').data("tGrid");
         if (grid != null) {
             grid.rebind();
         }
     }
+
+    function onFolderSelected(e) {
+        window.selectedFolder = $('#FoldersTreeView').data('tTreeView').getItemValue(e.item);
+        rebindGrid();
+    }
     
     function onGridDataBinding(e) {
-        e.data = { id: selectedFolder };
+        e.data = { id: window.selectedFolder };
+    }
+
+    function onGridComplete(e) {
+        if (e.name == "DeleteDetails") {
+            rebindGrid();
+        }
     }
     
 </script>
