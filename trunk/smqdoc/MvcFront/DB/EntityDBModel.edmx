@@ -1074,76 +1074,92 @@
     </Options>
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
-      <Diagram Name="EntityDBModel" ZoomLevel="77">
-        <EntityTypeShape EntityType="smqdocModel.UserAccount" Width="1.5" PointX="3.75" PointY="0.75" Height="3.7109993489583326" IsExpanded="true" />
-        <EntityTypeShape EntityType="smqdocModel.UserGroup" Width="1.5" PointX="8.875" PointY="3" Height="2.5571907552083331" />
+      <Diagram Name="EntityDBModel" ZoomLevel="60">
+        <EntityTypeShape EntityType="smqdocModel.UserAccount" Width="1.5" PointX="4" PointY="1.625" Height="4.0956022135416656" IsExpanded="true" />
+        <EntityTypeShape EntityType="smqdocModel.UserGroup" Width="1.5" PointX="8.875" PointY="1.25" Height="2.5571907552083331" />
         <AssociationConnector Association="smqdocModel.GroupManager">
-          <ConnectorPoint PointX="8.875" PointY="3.8915486067708329" />
-          <ConnectorPoint PointX="5.25" PointY="3.8915486067708329" />
+          <ConnectorPoint PointX="8.875" PointY="2.7160953776041667" />
+          <ConnectorPoint PointX="7.583333333333333" PointY="2.7160953776041663" />
+          <ConnectorPoint PointX="7.416666666666667" PointY="2.7160953776041667" />
+          <ConnectorPoint PointX="5.5" PointY="2.7160953776041667" />
         </AssociationConnector>
         <AssociationConnector Association="smqdocModel.GroupUsers">
-          <ConnectorPoint PointX="8.875" PointY="4.3998229101562494" />
-          <ConnectorPoint PointX="5.25" PointY="4.3998229101562494" />
+          <ConnectorPoint PointX="8.875" PointY="2.1080476888020834" />
+          <ConnectorPoint PointX="7.583333333333333" PointY="2.1080476888020829" />
+          <ConnectorPoint PointX="7.416666666666667" PointY="2.1080476888020834" />
+          <ConnectorPoint PointX="5.5" PointY="2.1080476888020834" />
         </AssociationConnector>
-        <EntityTypeShape EntityType="smqdocModel.DocTemplate" Width="1.5" PointX="5.875" PointY="8.625" Height="2.3648893229166656" />
-        <EntityTypeShape EntityType="smqdocModel.FieldTemplate" Width="2.125" PointX="2.625" PointY="8.125" Height="4.0956022135416656" />
+        <EntityTypeShape EntityType="smqdocModel.DocTemplate" Width="1.5" PointX="5.75" PointY="10" Height="2.5571907552083335" />
+        <EntityTypeShape EntityType="smqdocModel.FieldTemplate" Width="2.125" PointX="2.5" PointY="9.75" Height="4.0956022135416656" />
         <AssociationConnector Association="smqdocModel.FieldTeplateDocTemplate">
-          <ConnectorPoint PointX="4.75" PointY="9.8074446614583337" />
-          <ConnectorPoint PointX="5.875" PointY="9.8074446614583337" />
+          <ConnectorPoint PointX="4.625" PointY="11.278595377604166" />
+          <ConnectorPoint PointX="5.75" PointY="11.278595377604166" />
         </AssociationConnector>
-        <EntityTypeShape EntityType="smqdocModel.Document" Width="2.5" PointX="5.75" PointY="5.125" Height="2.7494921874999996" />
-        <AssociationConnector Association="smqdocModel.DocumentUserAccount">
-          <ConnectorPoint PointX="5.75" PointY="5.125" />
-          <ConnectorPoint PointX="5.25" PointY="4.65330078125" />
+        <EntityTypeShape EntityType="smqdocModel.Document" Width="2.5" PointX="7.75" PointY="5.625" Height="2.9417936197916656" />
+        <AssociationConnector Association="smqdocModel.DocumentUserAccount" ManuallyRouted="false">
+          <ConnectorPoint PointX="7.75" PointY="6.2040516067708324" />
+          <ConnectorPoint PointX="6.583333333333333" PointY="6.2040516067708316" />
+          <ConnectorPoint PointX="6.416666666666667" PointY="6.2040516067708324" />
+          <ConnectorPoint PointX="5.03125" PointY="6.2040516067708324" />
+          <ConnectorPoint PointX="5.03125" PointY="5.7206022135416656" />
         </AssociationConnector>
-        <EntityTypeShape EntityType="smqdocModel.DocField" Width="2.125" PointX="2.625" PointY="5" Height="2.5571907552083326" />
+        <EntityTypeShape EntityType="smqdocModel.DocField" Width="2.125" PointX="2.375" PointY="6.75" Height="2.5571907552083326" />
         <AssociationConnector Association="smqdocModel.DocFieldDocument">
-          <ConnectorPoint PointX="4.75" PointY="6.3723478776041595" />
-          <ConnectorPoint PointX="5.75" PointY="6.3723478776041595" />
+          <ConnectorPoint PointX="4.5" PointY="7.6583968098958328" />
+          <ConnectorPoint PointX="6.416666666666667" PointY="7.6583968098958319" />
+          <ConnectorPoint PointX="6.583333333333333" PointY="7.6583968098958328" />
+          <ConnectorPoint PointX="7.75" PointY="7.6583968098958328" />
         </AssociationConnector>
         <AssociationConnector Association="smqdocModel.DocFieldFieldTemplate">
-          <ConnectorPoint PointX="3.6875" PointY="7.5571907552083326" />
-          <ConnectorPoint PointX="3.6875" PointY="8.125" />
+          <ConnectorPoint PointX="3.5" PointY="9.3071907552083317" />
+          <ConnectorPoint PointX="3.5" PointY="9.75" />
         </AssociationConnector>
-        <EntityTypeShape EntityType="smqdocModel.ComputableFieldTemplateParts" Width="2.375" PointX="5.5" PointY="11.75" Height="1.9802864583333317" />
+        <EntityTypeShape EntityType="smqdocModel.ComputableFieldTemplateParts" Width="2.375" PointX="5.375" PointY="12.75" Height="1.9802864583333317" />
         <AssociationConnector Association="smqdocModel.ComputableFieldTemplatePartsFieldTemplate">
-          <ConnectorPoint PointX="5.5" PointY="11.985301106770834" />
-          <ConnectorPoint PointX="4.75" PointY="11.985301106770834" />
+          <ConnectorPoint PointX="5.375" PointY="13.297801106770834" />
+          <ConnectorPoint PointX="4.625" PointY="13.297801106770834" />
         </AssociationConnector>
-        <EntityTypeShape EntityType="smqdocModel.UserTags" Width="1.5" PointX="0.625" PointY="0.75" Height="1.59568359375" />
+        <EntityTypeShape EntityType="smqdocModel.UserTags" Width="1.5" PointX="1.75" PointY="1.125" Height="1.59568359375" />
         <AssociationConnector Association="smqdocModel.UserAccountUserTags">
-          <ConnectorPoint PointX="3.75" PointY="1.5478417968750002" />
-          <ConnectorPoint PointX="2.125" PointY="1.5478417968750002" />
+          <ConnectorPoint PointX="4" PointY="2.172841796875" />
+          <ConnectorPoint PointX="3.25" PointY="2.172841796875" />
         </AssociationConnector>
-        <EntityTypeShape EntityType="smqdocModel.DocAppointment" Width="2" PointX="14.625" PointY="5.75" Height="3.7109993489583317" />
-        <AssociationConnector Association="smqdocModel.DocTemplateDocAppointment">
-          <ConnectorPoint PointX="7.375" PointY="9.0429996744791659" />
-          <ConnectorPoint PointX="14.625" PointY="9.0429996744791659" />
+        <EntityTypeShape EntityType="smqdocModel.DocAppointment" Width="2" PointX="13.375" PointY="4.5" Height="3.7109993489583317" />
+        <AssociationConnector Association="smqdocModel.DocTemplateDocAppointment" ManuallyRouted="false">
+          <ConnectorPoint PointX="6.5" PointY="10" />
+          <ConnectorPoint PointX="6.5" PointY="5.03125" />
+          <ConnectorPoint PointX="7.416666666666667" PointY="5.0312499999999991" />
+          <ConnectorPoint PointX="7.583333333333333" PointY="5.03125" />
+          <ConnectorPoint PointX="13.375" PointY="5.03125" />
         </AssociationConnector>
         <AssociationConnector Association="smqdocModel.DocumentDocAppointment">
-          <ConnectorPoint PointX="8.25" PointY="6.9083968098958328" />
-          <ConnectorPoint PointX="14.625" PointY="6.9083968098958328" />
+          <ConnectorPoint PointX="10.25" PointY="6.9179996744791659" />
+          <ConnectorPoint PointX="13.375" PointY="6.9179996744791659" />
         </AssociationConnector>
         <AssociationConnector Association="smqdocModel.FK_FieldTemplates_FieldTemplates1" >
-          <ConnectorPoint PointX="3.3785576923076923" PointY="12.220602213541666" />
-          <ConnectorPoint PointX="3.3785576923076923" PointY="12.470602213541667" />
-          <ConnectorPoint PointX="4.0111538461538458" PointY="12.470602213541667" />
-          <ConnectorPoint PointX="4.0111538461538458" PointY="12.220602213541666" />
+          <ConnectorPoint PointX="3.2535576923076923" PointY="13.845602213541666" />
+          <ConnectorPoint PointX="3.2535576923076923" PointY="14.095602213541667" />
+          <ConnectorPoint PointX="3.8861538461538458" PointY="14.095602213541667" />
+          <ConnectorPoint PointX="3.8861538461538458" PointY="13.845602213541666" />
         </AssociationConnector>
         <AssociationConnector Association="smqdocModel.UserAccountDocAppointment" ManuallyRouted="false">
-          <ConnectorPoint PointX="5.25" PointY="1.84375" />
-          <ConnectorPoint PointX="15.707508857202512" PointY="1.84375" />
-          <ConnectorPoint PointX="15.707508857202512" PointY="5.75" />
+          <ConnectorPoint PointX="4.75" PointY="1.625" />
+          <ConnectorPoint PointX="4.75" PointY="1.375" />
+          <ConnectorPoint PointX="7.5" PointY="1.375" />
+          <ConnectorPoint PointX="7.5" PointY="5.375" />
+          <ConnectorPoint PointX="13" PointY="5.375" />
+          <ConnectorPoint PointX="13" PointY="5.7587486725741845" />
+          <ConnectorPoint PointX="13.375" PointY="5.7587486725741845" />
         </AssociationConnector>
         <AssociationConnector Association="smqdocModel.UserGroupDocAppointment">
-          <ConnectorPoint PointX="10.375" PointY="4.2785953776041667" />
-          <ConnectorPoint PointX="15.135001928601255" PointY="4.2785953776041667" />
-          <ConnectorPoint PointX="15.135001928601255" PointY="5.75" />
+          <ConnectorPoint PointX="10.34375" PointY="3.8071907552083331" />
+          <ConnectorPoint PointX="10.34375" PointY="4.7343724999999992" />
+          <ConnectorPoint PointX="13.375" PointY="4.7343724999999992" />
         </AssociationConnector>
-        <EntityTypeShape EntityType="smqdocModel.DocTemplatesForUser" Width="1.875" PointX="9.375" PointY="10.125" Height="1.5956835937499996" />
+        <EntityTypeShape EntityType="smqdocModel.DocTemplatesForUser" Width="1.875" PointX="7.875" PointY="10.75" Height="1.5956835937499996" />
         <AssociationConnector Association="smqdocModel.DocTemplatesForUserDocTemplate">
-          <ConnectorPoint PointX="9.375" PointY="10.653595377604166" />
-          <ConnectorPoint PointX="7.375" PointY="10.653595377604166" />
+          <ConnectorPoint PointX="7.875" PointY="11.547841796875" />
+          <ConnectorPoint PointX="7.25" PointY="11.547841796875" />
         </AssociationConnector>
         <EntityTypeShape EntityType="smqdocModel.Asset" Width="1.5" PointX="13.625" PointY="11.125" Height="2.3648893229166656" />
         <EntityTypeShape EntityType="smqdocModel.AssetFolder" Width="2.5" PointX="15.75" PointY="10.25" Height="2.1725878906249996" />

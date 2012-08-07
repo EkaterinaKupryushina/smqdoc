@@ -37,7 +37,7 @@ namespace MvcFront.Models
             folder.Name = Name;
             if(IsRootFolder || !ParentAssetFolderId.HasValue)
             {
-                folder.ParentAssetFolder = null;
+                folder.AssetFolder_assetfolderid = null;
             }
             else
             {

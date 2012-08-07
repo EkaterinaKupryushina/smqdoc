@@ -240,12 +240,17 @@ namespace MvcFront.Controllers
         [HttpPost]
         public JsonResult _AssetFoldersList(int assetFolderId)
         {
-            var badAssFolderd = new List<int>();
+            var badAssFolderd = new List<int> {assetFolderId};
+            
             var folder = _assetRepository.GetAssetFolderById(assetFolderId);
-            while (folder != null)
+            var listOfChilds = new List<AssetFolder>();
+            listOfChilds.AddRange(folder.ChildAssetFolders.ToList());
+            while (listOfChilds.Count > 0)
             {
-                badAssFolderd.Add(folder.assetfolderid);
-                folder = folder.ParentAssetFolder;
+                var current = listOfChilds.ElementAt(0);
+                badAssFolderd.Add(current.assetfolderid);
+                listOfChilds.AddRange(current.ChildAssetFolders.ToList());
+                listOfChilds.Remove(current);
             }
             var data = _assetRepository.GetAllAssetFolders().Where(x => !badAssFolderd.Contains(x.assetfolderid));
             return new JsonResult { Data = new SelectList(data.ToList().Select(x => new { Id = x.assetfolderid, x.Name }), "Id", "Name", assetFolderId) };
