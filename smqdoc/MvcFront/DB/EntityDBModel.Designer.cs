@@ -34,6 +34,10 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("smqdocModel", "DocTemplatesForUserDocTemplate", "DocTemplatesForUser", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(MvcFront.DB.DocTemplatesForUser), "DocTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.DocTemplate))]
 [assembly: EdmRelationshipAttribute("smqdocModel", "AssetAssetFolder", "Asset", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.Asset), "AssetFolder", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.AssetFolder), true)]
 [assembly: EdmRelationshipAttribute("smqdocModel", "AssetFolderParentAssetFolder", "AssetFolder", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(MvcFront.DB.AssetFolder), "AssetFolder1", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.AssetFolder), true)]
+[assembly: EdmRelationshipAttribute("smqdocModel", "ReportDocTemplate", "Report", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.DocReport), "DocTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.DocTemplate), true)]
+[assembly: EdmRelationshipAttribute("smqdocModel", "ReportUserTags", "Report", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.DocReport), "UserTags", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.UserTags))]
+[assembly: EdmRelationshipAttribute("smqdocModel", "ReportFieldFieldTemplate", "ReportField", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.ReportField), "FieldTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.FieldTemplate), true)]
+[assembly: EdmRelationshipAttribute("smqdocModel", "ReportFieldDocReport", "ReportField", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.ReportField), "DocReport", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.DocReport), true)]
 
 #endregion
 
@@ -276,6 +280,38 @@ namespace MvcFront.DB
             }
         }
         private ObjectSet<AssetFolder> _AssetFolders;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<DocReport> DocReports
+        {
+            get
+            {
+                if ((_DocReports == null))
+                {
+                    _DocReports = base.CreateObjectSet<DocReport>("DocReports");
+                }
+                return _DocReports;
+            }
+        }
+        private ObjectSet<DocReport> _DocReports;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<ReportField> ReportFields
+        {
+            get
+            {
+                if ((_ReportFields == null))
+                {
+                    _ReportFields = base.CreateObjectSet<ReportField>("ReportFields");
+                }
+                return _ReportFields;
+            }
+        }
+        private ObjectSet<ReportField> _ReportFields;
 
         #endregion
         #region AddTo Methods
@@ -374,6 +410,22 @@ namespace MvcFront.DB
         public void AddToAssetFolders(AssetFolder assetFolder)
         {
             base.AddObject("AssetFolders", assetFolder);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the DocReports EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToDocReports(DocReport docReport)
+        {
+            base.AddObject("DocReports", docReport);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the ReportFields EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToReportFields(ReportField reportField)
+        {
+            base.AddObject("ReportFields", reportField);
         }
 
         #endregion
@@ -1655,6 +1707,328 @@ namespace MvcFront.DB
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="smqdocModel", Name="DocReport")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class DocReport : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new DocReport object.
+        /// </summary>
+        /// <param name="reportid">Initial value of the reportid property.</param>
+        /// <param name="name">Initial value of the Name property.</param>
+        /// <param name="docTemplate_docteplateid">Initial value of the DocTemplate_docteplateid property.</param>
+        /// <param name="docAppointmetType">Initial value of the DocAppointmetType property.</param>
+        /// <param name="groupType">Initial value of the GroupType property.</param>
+        /// <param name="filterStartDate">Initial value of the FilterStartDate property.</param>
+        /// <param name="filterEndDate">Initial value of the FilterEndDate property.</param>
+        /// <param name="status">Initial value of the Status property.</param>
+        public static DocReport CreateDocReport(global::System.Int32 reportid, global::System.String name, global::System.Int64 docTemplate_docteplateid, global::System.Int32 docAppointmetType, global::System.Int32 groupType, global::System.DateTime filterStartDate, global::System.DateTime filterEndDate, global::System.String status)
+        {
+            DocReport docReport = new DocReport();
+            docReport.reportid = reportid;
+            docReport.Name = name;
+            docReport.DocTemplate_docteplateid = docTemplate_docteplateid;
+            docReport.DocAppointmetType = docAppointmetType;
+            docReport.GroupType = groupType;
+            docReport.FilterStartDate = filterStartDate;
+            docReport.FilterEndDate = filterEndDate;
+            docReport.Status = status;
+            return docReport;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 reportid
+        {
+            get
+            {
+                return _reportid;
+            }
+            set
+            {
+                if (_reportid != value)
+                {
+                    OnreportidChanging(value);
+                    ReportPropertyChanging("reportid");
+                    _reportid = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("reportid");
+                    OnreportidChanged();
+                }
+            }
+        }
+        private global::System.Int32 _reportid;
+        partial void OnreportidChanging(global::System.Int32 value);
+        partial void OnreportidChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Name
+        {
+            get
+            {
+                return _Name;
+            }
+            set
+            {
+                OnNameChanging(value);
+                ReportPropertyChanging("Name");
+                _Name = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Name");
+                OnNameChanged();
+            }
+        }
+        private global::System.String _Name;
+        partial void OnNameChanging(global::System.String value);
+        partial void OnNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int64 DocTemplate_docteplateid
+        {
+            get
+            {
+                return _DocTemplate_docteplateid;
+            }
+            set
+            {
+                OnDocTemplate_docteplateidChanging(value);
+                ReportPropertyChanging("DocTemplate_docteplateid");
+                _DocTemplate_docteplateid = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DocTemplate_docteplateid");
+                OnDocTemplate_docteplateidChanged();
+            }
+        }
+        private global::System.Int64 _DocTemplate_docteplateid;
+        partial void OnDocTemplate_docteplateidChanging(global::System.Int64 value);
+        partial void OnDocTemplate_docteplateidChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 DocAppointmetType
+        {
+            get
+            {
+                return _DocAppointmetType;
+            }
+            set
+            {
+                OnDocAppointmetTypeChanging(value);
+                ReportPropertyChanging("DocAppointmetType");
+                _DocAppointmetType = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DocAppointmetType");
+                OnDocAppointmetTypeChanged();
+            }
+        }
+        private global::System.Int32 _DocAppointmetType;
+        partial void OnDocAppointmetTypeChanging(global::System.Int32 value);
+        partial void OnDocAppointmetTypeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 GroupType
+        {
+            get
+            {
+                return _GroupType;
+            }
+            set
+            {
+                OnGroupTypeChanging(value);
+                ReportPropertyChanging("GroupType");
+                _GroupType = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("GroupType");
+                OnGroupTypeChanged();
+            }
+        }
+        private global::System.Int32 _GroupType;
+        partial void OnGroupTypeChanging(global::System.Int32 value);
+        partial void OnGroupTypeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime FilterStartDate
+        {
+            get
+            {
+                return _FilterStartDate;
+            }
+            set
+            {
+                OnFilterStartDateChanging(value);
+                ReportPropertyChanging("FilterStartDate");
+                _FilterStartDate = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("FilterStartDate");
+                OnFilterStartDateChanged();
+            }
+        }
+        private global::System.DateTime _FilterStartDate;
+        partial void OnFilterStartDateChanging(global::System.DateTime value);
+        partial void OnFilterStartDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime FilterEndDate
+        {
+            get
+            {
+                return _FilterEndDate;
+            }
+            set
+            {
+                OnFilterEndDateChanging(value);
+                ReportPropertyChanging("FilterEndDate");
+                _FilterEndDate = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("FilterEndDate");
+                OnFilterEndDateChanged();
+            }
+        }
+        private global::System.DateTime _FilterEndDate;
+        partial void OnFilterEndDateChanging(global::System.DateTime value);
+        partial void OnFilterEndDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Status
+        {
+            get
+            {
+                return _Status;
+            }
+            set
+            {
+                OnStatusChanging(value);
+                ReportPropertyChanging("Status");
+                _Status = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Status");
+                OnStatusChanged();
+            }
+        }
+        private global::System.String _Status;
+        partial void OnStatusChanging(global::System.String value);
+        partial void OnStatusChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "ReportDocTemplate", "DocTemplate")]
+        public DocTemplate DocTemplate
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<DocTemplate>("smqdocModel.ReportDocTemplate", "DocTemplate").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<DocTemplate>("smqdocModel.ReportDocTemplate", "DocTemplate").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<DocTemplate> DocTemplateReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<DocTemplate>("smqdocModel.ReportDocTemplate", "DocTemplate");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<DocTemplate>("smqdocModel.ReportDocTemplate", "DocTemplate", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "ReportUserTags", "UserTags")]
+        public EntityCollection<UserTags> UserTags
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<UserTags>("smqdocModel.ReportUserTags", "UserTags");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<UserTags>("smqdocModel.ReportUserTags", "UserTags", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "ReportFieldDocReport", "ReportField")]
+        public EntityCollection<ReportField> ReportFields
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<ReportField>("smqdocModel.ReportFieldDocReport", "ReportField");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<ReportField>("smqdocModel.ReportFieldDocReport", "ReportField", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
     [EdmEntityTypeAttribute(NamespaceName="smqdocModel", Name="DocTemplate")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
@@ -1889,6 +2263,28 @@ namespace MvcFront.DB
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<DocTemplatesForUser>("smqdocModel.DocTemplatesForUserDocTemplate", "DocTemplatesForUser", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "ReportDocTemplate", "Report")]
+        public EntityCollection<DocReport> Reports
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<DocReport>("smqdocModel.ReportDocTemplate", "Report");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<DocReport>("smqdocModel.ReportDocTemplate", "Report", value);
                 }
             }
         }
@@ -2772,6 +3168,266 @@ namespace MvcFront.DB
                 }
             }
         }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "ReportFieldFieldTemplate", "ReportField")]
+        public EntityCollection<ReportField> ReportFields
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<ReportField>("smqdocModel.ReportFieldFieldTemplate", "ReportField");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<ReportField>("smqdocModel.ReportFieldFieldTemplate", "ReportField", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="smqdocModel", Name="ReportField")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class ReportField : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new ReportField object.
+        /// </summary>
+        /// <param name="reportfield">Initial value of the reportfield property.</param>
+        /// <param name="fieldTemplate_fieldteplateid">Initial value of the FieldTemplate_fieldteplateid property.</param>
+        /// <param name="docReport_reportid">Initial value of the DocReport_reportid property.</param>
+        /// <param name="reportOperationType">Initial value of the ReportOperationType property.</param>
+        /// <param name="orderNumber">Initial value of the OrderNumber property.</param>
+        public static ReportField CreateReportField(global::System.Int64 reportfield, global::System.Int64 fieldTemplate_fieldteplateid, global::System.Int32 docReport_reportid, global::System.String reportOperationType, global::System.String orderNumber)
+        {
+            ReportField reportField = new ReportField();
+            reportField.reportfield = reportfield;
+            reportField.FieldTemplate_fieldteplateid = fieldTemplate_fieldteplateid;
+            reportField.DocReport_reportid = docReport_reportid;
+            reportField.ReportOperationType = reportOperationType;
+            reportField.OrderNumber = orderNumber;
+            return reportField;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int64 reportfield
+        {
+            get
+            {
+                return _reportfield;
+            }
+            set
+            {
+                if (_reportfield != value)
+                {
+                    OnreportfieldChanging(value);
+                    ReportPropertyChanging("reportfield");
+                    _reportfield = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("reportfield");
+                    OnreportfieldChanged();
+                }
+            }
+        }
+        private global::System.Int64 _reportfield;
+        partial void OnreportfieldChanging(global::System.Int64 value);
+        partial void OnreportfieldChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int64 FieldTemplate_fieldteplateid
+        {
+            get
+            {
+                return _FieldTemplate_fieldteplateid;
+            }
+            set
+            {
+                OnFieldTemplate_fieldteplateidChanging(value);
+                ReportPropertyChanging("FieldTemplate_fieldteplateid");
+                _FieldTemplate_fieldteplateid = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("FieldTemplate_fieldteplateid");
+                OnFieldTemplate_fieldteplateidChanged();
+            }
+        }
+        private global::System.Int64 _FieldTemplate_fieldteplateid;
+        partial void OnFieldTemplate_fieldteplateidChanging(global::System.Int64 value);
+        partial void OnFieldTemplate_fieldteplateidChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 DocReport_reportid
+        {
+            get
+            {
+                return _DocReport_reportid;
+            }
+            set
+            {
+                OnDocReport_reportidChanging(value);
+                ReportPropertyChanging("DocReport_reportid");
+                _DocReport_reportid = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DocReport_reportid");
+                OnDocReport_reportidChanged();
+            }
+        }
+        private global::System.Int32 _DocReport_reportid;
+        partial void OnDocReport_reportidChanging(global::System.Int32 value);
+        partial void OnDocReport_reportidChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String ReportOperationType
+        {
+            get
+            {
+                return _ReportOperationType;
+            }
+            set
+            {
+                OnReportOperationTypeChanging(value);
+                ReportPropertyChanging("ReportOperationType");
+                _ReportOperationType = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("ReportOperationType");
+                OnReportOperationTypeChanged();
+            }
+        }
+        private global::System.String _ReportOperationType;
+        partial void OnReportOperationTypeChanging(global::System.String value);
+        partial void OnReportOperationTypeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String OrderNumber
+        {
+            get
+            {
+                return _OrderNumber;
+            }
+            set
+            {
+                OnOrderNumberChanging(value);
+                ReportPropertyChanging("OrderNumber");
+                _OrderNumber = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("OrderNumber");
+                OnOrderNumberChanged();
+            }
+        }
+        private global::System.String _OrderNumber;
+        partial void OnOrderNumberChanging(global::System.String value);
+        partial void OnOrderNumberChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "ReportFieldFieldTemplate", "FieldTemplate")]
+        public FieldTemplate FieldTemplate
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<FieldTemplate>("smqdocModel.ReportFieldFieldTemplate", "FieldTemplate").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<FieldTemplate>("smqdocModel.ReportFieldFieldTemplate", "FieldTemplate").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<FieldTemplate> FieldTemplateReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<FieldTemplate>("smqdocModel.ReportFieldFieldTemplate", "FieldTemplate");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<FieldTemplate>("smqdocModel.ReportFieldFieldTemplate", "FieldTemplate", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "ReportFieldDocReport", "DocReport")]
+        public DocReport DocReport
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<DocReport>("smqdocModel.ReportFieldDocReport", "DocReport").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<DocReport>("smqdocModel.ReportFieldDocReport", "DocReport").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<DocReport> DocReportReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<DocReport>("smqdocModel.ReportFieldDocReport", "DocReport");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<DocReport>("smqdocModel.ReportFieldDocReport", "DocReport", value);
+                }
+            }
+        }
 
         #endregion
     }
@@ -3543,6 +4199,28 @@ namespace MvcFront.DB
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<UserAccount>("smqdocModel.UserAccountUserTags", "UserAccount", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "ReportUserTags", "Report")]
+        public EntityCollection<DocReport> Reports
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<DocReport>("smqdocModel.ReportUserTags", "Report");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<DocReport>("smqdocModel.ReportUserTags", "Report", value);
                 }
             }
         }
