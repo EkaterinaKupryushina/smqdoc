@@ -11,7 +11,7 @@ namespace MvcFront.Models
         public int AssetId { get; set; }
         [Display(Name = "Название")]
         public string Name { get; set; }
-        [Display(Name = "Последнее изменение")]
+        [Display(Name = "Изменение")]
         public DateTime LastEditDate { get; set; }
         [Display(Name = "Имя файла")]
         public string FileName { get; set; }

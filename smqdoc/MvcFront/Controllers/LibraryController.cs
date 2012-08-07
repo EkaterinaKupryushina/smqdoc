@@ -76,8 +76,7 @@ namespace MvcFront.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet]
-        public ActionResult DeleteAsset(int id)
+        public JsonResult DeleteAsset(int id)
         {
             try
             {
@@ -86,7 +85,7 @@ namespace MvcFront.Controllers
             catch(Exception)
             {
             }
-            return RedirectToAction("EditAssetLibrary");
+            return Json(new { result = true });
         }
 
         /// <summary>
