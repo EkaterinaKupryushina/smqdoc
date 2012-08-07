@@ -9,12 +9,12 @@
 }
 
 <table><tr>
-           <td>
+           <td valign="top" width="20%">
                <h3>Раздел</h3>
-               @(Html.Telerik().TreeView().ExpandAll(true)
-           .Name("FoldersTreeView")
-           .ClientEvents(events => events.OnSelect("onFolderSelected"))
-           .BindTo(Model, mappings => mappings.For<AssetFolder>(binding => binding
+               @(Html.Telerik().TreeView().ExpandAll(true).Items(i => i.Add().Value("0").Text("Все разделы"))
+                .Name("FoldersTreeView")
+                .ClientEvents(events => events.OnSelect("onFolderSelected"))
+                .BindTo(Model, mappings => mappings.For<AssetFolder>(binding => binding
                                                                                .ItemDataBound((item, category) =>
                                                                                                   {
                                                                                                       item.Text = category.Name;
@@ -24,28 +24,37 @@
                      ) 
            </td>
            <td>
+                <p>
+                    <label for="contains"><strong>Название (комментарий)</strong> содержит:</label>
+                    @Html.TextBox("contains", "") 
+                    <button class="t-button t-state-default" onclick="rebindGrid();">Искать</button>
+                     <button class="t-button t-state-default" onclick="clearText();">Очистить</button>
+                </p>
+    
+               
+
                @(Html.Telerik().Grid<AssetListViewModel>()
                 .Name("AssetsListGrid")
                 .DataBinding(dataBinding => dataBinding.Ajax().Select("_AssetsFromFolder", "Library"))
                 .ClientEvents(events => events.OnDataBinding("onGridDataBinding"))
-                   .Columns(columns =>
-                   {
-                       columns.AutoGenerate(column =>
-                       {
-                           column.Width = "150px";
-                           if (column.Member == "AssetId" || column.Member == "FileName")
-                               column.Visible = false;
-                       });
-                       columns.Command(command => command.Custom("viewDownload").Text("Скачать")
-                                                      .DataRouteValues(route => route.Add(o => o.AssetId).RouteKey("assetId"))
-                                                      .Action("Download", "Library")
-                                                      .HtmlAttributes(new { style = "text-align: center" })).Width(50);
-                   })
-                           .Scrollable(c => c.Height("500px"))
-                           .Sortable()
-                           .Pageable()
+                .Columns(columns =>
+                        {
+                            columns.AutoGenerate(column =>
+                                                     {
+                                                         column.Width = "140px";
+                                                         if (column.Member == "AssetId" || column.Member == "FileName")
+                                                             column.Visible = false;
+                                                     });
+                            columns.Command(command => command.Custom("viewDownload").Text("Скачать")
+                                                           .DataRouteValues(route => route.Add(o => o.AssetId).RouteKey("assetId"))
+                                                           .Action("Download", "Library")
+                                                           .HtmlAttributes(new { style = "text-align: center" })).Width(50);
+                        })
+           .Scrollable(c => c.Height("400px"))
+           .Sortable()
+           .Pageable()
 
-    ) 
+                     ) 
            </td>
        </tr>
 </table>
@@ -61,9 +70,22 @@
             grid.rebind();
         }
     }
-    
+
+    function rebindGrid() {
+        var grid = $('#AssetsListGrid').data("tGrid");
+        if (grid != null) {
+            grid.rebind();
+        }
+    }
+
+    function clearText() {
+        $("#contains").val('');
+        rebindGrid();
+    }
+
     function onGridDataBinding(e) {
-        e.data = { id: selectedFolder };
+
+        e.data = { id: selectedFolder, text: $("#contains").val() };
     }
     
 </script>
