@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Web;
 using System.Web.Mvc;
 using MvcFront.DB;
 using MvcFront.Infrastructure;
@@ -71,22 +70,6 @@ namespace MvcFront.Controllers
             return RedirectToAction("EditAssetLibrary");
         }
 
-        /// <summary>
-        /// Удаление ассета
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public JsonResult DeleteAsset(int id)
-        {
-            try
-            {
-                (new AssetService(_assetRepository)).DeleteAsset(_assetRepository.GetAssetById(id));
-            }
-            catch(Exception)
-            {
-            }
-            return Json(new { result = true });
-        }
 
         /// <summary>
         /// Создание папки
@@ -201,16 +184,40 @@ namespace MvcFront.Controllers
         #region JSon
 
         /// <summary>
+        /// Удаление ассета
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public JsonResult DeleteAsset(int id)
+        {
+            try
+            {
+                (new AssetService(_assetRepository)).DeleteAsset(_assetRepository.GetAssetById(id));
+            }
+            catch (Exception)
+            {
+            }
+            return Json(new { result = true });
+        }
+
+        /// <summary>
         /// Возвращает ассеты текущей папки
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [GridAction]
-        public ActionResult _AssetsFromFolder(int? id)
+        public ActionResult _AssetsFromFolder(int? id, string text)
         {
-            var data = id.HasValue && id.Value != 0
-                ? _assetRepository.GetAssetFolderById(id.Value).Assets.ToList().ConvertAll(AssetListViewModel.AssetsToModelConverter).ToList()
-                : _assetRepository.GetAllAssets().ToList().ConvertAll(AssetListViewModel.AssetsToModelConverter).ToList();
+            var query = id.HasValue && id.Value != 0
+                            ? _assetRepository.GetAssetFolderById(id.Value).Assets.AsQueryable()
+                            : _assetRepository.GetAllAssets();
+           
+            var data = query.ToList().ConvertAll(AssetListViewModel.AssetsToModelConverter).ToList();
+            if (!string.IsNullOrWhiteSpace(text))
+            {
+                text = text.ToLowerInvariant();
+                data = data.Where(x => x.Name.ToLowerInvariant().Contains(text) || x.Comment.ToLowerInvariant().Contains(text)).ToList();
+            }
             return View(new GridModel<AssetListViewModel> { Data = data });
         }
 
