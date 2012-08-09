@@ -1717,7 +1717,7 @@ namespace MvcFront.DB
         /// <summary>
         /// Create a new DocReport object.
         /// </summary>
-        /// <param name="reportid">Initial value of the reportid property.</param>
+        /// <param name="docreportid">Initial value of the docreportid property.</param>
         /// <param name="name">Initial value of the Name property.</param>
         /// <param name="docTemplate_docteplateid">Initial value of the DocTemplate_docteplateid property.</param>
         /// <param name="docAppointmetType">Initial value of the DocAppointmetType property.</param>
@@ -1725,10 +1725,10 @@ namespace MvcFront.DB
         /// <param name="filterStartDate">Initial value of the FilterStartDate property.</param>
         /// <param name="filterEndDate">Initial value of the FilterEndDate property.</param>
         /// <param name="status">Initial value of the Status property.</param>
-        public static DocReport CreateDocReport(global::System.Int32 reportid, global::System.String name, global::System.Int64 docTemplate_docteplateid, global::System.Int32 docAppointmetType, global::System.Int32 groupType, global::System.DateTime filterStartDate, global::System.DateTime filterEndDate, global::System.String status)
+        public static DocReport CreateDocReport(global::System.Int32 docreportid, global::System.String name, global::System.Int64 docTemplate_docteplateid, global::System.Int32 docAppointmetType, global::System.Int32 groupType, global::System.DateTime filterStartDate, global::System.DateTime filterEndDate, global::System.Int32 status)
         {
             DocReport docReport = new DocReport();
-            docReport.reportid = reportid;
+            docReport.docreportid = docreportid;
             docReport.Name = name;
             docReport.DocTemplate_docteplateid = docTemplate_docteplateid;
             docReport.DocAppointmetType = docAppointmetType;
@@ -1747,27 +1747,27 @@ namespace MvcFront.DB
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.Int32 reportid
+        public global::System.Int32 docreportid
         {
             get
             {
-                return _reportid;
+                return _docreportid;
             }
             set
             {
-                if (_reportid != value)
+                if (_docreportid != value)
                 {
-                    OnreportidChanging(value);
-                    ReportPropertyChanging("reportid");
-                    _reportid = StructuralObject.SetValidValue(value);
-                    ReportPropertyChanged("reportid");
-                    OnreportidChanged();
+                    OndocreportidChanging(value);
+                    ReportPropertyChanging("docreportid");
+                    _docreportid = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("docreportid");
+                    OndocreportidChanged();
                 }
             }
         }
-        private global::System.Int32 _reportid;
-        partial void OnreportidChanging(global::System.Int32 value);
-        partial void OnreportidChanged();
+        private global::System.Int32 _docreportid;
+        partial void OndocreportidChanging(global::System.Int32 value);
+        partial void OndocreportidChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -1918,7 +1918,7 @@ namespace MvcFront.DB
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.String Status
+        public global::System.Int32 Status
         {
             get
             {
@@ -1928,13 +1928,13 @@ namespace MvcFront.DB
             {
                 OnStatusChanging(value);
                 ReportPropertyChanging("Status");
-                _Status = StructuralObject.SetValidValue(value, false);
+                _Status = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("Status");
                 OnStatusChanged();
             }
         }
-        private global::System.String _Status;
-        partial void OnStatusChanging(global::System.String value);
+        private global::System.Int32 _Status;
+        partial void OnStatusChanging(global::System.Int32 value);
         partial void OnStatusChanged();
 
         #endregion
@@ -3207,15 +3207,15 @@ namespace MvcFront.DB
         /// <summary>
         /// Create a new ReportField object.
         /// </summary>
-        /// <param name="reportfield">Initial value of the reportfield property.</param>
+        /// <param name="reportfieldid">Initial value of the reportfieldid property.</param>
         /// <param name="fieldTemplate_fieldteplateid">Initial value of the FieldTemplate_fieldteplateid property.</param>
         /// <param name="docReport_reportid">Initial value of the DocReport_reportid property.</param>
         /// <param name="reportOperationType">Initial value of the ReportOperationType property.</param>
         /// <param name="orderNumber">Initial value of the OrderNumber property.</param>
-        public static ReportField CreateReportField(global::System.Int64 reportfield, global::System.Int64 fieldTemplate_fieldteplateid, global::System.Int32 docReport_reportid, global::System.String reportOperationType, global::System.String orderNumber)
+        public static ReportField CreateReportField(global::System.Int64 reportfieldid, global::System.Int64 fieldTemplate_fieldteplateid, global::System.Int32 docReport_reportid, global::System.Int32 reportOperationType, global::System.Int32 orderNumber)
         {
             ReportField reportField = new ReportField();
-            reportField.reportfield = reportfield;
+            reportField.reportfieldid = reportfieldid;
             reportField.FieldTemplate_fieldteplateid = fieldTemplate_fieldteplateid;
             reportField.DocReport_reportid = docReport_reportid;
             reportField.ReportOperationType = reportOperationType;
@@ -3231,27 +3231,27 @@ namespace MvcFront.DB
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.Int64 reportfield
+        public global::System.Int64 reportfieldid
         {
             get
             {
-                return _reportfield;
+                return _reportfieldid;
             }
             set
             {
-                if (_reportfield != value)
+                if (_reportfieldid != value)
                 {
-                    OnreportfieldChanging(value);
-                    ReportPropertyChanging("reportfield");
-                    _reportfield = StructuralObject.SetValidValue(value);
-                    ReportPropertyChanged("reportfield");
-                    OnreportfieldChanged();
+                    OnreportfieldidChanging(value);
+                    ReportPropertyChanging("reportfieldid");
+                    _reportfieldid = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("reportfieldid");
+                    OnreportfieldidChanged();
                 }
             }
         }
-        private global::System.Int64 _reportfield;
-        partial void OnreportfieldChanging(global::System.Int64 value);
-        partial void OnreportfieldChanged();
+        private global::System.Int64 _reportfieldid;
+        partial void OnreportfieldidChanging(global::System.Int64 value);
+        partial void OnreportfieldidChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -3306,7 +3306,7 @@ namespace MvcFront.DB
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.String ReportOperationType
+        public global::System.Int32 ReportOperationType
         {
             get
             {
@@ -3316,13 +3316,13 @@ namespace MvcFront.DB
             {
                 OnReportOperationTypeChanging(value);
                 ReportPropertyChanging("ReportOperationType");
-                _ReportOperationType = StructuralObject.SetValidValue(value, false);
+                _ReportOperationType = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("ReportOperationType");
                 OnReportOperationTypeChanged();
             }
         }
-        private global::System.String _ReportOperationType;
-        partial void OnReportOperationTypeChanging(global::System.String value);
+        private global::System.Int32 _ReportOperationType;
+        partial void OnReportOperationTypeChanging(global::System.Int32 value);
         partial void OnReportOperationTypeChanged();
     
         /// <summary>
@@ -3330,7 +3330,7 @@ namespace MvcFront.DB
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.String OrderNumber
+        public global::System.Int32 OrderNumber
         {
             get
             {
@@ -3340,13 +3340,13 @@ namespace MvcFront.DB
             {
                 OnOrderNumberChanging(value);
                 ReportPropertyChanging("OrderNumber");
-                _OrderNumber = StructuralObject.SetValidValue(value, false);
+                _OrderNumber = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("OrderNumber");
                 OnOrderNumberChanged();
             }
         }
-        private global::System.String _OrderNumber;
-        partial void OnOrderNumberChanging(global::System.String value);
+        private global::System.Int32 _OrderNumber;
+        partial void OnOrderNumberChanging(global::System.Int32 value);
         partial void OnOrderNumberChanged();
 
         #endregion

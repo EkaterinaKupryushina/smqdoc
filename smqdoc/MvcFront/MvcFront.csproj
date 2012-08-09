@@ -124,6 +124,7 @@
     <Compile Include="Controllers\UserGroupListController.cs" />
     <Compile Include="Controllers\UserTagsListController.cs" />
     <Compile Include="DB\DocField.cs" />
+    <Compile Include="DB\DocReport.cs" />
     <Compile Include="DB\DocTemplate.cs" />
     <Compile Include="DB\Document.cs" />
     <Compile Include="DB\EntityDBModel.Designer.cs">
@@ -133,13 +134,18 @@
     </Compile>
     <Compile Include="DB\DocAppointment.cs" />
     <Compile Include="DB\FieldTemplate.cs" />
+    <Compile Include="DB\ReportField.cs" />
     <Compile Include="DB\UserAccount.cs" />
     <Compile Include="DB\UserGroup.cs" />
     <Compile Include="Entities\UserSessionData.cs" />
+    <Compile Include="Enums\DocReportAppointmentType.cs" />
+    <Compile Include="Enums\DocReportStatus.cs" />
+    <Compile Include="Enums\DocReportGroupType.cs" />
     <Compile Include="Enums\DocTemplateStatus.cs" />
     <Compile Include="Enums\DocumentStatus.cs" />
     <Compile Include="Enums\FieldTemplateType.cs" />
     <Compile Include="Enums\DocAppointmentStatus.cs" />
+    <Compile Include="Enums\ReportFieldOperationType.cs" />
     <Compile Include="Enums\UserAccountStatus.cs" />
     <Compile Include="Enums\UserGroupStatus.cs" />
     <Compile Include="Enums\UserProfileTypes.cs" />
@@ -156,6 +162,7 @@
     <Compile Include="Infrastructure\UnitOfWork.cs" />
     <Compile Include="Interfaces\IAssetRepository.cs" />
     <Compile Include="Interfaces\IDocAppointmentRepository.cs" />
+    <Compile Include="Interfaces\IDocReportRepository.cs" />
     <Compile Include="Interfaces\IDocTemplateRepository.cs" />
     <Compile Include="Interfaces\IDocumentRepository.cs" />
     <Compile Include="Interfaces\IUnitOfWork.cs" />
@@ -186,6 +193,7 @@
     <Compile Include="Models\UserTagsListViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\AssetRepository.cs" />
+    <Compile Include="Repositories\DocReportRepository.cs" />
     <Compile Include="Repositories\DocAppointmentRepository.cs" />
     <Compile Include="Repositories\DocTemplateRepository.cs" />
     <Compile Include="Repositories\DocumentRepository.cs" />
