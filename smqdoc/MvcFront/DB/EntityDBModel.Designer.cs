@@ -1724,8 +1724,8 @@ namespace MvcFront.DB
         /// <param name="groupType">Initial value of the GroupType property.</param>
         /// <param name="filterStartDate">Initial value of the FilterStartDate property.</param>
         /// <param name="filterEndDate">Initial value of the FilterEndDate property.</param>
-        /// <param name="status">Initial value of the Status property.</param>
-        public static DocReport CreateDocReport(global::System.Int32 docreportid, global::System.String name, global::System.Int64 docTemplate_docteplateid, global::System.Int32 docAppointmetType, global::System.Int32 groupType, global::System.DateTime filterStartDate, global::System.DateTime filterEndDate, global::System.Int32 status)
+        /// <param name="isActive">Initial value of the IsActive property.</param>
+        public static DocReport CreateDocReport(global::System.Int32 docreportid, global::System.String name, global::System.Int64 docTemplate_docteplateid, global::System.Int32 docAppointmetType, global::System.Int32 groupType, global::System.DateTime filterStartDate, global::System.DateTime filterEndDate, global::System.Boolean isActive)
         {
             DocReport docReport = new DocReport();
             docReport.docreportid = docreportid;
@@ -1735,7 +1735,7 @@ namespace MvcFront.DB
             docReport.GroupType = groupType;
             docReport.FilterStartDate = filterStartDate;
             docReport.FilterEndDate = filterEndDate;
-            docReport.Status = status;
+            docReport.IsActive = isActive;
             return docReport;
         }
 
@@ -1918,24 +1918,24 @@ namespace MvcFront.DB
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.Int32 Status
+        public global::System.Boolean IsActive
         {
             get
             {
-                return _Status;
+                return _IsActive;
             }
             set
             {
-                OnStatusChanging(value);
-                ReportPropertyChanging("Status");
-                _Status = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("Status");
-                OnStatusChanged();
+                OnIsActiveChanging(value);
+                ReportPropertyChanging("IsActive");
+                _IsActive = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsActive");
+                OnIsActiveChanged();
             }
         }
-        private global::System.Int32 _Status;
-        partial void OnStatusChanging(global::System.Int32 value);
-        partial void OnStatusChanged();
+        private global::System.Boolean _IsActive;
+        partial void OnIsActiveChanging(global::System.Boolean value);
+        partial void OnIsActiveChanged();
 
         #endregion
     

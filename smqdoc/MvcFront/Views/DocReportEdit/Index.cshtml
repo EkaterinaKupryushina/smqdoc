@@ -1,0 +1,46 @@
+﻿@using MvcFront.Models
+@using Telerik.Web.Mvc.UI
+@model dynamic
+
+@{
+    ViewBag.Title = "Отчеты";
+}
+
+<h2>Формы документов</h2>
+
+@Html.ActionLink("Добавить Отчет", "SelectDocTemplate")
+@(Html.Telerik().Grid<DocReportListViewModel>()
+            .DataBinding(dataBinding => dataBinding.Ajax().Select("_DocReportList", "DocReportEdit"))
+            .Name("DocReportListGrid")
+                   .Columns(columns =>
+                   {
+                       columns.AutoGenerate(column =>
+                       {
+                           column.Width = "150px";
+                           if (column.Member == "DocReportId")
+                               column.Visible = false;
+                       });
+                       columns.Command(command =>
+                       {
+                           command.Custom("viewDetails").Text("Информация")
+                            .DataRouteValues(route => route.Add(o => o.DocReportId).RouteKey("id"))
+                            .Action("DetailsDocReport", "DocReportEdit")
+                            .HtmlAttributes(new { style = "text-align: center" });
+                           command.Custom("EditDetails").Text("Редактировать")
+                            .DataRouteValues(route => route.Add(o => o.DocReportId).RouteKey("id"))
+                            .Action("EditDocReport", "DocReportEdit")
+                            .HtmlAttributes(new { style = "text-align: center" });
+                           command.Custom("DocReportFieldsManagmentDetails").Text("Редактировать поля")
+                            .DataRouteValues(route => route.Add(o => o.DocReportId).RouteKey("id"))
+                            .Action("DocReportFieldsManagment", "DocReportEdit")
+                            .HtmlAttributes(new { style = "text-align: center" });
+                           command.Custom("DeleteDetails").Text("Удалить")
+                            .DataRouteValues(route => route.Add(o => o.DocReportId).RouteKey("id"))
+                            .Action("DeleteDocReport", "DocReportEdit")
+                            .HtmlAttributes(new { style = "text-align: center" });
+                       }).Width(50);
+                   })
+                 .Sortable()
+                .Pageable()
+
+      ) 

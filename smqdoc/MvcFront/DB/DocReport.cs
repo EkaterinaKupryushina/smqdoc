@@ -25,14 +25,6 @@ namespace MvcFront.DB
             set { GroupType = (int) value; }
         }
 
-        /// <summary>
-        /// Статус отчета
-        /// </summary>
-        public DocReportStatus ReportStatus
-        {
-            get { return (DocReportStatus) Status; }
-            set { Status = (int) value; }
-        }
     }
 
     public class DocReportMetadata
@@ -53,6 +45,6 @@ namespace MvcFront.DB
         public DocReportGroupType ReportGroupType { get; set; }
 
         [Display(Name = "Статус отчета")]
-        public DocReportStatus ReportStatus { get; set; }
+        public bool IsActive { get; set; }
     }
 }

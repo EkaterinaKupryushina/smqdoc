@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 08/09/2012 16:30:25
+-- Date Created: 08/10/2012 11:39:06
 -- Generated from EDMX file: D:\Work\smqdoc\trunk\smqdoc\MvcFront\DB\EntityDBModel.edmx
 -- --------------------------------------------------
 
@@ -282,24 +282,24 @@ GO
 
 -- Creating table 'DocReports'
 CREATE TABLE [dbo].[DocReports] (
-    [reportid] int IDENTITY(1,1) NOT NULL,
+    [docreportid] int IDENTITY(1,1) NOT NULL,
     [Name] nvarchar(max)  NOT NULL,
     [DocTemplate_docteplateid] bigint  NOT NULL,
     [DocAppointmetType] int  NOT NULL,
     [GroupType] int  NOT NULL,
     [FilterStartDate] datetime  NOT NULL,
     [FilterEndDate] datetime  NOT NULL,
-    [Status] int  NOT NULL
+    [IsActive] bit  NOT NULL
 );
 GO
 
 -- Creating table 'ReportFields'
 CREATE TABLE [dbo].[ReportFields] (
-    [reportfield] bigint IDENTITY(1,1) NOT NULL,
+    [reportfieldid] bigint IDENTITY(1,1) NOT NULL,
     [FieldTemplate_fieldteplateid] bigint  NOT NULL,
     [DocReport_reportid] int  NOT NULL,
-    [ReportOperationType] nvarchar(max)  NOT NULL,
-    [OrderNumber] nvarchar(max)  NOT NULL
+    [ReportOperationType] int  NOT NULL,
+    [OrderNumber] int  NOT NULL
 );
 GO
 
@@ -319,7 +319,7 @@ GO
 
 -- Creating table 'ReportUserTags'
 CREATE TABLE [dbo].[ReportUserTags] (
-    [Reports_reportid] int  NOT NULL,
+    [Reports_docreportid] int  NOT NULL,
     [UserTags_Id] int  NOT NULL
 );
 GO
@@ -400,16 +400,16 @@ ADD CONSTRAINT [PK_AssetFolders]
     PRIMARY KEY CLUSTERED ([assetfolderid] ASC);
 GO
 
--- Creating primary key on [reportid] in table 'DocReports'
+-- Creating primary key on [docreportid] in table 'DocReports'
 ALTER TABLE [dbo].[DocReports]
 ADD CONSTRAINT [PK_DocReports]
-    PRIMARY KEY CLUSTERED ([reportid] ASC);
+    PRIMARY KEY CLUSTERED ([docreportid] ASC);
 GO
 
--- Creating primary key on [reportfield] in table 'ReportFields'
+-- Creating primary key on [reportfieldid] in table 'ReportFields'
 ALTER TABLE [dbo].[ReportFields]
 ADD CONSTRAINT [PK_ReportFields]
-    PRIMARY KEY CLUSTERED ([reportfield] ASC);
+    PRIMARY KEY CLUSTERED ([reportfieldid] ASC);
 GO
 
 -- Creating primary key on [MemberGroups_usergroupid], [Members_userid] in table 'GroupUsers'
@@ -424,10 +424,10 @@ ADD CONSTRAINT [PK_UserAccountUserTags]
     PRIMARY KEY NONCLUSTERED ([UserAccounts_userid], [UserTags_Id] ASC);
 GO
 
--- Creating primary key on [Reports_reportid], [UserTags_Id] in table 'ReportUserTags'
+-- Creating primary key on [Reports_docreportid], [UserTags_Id] in table 'ReportUserTags'
 ALTER TABLE [dbo].[ReportUserTags]
 ADD CONSTRAINT [PK_ReportUserTags]
-    PRIMARY KEY NONCLUSTERED ([Reports_reportid], [UserTags_Id] ASC);
+    PRIMARY KEY NONCLUSTERED ([Reports_docreportid], [UserTags_Id] ASC);
 GO
 
 -- --------------------------------------------------
@@ -690,12 +690,12 @@ ON [dbo].[DocReports]
     ([DocTemplate_docteplateid]);
 GO
 
--- Creating foreign key on [Reports_reportid] in table 'ReportUserTags'
+-- Creating foreign key on [Reports_docreportid] in table 'ReportUserTags'
 ALTER TABLE [dbo].[ReportUserTags]
 ADD CONSTRAINT [FK_ReportUserTags_Report]
-    FOREIGN KEY ([Reports_reportid])
+    FOREIGN KEY ([Reports_docreportid])
     REFERENCES [dbo].[DocReports]
-        ([reportid])
+        ([docreportid])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
@@ -732,7 +732,7 @@ ALTER TABLE [dbo].[ReportFields]
 ADD CONSTRAINT [FK_ReportFieldDocReport]
     FOREIGN KEY ([DocReport_reportid])
     REFERENCES [dbo].[DocReports]
-        ([reportid])
+        ([docreportid])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_ReportFieldDocReport'
