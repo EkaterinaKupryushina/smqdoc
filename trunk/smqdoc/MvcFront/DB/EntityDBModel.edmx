@@ -172,9 +172,9 @@
         </EntityType>
         <EntityType Name="DocReports">
           <Key>
-            <PropertyRef Name="reportid" />
+            <PropertyRef Name="docreportid" />
           </Key>
-          <Property Name="reportid" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="docreportid" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
           <Property Name="DocTemplate_docteplateid" Type="bigint" Nullable="false" />
           <Property Name="DocAppointmetType" Type="int" Nullable="false" />
@@ -239,20 +239,20 @@
         </EntityType>
         <EntityType Name="ReportFields">
           <Key>
-            <PropertyRef Name="reportfield" />
+            <PropertyRef Name="reportfieldid" />
           </Key>
-          <Property Name="reportfield" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="reportfieldid" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="FieldTemplate_fieldteplateid" Type="bigint" Nullable="false" />
           <Property Name="DocReport_reportid" Type="int" Nullable="false" />
-          <Property Name="ReportOperationType" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="OrderNumber" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ReportOperationType" Type="int" Nullable="false" />
+          <Property Name="OrderNumber" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="ReportUserTags">
           <Key>
-            <PropertyRef Name="Reports_reportid" />
+            <PropertyRef Name="Reports_docreportid" />
             <PropertyRef Name="UserTags_Id" />
           </Key>
-          <Property Name="Reports_reportid" Type="int" Nullable="false" />
+          <Property Name="Reports_docreportid" Type="int" Nullable="false" />
           <Property Name="UserTags_Id" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="UserAccounts">
@@ -483,7 +483,7 @@
           <End Role="ReportFields" Type="smqdocModel.Store.ReportFields" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="DocReports">
-              <PropertyRef Name="reportid" />
+              <PropertyRef Name="docreportid" />
             </Principal>
             <Dependent Role="ReportFields">
               <PropertyRef Name="DocReport_reportid" />
@@ -507,10 +507,10 @@
           <End Role="ReportUserTags" Type="smqdocModel.Store.ReportUserTags" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="DocReports">
-              <PropertyRef Name="reportid" />
+              <PropertyRef Name="docreportid" />
             </Principal>
             <Dependent Role="ReportUserTags">
-              <PropertyRef Name="Reports_reportid" />
+              <PropertyRef Name="Reports_docreportid" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1237,7 +1237,7 @@
     <EntitySetMapping Name="DocReports">
       <EntityTypeMapping TypeName="IsTypeOf(smqdocModel.DocReport)">
         <MappingFragment StoreEntitySet="DocReports">
-          <ScalarProperty Name="docreportid" ColumnName="reportid" />
+          <ScalarProperty Name="docreportid" ColumnName="docreportid" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="DocTemplate_docteplateid" ColumnName="DocTemplate_docteplateid" />
           <ScalarProperty Name="DocAppointmetType" ColumnName="DocAppointmetType" />
@@ -1251,7 +1251,7 @@
     <EntitySetMapping Name="ReportFields">
       <EntityTypeMapping TypeName="IsTypeOf(smqdocModel.ReportField)">
         <MappingFragment StoreEntitySet="ReportFields">
-          <ScalarProperty Name="reportfieldid" ColumnName="reportfield" />
+          <ScalarProperty Name="reportfieldid" ColumnName="reportfieldid" />
           <ScalarProperty Name="FieldTemplate_fieldteplateid" ColumnName="FieldTemplate_fieldteplateid" />
           <ScalarProperty Name="DocReport_reportid" ColumnName="DocReport_reportid" />
           <ScalarProperty Name="ReportOperationType" ColumnName="ReportOperationType" />
@@ -1285,7 +1285,7 @@
     </AssociationSetMapping>
     <AssociationSetMapping Name="ReportUserTags" TypeName="smqdocModel.ReportUserTags" StoreEntitySet="ReportUserTags">
       <EndProperty Name="Report">
-        <ScalarProperty Name="docreportid" ColumnName="Reports_reportid" />
+        <ScalarProperty Name="docreportid" ColumnName="Reports_docreportid" />
       </EndProperty>
       <EndProperty Name="UserTags">
         <ScalarProperty Name="Id" ColumnName="UserTags_Id" />
