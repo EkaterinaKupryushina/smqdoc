@@ -1,0 +1,67 @@
+﻿@using MvcFront.Enums
+@using Telerik.Web.Mvc.UI
+@model MvcFront.Models.DocReportEditModel
+
+        <legend>Отчет</legend>
+
+        @Html.HiddenFor(model => model.DocReportId)
+        @Html.HiddenFor(model => model.DocTemplateId)
+
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Name)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Name)
+            @Html.ValidationMessageFor(model => model.Name)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.FilterStartDate)
+        </div>
+        <div class="editor-field">
+            @Html.Telerik().DatePickerFor(model => model.FilterStartDate)
+            @Html.ValidationMessageFor(model => model.FilterStartDate)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.FilterEndDate)
+        </div>
+        <div class="editor-field">
+            @Html.Telerik().DatePickerFor(model => model.FilterEndDate)
+            @Html.ValidationMessageFor(model => model.FilterEndDate)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ReportAppointmentType)
+        </div>
+        <div class="editor-field">
+             @Html.Telerik().DropDownList().Name("ReportAppointmentType").Items(item =>
+                {
+                    item.Add().Text("Личные").Value(((int)DocReportAppointmentType.User).ToString()).Selected(@Model.ReportAppointmentType == 0);
+                    item.Add().Text("Групповые").Value(((int)DocReportAppointmentType.Group).ToString()).Selected(@Model.ReportAppointmentType == 1);
+                    item.Add().Text("Все").Value(((int)DocReportAppointmentType.Both).ToString()).Selected(@Model.ReportAppointmentType == 2);
+                })
+            @Html.ValidationMessageFor(model => model.ReportAppointmentType)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ReportGroupType)
+        </div>
+        <div class="editor-field">
+            @Html.Telerik().DropDownList().Name("ReportGroupType").Items(item =>
+                {
+                    item.Add().Text("Без руппировки").Value(((int)DocReportGroupType.None).ToString()).Selected(@Model.ReportGroupType == 0);
+                    item.Add().Text("По пользователю").Value(((int)DocReportGroupType.User).ToString()).Selected(@Model.ReportGroupType == 1);
+                    item.Add().Text("По назначению").Value(((int)DocReportGroupType.DocAppointment).ToString()).Selected(@Model.ReportGroupType == 2);
+                })
+            @Html.ValidationMessageFor(model => model.ReportGroupType)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.IsActive)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.IsActive)
+            @Html.ValidationMessageFor(model => model.IsActive)
+        </div>

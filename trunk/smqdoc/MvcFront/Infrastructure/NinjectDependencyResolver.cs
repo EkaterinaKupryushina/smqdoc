@@ -54,6 +54,7 @@ namespace MvcFront.Infrastructure
             Bind<IDocumentRepository>().To <DocumentRepository>();
             Bind<IDocAppointmentRepository>().To<DocAppointmentRepository>();
             Bind<IAssetRepository>().To<AssetRepository>();
+            Bind<IDocReportRepository>().To<DocReportRepository>();
             Bind<IUnitOfWork>().To<UnitOfWork>();
         }
     }

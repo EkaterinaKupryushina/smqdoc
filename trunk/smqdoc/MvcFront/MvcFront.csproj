@@ -114,6 +114,7 @@
     </Compile>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DictionaryController.cs" />
+    <Compile Include="Controllers\DocReportEditController.cs" />
     <Compile Include="Controllers\GroupDocAppointmentController.cs" />
     <Compile Include="Controllers\DocTemplateListController.cs" />
     <Compile Include="Controllers\LibraryController.cs" />
@@ -139,7 +140,6 @@
     <Compile Include="DB\UserGroup.cs" />
     <Compile Include="Entities\UserSessionData.cs" />
     <Compile Include="Enums\DocReportAppointmentType.cs" />
-    <Compile Include="Enums\DocReportStatus.cs" />
     <Compile Include="Enums\DocReportGroupType.cs" />
     <Compile Include="Enums\DocTemplateStatus.cs" />
     <Compile Include="Enums\DocumentStatus.cs" />
@@ -176,6 +176,8 @@
     <Compile Include="Models\DocAppointmentListViewModel.cs" />
     <Compile Include="Models\DocAppointmentEditModel.cs" />
     <Compile Include="Models\DocFieldEditModel.cs" />
+    <Compile Include="Models\DocReportEditModel.cs" />
+    <Compile Include="Models\DocReportListViewModel.cs" />
     <Compile Include="Models\DocTemplateEditModel.cs" />
     <Compile Include="Models\DocumentEditModel.cs" />
     <Compile Include="Models\FieldTemplateEditModel.cs" />
@@ -621,6 +623,11 @@
     <Content Include="Views\Library\EditAssetFolder.cshtml" />
     <Content Include="Views\Library\CreateAsset.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\AssetEditModel.cshtml" />
+    <Content Include="Views\DocReportEdit\Index.cshtml" />
+    <Content Include="Views\DocReportEdit\SelectDocTemplate.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\DocReportEditModel.cshtml" />
+    <Content Include="Views\DocReportEdit\CreateDocReport.cshtml" />
+    <Content Include="Views\DocReportEdit\EditDocReport.cshtml" />
     <None Include="Views\UserAccountList\ChangeState.cshtml" />
     <Content Include="Views\UserGroupList\Index.cshtml" />
     <Content Include="Views\UserGroupList\Delete.cshtml" />
