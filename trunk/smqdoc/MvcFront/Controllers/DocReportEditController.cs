@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using MvcFront.DB;
 using MvcFront.Enums;
@@ -118,6 +116,28 @@ namespace MvcFront.Controllers
             return RedirectToAction("Index");
         }
 
+        #region JSon
+
+        /// <summary>
+        /// Удаляем отчет
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public JsonResult DeleteDocReport(int id)
+        {
+           try
+            {
+                _docReportRepository.DeleteDocReport(id);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("Ошибка", ex.Message);
+            }
+            return Json(new { result = true });
+        }
+
+        #endregion
+
         #region Grid Actions
 
         /// <summary>
@@ -131,6 +151,188 @@ namespace MvcFront.Controllers
               _docReportRepository.GetAllDocReports().ToList()
                   .ConvertAll(DocReportListViewModel.DocReportToModelConverter).ToList();
             return View(new GridModel<DocReportListViewModel> { Data = data });
+        }
+
+        #endregion
+
+        #endregion
+
+        #region DocReportFields
+
+        /// <summary>
+        /// страниция редактирования списка
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActionResult DocReportFieldsManagment(int id)
+        {
+            return View(_docReportRepository.GetDocReportById(id));
+        }
+
+        /// <summary>
+        /// Добавление поля в форму
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult AddField(int id)
+        {
+            var docReport = _docReportRepository.GetDocReportById(id);
+            var reportField = new ReportField 
+            {
+                DocReport = docReport, 
+                reportfieldid = 0
+            };
+            var fModel = new ReportFieldEditModel(reportField);
+           
+            return View(fModel);
+        }
+
+        /// <summary>
+        /// Добавление поля в форму
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult AddField(ReportFieldEditModel model)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var fld = model.Update(new ReportField());
+                    _docReportRepository.SaveReportField(fld);
+                }
+                else
+                {
+                    throw new Exception("Проверьте введенные данные");
+                }
+                return RedirectToAction("DocReportFieldsManagment", new { id = model.DocReportId });
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("Ошибка при сохранении", ex.InnerException != null ? ex.InnerException.Message : ex.Message);
+            }
+            return View();
+        }
+
+        /// <summary>
+        /// Редактирование поля
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult EditField(long id)
+        {
+            return View(new ReportFieldEditModel(_docReportRepository.GetReportFieldById(id)));
+        }
+
+        /// <summary>
+        /// Редактирования поля
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult EditField(ReportFieldEditModel model)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var fld = _docReportRepository.GetReportFieldById(model.DocReportId);
+                    fld = model.Update(fld);
+                    _docReportRepository.SaveReportField(fld);
+                }
+                else
+                {
+                    throw new Exception("Проверьте введенные данные");
+                }
+                return RedirectToAction("DocReportFieldsManagment", new { id = model.DocReportId });
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("Ошибка при сохранении", ex.InnerException != null ? ex.InnerException.Message : ex.Message);
+            }
+            return View();
+        }
+
+        #region Json
+
+        /// <summary>
+        /// Ajax  удаление поля
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public JsonResult DeleteField(long id)
+        {
+            _docReportRepository.DeleteReportField(id);
+            return Json(new { result = true });
+        }
+
+        /// <summary>
+        /// Поднять в списке поле 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public JsonResult UpField(long id)
+        {
+            var entity = _docReportRepository.GetReportFieldById(id);
+            if (entity.OrderNumber > 1)
+            {
+                _docReportRepository.SetFieldTemplateNumber(entity.reportfieldid, entity.OrderNumber - 1);
+            }
+            return Json(new { result = true });
+        }
+
+        /// <summary>
+        /// Опустить поле в списке
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public JsonResult DownField(long id)
+        {
+            var entity = _docReportRepository.GetReportFieldById(id);
+
+            _docReportRepository.SetFieldTemplateNumber(entity.reportfieldid, entity.OrderNumber + 1);
+
+            return Json(new { result = true });
+        }
+
+        /// <summary>
+        /// Запрос списка доступных полей для которых можно сделать планируемое поле
+        /// </summary>
+        /// <param name="docId"></param>
+        /// <param name="fieldId"> </param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult _DocTemplateReportFieldsList(int docId, long fieldId)
+        {
+            var data =
+                _docReportRepository.GetDocReportById(docId).DocTemplate.FieldTeplates.Where(x =>
+                    (x.FiledType == (int)FieldTemplateType.Number
+                    || x.FiledType == (int)FieldTemplateType.Calculated
+                    || (x.FiledType == (int)FieldTemplateType.Planned) && x.FactFieldTemplate != null &&
+                        (x.FactFieldTemplate.FiledType == (int)FieldTemplateType.Number || x.FactFieldTemplate.FiledType == (int)FieldTemplateType.Calculated)));
+
+            return new JsonResult { Data = new SelectList(data.ToList().Select(x => new { Id = x.fieldteplateid, Name = x.FieldName }), "Id", "Name", fieldId) };
+        }
+
+
+        #endregion
+
+        #region GridActions
+
+        /// <summary>
+        /// Возращает список полей отчета
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [GridAction]
+        public ActionResult _ReportFieldList(int id)
+        {
+            var data = _docReportRepository.GetDocReportById(id).ReportFields.OrderBy(x => x.OrderNumber).ToList()
+                .ConvertAll(ReportFieldListViewModel.FieldToModelConverter);
+            return View(new GridModel<ReportFieldListViewModel> { Data = data });
         }
 
         #endregion

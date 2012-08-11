@@ -1,0 +1,41 @@
+﻿@using Telerik.Web.Mvc.UI
+@model MvcFront.Models.ReportFieldEditModel
+
+
+        <legend>Поле отчета</legend>
+
+            @Html.HiddenFor(model => model.ReportFieldId)
+
+            @Html.HiddenFor(model => model.DocReportId)
+
+
+            @Html.HiddenFor(model => model.IsGrouped)
+
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.FiledTemplateId)
+        </div>
+        <div class="editor-field">
+              @(Html.Telerik().DropDownListFor(x => x.FiledTemplateId).ClientEvents(events => events.OnLoad("onFieldLoad"))
+                           .DataBinding(binding => binding.Ajax().Select("_DocTemplateReportFieldsList", "DocReportEdit", new { docId = Model.DocReportId, fieldId = Model.FiledTemplateId }))
+              )
+            @Html.ValidationMessageFor(model => model.FiledTemplateId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.OperationType)
+        </div>
+        <div class="editor-field">
+           @Html.Telerik().DropDownList().Name("OperationType").Items(item =>
+            {
+                item.Add().Text("Среднее").Value("0").Selected(@Model.OperationType == 0);
+                item.Add().Text("Сумма").Value("1").Selected(@Model.OperationType == 1);
+            })
+            @Html.ValidationMessageFor(model => model.OperationType)
+        </div>
+
+<script type="text/javascript">
+    function onFieldLoad(e) {
+        $(this).data('tDropDownList').fill();
+    }
+</script>

@@ -41,7 +41,7 @@ namespace MvcFront.Interfaces
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        ReportField GetReportFieldById(int id);
+        ReportField GetReportFieldById(long id);
 
         /// <summary>
         /// Сохранить изменения в поле отчета
@@ -50,9 +50,16 @@ namespace MvcFront.Interfaces
         void SaveReportField(ReportField entity);
 
         /// <summary>
+        /// Установить полю номер
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="newNumber"></param>
+        void SetFieldTemplateNumber(long id, int newNumber);
+
+        /// <summary>
         /// Удалить поле отчета
         /// </summary>
         /// <param name="id"></param>
-        void DeleteReportField(int id);
+        void DeleteReportField(long id);
     }
 }

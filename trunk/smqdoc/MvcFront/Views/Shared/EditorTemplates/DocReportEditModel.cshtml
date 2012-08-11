@@ -51,10 +51,10 @@
         <div class="editor-field">
             @Html.Telerik().DropDownList().Name("ReportGroupType").Items(item =>
                 {
-                    item.Add().Text("Без руппировки").Value(((int)DocReportGroupType.None).ToString()).Selected(@Model.ReportGroupType == 0);
+                    item.Add().Text("Без группировки").Value(((int)DocReportGroupType.None).ToString()).Selected(@Model.ReportGroupType == 0);
                     item.Add().Text("По пользователю").Value(((int)DocReportGroupType.User).ToString()).Selected(@Model.ReportGroupType == 1);
                     item.Add().Text("По назначению").Value(((int)DocReportGroupType.DocAppointment).ToString()).Selected(@Model.ReportGroupType == 2);
-                })
+                }).Enable(Model.IsGroupChangeAvailable)
             @Html.ValidationMessageFor(model => model.ReportGroupType)
         </div>
 

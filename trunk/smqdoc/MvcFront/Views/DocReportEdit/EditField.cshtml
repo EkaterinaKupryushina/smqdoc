@@ -1,0 +1,20 @@
+﻿@model MvcFront.Models.ReportFieldEditModel
+
+@{
+    ViewBag.Title = "EditField";
+}
+
+<h2>Редактировать поле</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    
+    <fieldset>
+    @Html.EditorForModel()
+       
+    </fieldset>
+     <p>
+            <input type="submit" value="Сохранить" />|
+            @Html.ActionLink("Отмена", "DocReportFieldsManagment", new { id = Model.DocReportId })
+        </p>
+}
