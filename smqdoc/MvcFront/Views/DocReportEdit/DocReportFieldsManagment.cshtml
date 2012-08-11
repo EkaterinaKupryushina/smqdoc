@@ -1,0 +1,72 @@
+﻿@using Telerik.Web.Mvc.UI
+@using MvcFront.Models
+@model MvcFront.DB.DocReport
+@{
+    ViewBag.Title = "DocReportFieldsManagment";
+}
+<h2>
+    Управление полями</h2>
+<fieldset>
+    @Html.DisplayForModel()
+    <div class="display-label">
+        Поля Формы</div>
+
+    @Html.ActionLink("Добавить поле", "AddField", new { id = Model.docreportid })
+
+    @(Html.Telerik().Grid<ReportFieldListViewModel>()
+           .DataBinding(dataBinding => dataBinding.Ajax().Select("_ReportFieldList", "DocReportEdit", new { id = Model.docreportid }))
+           .Name("DocReportFieldListGrid")
+           .ClientEvents(events => events.OnComplete("onComplete"))
+           .Columns(columns =>
+                        {
+                            columns.AutoGenerate(column =>
+                                                     {
+                                                         if (column.Member == "FieldId")
+                                                             column.Visible = false;
+                                                     });
+                            columns.Command(command =>
+                                                {
+                                                    command.Custom("EditDetails")
+                                                        .Text("Редактировать")
+                                                        .DataRouteValues(route => route.Add(o => o.FieldId).RouteKey("id"))
+                                                        .Action("EditField", "DocReportEdit")
+                                                        .HtmlAttributes(new { style = "text-align: center" });
+                                                    command.Custom("DeleteDetails")
+                                                        .Text("Удалить")
+                                                        .DataRouteValues(route => route.Add(o => o.FieldId).RouteKey("id"))
+                                                        .Ajax(true)
+                                                        .Action("DeleteField", "DocReportEdit")
+                                                        .HtmlAttributes(new { style = "text-align: center" });
+                                                }).Width(80);
+                            columns.Command(command =>
+                                                {
+                                                    command.Custom("UpDetails")
+                                                        .Text("Вверх")
+                                                        .DataRouteValues(route => route.Add(o => o.FieldId).RouteKey("id"))
+                                                        .Ajax(true)
+                                                        .Action("UpField", "DocReportEdit")
+                                                        .HtmlAttributes(new { style = "text-align: center" });
+                                                    command.Custom("DownDetails")
+                                                        .Text("Вниз")
+                                                        .DataRouteValues(route => route.Add(o => o.FieldId).RouteKey("id"))
+                                                        .Ajax(true)
+                                                        .Action("DownField", "DocReportEdit")
+                                                        .HtmlAttributes(new { style = "text-align: center" });
+                                                }).Width(80);
+                        })
+          )
+</fieldset>
+<p>
+    @Html.ActionLink("Редактировать", "EditDocReport", new { id = Model.docreportid }) |
+    @Html.ActionLink("Отмена", "Index")
+</p>
+<script type="text/javascript">
+    function onComplete(e) {
+        if (e.name == "DeleteDetails" || e.name == "DownDetails" || e.name == "UpDetails") {
+            var grid = $('#DocReportFieldListGrid').data("tGrid");
+            if (grid != null) {
+                grid.rebind();
+            }
+        }
+    }
+</script>

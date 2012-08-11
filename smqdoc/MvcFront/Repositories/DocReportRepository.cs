@@ -58,7 +58,7 @@ namespace MvcFront.Repositories
             return _unitOfWork.DbModel.ReportFields;
         }
 
-        public ReportField GetReportFieldById(int id)
+        public ReportField GetReportFieldById(long id)
         {
             return _unitOfWork.DbModel.ReportFields.First(x => x.reportfieldid == id);
         }
@@ -81,12 +81,34 @@ namespace MvcFront.Repositories
             _unitOfWork.DbModel.SaveChanges();
         }
 
-        public void DeleteReportField(int id)
+        public void DeleteReportField(long id)
         {
             var entity = _unitOfWork.DbModel.ReportFields.First(x => x.reportfieldid == id);
             _unitOfWork.DbModel.ReportFields.DeleteObject(entity);
             _unitOfWork.DbModel.SaveChanges();
             if (entity != null) ReoderFields(entity.DocReport_reportid);
+        }
+
+        public void SetFieldTemplateNumber(long id, int newNumber)
+        {
+            var enFirst = GetReportFieldById(id);
+            if (enFirst != null)
+            {
+                int oldNumber = enFirst.OrderNumber;
+
+                var enSecond = enFirst.DocReport.ReportFields.FirstOrDefault(x => x.OrderNumber == newNumber);
+                if (enSecond == null)
+                {
+                    enFirst.OrderNumber = newNumber;
+                }
+                else
+                {
+                    enSecond.OrderNumber = oldNumber;
+                    enFirst.OrderNumber = newNumber;
+                }
+                _unitOfWork.DbModel.SaveChanges();
+                ReoderFields(enFirst.DocReport_reportid);
+            }
         }
 
         private void ReoderFields(int docrepotId)

@@ -30,8 +30,10 @@ namespace MvcFront.Models
         [Display(Name = "Группировка строк")]
         public int ReportGroupType { get; set; }
 
-        [Display(Name = "Активен?")]
+        [Display(Name = "Включен?")]
         public bool IsActive { get; set; }
+
+        public bool IsGroupChangeAvailable { get; set; }
 
         public DocReportEditModel()
         {
@@ -49,6 +51,7 @@ namespace MvcFront.Models
             ReportAppointmentType = entity.DocAppointmetType;
             ReportGroupType = entity.GroupType;
             IsActive = entity.IsActive;
+            IsGroupChangeAvailable = entity.ReportFields.Count == 0;
         }
 
         public DocReport Update(DocReport entity)

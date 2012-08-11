@@ -12,6 +12,7 @@
 @(Html.Telerik().Grid<DocReportListViewModel>()
             .DataBinding(dataBinding => dataBinding.Ajax().Select("_DocReportList", "DocReportEdit"))
             .Name("DocReportListGrid")
+                .ClientEvents(events => events.OnComplete("onComplete"))
                    .Columns(columns =>
                    {
                        columns.AutoGenerate(column =>
@@ -37,6 +38,7 @@
                            command.Custom("DeleteDetails").Text("Удалить")
                             .DataRouteValues(route => route.Add(o => o.DocReportId).RouteKey("id"))
                             .Action("DeleteDocReport", "DocReportEdit")
+                            .Ajax(true)
                             .HtmlAttributes(new { style = "text-align: center" });
                        }).Width(50);
                    })
@@ -44,3 +46,13 @@
                 .Pageable()
 
       ) 
+      <script type="text/javascript">
+          function onComplete(e) {
+              if (e.name == "DeleteDetails") {
+                  var grid = $('#DocReportListGrid').data("tGrid");
+                  if (grid != null) {
+                      grid.rebind();
+                  }
+              }
+          }
+</script>

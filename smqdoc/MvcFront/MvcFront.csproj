@@ -173,6 +173,8 @@
     <Compile Include="Models\AssetEditModel.cs" />
     <Compile Include="Models\AssetFolderEditModel.cs" />
     <Compile Include="Models\AssetFolderListViewModel.cs" />
+    <Compile Include="Models\ReportFieldEditModel.cs" />
+    <Compile Include="Models\ReportFieldListViewModel.cs" />
     <Compile Include="Models\DocAppointmentListViewModel.cs" />
     <Compile Include="Models\DocAppointmentEditModel.cs" />
     <Compile Include="Models\DocFieldEditModel.cs" />
@@ -431,6 +433,7 @@
     <Content Include="Content\themes\base\jquery.ui.slider.css" />
     <Content Include="Content\themes\base\jquery.ui.tabs.css" />
     <Content Include="Content\themes\base\jquery.ui.theme.css" />
+    <Content Include="DB\FillUsersData.sql" />
     <Content Include="DB\EntityDBModel.edmx.sql" />
     <Content Include="DB\FillData.sql" />
     <Content Include="Global.asax" />
@@ -628,6 +631,11 @@
     <Content Include="Views\Shared\EditorTemplates\DocReportEditModel.cshtml" />
     <Content Include="Views\DocReportEdit\CreateDocReport.cshtml" />
     <Content Include="Views\DocReportEdit\EditDocReport.cshtml" />
+    <Content Include="Views\DocReportEdit\DocReportFieldsManagment.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\DocReport.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\ReportFieldEditModel.cshtml" />
+    <Content Include="Views\DocReportEdit\AddField.cshtml" />
+    <Content Include="Views\DocReportEdit\EditField.cshtml" />
     <None Include="Views\UserAccountList\ChangeState.cshtml" />
     <Content Include="Views\UserGroupList\Index.cshtml" />
     <Content Include="Views\UserGroupList\Delete.cshtml" />
