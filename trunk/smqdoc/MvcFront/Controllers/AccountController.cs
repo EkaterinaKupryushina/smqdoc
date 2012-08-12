@@ -216,6 +216,11 @@ namespace MvcFront.Controllers
                     sessData.UserType = UserProfileTypes.Systemadmin;
                     sessData.CurrentProfileName = "Администратор";
 
+                    SessionHelper.SetUserSessionData(Session, sessData);
+                    user.LastAccessProfileCode = model.UserProfileCode;
+                    _userRepository.Save(user);
+
+                    return RedirectToAction("Index", "DocTemplateList");
                 }
                 if (groupId == null && !isManager)
                 {
@@ -224,6 +229,11 @@ namespace MvcFront.Controllers
                     sessData.UserType = UserProfileTypes.User;
                     sessData.CurrentProfileName = "Пользователь";
 
+                    SessionHelper.SetUserSessionData(Session, sessData);
+                    user.LastAccessProfileCode = model.UserProfileCode;
+                    _userRepository.Save(user);
+
+                    return RedirectToAction("Index", "Account");
                 }
                 if (groupId != null && isManager)
                 {
@@ -234,6 +244,11 @@ namespace MvcFront.Controllers
                     sessData.UserType = UserProfileTypes.Groupmanager;
                     sessData.CurrentProfileName = "Менеджер " + sessData.UserGroupName;
 
+                    SessionHelper.SetUserSessionData(Session, sessData);
+                    user.LastAccessProfileCode = model.UserProfileCode;
+                    _userRepository.Save(user);
+
+                    return RedirectToAction("Index", "ManagerDocument");
                 }
                 if (groupId != null && !isManager)
                 {
@@ -244,10 +259,12 @@ namespace MvcFront.Controllers
                     sessData.UserType = UserProfileTypes.Groupuser;
                     sessData.CurrentProfileName = "Участник " + sessData.UserGroupName;
 
-                }
-                SessionHelper.SetUserSessionData(Session,sessData);
-                user.LastAccessProfileCode = model.UserProfileCode;
-                _userRepository.Save(user);
+                    SessionHelper.SetUserSessionData(Session, sessData);
+                    user.LastAccessProfileCode = model.UserProfileCode;
+                    _userRepository.Save(user);
+
+                    return RedirectToAction("UserDocAppointments", "UserDocument");
+                }                
             }
             return RedirectToAction("Index", "Home");
         }

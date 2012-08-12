@@ -41,14 +41,14 @@
                         {
                             columns.AutoGenerate(column =>
                                                      {
-                                                         column.Width = "140px";
+                                                         column.Width = "200px";                                                         
                                                          if (column.Member == "AssetId" || column.Member == "FileName")
                                                              column.Visible = false;
                                                      });
                             columns.Command(command => command.Custom("viewDownload").Text("Скачать")
                                                            .DataRouteValues(route => route.Add(o => o.AssetId).RouteKey("assetId"))
                                                            .Action("Download", "Library")
-                                                           .HtmlAttributes(new { style = "text-align: center" })).Width(50);
+                                                           .HtmlAttributes(new { style = "text-align: center" })).Width(100);
                         })
            .Scrollable(c => c.Height("400px"))
            .Sortable()
