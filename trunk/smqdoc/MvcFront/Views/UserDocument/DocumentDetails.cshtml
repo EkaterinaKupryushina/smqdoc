@@ -14,5 +14,5 @@
     {
         @Html.ActionLink("Редактировать", "EditDocument", new { id = Model.documentid }) <text>|</text>
     }
-    @Html.ActionLink("Отмена", "Index")
+    @Html.ActionLink("Отмена", (Model.DocStatus != DocumentStatus.Submited ? "Index" : "SubmitedUserDocuments"))
 </p>

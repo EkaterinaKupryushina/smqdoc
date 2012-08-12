@@ -191,7 +191,7 @@ namespace MvcFront.Controllers
         public ActionResult _GroupDocAppointmentList()
         {
             var sessData = SessionHelper.GetUserSessionData(Session);
-            var data = _appointmentRepository.GetAllGroupDocAppointments(sessData.UserGroupId).Where(x => x.Status != (int)DocAppointmentStatus.Deleted).ToList()
+            var data = _appointmentRepository.GetAllGroupDocAppointments(sessData.UserGroupId, true).Where(x => x.Status != (int)DocAppointmentStatus.Deleted).ToList()
                 .ConvertAll(GroupDocAppointmentListViewModel.DocAppointmentToModelConverter);
             return View(new GridModel<GroupDocAppointmentListViewModel> { Data = data });
         }

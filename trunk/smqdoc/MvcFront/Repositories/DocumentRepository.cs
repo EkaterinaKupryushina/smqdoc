@@ -74,6 +74,7 @@ namespace MvcFront.Repositories
             }
             else
             {
+                entity.LastEditDate = DateTime.Now;
                 _unitOfWork.DbModel.Documents.ApplyCurrentValues(entity);
             }
             _unitOfWork.DbModel.SaveChanges();

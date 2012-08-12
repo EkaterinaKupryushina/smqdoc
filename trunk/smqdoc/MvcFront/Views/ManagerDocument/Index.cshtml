@@ -7,7 +7,7 @@
 @(Html.Telerik().Grid<DocumentListViewModel>()
             .DataBinding(dataBinding => dataBinding.Ajax().Select("_SendedGroupDocumentsList", "ManagerDocument", new { }))
         .Name("GroupDocumentListGrid")
-                .ClientEvents(events => events.OnRowDataBound("onDocumentListGridRowDataBound"))
+                    .ClientEvents(events => events.OnRowDataBound("onDocumentListGridRowDataBound"))
                    .Columns(columns =>
                    {
                        columns.AutoGenerate(column =>
@@ -67,4 +67,5 @@
             $(e.row).css("color", "red");
         }
     }
+
     </script>
