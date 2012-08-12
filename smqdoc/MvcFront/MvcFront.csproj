@@ -636,6 +636,7 @@
     <Content Include="Views\Shared\EditorTemplates\ReportFieldEditModel.cshtml" />
     <Content Include="Views\DocReportEdit\AddField.cshtml" />
     <Content Include="Views\DocReportEdit\EditField.cshtml" />
+    <Content Include="Views\ManagerDocument\SubmitedUserDocuments.cshtml" />
     <None Include="Views\UserAccountList\ChangeState.cshtml" />
     <Content Include="Views\UserGroupList\Index.cshtml" />
     <Content Include="Views\UserGroupList\Delete.cshtml" />
@@ -656,6 +657,7 @@
     <Content Include="Views\UserDocument\CreateUserAppointment.cshtml" />
     <Content Include="Views\UserDocument\DisableDocAppointment.cshtml" />
     <Content Include="WebAppSettings.config" />
+    <Content Include="Views\UserDocument\SubmitedUserDocuments.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ELW.Library.Math\ELW.Library.Math.csproj">

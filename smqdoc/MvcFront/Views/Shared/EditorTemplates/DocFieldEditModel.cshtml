@@ -2,15 +2,24 @@
 @using Telerik.Web.Mvc.UI
 @model MvcFront.Models.DocFieldEditModel
 @{
+    @Html.ValidationSummary(true)
     @Html.HiddenFor(x => x.FieldId)
     @Html.HiddenFor(x => x.FieldType)
     @Html.HiddenFor(x => x.IsRestricted)
+    @Html.HiddenFor(x => x.IsReadOnly)
+    @Html.HiddenFor(x => x.FieldName)
+    @Html.HiddenFor(x => x.IsInteger)
+    @Html.HiddenFor(x => x.MaxVal)
+    @Html.HiddenFor(x => x.MinVal)
+
     switch ((FieldTemplateType)Model.FieldType)
     {
         case FieldTemplateType.Bool:
+
             if (Model.IsReadOnly)
             {
                 @Html.HiddenFor(x => x.BoolValue)
+                @Html.ValidationMessageFor(model => model.BoolValue)
                 if (Model.BoolValue)
                 {
                     <text>ДА</text>
@@ -24,22 +33,25 @@
             {
                 @Html.RadioButtonFor(x => x.BoolValue, true) <text>ДА</text>
                 @Html.RadioButtonFor(x => x.BoolValue, false)<text>Нет</text>  
+                @Html.ValidationMessageFor(model => model.BoolValue)
             }
             break;
         case FieldTemplateType.Number:
             if (Model.IsReadOnly)
             {
-                
-               if(Model.IsInteger)
-               {
+
+                if (Model.IsInteger)
+                {
                    @Html.HiddenFor(x => x.IntegerValue)
                    @Html.DisplayFor(x => x.IntegerValue)
-               }
-               else
-               {
+                   @Html.ValidationMessageFor(model => model.IntegerValue)
+                }
+                else
+                {
                    @Html.HiddenFor(x => x.DoubleValue)
                    @Html.DisplayFor(x => x.DoubleValue)
-               }
+                   @Html.ValidationMessageFor(model => model.DoubleValue)
+                }
             }
             else
             {
@@ -47,13 +59,15 @@
                 {
                         @(Model.IsRestricted
                             ? (Html.Telerik().IntegerTextBoxFor(x => x.IntegerValue).MaxValue((int)Model.MaxVal).MinValue((int)Model.MinVal).EmptyMessage("Введите целое"))
-                            : (Html.Telerik().IntegerTextBoxFor(x => x.IntegerValue).EmptyMessage("Введите целое")))
+                                   : (Html.Telerik().IntegerTextBoxFor(x => x.IntegerValue).EmptyMessage("Введите целое")))
+                        @Html.ValidationMessageFor(model => model.IntegerValue)
                 }
                 else
                 {
                         @(Model.IsRestricted
                             ? (Html.Telerik().NumericTextBoxFor(x => x.DoubleValue).DecimalSeparator(",").NumberGroupSeparator("").NumberGroupSize(0).MaxValue(Model.MaxVal).MinValue(Model.MinVal).EmptyMessage("Введите число"))
-                            : (Html.Telerik().NumericTextBoxFor(x => x.DoubleValue).DecimalSeparator(",").NumberGroupSeparator("").NumberGroupSize(0).EmptyMessage("Введите число")))
+                                   : (Html.Telerik().NumericTextBoxFor(x => x.DoubleValue).DecimalSeparator(",").NumberGroupSeparator("").NumberGroupSize(0).EmptyMessage("Введите число")))
+                        @Html.ValidationMessageFor(model => model.DoubleValue)
                 }
             }
             break;
@@ -62,16 +76,20 @@
             {
                 @Html.HiddenFor(x => x.StringValue)
                 @Html.DisplayFor(x => x.StringValue)
+                @Html.ValidationMessageFor(model => model.StringValue)
             }
             else
             {
                 @Html.EditorFor(x => x.StringValue, new { @class = "stringfield" })
+                @Html.ValidationMessageFor(model => model.StringValue)
             }
             break;
         case FieldTemplateType.Calculated:
-                @(Html.TextBox(Model.FieldId.ToString(), Model.DoubleValue, new Dictionary<string, object> { { "readonly", "true" } }))
+            @(Html.TextBox(Model.FieldId.ToString(), Model.DoubleValue, new Dictionary<string, object> { { "readonly", "true" } }))
+            @Html.ValidationMessageFor(model => model.DoubleValue)  
                 break;
         default:
                 throw new ArgumentOutOfRangeException();
     }
+    
 }

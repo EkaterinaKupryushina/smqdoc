@@ -3,7 +3,12 @@
 @{
     ViewBag.Title = "Document";
 }
-@Html.HiddenFor(model=>model.DocumentId)
+ @Html.HiddenFor(model=>model.DocumentId)
+ @Html.HiddenFor(model => model.Name)
+ @Html.HiddenFor(model => model.LastEditDate)
+ @Html.HiddenFor(model => model.DocumentStatusText)
+ @Html.HiddenFor(model => model.LastComment)
+
 <div class="display-label">@Html.LabelFor(model => model.Name)</div>
 <div class="display-field">
     @Html.DisplayFor(model => model.Name)

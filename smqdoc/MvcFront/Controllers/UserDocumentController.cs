@@ -32,6 +32,15 @@ namespace MvcFront.Controllers
         }
 
         /// <summary>
+        ///Страница со списоком потдеврженных пользовательских докментов
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult SubmitedUserDocuments()
+        {
+            return View();
+        }
+
+        /// <summary>
         /// Страница документов пользователя
         /// </summary>
         /// <returns></returns>
@@ -202,9 +211,20 @@ namespace MvcFront.Controllers
                 }
                 _documentRepository.SaveDocument(doc);
                 if (Request.Form["send"] != null)
-                    _documentRepository.ChangeDocumentStatus(doc.documentid, doc.DocStatus == 
-                        DocumentStatus.PlanEditing 
-                        ? DocumentStatus.PlanSended : DocumentStatus.FactSended);
+                {
+                    if (ModelState.IsValid)
+                    {
+                        _documentRepository.ChangeDocumentStatus(doc.documentid, doc.DocStatus ==
+                                                                            DocumentStatus.PlanEditing
+                                                                                ? DocumentStatus.PlanSended
+                                                                                : DocumentStatus.FactSended);
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("Документ не дозаполнен","Заполните все поля");
+                        return View(model);
+                    }
+                }
                 return RedirectToAction("Index");
             }
             catch
@@ -266,6 +286,20 @@ namespace MvcFront.Controllers
                 .Where(x => ((!allUserGroupDocs.Contains(x.docappointmentid) && !x.DocTemplate.DocTemplatesForUser.AllowManyInstances) || x.DocTemplate.DocTemplatesForUser.AllowManyInstances))
                 .ToList().ConvertAll(DocAppointmentListViewModel.DocAppointmentToModelConverter).ToList();
             return View(new GridModel<DocAppointmentListViewModel> { Data = data });
+        }
+
+        /// <summary>
+        /// Список документов утвержденных
+        /// </summary>
+        /// <returns></returns>
+        [GridAction]
+        public ActionResult _SubmittedUserDocumentsList()
+        {
+            var sessData = SessionHelper.GetUserSessionData(Session);
+            var data = _documentRepository.GetUserDocuments(sessData.UserId, DocumentStatus.Submited)
+                    .ToList().ConvertAll(DocumentListViewModel.DocumentToModelConverter).ToList();
+
+            return View(new GridModel<DocumentListViewModel> { Data = data });
         }
         #endregion
     }

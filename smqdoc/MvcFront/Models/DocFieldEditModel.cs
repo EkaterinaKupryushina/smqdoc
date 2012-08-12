@@ -9,7 +9,7 @@ using MvcFront.Helpers;
 
 namespace MvcFront.Models
 {
-    public class DocFieldEditModel
+    public class DocFieldEditModel :IValidatableObject
     {
         [Display(Name = "ID")]
         [UIHint("Hidden")]
@@ -17,9 +17,6 @@ namespace MvcFront.Models
         
         [Display(Name = "Название поля")]
         public string FieldName { get; set; }
-        
-        [Display(Name = "Порядковый номер")]
-        public int OrderNumber { get; set; }
         
         [Display(Name = "Тип поля")]
         public int FieldType { get; set; }
@@ -40,21 +37,17 @@ namespace MvcFront.Models
 
         [Display(Name = "Значение")]
         [DataType(DataType.MultilineText)]
-        [Required]
         public string StringValue { get; set; }
         
         [Display(Name = "Значение")]
         [DataType("Number")]
-        [Required]
         public double? DoubleValue { get; set; }
         
         [Display(Name = "Значение")]
         [DataType("Number")]
-        [Required]
         public int? IntegerValue { get; set; }
 
         [Display(Name = "Значение")]
-        [Required]
         public bool BoolValue { get; set; }
 
         [Display(Name = "IsEditable")]
@@ -80,7 +73,6 @@ namespace MvcFront.Models
                 IsRestricted = factItem.Restricted.HasValue && factItem.Restricted.Value;
                 MaxVal = factItem.MaxVal;
                 MinVal = factItem.MinVal;
-                OrderNumber = factItem.OrderNumber;
                 IsInteger = factItem.Integer.HasValue && factItem.Integer.Value;
                 FieldType = factItem.FiledType;
                 IsReadOnly = item.Document.DocStatus != DocumentStatus.PlanEditing;
@@ -90,7 +82,6 @@ namespace MvcFront.Models
                 IsRestricted = item.FieldTemplate.Restricted.HasValue && item.FieldTemplate.Restricted.Value;
                 MaxVal = item.FieldTemplate.MaxVal;
                 MinVal = item.FieldTemplate.MinVal;
-                OrderNumber = item.FieldTemplate.OrderNumber;
                 IsInteger = item.FieldTemplate.Integer.HasValue && item.FieldTemplate.Integer.Value;
                 FieldType = item.FieldTemplate.FiledType;
                 IsReadOnly = item.FieldTemplate.PlanFieldTemplates != null
@@ -211,6 +202,34 @@ namespace MvcFront.Models
         public static DocFieldEditModel FieldToModelConverter(DocField templ)
         {
             return new DocFieldEditModel(templ);
+        }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (IsReadOnly)
+            {
+                yield break;
+            }
+
+            switch ((FieldTemplateType) FieldType)
+            {
+                case FieldTemplateType.Number:
+                    if (IsInteger && !IntegerValue.HasValue)
+                    {
+                        yield return new ValidationResult("Необходимо ввести значение (Число)");
+                    }
+                    if (!IsInteger && !DoubleValue.HasValue)
+                    {
+                        yield return new ValidationResult("Необходимо ввести значение (Число)");
+                    }
+                    break;
+                case FieldTemplateType.String:
+                    if (string.IsNullOrWhiteSpace(StringValue))
+                    {
+                        yield return new ValidationResult("Необходимо ввести значение (Текст)");
+                    }
+                    break;
+            }
         }
     }
 }

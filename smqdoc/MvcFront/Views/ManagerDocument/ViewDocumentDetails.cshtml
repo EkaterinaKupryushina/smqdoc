@@ -12,8 +12,8 @@
 @Html.DisplayForModel()
 </fieldset>
 <p>
-    <a href="#" onclick="ShowCommentWindow()">Оставить комментарий</a> |        
-     @Html.ActionLink("Отмена", "Index")
+     <a href="#" onclick="ShowCommentWindow()">Оставить комментарий</a> |        
+     @Html.ActionLink("Отмена", (Model.DocStatus != DocumentStatus.Submited ? "Index" : "SubmitedUserDocuments"))
      <br />
      @{
          if (Model.DocStatus == DocumentStatus.FactSended || Model.DocStatus == DocumentStatus.PlanSended)

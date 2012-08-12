@@ -26,6 +26,15 @@ namespace MvcFront.Controllers
         }
 
         /// <summary>
+        ///Страница со списоком потдеврженных пользовательских докментов
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult SubmitedUserDocuments()
+        {
+            return View();
+        }
+
+        /// <summary>
         /// Просмотр информации о документе
         /// </summary>
         /// <param name="docId"></param>
@@ -90,8 +99,12 @@ namespace MvcFront.Controllers
             return RedirectToAction("Index");
         }
 
-        #region JSon
+        #region GridAction
 
+        /// <summary>
+        /// Список групповых документов 
+        /// </summary>
+        /// <returns></returns>
         [GridAction]
         public ActionResult _SendedGroupDocumentsList()
         {
@@ -103,12 +116,30 @@ namespace MvcFront.Controllers
             return View(new GridModel<DocumentListViewModel> { Data = data });
         }
 
+        /// <summary>
+        /// Список личных документов
+        /// </summary>
+        /// <returns></returns>
         [GridAction]
         public ActionResult _SendedUserDocumentsList()
         {
             var sessData = SessionHelper.GetUserSessionData(Session);
             var data = _documentRepository.GetUserDocumentsByGroupId(sessData.UserGroupId)
                 .Where(x => x.Status == (int)DocumentStatus.FactSended || x.Status == (int)DocumentStatus.PlanSended)
+                    .ToList().ConvertAll(DocumentListViewModel.DocumentToModelConverter).ToList();
+
+            return View(new GridModel<DocumentListViewModel> { Data = data });
+        }
+
+        /// <summary>
+        /// Список документов пользователей группы
+        /// </summary>
+        /// <returns></returns>
+        [GridAction]
+        public ActionResult _SubmittedUserDocumentsList()
+        {
+            var sessData = SessionHelper.GetUserSessionData(Session);
+            var data = _documentRepository.GetUserDocumentsByGroupId(sessData.UserGroupId,DocumentStatus.Submited )
                     .ToList().ConvertAll(DocumentListViewModel.DocumentToModelConverter).ToList();
 
             return View(new GridModel<DocumentListViewModel> { Data = data });

@@ -14,16 +14,34 @@ namespace MvcFront.Repositories
             _unitOfWork = unitOfWork;
         }
 
-        public IQueryable<DocAppointment> GetAllUserDocAppointments(long accountId)
+        public IQueryable<DocAppointment> GetAllUserDocAppointments(long accountId, bool includeNotStarted = false)
         {
-            return _unitOfWork.DbModel.DocAppointments.Where(x => x.UserGroup == null && x.UserAccount != null && x.UserAccount_userid == accountId && (x.PlanedStartDate <= DateTime.Now || x.ActualStartDate <= DateTime.Now)
-                && x.DocTemplate.Status == (int)DocTemplateStatus.Active && x.Status == (int)DocAppointmentStatus.Active);
+            var query =
+                _unitOfWork.DbModel.DocAppointments.Where(
+                    x =>
+                    x.UserGroup == null && x.UserAccount != null && x.UserAccount_userid == accountId 
+                    && x.DocTemplate.Status == (int) DocTemplateStatus.Active &&
+                    x.Status == (int) DocAppointmentStatus.Active);
+            if (!includeNotStarted)
+            {
+                query = query.Where(x => x.PlanedStartDate <= DateTime.Now || x.ActualStartDate <= DateTime.Now);
+            }
+            return query;
         }
 
-        public IQueryable<DocAppointment> GetAllGroupDocAppointments(long groupId)
+        public IQueryable<DocAppointment> GetAllGroupDocAppointments(long groupId, bool includeNotStarted = false)
         {
-            return _unitOfWork.DbModel.DocAppointments.Where(x => x.UserGroup != null && x.UserAccount == null && x.UserGroup_usergroupid == groupId && (x.PlanedStartDate <= DateTime.Now || x.ActualStartDate <= DateTime.Now)
-                && x.DocTemplate.Status == (int)DocTemplateStatus.Active && x.Status == (int)DocAppointmentStatus.Active);
+            var query =
+                _unitOfWork.DbModel.DocAppointments.Where(
+                    x =>
+                    x.UserGroup != null && x.UserAccount == null && x.UserGroup_usergroupid == groupId 
+                    && x.DocTemplate.Status == (int) DocTemplateStatus.Active &&
+                    x.Status == (int) DocAppointmentStatus.Active);
+            if (!includeNotStarted)
+            {
+                query = query.Where(x => x.PlanedStartDate <= DateTime.Now || x.ActualStartDate <= DateTime.Now);
+            }
+            return query;
         }
 
         public DocAppointment GetDocAppointmentById(long id)
