@@ -27,7 +27,7 @@ namespace MvcFront.Models
         [Display(Name = "Последнее изменение")]
         public DateTime LastEditDate { get; set; }
         
-        [Display(Name = "Окончание заполенния")]
+        [Display(Name = "Окончание заполнения")]
         public DateTime DateEnd { get; set; }
 
         [Display(Name = "Только Чтение")]

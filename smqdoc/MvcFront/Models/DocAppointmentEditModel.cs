@@ -17,18 +17,18 @@ namespace MvcFront.Models
         [Display(Name = "Название")]
         public string Name { get; set; }
         [Required]
-        [Display(Name = "Начало заполнения Планируемых данных")]
+        [Display(Name = "Дата начала заполнения планируемых данных")]
         public DateTime PlanedStartDate { get; set; }
         [Required]
-        [Display(Name = "Окончание заполнения Планируемых данных")]
+        [Display(Name = "Дата окончания заполнения планируемых данных")]
         public DateTime PlanedEndDate { get; set; }
         [Required]
-        [Display(Name = "Начало заполнения Фактических данных")]
+        [Display(Name = "Дата начала заполнения фактических данных")]
         public DateTime ActualStartDate { get; set; }
         [Required]
-        [Display(Name = "Окончание заполнения Фактических данных")]
+        [Display(Name = "Дата окончания заполнения фактических данных")]
         public DateTime ActualEndDate { get; set; }
-        [Display(Name = "Содержит планируемо(ые) поле(я)")]
+        [Display(Name = "Содержит планируемые поля")]
         public bool NeedPlanDates { get; set; }
         [Display(Name = "Статус")]
         public string StatusText{ get; set; }
