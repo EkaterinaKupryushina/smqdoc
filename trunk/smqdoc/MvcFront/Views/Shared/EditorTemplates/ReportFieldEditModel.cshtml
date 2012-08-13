@@ -3,21 +3,16 @@
 
 
         <legend>Поле отчета</legend>
-
             @Html.HiddenFor(model => model.ReportFieldId)
-
             @Html.HiddenFor(model => model.DocReportId)
-
-
             @Html.HiddenFor(model => model.IsGrouped)
-
 
         <div class="editor-label">
             @Html.LabelFor(model => model.FiledTemplateId)
         </div>
         <div class="editor-field">
               @(Html.Telerik().DropDownListFor(x => x.FiledTemplateId).ClientEvents(events => events.OnLoad("onFieldLoad"))
-                           .DataBinding(binding => binding.Ajax().Select("_DocTemplateReportFieldsList", "DocReportEdit", new { docId = Model.DocReportId, fieldId = Model.FiledTemplateId }))
+                           .DataBinding(binding => binding.Ajax().Select("_DocTemplateReportFieldsList", "DocReportEdit", new { docReportId = Model.DocReportId, fieldTemplateId = Model.FiledTemplateId, allowNonNumber = !Model.IsGrouped }))
               )
             @Html.ValidationMessageFor(model => model.FiledTemplateId)
         </div>

@@ -299,22 +299,26 @@ namespace MvcFront.Controllers
         }
 
         /// <summary>
-        /// Запрос списка доступных полей для которых можно сделать планируемое поле
+        /// Запрос списка для отчета доступных полей 
         /// </summary>
-        /// <param name="docId"></param>
-        /// <param name="fieldId"> </param>
+        /// <param name="docReportId"></param>
+        /// <param name="fieldTemplateId"> </param>
+        /// <param name="allowNonNumber"> </param>
         /// <returns></returns>
-        [HttpPost]
-        public JsonResult _DocTemplateReportFieldsList(int docId, long fieldId)
+        public JsonResult _DocTemplateReportFieldsList(int docReportId, long fieldTemplateId, bool allowNonNumber)
         {
-            var data =
-                _docReportRepository.GetDocReportById(docId).DocTemplate.FieldTeplates.Where(x =>
-                    (x.FiledType == (int)FieldTemplateType.Number
-                    || x.FiledType == (int)FieldTemplateType.Calculated
-                    || (x.FiledType == (int)FieldTemplateType.Planned) && x.FactFieldTemplate != null &&
-                        (x.FactFieldTemplate.FiledType == (int)FieldTemplateType.Number || x.FactFieldTemplate.FiledType == (int)FieldTemplateType.Calculated)));
+            var data = _docReportRepository.GetDocReportById(docReportId).DocTemplate.FieldTeplates.AsQueryable();
+            if (!allowNonNumber)
+            {
+                data = data.Where(x =>
+                                  (x.FiledType == (int) FieldTemplateType.Number
+                                   || x.FiledType == (int) FieldTemplateType.Calculated
+                                   || (x.FiledType == (int) FieldTemplateType.Planned) && x.FactFieldTemplate != null &&
+                                   (x.FactFieldTemplate.FiledType == (int) FieldTemplateType.Number ||
+                                    x.FactFieldTemplate.FiledType == (int) FieldTemplateType.Calculated)));
+            }
 
-            return new JsonResult { Data = new SelectList(data.ToList().Select(x => new { Id = x.fieldteplateid, Name = x.FieldName }), "Id", "Name", fieldId) };
+            return new JsonResult { Data = new SelectList(data.ToList().Select(x => new { Id = x.fieldteplateid, Name = x.FieldName }), "Id", "Name", fieldTemplateId) };
         }
 
 

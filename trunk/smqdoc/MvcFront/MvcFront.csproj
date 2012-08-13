@@ -138,6 +138,7 @@
     <Compile Include="DB\ReportField.cs" />
     <Compile Include="DB\UserAccount.cs" />
     <Compile Include="DB\UserGroup.cs" />
+    <Compile Include="Entities\ReportDataRow.cs" />
     <Compile Include="Entities\UserSessionData.cs" />
     <Compile Include="Enums\DocReportAppointmentType.cs" />
     <Compile Include="Enums\DocReportGroupType.cs" />
@@ -157,6 +158,7 @@
     <Compile Include="Helpers\SessionHelper.cs" />
     <Compile Include="Infrastructure\AssetService.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
+    <Compile Include="Infrastructure\ReportService.cs" />
     <Compile Include="Infrastructure\SmqSecurityFilter.cs" />
     <Compile Include="Infrastructure\SmqSettings.cs" />
     <Compile Include="Infrastructure\UnitOfWork.cs" />
@@ -189,6 +191,7 @@
     <Compile Include="Models\DocumentListViewModel.cs" />
     <Compile Include="Models\EditUserAccountForUserModel.cs" />
     <Compile Include="Models\GroupDocAppointmentListViewModel.cs" />
+    <Compile Include="Models\ReportTableViewModel.cs" />
     <Compile Include="Models\UserAccountEditModel.cs" />
     <Compile Include="Models\UserAccountListViewModel .cs" />
     <Compile Include="Models\UserGroupEditModel.cs" />
@@ -637,6 +640,7 @@
     <Content Include="Views\DocReportEdit\AddField.cshtml" />
     <Content Include="Views\DocReportEdit\EditField.cshtml" />
     <Content Include="Views\ManagerDocument\SubmitedUserDocuments.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\ReportTableViewModel.cshtml" />
     <None Include="Views\UserAccountList\ChangeState.cshtml" />
     <Content Include="Views\UserGroupList\Index.cshtml" />
     <Content Include="Views\UserGroupList\Delete.cshtml" />
