@@ -177,6 +177,16 @@ namespace MvcFront.Controllers
         /// <returns></returns>
         public ActionResult EditDocument(int id)
         {
+            // Удаляем Провайдр валидации типов со стороны клиента, чтобы не появлялось сообщение на англ.
+            // The field xxxx must be a number
+            foreach (ModelValidatorProvider prov in ModelValidatorProviders.Providers)
+            {
+                if (prov.GetType() == typeof(ClientDataTypeModelValidatorProvider))
+                {
+                    ModelValidatorProviders.Providers.Remove(prov);
+                    break;
+                }
+            }
             return View(new DocumentEditModel(_documentRepository.GetDocumentById(id)));
         }
 
