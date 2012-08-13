@@ -40,11 +40,9 @@ namespace MvcFront.Models
         public string StringValue { get; set; }
         
         [Display(Name = "Значение")]
-        [DataType("Number")]
         public double? DoubleValue { get; set; }
         
         [Display(Name = "Значение")]
-        [DataType("Number")]
         public int? IntegerValue { get; set; }
 
         [Display(Name = "Значение")]
