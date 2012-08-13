@@ -23,7 +23,7 @@ namespace MvcFront.Infrastructure
         /// <param name="comment"></param>
         public void CreateNewAsset(HttpPostedFileBase file, int folderId, string comment)
         {
-            var newFileName = string.Format("{0}_{1}", DateTime.Now.ToString("ssmmHHMMddyyyy"), file.FileName);
+            var newFileName = string.Format("{0}_{1}", DateTime.Now.ToString("ssmmHHMMddyyyy"), Guid.NewGuid());
             file.SaveAs(Path.Combine(SmqSettings.Instance.AssetFolder, newFileName));
             var asset = new Asset
                             {

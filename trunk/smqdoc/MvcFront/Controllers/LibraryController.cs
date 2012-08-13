@@ -165,20 +165,10 @@ namespace MvcFront.Controllers
         /// </summary>
         /// <param name="assetId"></param>
         /// <returns></returns>
-        public ActionResult Download(int assetId)
+        public FileStreamResult  Download(int assetId)
         {
             var document = _assetRepository.GetAssetById(assetId);
-            var cd = new System.Net.Mime.ContentDisposition
-            {
-                // for example foo.bak
-                FileName = document.Name, 
-
-                // always prompt the user for downloading, set to true if you want 
-                // the browser to try to show the file inline
-                Inline = false, 
-            };
-            Response.AppendHeader("Content-Disposition", cd.ToString());
-            return File(Path.Combine(SmqSettings.Instance.AssetFolder, document.FileName), "application", document.Name);
+            return File(new FileStream(Path.Combine(SmqSettings.Instance.AssetFolder, document.FileName), FileMode.Open), "application", document.Name);
         }
 
         #region JSon
