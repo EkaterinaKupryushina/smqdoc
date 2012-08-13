@@ -32,7 +32,7 @@
             <div id="menucontainer">
                 <ul id="menu">
                     <li>@Html.ActionLink("Профиль", "Index", "Account")</li>
-                    <li>@Html.ActionLink("Библиотека форм", "Index", "Library")</li>
+                    <li>@Html.ActionLink("Библиотека файлов", "Index", "Library")</li>
                     @{
                         var sessState = SessionHelper.GetUserSessionData(Session);
                         if (sessState != null)

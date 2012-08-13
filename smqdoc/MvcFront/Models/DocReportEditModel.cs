@@ -37,7 +37,7 @@ namespace MvcFront.Models
 
         public DocReportEditModel()
         {
-
+            IsGroupChangeAvailable = true;
         }
 
         public DocReportEditModel(DocReport entity )
@@ -51,7 +51,7 @@ namespace MvcFront.Models
             ReportAppointmentType = entity.DocAppointmetType;
             ReportGroupType = entity.GroupType;
             IsActive = entity.IsActive;
-            IsGroupChangeAvailable = entity.ReportFields.Count == 0;
+            IsGroupChangeAvailable = entity.ReportFields== null || entity.ReportFields.Count == 0;
         }
 
         public DocReport Update(DocReport entity)
