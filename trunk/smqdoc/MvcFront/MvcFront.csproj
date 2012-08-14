@@ -662,6 +662,7 @@
     <Content Include="Views\UserDocument\DisableDocAppointment.cshtml" />
     <Content Include="WebAppSettings.config" />
     <Content Include="Views\UserDocument\SubmitedUserDocuments.cshtml" />
+    <Content Include="WebConnectionStrings.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ELW.Library.Math\ELW.Library.Math.csproj">
