@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using MvcFront.DB;
 using MvcFront.Enums;
 using MvcFront.Interfaces;
 using MvcFront.Models;
+using NLog;
 using Telerik.Web.Mvc;
 
 namespace MvcFront.Controllers
@@ -36,7 +38,20 @@ namespace MvcFront.Controllers
         /// <returns></returns>
         public ActionResult SelectDocTemplate()
         {
-            return View(_docTemplateRepository.GetAllDocTeplates().Where(x => x.Status != (int)DocTemplateStatus.Deleted).ToList().ConvertAll(DocTemplateListViewModel.DocTemplateToModelConverter).ToList());
+            try
+            {
+                return
+                    View(
+                        _docTemplateRepository.GetAllDocTeplates().Where(
+                            x => x.Status != (int) DocTemplateStatus.Deleted).ToList().ConvertAll(
+                                DocTemplateListViewModel.DocTemplateToModelConverter).ToList());
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocReportEditController.SelectDocTemplate()", ex);
+                return View(new List<DocTemplateListViewModel>());
+            }
         }
 
         /// <summary>
@@ -46,7 +61,16 @@ namespace MvcFront.Controllers
         /// <returns></returns>
         public ActionResult CreateDocReport(long docTemplateId)
         {
-            return View(new DocReportEditModel {DocTemplateId = docTemplateId});
+            try
+            {
+                return View(new DocReportEditModel {DocTemplateId = docTemplateId});
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocReportEditController.CreateDocReport()", ex);
+                return View(new DocReportEditModel());
+            }
         }
 
         /// <summary>
@@ -71,7 +95,8 @@ namespace MvcFront.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("Ошибка Сохранения",ex);
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocReportEditController.CreateDocReport()", ex);
                 return View(model);
             }
             return RedirectToAction("Index");
@@ -84,8 +109,16 @@ namespace MvcFront.Controllers
         /// <returns></returns>
         public ActionResult EditDocReport(int id)
         {
-
-            return View(new DocReportEditModel(_docReportRepository.GetDocReportById(id)));
+            try
+            {
+                return View(new DocReportEditModel(_docReportRepository.GetDocReportById(id)));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocReportEditController.EditDocReport()", ex);
+                return View(new DocReportEditModel());
+            }
         }
 
         /// <summary>
@@ -110,7 +143,8 @@ namespace MvcFront.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("Ошибка сохранения", ex);
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocReportEditController.EditDocReport()", ex);
                 return View(model);
             }
             return RedirectToAction("Index");
@@ -128,12 +162,14 @@ namespace MvcFront.Controllers
            try
             {
                 _docReportRepository.DeleteDocReport(id);
+                return Json(new { result = true });
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("Ошибка", ex.Message);
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocReportEditController.DeleteDocReport()", ex);
+               return new JsonResult { Data = false };
             }
-            return Json(new { result = true });
+            
         }
 
         #endregion
@@ -147,10 +183,18 @@ namespace MvcFront.Controllers
         [GridAction]
         public ActionResult _DocReportList()
         {
-            var data =
-              _docReportRepository.GetAllDocReports().ToList()
-                  .ConvertAll(DocReportListViewModel.DocReportToModelConverter).ToList();
-            return View(new GridModel<DocReportListViewModel> { Data = data });
+            try
+            {
+                var data =
+                    _docReportRepository.GetAllDocReports().ToList()
+                        .ConvertAll(DocReportListViewModel.DocReportToModelConverter).ToList();
+                return View(new GridModel<DocReportListViewModel> {Data = data});
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocReportEditController._DocReportList()", ex);
+                return View(new GridModel<DocReportListViewModel> { Data = new List<DocReportListViewModel>() });
+            }
         }
 
         #endregion
@@ -166,7 +210,16 @@ namespace MvcFront.Controllers
         /// <returns></returns>
         public ActionResult DocReportFieldsManagment(int id)
         {
-            return View(_docReportRepository.GetDocReportById(id));
+            try
+            {
+                return View(_docReportRepository.GetDocReportById(id));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocReportEditController.DocReportFieldsManagment()", ex);
+                return View(new DocReport());
+            }
         }
 
         /// <summary>
@@ -177,15 +230,24 @@ namespace MvcFront.Controllers
         [HttpGet]
         public ActionResult AddField(int id)
         {
-            var docReport = _docReportRepository.GetDocReportById(id);
-            var reportField = new ReportField 
+            try
             {
-                DocReport = docReport, 
-                reportfieldid = 0
-            };
-            var fModel = new ReportFieldEditModel(reportField);
-           
-            return View(fModel);
+                var docReport = _docReportRepository.GetDocReportById(id);
+                var reportField = new ReportField
+                                      {
+                                          DocReport = docReport,
+                                          reportfieldid = 0
+                                      };
+                var fModel = new ReportFieldEditModel(reportField);
+
+                return View(fModel);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocReportEditController.AddField()", ex);
+                return View(new ReportFieldEditModel());
+            }
         }
 
         /// <summary>
@@ -211,9 +273,10 @@ namespace MvcFront.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("Ошибка при сохранении", ex.InnerException != null ? ex.InnerException.Message : ex.Message);
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocReportEditController.AddField()", ex);
+                return View(model);
             }
-            return View();
         }
 
         /// <summary>
@@ -224,7 +287,16 @@ namespace MvcFront.Controllers
         [HttpGet]
         public ActionResult EditField(long id)
         {
-            return View(new ReportFieldEditModel(_docReportRepository.GetReportFieldById(id)));
+            try
+            {
+                return View(new ReportFieldEditModel(_docReportRepository.GetReportFieldById(id)));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocReportEditController.EditField()", ex);
+                return View(new ReportFieldEditModel());
+            }
         }
 
         /// <summary>
@@ -251,9 +323,10 @@ namespace MvcFront.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("Ошибка при сохранении", ex.InnerException != null ? ex.InnerException.Message : ex.Message);
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocReportEditController.EditField()", ex);
+                return View(model);
             }
-            return View();
         }
 
         #region Json
@@ -265,8 +338,16 @@ namespace MvcFront.Controllers
         /// <returns></returns>
         public JsonResult DeleteField(long id)
         {
-            _docReportRepository.DeleteReportField(id);
-            return Json(new { result = true });
+            try
+            {
+                _docReportRepository.DeleteReportField(id);
+                return Json(new {result = true});
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocReportEditController.DeleteField()", ex);
+                return new JsonResult { Data = false };
+            }
         }
 
         /// <summary>
@@ -276,12 +357,20 @@ namespace MvcFront.Controllers
         /// <returns></returns>
         public JsonResult UpField(long id)
         {
-            var entity = _docReportRepository.GetReportFieldById(id);
-            if (entity.OrderNumber > 1)
+            try
             {
-                _docReportRepository.SetFieldTemplateNumber(entity.reportfieldid, entity.OrderNumber - 1);
+                var entity = _docReportRepository.GetReportFieldById(id);
+                if (entity.OrderNumber > 1)
+                {
+                    _docReportRepository.SetFieldTemplateNumber(entity.reportfieldid, entity.OrderNumber - 1);
+                }
+                return Json(new {result = true});
             }
-            return Json(new { result = true });
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocReportEditController.UpField()", ex);
+                return new JsonResult { Data = false };
+            }
         }
 
         /// <summary>
@@ -291,11 +380,19 @@ namespace MvcFront.Controllers
         /// <returns></returns>
         public JsonResult DownField(long id)
         {
-            var entity = _docReportRepository.GetReportFieldById(id);
+            try
+            {
+                var entity = _docReportRepository.GetReportFieldById(id);
 
-            _docReportRepository.SetFieldTemplateNumber(entity.reportfieldid, entity.OrderNumber + 1);
+                _docReportRepository.SetFieldTemplateNumber(entity.reportfieldid, entity.OrderNumber + 1);
 
-            return Json(new { result = true });
+                return Json(new {result = true});
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocReportEditController.DownField()", ex);
+                return new JsonResult { Data = false };
+            }
         }
 
         /// <summary>
@@ -307,18 +404,33 @@ namespace MvcFront.Controllers
         /// <returns></returns>
         public JsonResult _DocTemplateReportFieldsList(int docReportId, long fieldTemplateId, bool allowNonNumber)
         {
-            var data = _docReportRepository.GetDocReportById(docReportId).DocTemplate.FieldTeplates.AsQueryable();
-            if (!allowNonNumber)
+            try
             {
-                data = data.Where(x =>
-                                  (x.FiledType == (int) FieldTemplateType.Number
-                                   || x.FiledType == (int) FieldTemplateType.Calculated
-                                   || (x.FiledType == (int) FieldTemplateType.Planned) && x.FactFieldTemplate != null &&
-                                   (x.FactFieldTemplate.FiledType == (int) FieldTemplateType.Number ||
-                                    x.FactFieldTemplate.FiledType == (int) FieldTemplateType.Calculated)));
-            }
+                var data = _docReportRepository.GetDocReportById(docReportId).DocTemplate.FieldTeplates.AsQueryable();
+                if (!allowNonNumber)
+                {
+                    data = data.Where(x =>
+                                      (x.FiledType == (int) FieldTemplateType.Number
+                                       || x.FiledType == (int) FieldTemplateType.Calculated
+                                       ||
+                                       (x.FiledType == (int) FieldTemplateType.Planned) && x.FactFieldTemplate != null &&
+                                       (x.FactFieldTemplate.FiledType == (int) FieldTemplateType.Number ||
+                                        x.FactFieldTemplate.FiledType == (int) FieldTemplateType.Calculated)));
+                }
 
-            return new JsonResult { Data = new SelectList(data.ToList().Select(x => new { Id = x.fieldteplateid, Name = x.FieldName }), "Id", "Name", fieldTemplateId) };
+                return new JsonResult
+                           {
+                               Data =
+                                   new SelectList(
+                                   data.ToList().Select(x => new {Id = x.fieldteplateid, Name = x.FieldName}), "Id",
+                                   "Name", fieldTemplateId)
+                           };
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocReportEditController._DocTemplateReportFieldsList()", ex);
+                return new JsonResult { Data = false };
+            }
         }
 
 
@@ -334,9 +446,17 @@ namespace MvcFront.Controllers
         [GridAction]
         public ActionResult _ReportFieldList(int id)
         {
-            var data = _docReportRepository.GetDocReportById(id).ReportFields.OrderBy(x => x.OrderNumber).ToList()
-                .ConvertAll(ReportFieldListViewModel.FieldToModelConverter);
-            return View(new GridModel<ReportFieldListViewModel> { Data = data });
+            try
+            {
+                var data = _docReportRepository.GetDocReportById(id).ReportFields.OrderBy(x => x.OrderNumber).ToList()
+                    .ConvertAll(ReportFieldListViewModel.FieldToModelConverter);
+                return View(new GridModel<ReportFieldListViewModel> {Data = data});
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocReportEditController._ReportFieldList()", ex);
+                return View(new GridModel<ReportFieldListViewModel> { Data = new List<ReportFieldListViewModel>() });
+            }
         }
 
         #endregion
