@@ -49,7 +49,8 @@ namespace MvcFront.Models
             LastEditDate = templ.LastEditDate;
             LastComment = string.IsNullOrWhiteSpace(templ.LastComment) ? "-" : templ.LastComment;
             DocumentStatusText = templ.DocStatusText;
-            IsReadOnly = templ.DocStatus != DocumentStatus.PlanEditing && templ.DocStatus != DocumentStatus.FactEditing;
+            IsReadOnly = templ.IsReadOnly;
+
             DateEnd = (templ.DocStatus == DocumentStatus.PlanEditing || templ.DocStatus == DocumentStatus.PlanSended) && templ.DocAppointment.PlanedEndDate.HasValue
                           ? templ.DocAppointment.PlanedEndDate.Value
                           : templ.DocAppointment.ActualEndDate;

@@ -23,12 +23,20 @@ namespace MvcFront.Interfaces
         Document GetDocumentById(long id);
 
         /// <summary>
-        /// Возвращает документы пользователя по его Id
+        /// Возвращает личные документы пользователя по его Id
         /// </summary>
         /// <param name="id">UserId</param>
         /// <param name="status"> </param>
         /// <returns></returns>
-        IQueryable<Document> GetUserDocuments(long id, DocumentStatus? status = null);
+        IQueryable<Document> GetPersonalDocumentsByUserId(long id, DocumentStatus? status = null);
+
+        /// <summary>
+        /// Возвращает все документы пользователя по его Id
+        /// </summary>
+        /// <param name="id">UserId</param>
+        /// <param name="status"> </param>
+        /// <returns></returns>
+        IQueryable<Document> GetUserDocumentsByUserId(long id, DocumentStatus? status = null);
 
         /// <summary>
         /// Возвращает документы назначенные менеджером группы по его Id
@@ -36,7 +44,7 @@ namespace MvcFront.Interfaces
         /// <param name="id">GroupId</param>
         /// <param name="status"> </param>
         /// <returns></returns>
-        IQueryable<Document> GetGroupDocuments(long id, DocumentStatus? status = null);
+        IQueryable<Document> GetGroupDocumentsByGroupId(long id, DocumentStatus? status = null);
 
         /// <summary>
         /// Возвращает User  документы по id группы по его Id
@@ -44,7 +52,7 @@ namespace MvcFront.Interfaces
         /// <param name="id">GroupId</param>
         /// <param name="status"> </param>
         /// <returns></returns>
-        IQueryable<Document> GetUserDocumentsByGroupId(int id, DocumentStatus? status = null);
+        IQueryable<Document> GetPersonalDocumentsByGroupId(int id, DocumentStatus? status = null);
 
 
         /// <summary>

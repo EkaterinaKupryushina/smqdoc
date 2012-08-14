@@ -109,7 +109,7 @@ namespace MvcFront.Controllers
         public ActionResult _SendedGroupDocumentsList()
         {
             var sessData = SessionHelper.GetUserSessionData(Session);
-            var data = _documentRepository.GetGroupDocuments(sessData.UserId)
+            var data = _documentRepository.GetGroupDocumentsByGroupId(sessData.UserGroupId)
                 .Where(x => x.Status == (int)DocumentStatus.FactSended || x.Status == (int)DocumentStatus.PlanSended)
                     .ToList().ConvertAll(DocumentListViewModel.DocumentToModelConverter).ToList();
 
@@ -124,7 +124,7 @@ namespace MvcFront.Controllers
         public ActionResult _SendedUserDocumentsList()
         {
             var sessData = SessionHelper.GetUserSessionData(Session);
-            var data = _documentRepository.GetUserDocumentsByGroupId(sessData.UserGroupId)
+            var data = _documentRepository.GetPersonalDocumentsByGroupId(sessData.UserGroupId)
                 .Where(x => x.Status == (int)DocumentStatus.FactSended || x.Status == (int)DocumentStatus.PlanSended)
                     .ToList().ConvertAll(DocumentListViewModel.DocumentToModelConverter).ToList();
 
@@ -139,7 +139,7 @@ namespace MvcFront.Controllers
         public ActionResult _SubmittedUserDocumentsList()
         {
             var sessData = SessionHelper.GetUserSessionData(Session);
-            var data = _documentRepository.GetUserDocumentsByGroupId(sessData.UserGroupId,DocumentStatus.Submited )
+            var data = _documentRepository.GetGroupDocumentsByGroupId(sessData.UserGroupId, DocumentStatus.Submited).Union(_documentRepository.GetPersonalDocumentsByGroupId(sessData.UserGroupId, DocumentStatus.Submited))
                     .ToList().ConvertAll(DocumentListViewModel.DocumentToModelConverter).ToList();
 
             return View(new GridModel<DocumentListViewModel> { Data = data });
