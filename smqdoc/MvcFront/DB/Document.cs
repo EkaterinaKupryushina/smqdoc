@@ -17,7 +17,19 @@ namespace MvcFront.DB
         [Display(Name = "Статус")]
         public string DocStatusText
         {
-            get { return DictionaryHelper.GetEnumText(typeof(DocumentStatus), Status); }
+            get
+            {
+                var text = DictionaryHelper.GetEnumText(typeof (DocumentStatus), Status);
+                if (IsReadOnly && DocStatus == DocumentStatus.FactEditing)
+                {
+                    text = "Ожидает начала периода редактирования " + DocAppointment.ActualStartDate;
+                }
+                return text;
+            }
+        }
+        public bool IsReadOnly
+        {
+            get { return (DocStatus != DocumentStatus.PlanEditing && DocStatus != DocumentStatus.FactEditing) || (DocStatus == DocumentStatus.FactEditing && DocAppointment.ActualStartDate > DateTime.Now); }
         }
     }
 
@@ -37,7 +49,7 @@ namespace MvcFront.DB
         [Display(Name = "Код статуса")]
         [Required]
         public Int32 Status { get; set; }
-        [Display(Name = "Последний коментарий")]
+        [Display(Name = "Последний комментарий")]
         [DataType(DataType.MultilineText)]
         public String LastComment { get; set; }
         // ReSharper restore InconsistentNaming

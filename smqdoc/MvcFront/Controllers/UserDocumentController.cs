@@ -253,7 +253,7 @@ namespace MvcFront.Controllers
         public ActionResult _UserDocumentsList()
         {
             var sessData = SessionHelper.GetUserSessionData(Session);
-            var data = _documentRepository.GetUserDocuments(sessData.UserId)
+            var data = _documentRepository.GetUserDocumentsByUserId(sessData.UserId)
                 .Where(x => x.Status != (int)DocumentStatus.Deleted)
                     .ToList().ConvertAll(DocumentListViewModel.DocumentToModelConverter).ToList();
 
@@ -269,7 +269,7 @@ namespace MvcFront.Controllers
         {
             var sessData = SessionHelper.GetUserSessionData(Session);
             var allUserGroupDocs =
-                _documentRepository.GetUserDocuments(sessData.UserId).Where(x => x.Status != (int)DocumentStatus.Deleted 
+                _documentRepository.GetUserDocumentsByUserId(sessData.UserId).Where(x => x.Status != (int)DocumentStatus.Deleted 
                     && x.DocAppointment.UserGroup_usergroupid == sessData.UserGroupId)
                     .Select(x => x.DocAppointment_docappointmentid).ToList();
 
@@ -288,7 +288,7 @@ namespace MvcFront.Controllers
         {
             var sessData = SessionHelper.GetUserSessionData(Session);
             var allUserGroupDocs =
-                _documentRepository.GetUserDocuments(sessData.UserId).Where(x => x.Status != (int)DocumentStatus.Deleted
+                _documentRepository.GetUserDocumentsByUserId(sessData.UserId).Where(x => x.Status != (int)DocumentStatus.Deleted
                     && x.DocAppointment.UserAccount_userid == sessData.UserId)
                     .Select(x => x.DocAppointment_docappointmentid).ToList();
 
@@ -306,7 +306,7 @@ namespace MvcFront.Controllers
         public ActionResult _SubmittedUserDocumentsList()
         {
             var sessData = SessionHelper.GetUserSessionData(Session);
-            var data = _documentRepository.GetUserDocuments(sessData.UserId, DocumentStatus.Submited)
+            var data = _documentRepository.GetUserDocumentsByUserId(sessData.UserId, DocumentStatus.Submited)
                     .ToList().ConvertAll(DocumentListViewModel.DocumentToModelConverter).ToList();
 
             return View(new GridModel<DocumentListViewModel> { Data = data });

@@ -37,7 +37,7 @@ namespace MvcFront.Infrastructure
                 DocReport = report
             };
 
-            var query = _documentRepository.GetUserDocuments(userId, DocumentStatus.Submited);
+            var query = _documentRepository.GetUserDocumentsByUserId(userId, DocumentStatus.Submited);
 
             query = ApplyFilders(report.FilterStartDate, report.FilterEndDate, report.ReportAppointmentType, null, query);
 

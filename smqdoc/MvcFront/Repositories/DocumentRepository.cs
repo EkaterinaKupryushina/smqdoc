@@ -33,31 +33,33 @@ namespace MvcFront.Repositories
             return _unitOfWork.DbModel.Documents.SingleOrDefault(x=>x.documentid == id);
         }
 
-        public IQueryable<Document> GetUserDocuments(long id, DocumentStatus? status = null)
+        public IQueryable<Document> GetPersonalDocumentsByUserId(long id, DocumentStatus? status = null)
         {
             return status.HasValue
-                ? _unitOfWork.DbModel.Documents.Where(x => x.UserAccount_userid == id && x.Status == (int)status && x.DocAppointment.Status != (int)DocAppointmentStatus.Deleted && x.DocAppointment.DocTemplate.Status != (int)DocTemplateStatus.Deleted)
-                : _unitOfWork.DbModel.Documents.Where(x => x.UserAccount_userid == id && x.DocAppointment.Status != (int)DocAppointmentStatus.Deleted && x.DocAppointment.DocTemplate.Status != (int)DocTemplateStatus.Deleted);
+                ? _unitOfWork.DbModel.Documents.Where(x => x.UserAccount_userid == id && x.DocAppointment.UserGroup_usergroupid == null && x.Status == (int)status && x.DocAppointment.Status != (int)DocAppointmentStatus.Deleted && x.DocAppointment.DocTemplate.Status != (int)DocTemplateStatus.Deleted)
+                : _unitOfWork.DbModel.Documents.Where(x => x.UserAccount_userid == id && x.DocAppointment.UserGroup_usergroupid == null && x.DocAppointment.Status != (int)DocAppointmentStatus.Deleted && x.DocAppointment.DocTemplate.Status != (int)DocTemplateStatus.Deleted);
+         
         }
 
-        public IQueryable<Document> GetGroupDocuments(long id, DocumentStatus? status = null)
+        public IQueryable<Document> GetUserDocumentsByUserId(long id, DocumentStatus? status = null)
         {
             return status.HasValue
-                ? _unitOfWork.DbModel.Documents.Where(x => x.DocAppointment.UserGroup_usergroupid == id && x.Status == (int)status && x.DocAppointment.Status != (int)DocAppointmentStatus.Deleted && x.DocAppointment.DocTemplate.Status != (int)DocTemplateStatus.Deleted)
-                : _unitOfWork.DbModel.Documents.Where(x => x.DocAppointment.UserGroup_usergroupid == id && x.DocAppointment.Status != (int)DocAppointmentStatus.Deleted && x.DocAppointment.DocTemplate.Status != (int)DocTemplateStatus.Deleted);
+               ? _unitOfWork.DbModel.Documents.Where(x => x.UserAccount_userid == id && x.Status == (int)status && x.DocAppointment.Status != (int)DocAppointmentStatus.Deleted && x.DocAppointment.DocTemplate.Status != (int)DocTemplateStatus.Deleted)
+               : _unitOfWork.DbModel.Documents.Where(x => x.UserAccount_userid == id && x.DocAppointment.Status != (int)DocAppointmentStatus.Deleted && x.DocAppointment.DocTemplate.Status != (int)DocTemplateStatus.Deleted);
+           }
+
+        public IQueryable<Document> GetGroupDocumentsByGroupId(long id, DocumentStatus? status = null)
+        {
+            return status.HasValue
+                ? _unitOfWork.DbModel.Documents.Where(x => x.DocAppointment.UserGroup_usergroupid == id &&  x.Status == (int)status && x.DocAppointment.Status != (int)DocAppointmentStatus.Deleted && x.DocAppointment.DocTemplate.Status != (int)DocTemplateStatus.Deleted)
+                : _unitOfWork.DbModel.Documents.Where(x => x.DocAppointment.UserGroup_usergroupid == id &&  x.DocAppointment.Status != (int)DocAppointmentStatus.Deleted && x.DocAppointment.DocTemplate.Status != (int)DocTemplateStatus.Deleted);
         }
 
-        /// <summary>
-        /// Возвращает User  документы по id группы по его Id
-        /// </summary>
-        /// <param name="id">GroupId</param>
-        /// <param name="status"> </param>
-        /// <returns></returns>
-        public IQueryable<Document> GetUserDocumentsByGroupId(int id, DocumentStatus? status = null)
+        public IQueryable<Document> GetPersonalDocumentsByGroupId(int id, DocumentStatus? status = null)
         {
             var query = status.HasValue
-                ? _unitOfWork.DbModel.Documents.Where(x => x.Status == (int)status && x.DocAppointment.Status != (int)DocAppointmentStatus.Deleted && x.DocAppointment.DocTemplate.Status != (int)DocTemplateStatus.Deleted)
-                : _unitOfWork.DbModel.Documents.Where(x =>  x.DocAppointment.Status != (int)DocAppointmentStatus.Deleted && x.DocAppointment.DocTemplate.Status != (int)DocTemplateStatus.Deleted);
+                ? _unitOfWork.DbModel.Documents.Where(x => x.DocAppointment.UserGroup_usergroupid == null && x.Status == (int)status && x.DocAppointment.Status != (int)DocAppointmentStatus.Deleted && x.DocAppointment.DocTemplate.Status != (int)DocTemplateStatus.Deleted)
+                : _unitOfWork.DbModel.Documents.Where(x => x.DocAppointment.UserGroup_usergroupid == null && x.DocAppointment.Status != (int)DocAppointmentStatus.Deleted && x.DocAppointment.DocTemplate.Status != (int)DocTemplateStatus.Deleted);
 
             var groupUserIds = _userGroupRepository.GetById(id).Members.Select(x => x.userid);
 

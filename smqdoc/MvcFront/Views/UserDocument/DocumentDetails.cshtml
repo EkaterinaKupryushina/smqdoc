@@ -10,7 +10,7 @@
 @Html.DisplayForModel()
 </fieldset>
 <p>
-    @if (Model.DocStatus == DocumentStatus.PlanEditing || Model.DocStatus == DocumentStatus.FactEditing)
+    @if (!Model.IsReadOnly)
     {
         @Html.ActionLink("Редактировать", "EditDocument", new { id = Model.documentid }) <text>|</text>
     }
