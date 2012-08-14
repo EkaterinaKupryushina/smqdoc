@@ -7,6 +7,7 @@ using MvcFront.Enums;
 using MvcFront.Helpers;
 using MvcFront.Models;
 using MvcFront.Interfaces;
+using NLog;
 
 namespace MvcFront.Controllers
 {
@@ -18,7 +19,7 @@ namespace MvcFront.Controllers
         {
             _userRepository = userRepository;
         }
-        
+
 
         public ActionResult Index()
         {
@@ -49,16 +50,18 @@ namespace MvcFront.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = _userRepository.Login(model.UserName, model.Password);
-                if (user != null)
+                try
                 {
-                    FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
-                    if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
-                        && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
+                    var user = _userRepository.Login(model.UserName, model.Password);
+                    if (user != null)
                     {
-                        return Redirect(returnUrl);
-                    }
-                    
+                        FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
+                        if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
+                            && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
+                        {
+                            return Redirect(returnUrl);
+                        }
+
                         //Читаем код последнего профиля пользовтаеля
                         var userProfileType = UserProfileTypes.User;
                         var userProfileName = "Пользователь";
@@ -66,7 +69,7 @@ namespace MvcFront.Controllers
                         var userProfileGroupId = 0;
                         int? groupId;
                         bool isManager;
-                        SessionHelper.ParseUserProfileCode(user.LastAccessProfileCode,out groupId,out isManager);
+                        SessionHelper.ParseUserProfileCode(user.LastAccessProfileCode, out groupId, out isManager);
                         // Администратор
                         if (groupId == null && isManager)
                         {
@@ -84,10 +87,10 @@ namespace MvcFront.Controllers
 
                         }
                         //Менеджер группы 
-                        if(groupId != null && isManager)
+                        if (groupId != null && isManager)
                         {
                             var group = user.ManagedGroups.FirstOrDefault(x => x.usergroupid == groupId);
-                            if(group != null)
+                            if (group != null)
                             {
                                 userProfileGroupName = group.GroupName;
                                 userProfileGroupId = group.usergroupid;
@@ -109,13 +112,26 @@ namespace MvcFront.Controllers
                         }
 
                         //Сохраняем данные в сессию
-                        var sessData = new UserSessionData {UserName = user.Login,UserId = user.userid,UserType = userProfileType,
-                            CurrentProfileName = userProfileName,UserGroupName = userProfileGroupName,UserGroupId = userProfileGroupId};
-                        SessionHelper.SetUserSessionData(Session,sessData);
-                        
-                    return RedirectToAction("Index");
+                        var sessData = new UserSessionData
+                                           {
+                                               UserName = user.Login,
+                                               UserId = user.userid,
+                                               UserType = userProfileType,
+                                               CurrentProfileName = userProfileName,
+                                               UserGroupName = userProfileGroupName,
+                                               UserGroupId = userProfileGroupId
+                                           };
+                        SessionHelper.SetUserSessionData(Session, sessData);
+
+                        return RedirectToAction("Index");
+                    }
+                    ModelState.AddModelError("", "Неверный логин/Пароль");
                 }
-                ModelState.AddModelError("", "Неверный логин/Пароль");
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                    LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "AccountController.LogOn()", ex);
+                }
             }
             // If we got this far, something failed, redisplay form
             return View(model);
@@ -153,46 +169,54 @@ namespace MvcFront.Controllers
         {
             if (ModelState.IsValid)
             {
-                bool changePasswordSucceeded;
                 try
                 {
-                    var currentUser = _userRepository.GetByLogin(User.Identity.Name);
-                    if (currentUser.Password == model.OldPassword && model.NewPassword == model.ConfirmPassword)
+                    bool changePasswordSucceeded;
+                    try
                     {
-                        currentUser.Password = model.NewPassword;
-                        _userRepository.Save(currentUser);
-                        changePasswordSucceeded = true;
+                        var currentUser = _userRepository.GetByLogin(User.Identity.Name);
+                        if (currentUser.Password == model.OldPassword && model.NewPassword == model.ConfirmPassword)
+                        {
+                            currentUser.Password = model.NewPassword;
+                            _userRepository.Save(currentUser);
+                            changePasswordSucceeded = true;
+                        }
+                        else
+                        {
+                            changePasswordSucceeded = false;
+                        }
                     }
-                    else
+                    catch (Exception)
                     {
                         changePasswordSucceeded = false;
                     }
-                }
-                catch (Exception)
-                {
-                    changePasswordSucceeded = false;
-                }
 
-                if (changePasswordSucceeded)
-                {
-                    return RedirectToAction("ChangePasswordSuccess");
+                    if (changePasswordSucceeded)
+                    {
+                        return RedirectToAction("ChangePasswordSuccess");
+                    }
+                    ModelState.AddModelError("", "Ошибка при вводе пароля");
                 }
-                ModelState.AddModelError("", "Ошибка при вводе пароля");
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                    LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "AccountController.ChangePassword()", ex);
+                }
             }
 
             // If we got this far, something failed, redisplay form
             return View(model);
         }
 
-       /// <summary>
+        /// <summary>
         ///  GET: /Account/ChangePasswordSuccess (смена пароля прошла успешно)
-       /// </summary>
-       /// <returns></returns>
+        /// </summary>
+        /// <returns></returns>
         public ActionResult ChangePasswordSuccess()
         {
             return View();
         }
-        
+
         /// <summary>
         /// Смена текущего профиля пользователя
         /// </summary>
@@ -201,57 +225,58 @@ namespace MvcFront.Controllers
         [HttpPost]
         public ActionResult ChangeUserProfile(ChangeUserProfileModel model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                UserSessionData sessData = SessionHelper.GetUserSessionData(Session);
-                var user = _userRepository.GetById(sessData.UserId);
-                
-                int? groupId;
-                bool isManager;
-                SessionHelper.ParseUserProfileCode(model.UserProfileCode,out groupId,out isManager);
-                if (groupId == null && isManager)
+                try
                 {
-                    sessData.UserGroupId = 0;
-                    sessData.UserGroupName = null;
-                    sessData.UserType = UserProfileTypes.Systemadmin;
-                    sessData.CurrentProfileName = "Администратор";
+                    UserSessionData sessData = SessionHelper.GetUserSessionData(Session);
+                    var user = _userRepository.GetById(sessData.UserId);
 
-                    SessionHelper.SetUserSessionData(Session, sessData);
-                    user.LastAccessProfileCode = model.UserProfileCode;
-                    _userRepository.Save(user);
+                    int? groupId;
+                    bool isManager;
+                    SessionHelper.ParseUserProfileCode(model.UserProfileCode, out groupId, out isManager);
+                    if (groupId == null && isManager)
+                    {
+                        sessData.UserGroupId = 0;
+                        sessData.UserGroupName = null;
+                        sessData.UserType = UserProfileTypes.Systemadmin;
+                        sessData.CurrentProfileName = "Администратор";
 
-                    return RedirectToAction("Index", "DocTemplateList");
-                }
-                if (groupId == null && !isManager)
-                {
-                    sessData.UserGroupId = 0;
-                    sessData.UserGroupName = null;
-                    sessData.UserType = UserProfileTypes.User;
-                    sessData.CurrentProfileName = "Пользователь";
+                        SessionHelper.SetUserSessionData(Session, sessData);
+                        user.LastAccessProfileCode = model.UserProfileCode;
+                        _userRepository.Save(user);
 
-                    SessionHelper.SetUserSessionData(Session, sessData);
-                    user.LastAccessProfileCode = model.UserProfileCode;
-                    _userRepository.Save(user);
+                        return RedirectToAction("Index", "DocTemplateList");
+                    }
+                    if (groupId == null)
+                    {
+                        sessData.UserGroupId = 0;
+                        sessData.UserGroupName = null;
+                        sessData.UserType = UserProfileTypes.User;
+                        sessData.CurrentProfileName = "Пользователь";
 
-                    return RedirectToAction("Index", "Account");
-                }
-                if (groupId != null && isManager)
-                {
-                    sessData.UserGroupId = groupId.Value;
-                    sessData.UserGroupName =
-                    user.ManagedGroups.First(
-                            x => x.usergroupid == groupId.Value).GroupName;
-                    sessData.UserType = UserProfileTypes.Groupmanager;
-                    sessData.CurrentProfileName = "Менеджер " + sessData.UserGroupName;
+                        SessionHelper.SetUserSessionData(Session, sessData);
+                        user.LastAccessProfileCode = model.UserProfileCode;
+                        _userRepository.Save(user);
 
-                    SessionHelper.SetUserSessionData(Session, sessData);
-                    user.LastAccessProfileCode = model.UserProfileCode;
-                    _userRepository.Save(user);
+                        return RedirectToAction("Index", "Account");
+                    }
+                    if (isManager)
+                    {
+                        sessData.UserGroupId = groupId.Value;
+                        sessData.UserGroupName =
+                        user.ManagedGroups.First(
+                                x => x.usergroupid == groupId.Value).GroupName;
+                        sessData.UserType = UserProfileTypes.Groupmanager;
+                        sessData.CurrentProfileName = "Менеджер " + sessData.UserGroupName;
 
-                    return RedirectToAction("Index", "ManagerDocument");
-                }
-                if (groupId != null && !isManager)
-                {
+                        SessionHelper.SetUserSessionData(Session, sessData);
+                        user.LastAccessProfileCode = model.UserProfileCode;
+                        _userRepository.Save(user);
+
+                        return RedirectToAction("Index", "ManagerDocument");
+                    }
+
                     sessData.UserGroupId = groupId.Value;
                     sessData.UserGroupName =
                     user.MemberGroups.First(
@@ -264,7 +289,12 @@ namespace MvcFront.Controllers
                     _userRepository.Save(user);
 
                     return RedirectToAction("UserDocAppointments", "UserDocument");
-                }                
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                    LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "AccountController.ChangeUserProfile()", ex);
+                }
             }
             return RedirectToAction("Index", "Home");
         }
@@ -276,8 +306,18 @@ namespace MvcFront.Controllers
         [Authorize]
         public ActionResult EditUserInfo()
         {
-            var sessData = SessionHelper.GetUserSessionData(Session);   
-            return View(new EditUserAccountForUserModel(_userRepository.GetById(sessData.UserId)));
+            var model = new EditUserAccountForUserModel();
+            try
+            {
+                var sessData = SessionHelper.GetUserSessionData(Session);
+                model = new EditUserAccountForUserModel(_userRepository.GetById(sessData.UserId));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "AccountController.EditUserInfo()", ex);
+            }
+            return View(model);
         }
 
         /// <summary>
@@ -291,20 +331,20 @@ namespace MvcFront.Controllers
         {
             if (ModelState.IsValid)
             {
-                var currentUser = _userRepository.GetByLogin(User.Identity.Name);
-
-                currentUser.FirstName = model.FirstName;
-                currentUser.SecondName = model.SecondName;
-                currentUser.LastName = model.LastName;
-                currentUser.Email = model.Email;
-
                 try
                 {
+                    var currentUser = _userRepository.GetByLogin(User.Identity.Name);
+
+                    currentUser.FirstName = model.FirstName;
+                    currentUser.SecondName = model.SecondName;
+                    currentUser.LastName = model.LastName;
+                    currentUser.Email = model.Email;
                     _userRepository.Save(currentUser);
                 }
                 catch (Exception ex)
                 {
-                    ModelState.AddModelError("", String.Format("Ошибка сохранения изменений пользователя: {0}", ex.Message));
+                    ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                    LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "AccountController.EditUserInfo()", ex);
                     return View(model);
                 }
             }

@@ -6,6 +6,7 @@ using MvcFront.Enums;
 using MvcFront.Interfaces;
 using MvcFront.Helpers;
 using MvcFront.Models;
+using NLog;
 
 namespace MvcFront.Controllers
 {
@@ -29,13 +30,29 @@ namespace MvcFront.Controllers
         [HttpPost]
         public JsonResult AjaxUserAccountList(string text)
         {
-            var data = _userRepository.GetAll();
-            if (!String.IsNullOrEmpty(text))
+            try
             {
-                data = data.Where(p => p.Login != null && p.Login.ToLower().Contains(text.ToLower()) 
-                    || p.FirstName.Contains(text.ToLower()) || p.LastName.Contains(text.ToLower()) || p.SecondName.Contains(text.ToLower())).Take(20);
+                var data = _userRepository.GetAll();
+                if (!String.IsNullOrEmpty(text))
+                {
+                    data = data.Where(p => p.Login != null && p.Login.ToLower().Contains(text.ToLower())
+                                           || p.FirstName.Contains(text.ToLower()) ||
+                                           p.LastName.Contains(text.ToLower()) || p.SecondName.Contains(text.ToLower()))
+                        .Take(20);
+                }
+                return new JsonResult
+                           {
+                               Data =
+                                   new SelectList(
+                                   data.ToList().Select(
+                                       x => new { Id = x.userid, Name = x.FullName + " (" + x.Login + ")" }), "Id", "Name")
+                           };
             }
-            return new JsonResult { Data = new SelectList(data.ToList().Select(x => new { Id = x.userid,Name = x.FullName + " ("+x.Login+")"}), "Id", "Name") };
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DictionaryController.AjaxUserAccountList()", ex);
+                return new JsonResult { Data = false };
+            }
         }
 
         /// <summary>
@@ -45,27 +62,34 @@ namespace MvcFront.Controllers
         [HttpPost]
         public ActionResult AjaxUserAccountProfiles()
         {
-            var sessData = SessionHelper.GetUserSessionData(Session);
-            if (sessData == null)
-                return new HttpUnauthorizedResult();
-            var user = _userRepository.GetById(sessData.UserId);
-
-            var profDicts = new Dictionary<string, string>();
-            if(user.IsAdmin && sessData.UserType!= UserProfileTypes.Systemadmin) profDicts.Add(SessionHelper.GenerateUserProfileCode(null,true),"Администратор");
-            foreach (var mgroup in user.ManagedGroups.Where(x=>x.Status == (int)UserGroupStatus.Active))
+            try
             {
-                if(!(mgroup.usergroupid == sessData.UserGroupId && sessData.UserType == UserProfileTypes.Groupmanager))
-                    profDicts.Add(SessionHelper.GenerateUserProfileCode(mgroup.usergroupid, true), "Менеджер " + mgroup.GroupName);
+                var sessData = SessionHelper.GetUserSessionData(Session);
+                if (sessData == null)
+                    return new HttpUnauthorizedResult();
+                var user = _userRepository.GetById(sessData.UserId);
+
+                var profDicts = new Dictionary<string, string>();
+                if (user.IsAdmin && sessData.UserType != UserProfileTypes.Systemadmin) profDicts.Add(SessionHelper.GenerateUserProfileCode(null, true), "Администратор");
+                foreach (var mgroup in user.ManagedGroups.Where(x => x.Status == (int)UserGroupStatus.Active))
+                {
+                    if (!(mgroup.usergroupid == sessData.UserGroupId && sessData.UserType == UserProfileTypes.Groupmanager))
+                        profDicts.Add(SessionHelper.GenerateUserProfileCode(mgroup.usergroupid, true), "Менеджер " + mgroup.GroupName);
+                }
+                foreach (var mgroup in user.MemberGroups.Where(x => x.Status == (int)UserGroupStatus.Active))
+                {
+                    if (!(mgroup.usergroupid == sessData.UserGroupId && sessData.UserType == UserProfileTypes.Groupuser))
+                        profDicts.Add(SessionHelper.GenerateUserProfileCode(mgroup.usergroupid, false), "Участник " + mgroup.GroupName);
+                }
+
+                if (profDicts.Count == 0) profDicts.Add(SessionHelper.GenerateUserProfileCode(null, false), "Пользователь");
+                return new JsonResult { Data = new SelectList(profDicts.Select(x => new { Id = x.Key, Name = x.Value }).ToList(), "Id", "Name") };
             }
-            foreach (var mgroup in user.MemberGroups.Where(x => x.Status == (int)UserGroupStatus.Active))
+            catch (Exception ex)
             {
-                if (!(mgroup.usergroupid == sessData.UserGroupId && sessData.UserType == UserProfileTypes.Groupuser))
-                 profDicts.Add(SessionHelper.GenerateUserProfileCode(mgroup.usergroupid, false), "Участник " + mgroup.GroupName);
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DictionaryController.AjaxUserAccountProfiles()", ex);
+                return new JsonResult { Data = false };
             }
-
-            if (profDicts.Count == 0 ) profDicts.Add(SessionHelper.GenerateUserProfileCode(null, false), "Пользователь");
-            return new JsonResult { Data = new SelectList(profDicts.Select(x => new {Id = x.Key, Name = x.Value}).ToList(),"Id","Name")};
-
         }
 
         #endregion
@@ -77,11 +101,28 @@ namespace MvcFront.Controllers
         [HttpPost]
         public JsonResult AjaxUserGroupList()
         {
-            var groupRepository = DependencyResolver.Current.GetService<IUserGroupRepository>();
-            var model = groupRepository.GetAll().Where(x => x.Status != (int)UserGroupStatus.Deleted)
-                        .Select(x => new UserGroupListViewModel { GroupId = x.usergroupid, Manager = x.Manager.SecondName + " " + x.Manager.FirstName + " " + x.Manager.LastName + " (" + x.Manager.Login + ")", GroupName = x.GroupName }).ToList();
+            try
+            {
+                var groupRepository = DependencyResolver.Current.GetService<IUserGroupRepository>();
+                var model = groupRepository.GetAll().Where(x => x.Status != (int) UserGroupStatus.Deleted)
+                    .Select(
+                        x =>
+                        new UserGroupListViewModel
+                            {
+                                GroupId = x.usergroupid,
+                                Manager =
+                                    x.Manager.SecondName + " " + x.Manager.FirstName + " " + x.Manager.LastName + " (" +
+                                    x.Manager.Login + ")",
+                                GroupName = x.GroupName
+                            }).ToList();
 
-            return new JsonResult { Data = new SelectList(model, "GroupId", "GroupName") };            
+                return new JsonResult {Data = new SelectList(model, "GroupId", "GroupName")};
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DictionaryController.AjaxUserGroupList()", ex);
+                return new JsonResult { Data = false };
+            }
         }
 
         /// <summary>
@@ -91,10 +132,20 @@ namespace MvcFront.Controllers
         [HttpPost]
         public JsonResult AjaxDocTemplateList()
         {
-            var docTemplateRepository = DependencyResolver.Current.GetService<IDocTemplateRepository>();
-            var model = docTemplateRepository.GetAllDocTeplates().Where(x => x.Status != (int)DocTemplateStatus.Deleted).ToList().ConvertAll(DocTemplateListViewModel.DocTemplateToModelConverter).ToList();
+            try
+            {
+                var docTemplateRepository = DependencyResolver.Current.GetService<IDocTemplateRepository>();
+                var model =
+                    docTemplateRepository.GetAllDocTeplates().Where(x => x.Status != (int) DocTemplateStatus.Deleted).
+                        ToList().ConvertAll(DocTemplateListViewModel.DocTemplateToModelConverter).ToList();
 
-            return new JsonResult { Data = new SelectList(model, "DocTemplateId", "DocTemplateName") };
+                return new JsonResult {Data = new SelectList(model, "DocTemplateId", "DocTemplateName")};
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DictionaryController.AjaxDocTemplateList()", ex);
+                return new JsonResult { Data = false };
+            }
         }
 
         /// <summary>
@@ -105,12 +156,21 @@ namespace MvcFront.Controllers
         [HttpPost]
         public JsonResult AjaxUserTagsList(string text)
         {
-            var data = _userTagRepository.GetAllUserTags();
-            if (!String.IsNullOrEmpty(text))
+            try
             {
-                data = data.Where(p => p.Name != null && p.Name.ToLower().Contains(text.ToLower())).Take(20);
+                var data = _userTagRepository.GetAllUserTags();
+                if (!String.IsNullOrEmpty(text))
+                {
+                    data = data.Where(p => p.Name != null && p.Name.ToLower().Contains(text.ToLower())).Take(20);
+                }
+                return new JsonResult
+                           {Data = new SelectList(data.ToList().Select(x => new {x.Id, x.Name}), "Id", "Name")};
             }
-            return new JsonResult { Data = new SelectList(data.ToList().Select(x => new { x.Id, x.Name}), "Id", "Name") };
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DictionaryController.AjaxUserTagsList()", ex);
+                return new JsonResult { Data = false };
+            }
         }
 
     }

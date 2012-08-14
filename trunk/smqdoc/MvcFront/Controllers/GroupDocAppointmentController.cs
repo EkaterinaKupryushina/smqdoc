@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using MvcFront.DB;
@@ -6,6 +7,7 @@ using MvcFront.Enums;
 using MvcFront.Helpers;
 using MvcFront.Interfaces;
 using MvcFront.Models;
+using NLog;
 using Telerik.Web.Mvc;
 
 namespace MvcFront.Controllers
@@ -36,7 +38,16 @@ namespace MvcFront.Controllers
         /// <returns></returns>
         public ActionResult Details(long id)
         {
-            return View(new DocAppointmentEditModel(_appointmentRepository.GetDocAppointmentById(id)));
+            try
+            {
+                return View(new DocAppointmentEditModel(_appointmentRepository.GetDocAppointmentById(id)));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "GroupDocAppointmentController.Details()", ex);
+                return View(new DocAppointmentEditModel());
+            }
         }
 
         /// <summary>
@@ -45,7 +56,20 @@ namespace MvcFront.Controllers
         /// <returns></returns>
         public ActionResult SelectDocTemplate()
         {
-            return View(_docTemplateRepository.GetAllDocTeplates().Where(x => x.Status != (int)DocTemplateStatus.Deleted).ToList().ConvertAll(DocTemplateListViewModel.DocTemplateToModelConverter).ToList());
+            try
+            {
+                return
+                    View(
+                        _docTemplateRepository.GetAllDocTeplates().Where(
+                            x => x.Status != (int) DocTemplateStatus.Deleted).ToList().ConvertAll(
+                                DocTemplateListViewModel.DocTemplateToModelConverter).ToList());
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "GroupDocAppointmentController.SelectDocTemplate()", ex);
+                return View(new List<DocTemplateListViewModel>());
+            }
         }
 
         /// <summary>
@@ -54,9 +78,18 @@ namespace MvcFront.Controllers
         /// <returns></returns>
         public ActionResult CreateGroupAppointment(long docTemplateId)
         {
-            var newAppointment = new DocAppointment
-                                     {DocTemplate = _docTemplateRepository.GetDocTemplateById(docTemplateId)};
-            return View(new DocAppointmentEditModel(newAppointment));
+            try
+            {
+                var newAppointment = new DocAppointment
+                                         {DocTemplate = _docTemplateRepository.GetDocTemplateById(docTemplateId)};
+                return View(new DocAppointmentEditModel(newAppointment));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "GroupDocAppointmentController.CreateGroupAppointment()", ex);
+                return View(new  DocAppointmentEditModel());
+            }
         } 
 
        /// <summary>
@@ -83,8 +116,10 @@ namespace MvcFront.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            catch
+            catch (Exception ex)
             {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "GroupDocAppointmentController.CreateGroupAppointment()", ex);
                 return View(model);
             }
         }
@@ -96,7 +131,16 @@ namespace MvcFront.Controllers
         /// <returns></returns>
         public ActionResult Edit(long id)
         {
-            return View(new DocAppointmentEditModel(_appointmentRepository.GetDocAppointmentById(id)));
+            try
+            {
+                return View(new DocAppointmentEditModel(_appointmentRepository.GetDocAppointmentById(id)));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "GroupDocAppointmentController.Edit()", ex);
+                return View(new DocAppointmentEditModel());
+            }
         }
 
         /// <summary>
@@ -122,9 +166,11 @@ namespace MvcFront.Controllers
  
                 return RedirectToAction("Index");
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "GroupDocAppointmentController.Edit()", ex);
+                return View(model);
             }
         }
 
@@ -135,7 +181,16 @@ namespace MvcFront.Controllers
         /// <returns></returns>
         public ActionResult Delete(long id)
         {
-            return View(new DocAppointmentEditModel(_appointmentRepository.GetDocAppointmentById(id)));
+            try
+            {
+                return View(new DocAppointmentEditModel(_appointmentRepository.GetDocAppointmentById(id)));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "GroupDocAppointmentController.Delete()", ex);
+                return View(new DocAppointmentEditModel());
+            }
         }
 
        /// <summary>
@@ -150,12 +205,13 @@ namespace MvcFront.Controllers
             try
             {
                 _appointmentRepository.DeleteDocAppointment(id);
- 
                 return RedirectToAction("Index");
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "GroupDocAppointmentController.Delete()", ex);
+                return View(new DocAppointmentEditModel());
             }
         }
 
@@ -171,12 +227,13 @@ namespace MvcFront.Controllers
             try
             {
                 _appointmentRepository.ChangeDocAppointmentState(id);
+                return Json(new { result = true });
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("Ошибка", ex.Message);
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "GroupDocAppointmentController.ChangeState()", ex);
+                return new JsonResult { Data = false };
             }
-            return Json(new { result = true });
         }
 
         #endregion
@@ -190,10 +247,19 @@ namespace MvcFront.Controllers
         [GridAction]
         public ActionResult _GroupDocAppointmentList()
         {
-            var sessData = SessionHelper.GetUserSessionData(Session);
-            var data = _appointmentRepository.GetAllGroupDocAppointments(sessData.UserGroupId, true).Where(x => x.Status != (int)DocAppointmentStatus.Deleted).ToList()
-                .ConvertAll(GroupDocAppointmentListViewModel.DocAppointmentToModelConverter);
-            return View(new GridModel<GroupDocAppointmentListViewModel> { Data = data });
+            try
+            {
+                var sessData = SessionHelper.GetUserSessionData(Session);
+                var data = _appointmentRepository.GetAllGroupDocAppointments(sessData.UserGroupId, true).Where(
+                    x => x.Status != (int) DocAppointmentStatus.Deleted).ToList()
+                    .ConvertAll(GroupDocAppointmentListViewModel.DocAppointmentToModelConverter);
+                return View(new GridModel<GroupDocAppointmentListViewModel> {Data = data});
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "GroupDocAppointmentController._DocReportList()", ex);
+                return View(new GridModel<GroupDocAppointmentListViewModel> { Data = new List<GroupDocAppointmentListViewModel>() });
+            }
         }
 
         #endregion

@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using MvcFront.Enums;
 using MvcFront.Interfaces;
 using MvcFront.DB;
 using MvcFront.Models;
+using NLog;
 using Telerik.Web.Mvc;
 
 namespace MvcFront.Controllers
@@ -35,7 +37,16 @@ namespace MvcFront.Controllers
         /// <returns></returns>
         public ActionResult Details(long id)
         {
-            return View(_templateRepository.GetDocTemplateById(id));
+            try
+            {
+                return View(_templateRepository.GetDocTemplateById(id));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocTemplateListController.Details()", ex);
+                return View(new DocTemplate());
+            }
         }
 
         /// <summary>
@@ -45,7 +56,16 @@ namespace MvcFront.Controllers
         [HttpGet]
         public ActionResult Create()
         {
-            return View(new DocTemplateEditModel(_templateRepository.GetDocTemplateById(0)));
+            try
+            {
+                return View(new DocTemplateEditModel(_templateRepository.GetDocTemplateById(0)));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocTemplateListController.Create()", ex);
+                return View(new DocTemplateEditModel());
+            }
         } 
 
         /// <summary>
@@ -75,9 +95,10 @@ namespace MvcFront.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("Ошибка при сохранении", ex.InnerException != null ? ex.InnerException.Message : ex.Message);
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocTemplateListController.Create()", ex);
+                return View(model);
             }
-            return View(model);
         }
         
         /// <summary>
@@ -88,7 +109,16 @@ namespace MvcFront.Controllers
         [HttpGet]
         public ActionResult Edit(long id)
         {
-            return View(new DocTemplateEditModel(_templateRepository.GetDocTemplateById(id)));
+            try
+            {
+                return View(new DocTemplateEditModel(_templateRepository.GetDocTemplateById(id)));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocTemplateListController.Edit()", ex);
+                return View(new DocTemplateEditModel());
+            }
         }
 
         /// <summary>
@@ -118,9 +148,11 @@ namespace MvcFront.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("Ошибка при сохранении", ex.InnerException != null ? ex.InnerException.Message : ex.Message);
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocTemplateListController.Edit()", ex);
+                return View(model);
             }
-            return View(model);
+            
         }
 
         /// <summary>
@@ -131,7 +163,16 @@ namespace MvcFront.Controllers
         [HttpGet]
         public ActionResult Delete(long id)
         {
-            return View(_templateRepository.GetDocTemplateById(id));
+            try
+            {
+                return View(_templateRepository.GetDocTemplateById(id));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocTemplateListController.Delete()", ex);
+                return View(new DocTemplate());
+            }
         }
 
         /// <summary>
@@ -146,13 +187,13 @@ namespace MvcFront.Controllers
             try
             {
                 _templateRepository.DeleteDocTemplate(id);
-
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("Ошибка", ex.Message);
-                return View();
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocTemplateListController.Delete()", ex);
+                return View(new DocTemplate());
             }
         }
 
@@ -163,17 +204,18 @@ namespace MvcFront.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public ActionResult ChangeState(long id)
+        public JsonResult ChangeState(long id)
         {
             try
             {
                 _templateRepository.ChangeDocTemplateState(id);
+                return Json(new { result = true });
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("Ошибка", ex.Message);
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocTemplateListController.ChangeState()", ex);
+                return new JsonResult { Data = false };
             }
-            return Json(new { result = true });
         }
 
         #endregion
@@ -187,10 +229,19 @@ namespace MvcFront.Controllers
         [GridAction]
         public ActionResult _DocTemplatesList()
         {
-            var data =
-                _templateRepository.GetAllDocTeplates().Where(x => x.Status != (int)DocTemplateStatus.Deleted).ToList()
-                    .ConvertAll(DocTemplateListViewModel.DocTemplateToModelConverter).ToList();
-            return View(new GridModel<DocTemplateListViewModel> { Data = data });
+            try
+            {
+                var data =
+                    _templateRepository.GetAllDocTeplates().Where(x => x.Status != (int) DocTemplateStatus.Deleted).
+                        ToList()
+                        .ConvertAll(DocTemplateListViewModel.DocTemplateToModelConverter).ToList();
+                return View(new GridModel<DocTemplateListViewModel> {Data = data});
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocTemplateListController._DocTemplatesList()", ex);
+                return View(new GridModel<DocTemplateListViewModel> { Data = new List<DocTemplateListViewModel>() });
+            }
         }
 
         #endregion
@@ -206,7 +257,16 @@ namespace MvcFront.Controllers
         /// <returns></returns>
         public ActionResult DocTemplateFieldsManagment(long id)
         {
-            return View(_templateRepository.GetDocTemplateById(id));
+            try
+            {
+                return View(_templateRepository.GetDocTemplateById(id));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocTemplateListController.DocTemplateFieldsManagment()", ex);
+                return View(new DocTemplate());
+            }
         }
 
         /// <summary>
@@ -217,12 +277,21 @@ namespace MvcFront.Controllers
         [HttpGet]
         public ActionResult AddField(long id)
         {
-            var field = _templateRepository.GetFieldTemplateById(0);
+            try
+            {
+                var field = _templateRepository.GetFieldTemplateById(0);
 
-            field.DocTemplate_docteplateid = id;
-            field.DocTemplate = _templateRepository.GetDocTemplateById(id);
-            var fModel = new FieldTemplateEditModel(field);
-            return View(fModel);
+                field.DocTemplate_docteplateid = id;
+                field.DocTemplate = _templateRepository.GetDocTemplateById(id);
+                var fModel = new FieldTemplateEditModel(field);
+                return View(fModel);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocTemplateListController.AddField()", ex);
+                return View(new FieldTemplateEditModel());
+            }
         }
 
         /// <summary>
@@ -252,9 +321,10 @@ namespace MvcFront.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("Ошибка при сохранении", ex.InnerException != null ? ex.InnerException.Message : ex.Message);
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocTemplateListController.AddField()", ex);
+                return View(model);
             }
-            return View();
         }
 
         /// <summary>
@@ -265,7 +335,16 @@ namespace MvcFront.Controllers
         [HttpGet]
         public ActionResult EditField(long id)
         {
-            return View(new FieldTemplateEditModel(_templateRepository.GetFieldTemplateById(id)));
+            try
+            {
+                return View(new FieldTemplateEditModel(_templateRepository.GetFieldTemplateById(id)));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocTemplateListController.EditField()", ex);
+                return View(new FieldTemplateEditModel());
+            }
         }
 
         /// <summary>
@@ -295,9 +374,10 @@ namespace MvcFront.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("Ошибка при сохранении", ex.InnerException != null ? ex.InnerException.Message : ex.Message);
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocTemplateListController.EditField()", ex);
+                return View(model);
             }
-            return View();
         }
 
         #region JSon
@@ -310,8 +390,16 @@ namespace MvcFront.Controllers
         /// <returns></returns>
         public JsonResult DeleteField(long id, long fieldTemplateId)
         {
-            _templateRepository.DeleteFieldTemplate(fieldTemplateId);
-            return Json(new { result = true });
+            try
+            {
+                _templateRepository.DeleteFieldTemplate(fieldTemplateId);
+                return Json(new {result = true});
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocTemplateListController.DeleteField()", ex);
+                return new JsonResult { Data = false };
+            }
         }
 
         /// <summary>
@@ -322,11 +410,23 @@ namespace MvcFront.Controllers
         /// <returns></returns>
         public JsonResult AddFieldToCalc(long id, long fieldTemplateId)
         {
-            var entity = _templateRepository.GetFieldTemplateById(id);
-            entity.ComputableFieldTemplateParts.Add(new ComputableFieldTemplateParts { FieldTemplate = entity, fkCalculatedFieldTemplateID = fieldTemplateId });
-            _templateRepository.SaveFieldTemplate(entity);
+            try
+            {
+                var entity = _templateRepository.GetFieldTemplateById(id);
+                entity.ComputableFieldTemplateParts.Add(new ComputableFieldTemplateParts
+                                                            {
+                                                                FieldTemplate = entity,
+                                                                fkCalculatedFieldTemplateID = fieldTemplateId
+                                                            });
+                _templateRepository.SaveFieldTemplate(entity);
 
-            return Json(new { result = true });
+                return Json(new {result = true});
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocTemplateListController.AddFieldToCalc()", ex);
+                return new JsonResult { Data = false };
+            }
         }
 
         /// <summary>
@@ -337,9 +437,17 @@ namespace MvcFront.Controllers
         /// <returns></returns>
         public JsonResult DeleteFieldFromCalc(long id, long fieldTemplateId)
         {
-            var entity = _templateRepository.GetFieldTemplateById(id);
-            _templateRepository.SaveFieldTemplate(entity);
-            return Json(new { result = true });
+            try
+            {
+                var entity = _templateRepository.GetFieldTemplateById(id);
+                _templateRepository.SaveFieldTemplate(entity);
+                return Json(new {result = true});
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocTemplateListController.DeleteFieldFromCalc()", ex);
+                return new JsonResult { Data = false };
+            }
         }
 
         /// <summary>
@@ -349,12 +457,20 @@ namespace MvcFront.Controllers
         /// <returns></returns>
         public JsonResult UpField(long id)
         {
-            var entity = _templateRepository.GetFieldTemplateById(id);
-            if (entity.OrderNumber > 1)
+            try
             {
-                _templateRepository.SetFieldTemplateNumber(entity.fieldteplateid, entity.OrderNumber - 1);
+                var entity = _templateRepository.GetFieldTemplateById(id);
+                if (entity.OrderNumber > 1)
+                {
+                    _templateRepository.SetFieldTemplateNumber(entity.fieldteplateid, entity.OrderNumber - 1);
+                }
+                return Json(new {result = true});
             }
-            return Json(new { result = true });
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocTemplateListController.UpField()", ex);
+                return new JsonResult { Data = false };
+            }
         }
 
         /// <summary>
@@ -364,11 +480,17 @@ namespace MvcFront.Controllers
         /// <returns></returns>
         public JsonResult DownField(long id)
         {
-            var entity = _templateRepository.GetFieldTemplateById(id);
-
-            _templateRepository.SetFieldTemplateNumber(entity.fieldteplateid, entity.OrderNumber + 1);
-
-            return Json(new { result = true });
+            try
+            {
+                var entity = _templateRepository.GetFieldTemplateById(id);
+                _templateRepository.SetFieldTemplateNumber(entity.fieldteplateid, entity.OrderNumber + 1);
+                return Json(new {result = true});
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocTemplateListController.DownField()", ex);
+                return new JsonResult { Data = false };
+            }
         }
 
         /// <summary>
@@ -380,11 +502,31 @@ namespace MvcFront.Controllers
         [HttpPost]
         public JsonResult _FactFieldTemplatesList(long docTemplID, long? factFieldId)
         {
-            var data =
-                _templateRepository.GetDocTemplateById(docTemplID).FieldTeplates.Where(x =>
-                    (x.FiledType != (int)FieldTemplateType.Planned && !x.PlanFieldTemplates.Any()) || (factFieldId.HasValue && x.fieldteplateid == factFieldId));
+            try
+            {
+                var data =
+                    _templateRepository.GetDocTemplateById(docTemplID).FieldTeplates.Where(x =>
+                                                                                           (x.FiledType !=
+                                                                                            (int)
+                                                                                            FieldTemplateType.Planned &&
+                                                                                            !x.PlanFieldTemplates.Any()) ||
+                                                                                           (factFieldId.HasValue &&
+                                                                                            x.fieldteplateid ==
+                                                                                            factFieldId));
 
-            return new JsonResult { Data = new SelectList(data.ToList().Select(x => new { Id = x.fieldteplateid, Name = x.FieldName }), "Id", "Name", factFieldId) };
+                return new JsonResult
+                           {
+                               Data =
+                                   new SelectList(
+                                   data.ToList().Select(x => new {Id = x.fieldteplateid, Name = x.FieldName}), "Id",
+                                   "Name", factFieldId)
+                           };
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocTemplateListController._FactFieldTemplatesList()", ex);
+                return new JsonResult { Data = false };
+            }
         }
 
         #endregion
@@ -399,9 +541,18 @@ namespace MvcFront.Controllers
         [GridAction]
         public ActionResult _FieldTemplateList(long templId)
         {
-            var data = _templateRepository.GetDocTemplateById(templId).FieldTeplates.OrderBy(x => x.OrderNumber).ToList()
-                .ConvertAll(FieldTemplateListViewModel.FieldToModelConverter);
-            return View(new GridModel<FieldTemplateListViewModel> { Data = data });
+            try
+            {
+                var data = _templateRepository.GetDocTemplateById(templId).FieldTeplates.OrderBy(x => x.OrderNumber).
+                    ToList()
+                    .ConvertAll(FieldTemplateListViewModel.FieldToModelConverter);
+                return View(new GridModel<FieldTemplateListViewModel> {Data = data});
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DictionaryController._FieldTemplateList()", ex);
+                return View(new GridModel<FieldTemplateListViewModel> { Data = new List<FieldTemplateListViewModel>() });
+            }
         }
 
         /// <summary>
@@ -413,13 +564,24 @@ namespace MvcFront.Controllers
         [GridAction]
         public ActionResult _FieldTemplateListUsedForCalc(long docTemplID, long fieldTemplID)
         {
-            var tpl = _templateRepository.GetFieldTemplateById(fieldTemplID);
-            var lst = _templateRepository.GetAllComputableFieldTempalteParts().Where(x => x.FieldTemplate_fieldteplateid == tpl.fieldteplateid).ToList();
-            var userTemplatesIDs = lst.Select(item => item.fkCalculatedFieldTemplateID).ToList();
+            try
+            {
+                var tpl = _templateRepository.GetFieldTemplateById(fieldTemplID);
+                var lst =
+                    _templateRepository.GetAllComputableFieldTempalteParts().Where(
+                        x => x.FieldTemplate_fieldteplateid == tpl.fieldteplateid).ToList();
+                var userTemplatesIDs = lst.Select(item => item.fkCalculatedFieldTemplateID).ToList();
 
-            var data = _templateRepository.GetDocTemplateById(docTemplID).FieldTeplates.Where(x => userTemplatesIDs.Contains((int)x.fieldteplateid)).OrderBy(x => x.OrderNumber).ToList()
-                .ConvertAll(FieldTemplateListViewModel.FieldToModelConverter);
-            return View(new GridModel<FieldTemplateListViewModel> { Data = data });
+                var data = _templateRepository.GetDocTemplateById(docTemplID).FieldTeplates.Where(
+                    x => userTemplatesIDs.Contains((int) x.fieldteplateid)).OrderBy(x => x.OrderNumber).ToList()
+                    .ConvertAll(FieldTemplateListViewModel.FieldToModelConverter);
+                return View(new GridModel<FieldTemplateListViewModel> {Data = data});
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DictionaryController._FieldTemplateListUsedForCalc()", ex);
+                return View(new GridModel<FieldTemplateListViewModel> { Data = new List<FieldTemplateListViewModel>() });
+            }
         }
 
         /// <summary>
@@ -431,15 +593,27 @@ namespace MvcFront.Controllers
         [GridAction]
         public ActionResult _FieldTemplateListNotUsedForCalc(long docTemplID, long fieldTemplID)
         {
+            try
+            {
+                var tpl = _templateRepository.GetFieldTemplateById(fieldTemplID);
+                var lst =
+                    _templateRepository.GetAllComputableFieldTempalteParts().Where(
+                        x => x.FieldTemplate_fieldteplateid == tpl.fieldteplateid).ToList();
+                var userTemplatesIDs = lst.Select(item => item.fkCalculatedFieldTemplateID).ToList();
 
-            var tpl = _templateRepository.GetFieldTemplateById(fieldTemplID);
-            var lst = _templateRepository.GetAllComputableFieldTempalteParts().Where(x => x.FieldTemplate_fieldteplateid == tpl.fieldteplateid).ToList();
-            var userTemplatesIDs = lst.Select(item => item.fkCalculatedFieldTemplateID).ToList();
+                var data = _templateRepository.GetDocTemplateById(docTemplID).FieldTeplates.Where(
+                    x =>
+                    !userTemplatesIDs.Contains((int) x.fieldteplateid) && x.FiledType == (int) FieldTemplateType.Number)
+                    .OrderBy(x => x.OrderNumber).ToList()
+                    .ConvertAll(FieldTemplateListViewModel.FieldToModelConverter);
 
-            var data = _templateRepository.GetDocTemplateById(docTemplID).FieldTeplates.Where(x => !userTemplatesIDs.Contains((int)x.fieldteplateid) && x.FiledType == (int)FieldTemplateType.Number).OrderBy(x => x.OrderNumber).ToList()
-                .ConvertAll(FieldTemplateListViewModel.FieldToModelConverter);
-
-            return View(new GridModel<FieldTemplateListViewModel> { Data = data });
+                return View(new GridModel<FieldTemplateListViewModel> {Data = data});
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DictionaryController._FieldTemplateListNotUsedForCalc()", ex);
+                return View(new GridModel<FieldTemplateListViewModel> { Data = new List<FieldTemplateListViewModel>() });
+            }
         }
 
         #endregion

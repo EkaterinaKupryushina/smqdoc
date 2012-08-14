@@ -43,6 +43,9 @@
     <Reference Include="Ninject">
       <HintPath>..\packages\Ninject.2.2.1.4\lib\net40-Full\Ninject.dll</HintPath>
     </Reference>
+    <Reference Include="NLog">
+      <HintPath>..\packages\NLog.2.0.0.2000\lib\net40\NLog.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
@@ -440,6 +443,9 @@
     <Content Include="DB\EntityDBModel.edmx.sql" />
     <Content Include="DB\FillData.sql" />
     <Content Include="Global.asax" />
+    <Content Include="log\DoNotDeleteMe.txt" />
+    <Content Include="MediaFolder\DocumentFiles\DoNotDeleteMe.txt" />
+    <Content Include="MediaFolder\Library\DoNotDeleteMe.txt" />
     <Content Include="Scripts\2012.1.214\jquery-1.7.1.min.js" />
     <Content Include="Scripts\2012.1.214\jquery.validate.min.js" />
     <Content Include="Scripts\2012.1.214\telerik.all.min.js" />
@@ -513,7 +519,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="MediaFolder\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -641,6 +646,12 @@
     <Content Include="Views\DocReportEdit\EditField.cshtml" />
     <Content Include="Views\ManagerDocument\SubmitedUserDocuments.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\ReportTableViewModel.cshtml" />
+    <Content Include="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="NLog.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Views\UserAccountList\ChangeState.cshtml" />
     <Content Include="Views\UserGroupList\Index.cshtml" />
     <Content Include="Views\UserGroupList\Delete.cshtml" />

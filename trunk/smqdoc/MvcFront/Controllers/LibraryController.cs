@@ -7,6 +7,7 @@ using MvcFront.Infrastructure;
 using MvcFront.Interfaces;
 using System.Linq;
 using MvcFront.Models;
+using NLog;
 using Telerik.Web.Mvc;
 
 namespace MvcFront.Controllers
@@ -26,7 +27,16 @@ namespace MvcFront.Controllers
         /// <returns></returns>
         public ActionResult Index()
         {
-            return View(_assetRepository.GetAllAssetFolders().Where(x => x.AssetFolder_assetfolderid == null));
+            try
+            {
+                return View(_assetRepository.GetAllAssetFolders().Where(x => x.AssetFolder_assetfolderid == null));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "LibraryController.Index()", ex);
+                return View(new List<AssetFolder>());
+            }
         }
 
         /// <summary>
@@ -35,7 +45,16 @@ namespace MvcFront.Controllers
         /// <returns></returns>
         public ActionResult EditAssetLibrary()
         {
-            return View(_assetRepository.GetAllAssetFolders().Where(x => x.AssetFolder_assetfolderid == null));
+            try
+            {
+                return View(_assetRepository.GetAllAssetFolders().Where(x => x.AssetFolder_assetfolderid == null));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "LibraryController.EditAssetLibrary()", ex);
+                return View(new List<AssetFolder>());
+            }
         }
 
         /// <summary>
@@ -46,7 +65,16 @@ namespace MvcFront.Controllers
         [HttpGet]
         public ActionResult CreateAsset(int id)
         {
-            return View(new AssetEditModel{AssetFolderId = id});
+            try
+            {
+                return View(new AssetEditModel { AssetFolderId = id });
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "LibraryController.CreateAsset()", ex);
+                return View(new AssetEditModel());
+            }
         }
 
         /// <summary>
@@ -57,16 +85,21 @@ namespace MvcFront.Controllers
         [HttpPost]
         public ActionResult CreateAsset(AssetEditModel model)
         {
-            try
+
+            if (ModelState.IsValid)
             {
-                if(ModelState.IsValid)
+                try
                 {
-                    (new AssetService(_assetRepository)).CreateNewAsset(model.Files.ElementAt(0), model.AssetFolderId,model.Comment);
+                    (new AssetService(_assetRepository)).CreateNewAsset(model.Files.ElementAt(0), model.AssetFolderId, model.Comment);
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                    LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "LibraryController.CreateAsset()", ex);
+                    return View(model);
                 }
             }
-            catch (Exception)
-            {
-            }
+
             return RedirectToAction("EditAssetLibrary");
         }
 
@@ -78,7 +111,16 @@ namespace MvcFront.Controllers
         [HttpGet]
         public ActionResult CreateAssetFolder()
         {
-            return View(new AssetFolderEditModel { AssetFolderId = 0 });
+            try
+            {
+                return View(new AssetFolderEditModel { AssetFolderId = 0 });
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "LibraryController.CreateAssetFolder()", ex);
+                return View(new AssetFolderEditModel());
+            }
         }
 
         /// <summary>
@@ -89,20 +131,23 @@ namespace MvcFront.Controllers
         [HttpPost]
         public ActionResult CreateAssetFolder(AssetFolderEditModel model)
         {
-            try
+
+            if (ModelState.IsValid)
             {
-                if(ModelState.IsValid)
+                try
                 {
                     var assetFolder = model.Update(new AssetFolder());
                     _assetRepository.SaveAssetFolder(assetFolder);
                     return RedirectToAction("EditAssetLibrary");
                 }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                    LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "LibraryController.CreateAssetFolder()", ex);
+                    return View(model);
+                }
             }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError("Ошибка",ex);
-                return View(model);
-            }
+
             return View(model);
         }
 
@@ -114,7 +159,16 @@ namespace MvcFront.Controllers
         [HttpGet]
         public ActionResult EditAssetFolder(int id)
         {
-            return View(new AssetFolderEditModel(_assetRepository.GetAssetFolderById(id)));
+            try
+            {
+                return View(new AssetFolderEditModel(_assetRepository.GetAssetFolderById(id)));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "LibraryController.EditAssetFolder()", ex);
+                return View(new AssetFolderEditModel());
+            }
         }
 
         /// <summary>
@@ -125,20 +179,22 @@ namespace MvcFront.Controllers
         [HttpPost]
         public ActionResult EditAssetFolder(AssetFolderEditModel model)
         {
-            try
-            {
-                if (ModelState.IsValid)
+            if (ModelState.IsValid)
                 {
-                    var assetFolder = model.Update(_assetRepository.GetAssetFolderById(model.AssetFolderId));
-                    _assetRepository.SaveAssetFolder(assetFolder);
-                    return RedirectToAction("EditAssetLibrary");
+                    try
+                    {
+                        var assetFolder = model.Update(_assetRepository.GetAssetFolderById(model.AssetFolderId));
+                        _assetRepository.SaveAssetFolder(assetFolder);
+                        return RedirectToAction("EditAssetLibrary");
+                    }
+                    catch (Exception ex)
+                    {
+                        ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                        LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "LibraryController.EditAssetFolder()", ex);
+                        return View(model);
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError("Ошибка", ex);
-                return View(model);
-            }
+
             return View(model);
         }
 
@@ -153,9 +209,10 @@ namespace MvcFront.Controllers
             {
                 (new AssetService(_assetRepository)).DeleteAssetFolder(_assetRepository.GetAssetFolderById(id));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return RedirectToAction("EditAssetLibrary");
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "LibraryController.DeleteAssetFolder()", ex);
             }
             return RedirectToAction("EditAssetLibrary");
         }
@@ -165,10 +222,22 @@ namespace MvcFront.Controllers
         /// </summary>
         /// <param name="assetId"></param>
         /// <returns></returns>
-        public FileStreamResult  Download(int assetId)
+        public FileStreamResult Download(int assetId)
         {
-            var document = _assetRepository.GetAssetById(assetId);
-            return File(new FileStream(Path.Combine(SmqSettings.Instance.AssetFolder, document.FileName), FileMode.Open), "application", document.Name);
+            try
+            {
+                var document = _assetRepository.GetAssetById(assetId);
+                return
+                    File(
+                        new FileStream(Path.Combine(SmqSettings.Instance.AssetFolder, document.FileName), FileMode.Open),
+                        "application", document.Name);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "LibraryController.Download()", ex);
+                return null;
+            }
         }
 
         #region JSon
@@ -183,43 +252,13 @@ namespace MvcFront.Controllers
             try
             {
                 (new AssetService(_assetRepository)).DeleteAsset(_assetRepository.GetAssetById(id));
+                return Json(new { result = true });
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "LibraryController.DeleteAsset()", ex);
+                return new JsonResult { Data = false };
             }
-            return Json(new { result = true });
-        }
-
-        /// <summary>
-        /// Возвращает ассеты текущей папки
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [GridAction]
-        public ActionResult _AssetsFromFolder(int? id, string text)
-        {
-            var query = id.HasValue && id.Value != 0
-                            ? _assetRepository.GetAssetFolderById(id.Value).Assets.AsQueryable()
-                            : _assetRepository.GetAllAssets();
-           
-            var data = query.ToList().ConvertAll(AssetListViewModel.AssetsToModelConverter).ToList();
-            if (!string.IsNullOrWhiteSpace(text))
-            {
-                text = text.ToLowerInvariant();
-                data = data.Where(x => x.Name.ToLowerInvariant().Contains(text) || x.Comment.ToLowerInvariant().Contains(text)).ToList();
-            }
-            return View(new GridModel<AssetListViewModel> { Data = data });
-        }
-
-        /// <summary>
-        /// Список всех папок для редактирования
-        /// </summary>
-        /// <returns></returns>
-        [GridAction]
-        public ActionResult _AssetFoldersGridList()
-        {
-            var data = _assetRepository.GetAllAssetFolders().ToList().ConvertAll(AssetFolderListViewModel.AssetFolderToModelConverter);
-            return View(new GridModel<AssetFolderListViewModel> { Data = data });
         }
 
         /// <summary>
@@ -230,20 +269,90 @@ namespace MvcFront.Controllers
         [HttpPost]
         public JsonResult _AssetFoldersList(int assetFolderId)
         {
-            var badAssFolderd = new List<int> {assetFolderId};
-            
-            var folder = _assetRepository.GetAssetFolderById(assetFolderId);
-            var listOfChilds = new List<AssetFolder>();
-            listOfChilds.AddRange(folder.ChildAssetFolders.ToList());
-            while (listOfChilds.Count > 0)
+            try
             {
-                var current = listOfChilds.ElementAt(0);
-                badAssFolderd.Add(current.assetfolderid);
-                listOfChilds.AddRange(current.ChildAssetFolders.ToList());
-                listOfChilds.Remove(current);
+                var badAssFolderd = new List<int> {assetFolderId};
+
+                var folder = _assetRepository.GetAssetFolderById(assetFolderId);
+                var listOfChilds = new List<AssetFolder>();
+                listOfChilds.AddRange(folder.ChildAssetFolders.ToList());
+                while (listOfChilds.Count > 0)
+                {
+                    var current = listOfChilds.ElementAt(0);
+                    badAssFolderd.Add(current.assetfolderid);
+                    listOfChilds.AddRange(current.ChildAssetFolders.ToList());
+                    listOfChilds.Remove(current);
+                }
+                var data = _assetRepository.GetAllAssetFolders().Where(x => !badAssFolderd.Contains(x.assetfolderid));
+                return new JsonResult
+                           {
+                               Data =
+                                   new SelectList(data.ToList().Select(x => new {Id = x.assetfolderid, x.Name}), "Id",
+                                                  "Name", assetFolderId)
+                           };
             }
-            var data = _assetRepository.GetAllAssetFolders().Where(x => !badAssFolderd.Contains(x.assetfolderid));
-            return new JsonResult { Data = new SelectList(data.ToList().Select(x => new { Id = x.assetfolderid, x.Name }), "Id", "Name", assetFolderId) };
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "LibraryController._AssetFoldersList()", ex);
+                return new JsonResult { Data = false };
+            }
+        }
+
+        #endregion
+
+        #region GridActions
+
+        /// <summary>
+        /// Возвращает ассеты текущей папки
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [GridAction]
+        public ActionResult _AssetsFromFolder(int? id, string text)
+        {
+            try
+            {
+                var query = id.HasValue && id.Value != 0
+                                ? _assetRepository.GetAssetFolderById(id.Value).Assets.AsQueryable()
+                                : _assetRepository.GetAllAssets();
+
+                var data = query.ToList().ConvertAll(AssetListViewModel.AssetsToModelConverter).ToList();
+                if (!string.IsNullOrWhiteSpace(text))
+                {
+                    text = text.ToLowerInvariant();
+                    data =
+                        data.Where(
+                            x => x.Name.ToLowerInvariant().Contains(text) || x.Comment.ToLowerInvariant().Contains(text))
+                            .ToList();
+                }
+                return View(new GridModel<AssetListViewModel> {Data = data});
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "LibraryController._AssetsFromFolder()", ex);
+                return View(new GridModel<AssetListViewModel> { Data = new List<AssetListViewModel>() });
+            }
+        }
+
+        /// <summary>
+        /// Список всех папок для редактирования
+        /// </summary>
+        /// <returns></returns>
+        [GridAction]
+        public ActionResult _AssetFoldersGridList()
+        {
+            try
+            {
+                var data =
+                    _assetRepository.GetAllAssetFolders().ToList().ConvertAll(
+                        AssetFolderListViewModel.AssetFolderToModelConverter);
+                return View(new GridModel<AssetFolderListViewModel> {Data = data});
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "LibraryController._AssetFoldersGridList()", ex);
+                return View(new GridModel<AssetFolderListViewModel> { Data = new List<AssetFolderListViewModel>() });
+            }
         }
 
         #endregion
