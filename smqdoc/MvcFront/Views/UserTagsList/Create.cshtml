@@ -7,7 +7,7 @@
 <h2>Новая метка</h2>
 
 @using (Html.BeginForm()) {
-    @Html.ValidationSummary()
+    @Html.ValidationSummary(true)
     <fieldset>        
         <div class="editor-label">
             @Html.LabelFor(model => model.Name)

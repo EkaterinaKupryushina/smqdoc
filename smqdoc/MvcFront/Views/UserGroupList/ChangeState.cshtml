@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "ChangeState";
 }
-
+    @Html.ValidationSummary(true)
 <h2>Включение/Отключение</h2>
 @{
     var newStatusText = Model.GroupStatus == UserGroupStatus.Active ? "Неактивный" : "Активный";    

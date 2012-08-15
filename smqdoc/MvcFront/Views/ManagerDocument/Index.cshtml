@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = "Index";
 }
+    @Html.ValidationSummary(true)
 <h2>Список групповых документов</h2>
 @(Html.Telerik().Grid<DocumentListViewModel>()
             .DataBinding(dataBinding => dataBinding.Ajax().Select("_SendedGroupDocumentsList", "ManagerDocument", new { }))
