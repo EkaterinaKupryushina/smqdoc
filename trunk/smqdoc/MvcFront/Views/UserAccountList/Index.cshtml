@@ -5,7 +5,7 @@
 @{
     ViewBag.Title = "Index";
 }
-
+    @Html.ValidationSummary(true)
 <h2>Пользователи системы</h2>
 
 @Html.ActionLink("Добавить пользователя", "Create")

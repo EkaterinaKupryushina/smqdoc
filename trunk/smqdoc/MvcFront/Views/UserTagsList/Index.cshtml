@@ -7,7 +7,7 @@
 }
 
 <h2>Метки пользователей</h2>
-
+    @Html.ValidationSummary(true)
 @Html.ActionLink("Добавить метку", "Create")
 @(Html.Telerik().Grid(Model)
         .Name("UserTagsListGrid")

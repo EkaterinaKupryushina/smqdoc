@@ -17,6 +17,7 @@
 </fieldset>
 @using (Html.BeginForm())
 {
+        @Html.ValidationSummary(true)
     <p>
         <input type="submit" value="Удалить" /> |
         @Html.ActionLink("Отмена", "Index")

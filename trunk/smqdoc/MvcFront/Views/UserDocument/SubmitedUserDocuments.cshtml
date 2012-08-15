@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = "Утвержденные документы";
 }
+    @Html.ValidationSummary(true)
 <h2>Утвержденные документы</h2>
 @(Html.Telerik().Grid<DocumentListViewModel>()
             .DataBinding(dataBinding => dataBinding.Ajax().Select("_SubmittedUserDocumentsList", "UserDocument", new { }))

@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "Delete";
 }
-
+    @Html.ValidationSummary(true)
 <h2>Удаление</h2>
 
 <h3>Вы действительно желаете удалить пользователя @Html.DisplayFor(model => model.FullName)?</h3>
