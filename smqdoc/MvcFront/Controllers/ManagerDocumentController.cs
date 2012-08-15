@@ -1,9 +1,13 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
+using MvcFront.DB;
 using MvcFront.Enums;
 using MvcFront.Helpers;
 using MvcFront.Interfaces;
 using MvcFront.Models;
+using NLog;
 using Telerik.Web.Mvc;
 
 namespace MvcFront.Controllers
@@ -42,7 +46,16 @@ namespace MvcFront.Controllers
         [HttpGet]
         public ActionResult ViewDocumentDetails(long docId)
         {
-            return View(_documentRepository.GetDocumentById(docId));
+            try
+            {
+                return View(_documentRepository.GetDocumentById(docId));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "ManagerDocumentController.ViewDocumentDetails()", ex);
+                return View(new Document());
+            }
         }
 
         /// <summary>
@@ -54,11 +67,20 @@ namespace MvcFront.Controllers
         [HttpPost]
         public ActionResult ViewDocumentDetails(long docId, FormCollection collection)
         {
-            var doc = _documentRepository.GetDocumentById(docId);
-            if (collection.AllKeys.Contains("LastComment"))
-                doc.LastComment = collection.GetValue("LastComment").AttemptedValue;
-            doc = _documentRepository.SaveDocument(doc);
-            return View(doc);
+            try
+            {
+                var doc = _documentRepository.GetDocumentById(docId);
+                if (collection.AllKeys.Contains("LastComment"))
+                    doc.LastComment = collection.GetValue("LastComment").AttemptedValue;
+                doc = _documentRepository.SaveDocument(doc);
+                return View(doc);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "ManagerDocumentController.ViewDocumentDetails()", ex);
+                return View(new Document());
+            }
         }
 
         /// <summary>
@@ -68,16 +90,24 @@ namespace MvcFront.Controllers
         /// <returns></returns>
         public ActionResult Submit(long docId)
         {
-            var doc = _documentRepository.GetDocumentById(docId);
-            if(doc.DocStatus == DocumentStatus.FactSended)
+            try
             {
-                _documentRepository.ChangeDocumentStatus(docId, DocumentStatus.Submited);
-            }
-            if (doc.DocStatus == DocumentStatus.PlanSended)
+                var doc = _documentRepository.GetDocumentById(docId);
+                if (doc.DocStatus == DocumentStatus.FactSended)
+                {
+                    _documentRepository.ChangeDocumentStatus(docId, DocumentStatus.Submited);
+                }
+                if (doc.DocStatus == DocumentStatus.PlanSended)
+                {
+                    _documentRepository.ChangeDocumentStatus(docId, DocumentStatus.FactEditing);
+                }
+                return RedirectToAction("Index");
+            }catch (Exception ex)
             {
-                _documentRepository.ChangeDocumentStatus(docId, DocumentStatus.FactEditing);
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "ManagerDocumentController.Submit()", ex);
+                return RedirectToAction("ViewDocumentDetails",new {docId});
             }
-            return RedirectToAction("Index");
         }
 
         /// <summary>
@@ -87,16 +117,25 @@ namespace MvcFront.Controllers
         /// <returns></returns>
         public ActionResult Dismiss(long docId)
         {
-            var doc = _documentRepository.GetDocumentById(docId);
-            if (doc.DocStatus == DocumentStatus.FactSended)
+            try
             {
-                _documentRepository.ChangeDocumentStatus(docId, DocumentStatus.FactEditing);
+                var doc = _documentRepository.GetDocumentById(docId);
+                if (doc.DocStatus == DocumentStatus.FactSended)
+                {
+                    _documentRepository.ChangeDocumentStatus(docId, DocumentStatus.FactEditing);
+                }
+                if (doc.DocStatus == DocumentStatus.PlanSended)
+                {
+                    _documentRepository.ChangeDocumentStatus(docId, DocumentStatus.PlanEditing);
+                }
+                return RedirectToAction("Index");
             }
-            if (doc.DocStatus == DocumentStatus.PlanSended)
+            catch (Exception ex)
             {
-                _documentRepository.ChangeDocumentStatus(docId, DocumentStatus.PlanEditing);
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "ManagerDocumentController.Dismiss()", ex);
+                return RedirectToAction("ViewDocumentDetails", new { docId });
             }
-            return RedirectToAction("Index");
         }
 
         #region GridAction
@@ -108,12 +147,22 @@ namespace MvcFront.Controllers
         [GridAction]
         public ActionResult _SendedGroupDocumentsList()
         {
-            var sessData = SessionHelper.GetUserSessionData(Session);
-            var data = _documentRepository.GetGroupDocumentsByGroupId(sessData.UserGroupId)
-                .Where(x => x.Status == (int)DocumentStatus.FactSended || x.Status == (int)DocumentStatus.PlanSended)
+            try
+            {
+                var sessData = SessionHelper.GetUserSessionData(Session);
+                var data = _documentRepository.GetGroupDocumentsByGroupId(sessData.UserGroupId)
+                    .Where(
+                        x => x.Status == (int) DocumentStatus.FactSended || x.Status == (int) DocumentStatus.PlanSended)
                     .ToList().ConvertAll(DocumentListViewModel.DocumentToModelConverter).ToList();
 
-            return View(new GridModel<DocumentListViewModel> { Data = data });
+                return View(new GridModel<DocumentListViewModel> {Data = data});
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "ManagerDocumentController._SendedGroupDocumentsList()", ex);
+                return View(new GridModel<DocumentListViewModel> { Data = new List<DocumentListViewModel>() });
+            }
         }
 
         /// <summary>
@@ -123,12 +172,22 @@ namespace MvcFront.Controllers
         [GridAction]
         public ActionResult _SendedUserDocumentsList()
         {
-            var sessData = SessionHelper.GetUserSessionData(Session);
-            var data = _documentRepository.GetPersonalDocumentsByGroupId(sessData.UserGroupId)
-                .Where(x => x.Status == (int)DocumentStatus.FactSended || x.Status == (int)DocumentStatus.PlanSended)
+            try
+            {
+                var sessData = SessionHelper.GetUserSessionData(Session);
+                var data = _documentRepository.GetPersonalDocumentsByGroupId(sessData.UserGroupId)
+                    .Where(
+                        x => x.Status == (int) DocumentStatus.FactSended || x.Status == (int) DocumentStatus.PlanSended)
                     .ToList().ConvertAll(DocumentListViewModel.DocumentToModelConverter).ToList();
 
-            return View(new GridModel<DocumentListViewModel> { Data = data });
+                return View(new GridModel<DocumentListViewModel> {Data = data});
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "ManagerDocumentController._SendedUserDocumentsList()", ex);
+                return View(new GridModel<DocumentListViewModel> { Data = new List<DocumentListViewModel>() });
+            }
         }
 
         /// <summary>
@@ -138,11 +197,22 @@ namespace MvcFront.Controllers
         [GridAction]
         public ActionResult _SubmittedUserDocumentsList()
         {
-            var sessData = SessionHelper.GetUserSessionData(Session);
-            var data = _documentRepository.GetGroupDocumentsByGroupId(sessData.UserGroupId, DocumentStatus.Submited).Union(_documentRepository.GetPersonalDocumentsByGroupId(sessData.UserGroupId, DocumentStatus.Submited))
-                    .ToList().ConvertAll(DocumentListViewModel.DocumentToModelConverter).ToList();
+            try
+            {
+                var sessData = SessionHelper.GetUserSessionData(Session);
+                var data =
+                    _documentRepository.GetGroupDocumentsByGroupId(sessData.UserGroupId, DocumentStatus.Submited).Union(
+                        _documentRepository.GetPersonalDocumentsByGroupId(sessData.UserGroupId, DocumentStatus.Submited))
+                        .ToList().ConvertAll(DocumentListViewModel.DocumentToModelConverter).ToList();
 
-            return View(new GridModel<DocumentListViewModel> { Data = data });
+                return View(new GridModel<DocumentListViewModel> {Data = data});
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "ManagerDocumentController._SubmittedUserDocumentsList()", ex);
+                return View(new GridModel<DocumentListViewModel> { Data = new List<DocumentListViewModel>() });
+            }
         }
         #endregion
     }

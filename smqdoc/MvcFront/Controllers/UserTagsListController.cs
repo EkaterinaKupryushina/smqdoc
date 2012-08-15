@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using MvcFront.Models;
 using MvcFront.Interfaces;
+using NLog;
 
 namespace MvcFront.Controllers
 {
@@ -18,8 +20,17 @@ namespace MvcFront.Controllers
 
         public ActionResult Index()
         {
-            return View(_userTagRepository.GetAllUserTags().ToList()
-                .ConvertAll(UserTagsListViewModel.UserTagNamesToModelConverter).ToList());
+            try
+            {
+                return View(_userTagRepository.GetAllUserTags().ToList()
+                                .ConvertAll(UserTagsListViewModel.UserTagNamesToModelConverter).ToList());
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserTagsListController.Index()", ex);
+                return View(new List<UserTagsListViewModel>());
+            }
         }
         
         //
@@ -27,7 +38,16 @@ namespace MvcFront.Controllers
 
         public ActionResult Create()
         {
-            return View(new UserTagsEditModel(_userTagRepository.GetUserTagById(0)));
+            try
+            {
+                return View(new UserTagsEditModel(_userTagRepository.GetUserTagById(0)));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserTagsListController.Create()", ex);
+                return View(new UserTagsEditModel());
+            }
         } 
 
         //
@@ -53,11 +73,12 @@ namespace MvcFront.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                ModelState.AddModelError("Ошибка при сохранении", ex.InnerException != null ? ex.InnerException.Message : ex.Message);
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserTagsListController.Create()", ex);
+                return View(model);
             }
-            return View();
         }
         
         //
@@ -65,7 +86,16 @@ namespace MvcFront.Controllers
  
         public ActionResult Edit(int id)
         {
-            return View(new UserTagsEditModel(_userTagRepository.GetUserTagById(id)));
+            try
+            {
+                return View(new UserTagsEditModel(_userTagRepository.GetUserTagById(id)));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserTagsListController.Edit()", ex);
+                return View(new UserTagsEditModel());
+            }
         }
 
         //
@@ -93,9 +123,10 @@ namespace MvcFront.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("Ошибка при сохранении", ex.InnerException != null ? ex.InnerException.Message : ex.Message);
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserTagsListController.Edit()", ex);
+                return View(model);
             }
-            return View();
         }
 
         //
@@ -103,7 +134,16 @@ namespace MvcFront.Controllers
  
         public ActionResult Delete(int id)
         {
-            return View(new UserTagsEditModel(_userTagRepository.GetUserTagById(id)));
+            try
+            {
+                return View(new UserTagsEditModel(_userTagRepository.GetUserTagById(id)));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserTagsListController.Delete()", ex);
+                return View(new UserTagsEditModel());
+            }
         }
 
         //
@@ -118,10 +158,11 @@ namespace MvcFront.Controllers
  
                 return RedirectToAction("Index");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                ModelState.AddModelError("Ошибка", ex.Message);
-                return View();
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserTagsListController.Delete()", ex);
+                return View(new UserTagsEditModel());
             }
         }
 
