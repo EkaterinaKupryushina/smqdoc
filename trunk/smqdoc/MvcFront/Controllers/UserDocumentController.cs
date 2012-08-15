@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using MvcFront.DB;
@@ -6,6 +7,7 @@ using MvcFront.Enums;
 using MvcFront.Helpers;
 using MvcFront.Interfaces;
 using MvcFront.Models;
+using NLog;
 using Telerik.Web.Mvc;
 
 namespace MvcFront.Controllers
@@ -57,7 +59,16 @@ namespace MvcFront.Controllers
         /// <returns></returns>
         public ActionResult DocumentDetails(long id)
         {
-            return View(_documentRepository.GetDocumentById(id));
+            try
+            {
+                return View(_documentRepository.GetDocumentById(id));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserDocumentController.DocumentDetails()", ex);
+                return View(new Document());
+            }
         }
 
         /// <summary>
@@ -67,7 +78,16 @@ namespace MvcFront.Controllers
         /// <returns></returns>
         public ActionResult DisableDocAppointment(long id)
         {
-            return View(new DocAppointmentEditModel(_appointmentRepository.GetDocAppointmentById(id)));
+            try
+            {
+                return View(new DocAppointmentEditModel(_appointmentRepository.GetDocAppointmentById(id)));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserDocumentController.DisableDocAppointment()", ex);
+                return View(new DocAppointmentEditModel());
+            }
         }
 
         /// <summary>
@@ -85,9 +105,11 @@ namespace MvcFront.Controllers
 
                 return RedirectToAction("UserDocAppointments");
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserDocumentController.DisableDocAppointment()", ex);
+                return View(new DocAppointmentEditModel());
             }
         }
         /// <summary>
@@ -96,11 +118,20 @@ namespace MvcFront.Controllers
         /// <returns></returns>
         public ActionResult SelectDocTemplate()
         {
-            return
-                View(
-                    _docTemplateRepository.GetAllDocTeplates().Where(
-                        x => x.Status == (int) DocTemplateStatus.Active && x.DocTemplatesForUser != null).ToList().
-                        ConvertAll(DocTemplateListViewModel.DocTemplateToModelConverter).ToList());
+            try
+            {
+                return
+                    View(
+                        _docTemplateRepository.GetAllDocTeplates().Where(
+                            x => x.Status == (int) DocTemplateStatus.Active && x.DocTemplatesForUser != null).ToList().
+                            ConvertAll(DocTemplateListViewModel.DocTemplateToModelConverter).ToList());
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserDocumentController.SelectDocTemplate()", ex);
+                return View(new List<DocTemplateListViewModel>());
+            }
         }
 
         /// <summary>
@@ -109,8 +140,19 @@ namespace MvcFront.Controllers
         /// <returns></returns>
         public ActionResult CreateUserAppointment(long docTemplateId)
         {
-            var newAppointment = new DocAppointment { DocTemplate = _docTemplateRepository.GetDocTemplateById(docTemplateId) };
-            return View(new DocAppointmentEditModel(newAppointment));
+            try
+            {
+                var newAppointment = new DocAppointment
+                                         {DocTemplate = _docTemplateRepository.GetDocTemplateById(docTemplateId)};
+                return View(new DocAppointmentEditModel(newAppointment));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserDocumentController.CreateUserAppointment()", ex);
+                return View(new DocAppointmentEditModel());
+            }
+
         }
 
         /// <summary>
@@ -139,8 +181,10 @@ namespace MvcFront.Controllers
                 }
                 return RedirectToAction("CreateDocument", new { id = docAppId }); ;
             }
-            catch
+            catch (Exception ex)
             {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserDocumentController.CreateUserAppointment()", ex);
                 return View(model);
             }
         }
@@ -161,9 +205,10 @@ namespace MvcFront.Controllers
                 if (doc != null)
                     return RedirectToAction("EditDocument", new { id = doc.documentid });
             }
-            catch
+            catch (Exception ex)
             {
-                return RedirectToAction("Index");
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserDocumentController.CreateDocument()", ex);
             }
             return RedirectToAction("Index");
 
@@ -177,17 +222,26 @@ namespace MvcFront.Controllers
         /// <returns></returns>
         public ActionResult EditDocument(int id)
         {
-            // Удаляем Провайдр валидации типов со стороны клиента, чтобы не появлялось сообщение на англ.
-            // The field xxxx must be a number
-            foreach (ModelValidatorProvider prov in ModelValidatorProviders.Providers)
+            try
             {
-                if (prov.GetType() == typeof(ClientDataTypeModelValidatorProvider))
+                // Удаляем Провайдр валидации типов со стороны клиента, чтобы не появлялось сообщение на англ.
+                // The field xxxx must be a number
+                foreach (ModelValidatorProvider prov in ModelValidatorProviders.Providers)
                 {
-                    ModelValidatorProviders.Providers.Remove(prov);
-                    break;
+                    if (prov.GetType() == typeof (ClientDataTypeModelValidatorProvider))
+                    {
+                        ModelValidatorProviders.Providers.Remove(prov);
+                        break;
+                    }
                 }
+                return View(new DocumentEditModel(_documentRepository.GetDocumentById(id)));
             }
-            return View(new DocumentEditModel(_documentRepository.GetDocumentById(id)));
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserDocumentController.EditDocument()", ex);
+                return View(new DocumentEditModel());
+            }
         }
 
         /// <summary>
@@ -237,13 +291,15 @@ namespace MvcFront.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserDocumentController.EditDocument()", ex);
+                return View(model);
             }
         }
 
-        #region Json
+        #region GridActions
        
         /// <summary>
         /// Список документов пользователя
@@ -252,12 +308,21 @@ namespace MvcFront.Controllers
         [GridAction]
         public ActionResult _UserDocumentsList()
         {
-            var sessData = SessionHelper.GetUserSessionData(Session);
-            var data = _documentRepository.GetUserDocumentsByUserId(sessData.UserId)
-                .Where(x => x.Status != (int)DocumentStatus.Deleted)
+            try
+            {
+                var sessData = SessionHelper.GetUserSessionData(Session);
+                var data = _documentRepository.GetUserDocumentsByUserId(sessData.UserId)
+                    .Where(x => x.Status != (int) DocumentStatus.Deleted)
                     .ToList().ConvertAll(DocumentListViewModel.DocumentToModelConverter).ToList();
 
-            return View(new GridModel<DocumentListViewModel> { Data = data });
+                return View(new GridModel<DocumentListViewModel> {Data = data});
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserDocumentController._UserDocumentsList()", ex);
+                return View(new GridModel<DocumentListViewModel> {Data = new List<DocumentListViewModel>()});
+            }
         }
 
         /// <summary>
@@ -267,16 +332,26 @@ namespace MvcFront.Controllers
         [GridAction]
         public ActionResult _GroupDocAppointList()
         {
-            var sessData = SessionHelper.GetUserSessionData(Session);
-            var allUserGroupDocs =
-                _documentRepository.GetUserDocumentsByUserId(sessData.UserId).Where(x => x.Status != (int)DocumentStatus.Deleted 
-                    && x.DocAppointment.UserGroup_usergroupid == sessData.UserGroupId)
-                    .Select(x => x.DocAppointment_docappointmentid).ToList();
+            try
+            {
+                var sessData = SessionHelper.GetUserSessionData(Session);
+                var allUserGroupDocs =
+                    _documentRepository.GetUserDocumentsByUserId(sessData.UserId).Where(
+                        x => x.Status != (int) DocumentStatus.Deleted
+                             && x.DocAppointment.UserGroup_usergroupid == sessData.UserGroupId)
+                        .Select(x => x.DocAppointment_docappointmentid).ToList();
 
-            var data = _appointmentRepository.GetAllGroupDocAppointments(sessData.UserGroupId)
-                .Where(x => !allUserGroupDocs.Contains(x.docappointmentid))
-                .ToList().ConvertAll(DocAppointmentListViewModel.DocAppointmentToModelConverter).ToList();
-            return View(new GridModel<DocAppointmentListViewModel> { Data = data });
+                var data = _appointmentRepository.GetAllGroupDocAppointments(sessData.UserGroupId)
+                    .Where(x => !allUserGroupDocs.Contains(x.docappointmentid))
+                    .ToList().ConvertAll(DocAppointmentListViewModel.DocAppointmentToModelConverter).ToList();
+                return View(new GridModel<DocAppointmentListViewModel> {Data = data});
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserDocumentController._GroupDocAppointList()", ex);
+                return View(new GridModel<DocAppointmentListViewModel> { Data = new List<DocAppointmentListViewModel>() });
+            }
         }
 
         /// <summary>
@@ -286,16 +361,30 @@ namespace MvcFront.Controllers
         [GridAction]
         public ActionResult _UserDocAppointmentList()
         {
-            var sessData = SessionHelper.GetUserSessionData(Session);
-            var allUserGroupDocs =
-                _documentRepository.GetUserDocumentsByUserId(sessData.UserId).Where(x => x.Status != (int)DocumentStatus.Deleted
-                    && x.DocAppointment.UserAccount_userid == sessData.UserId)
-                    .Select(x => x.DocAppointment_docappointmentid).ToList();
+            try
+            {
+                var sessData = SessionHelper.GetUserSessionData(Session);
+                var allUserGroupDocs =
+                    _documentRepository.GetUserDocumentsByUserId(sessData.UserId).Where(
+                        x => x.Status != (int) DocumentStatus.Deleted
+                             && x.DocAppointment.UserAccount_userid == sessData.UserId)
+                        .Select(x => x.DocAppointment_docappointmentid).ToList();
 
-            var data = _appointmentRepository.GetAllUserDocAppointments(sessData.UserId)
-                .Where(x => ((!allUserGroupDocs.Contains(x.docappointmentid) && !x.DocTemplate.DocTemplatesForUser.AllowManyInstances) || x.DocTemplate.DocTemplatesForUser.AllowManyInstances))
-                .ToList().ConvertAll(DocAppointmentListViewModel.DocAppointmentToModelConverter).ToList();
-            return View(new GridModel<DocAppointmentListViewModel> { Data = data });
+                var data = _appointmentRepository.GetAllUserDocAppointments(sessData.UserId)
+                    .Where(
+                        x =>
+                        ((!allUserGroupDocs.Contains(x.docappointmentid) &&
+                          !x.DocTemplate.DocTemplatesForUser.AllowManyInstances) ||
+                         x.DocTemplate.DocTemplatesForUser.AllowManyInstances))
+                    .ToList().ConvertAll(DocAppointmentListViewModel.DocAppointmentToModelConverter).ToList();
+                return View(new GridModel<DocAppointmentListViewModel> {Data = data});
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserDocumentController._UserDocAppointmentList()", ex);
+                return View(new GridModel<DocAppointmentListViewModel> { Data = new List<DocAppointmentListViewModel>() });
+            }
         }
 
         /// <summary>
@@ -305,11 +394,20 @@ namespace MvcFront.Controllers
         [GridAction]
         public ActionResult _SubmittedUserDocumentsList()
         {
-            var sessData = SessionHelper.GetUserSessionData(Session);
-            var data = _documentRepository.GetUserDocumentsByUserId(sessData.UserId, DocumentStatus.Submited)
+            try
+            {
+                var sessData = SessionHelper.GetUserSessionData(Session);
+                var data = _documentRepository.GetUserDocumentsByUserId(sessData.UserId, DocumentStatus.Submited)
                     .ToList().ConvertAll(DocumentListViewModel.DocumentToModelConverter).ToList();
 
-            return View(new GridModel<DocumentListViewModel> { Data = data });
+                return View(new GridModel<DocumentListViewModel> {Data = data});
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserDocumentController._SubmittedUserDocumentsList()", ex);
+                return View(new GridModel<DocumentListViewModel> { Data = new List<DocumentListViewModel>() });
+            }
         }
         #endregion
     }

@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using MvcFront.DB;
 using MvcFront.Enums;
 using MvcFront.Interfaces;
 using MvcFront.Models;
+using NLog;
 using Telerik.Web.Mvc;
 
 namespace MvcFront.Controllers
@@ -22,8 +25,17 @@ namespace MvcFront.Controllers
 
         public ActionResult Index()
         {
-            return View(_userRepository.GetAll().Where(x=>x.Status != (int)UserAccountStatus.Deleted).ToList()
-                .ConvertAll(UserAccountListViewModel.UserAccountToModelConverter).ToList());
+            try
+            {
+                return View(_userRepository.GetAll().Where(x => x.Status != (int) UserAccountStatus.Deleted).ToList()
+                                .ConvertAll(UserAccountListViewModel.UserAccountToModelConverter).ToList());
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserAccountListController.Index()", ex);
+                return View(new List<UserAccountListViewModel>());
+            }
         }
 
         //
@@ -31,7 +43,16 @@ namespace MvcFront.Controllers
 
         public ActionResult Details(int id)
         {
-            return View(_userRepository.GetById(id));
+            try
+            {
+                return View(_userRepository.GetById(id));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserAccountListController.Details()", ex);
+                return View(new UserAccount());
+            }
         }
 
         //
@@ -39,7 +60,16 @@ namespace MvcFront.Controllers
 
         public ActionResult Create()
         {
-            return View(new UserAccountEditModel(_userRepository.GetById(0)));
+            try
+            {
+                return View(new UserAccountEditModel(_userRepository.GetById(0)));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserAccountListController.Create()", ex);
+                return View(new UserAccountEditModel());
+            }
         } 
 
         //
@@ -65,11 +95,12 @@ namespace MvcFront.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                ModelState.AddModelError("Ошибка при сохранении", ex.InnerException != null ? ex.InnerException.Message : ex.Message);
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserAccountListController.Create()", ex);
+                return View(model);
             }
-            return View();
         }
         
         //
@@ -77,7 +108,16 @@ namespace MvcFront.Controllers
  
         public ActionResult Edit(int id)
         {
-            return View(new UserAccountEditModel(_userRepository.GetById(id)));
+            try
+            {
+                return View(new UserAccountEditModel(_userRepository.GetById(id)));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserAccountListController.Edit()", ex);
+                return View(new UserAccountEditModel());
+            }
         }
 
         //
@@ -105,9 +145,10 @@ namespace MvcFront.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("Ошибка при сохранении", ex.InnerException != null ? ex.InnerException.Message : ex.Message);
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserAccountListController.Edit()", ex);
+                return View(model);
             }
-            return View();
         }
 
         //
@@ -115,7 +156,16 @@ namespace MvcFront.Controllers
  
         public ActionResult Delete(int id)
         {
-            return View(_userRepository.GetById(id));
+            try
+            {
+                return View(_userRepository.GetById(id));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserAccountListController.Delete()", ex);
+                return View(new UserAccount());
+            }
         }
 
         //
@@ -127,19 +177,28 @@ namespace MvcFront.Controllers
             try
             {
                 _userRepository.Delete(id);
- 
                 return RedirectToAction("Index");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                ModelState.AddModelError("Ошибка", ex.Message);
-                return View();
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserAccountListController.Delete()", ex);
+                return View(new UserAccount());
             }
         }
 
         public ActionResult ChangeState(int id)
         {
-            return View(_userRepository.GetById(id));
+            try
+            {
+                return View(_userRepository.GetById(id));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserAccountListController.ChangeState()", ex);
+                return View(new UserAccount());
+            }
         }
 
         [HttpPost]
@@ -153,35 +212,70 @@ namespace MvcFront.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("Ошибка", ex.Message);
-                return View();
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserAccountListController.ChangeState()", ex);
+                return View(new UserAccount());
             }
         }
 
 
         public ActionResult TagsUserManagement(int id)
         {
-            return View( _userRepository.GetById(id));
+            try
+            {
+                return View(_userRepository.GetById(id));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserAccountListController.TagsUserManagement()", ex);
+                return View(new UserAccount());
+            }
         }
 
         public JsonResult RemoveUserTag(int id, int tagId)
-        {            
-            return Json(new { result = _userTagRepository.RemoveUserTag(id, tagId) });
+        {
+            try
+            {
+                return Json(new {result = _userTagRepository.RemoveUserTag(id, tagId)});
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserAccountListController.RemoveUserTag()", ex);
+                return new JsonResult { Data = false };
+            }
         }
 
         public JsonResult AddUserTag(int userId, int tagId)
-        {            
-            return Json(new { result = _userTagRepository.AddUserTag(userId, tagId) });
+        {
+            try
+            {
+                return Json(new {result = _userTagRepository.AddUserTag(userId, tagId)});
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserAccountListController.AddUserTag()", ex);
+                return new JsonResult { Data = false };
+            }
         }
 
         //список меток пользователя
         [GridAction]
         public ActionResult _UserTagList(int userId)
-        {            
-            var data = _userRepository.GetById(userId).UserTags.ToList()
-                .ConvertAll(UserTagsListViewModel.UserTagNamesToModelConverter).ToList();
+        {
+            try
+            {
+                var data = _userRepository.GetById(userId).UserTags.ToList()
+                    .ConvertAll(UserTagsListViewModel.UserTagNamesToModelConverter).ToList();
 
-            return View(new GridModel<UserTagsListViewModel> { Data = data });
+                return View(new GridModel<UserTagsListViewModel> {Data = data});
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserAccountListController._UserTagList()", ex);
+                return View(new GridModel<UserTagsListViewModel> {Data = new List<UserTagsListViewModel>()});
+            }
         }
     }
 }

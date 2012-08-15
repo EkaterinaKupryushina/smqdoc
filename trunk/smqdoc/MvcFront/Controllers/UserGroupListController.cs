@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using MvcFront.DB;
 using MvcFront.Enums;
 using MvcFront.Interfaces;
 using MvcFront.Models;
+using NLog;
 using Telerik.Web.Mvc;
 
 namespace MvcFront.Controllers
@@ -20,23 +23,61 @@ namespace MvcFront.Controllers
 
         public ActionResult Index()
         {
-            return View(_groupRepository.GetAll().Where(x => x.Status != (int)UserGroupStatus.Deleted)
-                .Select(x => new UserGroupListViewModel { GroupId = x.usergroupid, Manager =  x.Manager.SecondName +" "+ x.Manager.FirstName +" " + x.Manager.LastName + " ("+ x.Manager.Login+")", GroupName = x.GroupName }).ToList());
+            try
+            {
+                return View(_groupRepository.GetAll().Where(x => x.Status != (int) UserGroupStatus.Deleted)
+                                .Select(
+                                    x =>
+                                    new UserGroupListViewModel
+                                        {
+                                            GroupId = x.usergroupid,
+                                            Manager =
+                                                x.Manager.SecondName + " " + x.Manager.FirstName + " " + x.Manager.LastName +
+                                                " (" + x.Manager.Login + ")",
+                                            GroupName = x.GroupName
+                                        }).ToList());
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserGroupListController.Index()", ex);
+                return View(new List<UserGroupListViewModel>());
+            }
         }
         //Возращает список пользователей группы
         [GridAction]
         public ActionResult _GroupUsersList(int groupId)
         {
-            var data = _groupRepository.GetById(groupId).Members.Where(x=>x.Status != (int)UserAccountStatus.Deleted).ToList()
-                .ConvertAll(UserAccountListViewModel.UserAccountToModelConverter).ToList();
-            return View(new GridModel<UserAccountListViewModel> { Data = data });
+            try
+            {
+                var data =
+                    _groupRepository.GetById(groupId).Members.Where(x => x.Status != (int) UserAccountStatus.Deleted).
+                        ToList()
+                        .ConvertAll(UserAccountListViewModel.UserAccountToModelConverter).ToList();
+                return View(new GridModel<UserAccountListViewModel> {Data = data});
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserGroupListController._GroupUsersList()", ex);
+                return View(new GridModel<UserAccountListViewModel> { Data = new List<UserAccountListViewModel>() });
+            }
         }
         //
         // GET: /UserGroup/Details/5
 
         public ActionResult Details(int id)
         {
-            return View(_groupRepository.GetById(id));
+            try
+            {
+                return View(_groupRepository.GetById(id));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserGroupListController.Details()", ex);
+                return View(new UserGroup());
+            }
         }
 
         //
@@ -44,7 +85,16 @@ namespace MvcFront.Controllers
 
         public ActionResult Create()
         {
-            return View(new UserGroupEditModel(_groupRepository.GetById(0)));
+            try
+            {
+                return View(new UserGroupEditModel(_groupRepository.GetById(0)));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserGroupListController.Create()", ex);
+                return View(new UserGroupEditModel());
+            }
         } 
 
         //
@@ -72,9 +122,10 @@ namespace MvcFront.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("Ошибка при сохранении", ex.InnerException != null ? ex.InnerException.Message : ex.Message);
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserGroupListController.Create()", ex);
+                return View(model);
             }
-            return View();
         }
         
         //
@@ -82,7 +133,16 @@ namespace MvcFront.Controllers
  
         public ActionResult Edit(int id)
         {
-            return View(new UserGroupEditModel(_groupRepository.GetById(id)));
+            try
+            {
+                return View(new UserGroupEditModel(_groupRepository.GetById(id)));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserGroupListController.Edit()", ex);
+                return View(new UserGroupEditModel());
+            }
         }
 
         //
@@ -110,9 +170,10 @@ namespace MvcFront.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("Ошибка при сохранении", ex.InnerException != null ? ex.InnerException.Message : ex.Message);
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserGroupListController.Edit()", ex);
+                return View(model);
             }
-            return View();
         }
 
         //
@@ -120,7 +181,16 @@ namespace MvcFront.Controllers
  
         public ActionResult Delete(int id)
         {
-            return View(_groupRepository.GetById(id));
+            try
+            {
+                return View(_groupRepository.GetById(id));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserGroupListController.Delete()", ex);
+                return View(new UserGroup());
+            }
         }
 
         //
@@ -137,8 +207,9 @@ namespace MvcFront.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("Ошибка", ex.Message);
-                return View();
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserGroupListController.Delete()", ex);
+                return View(new UserGroup());
             }
         }
         public ActionResult ChangeState(int id)
@@ -157,26 +228,52 @@ namespace MvcFront.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("Ошибка", ex.Message);
-                return View();
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserGroupListController.ChangeState()", ex);
+                return View(new UserGroup());
             }
         }
+        
         public ActionResult GroupUsersManagment(int id)
         {
-            return View(_groupRepository.GetById(id));
+            try
+            {
+                return View(_groupRepository.GetById(id));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserGroupListController.GroupUsersManagment()", ex);
+                return View(new UserGroup());
+            }
         }
+        
         public JsonResult DeleteUser(int id, int UserId)
         {
-            //int userId = int.Parse(CompositeId.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries)[0].ToString());
-            //int groupId = int.Parse(CompositeId.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries)[1].ToString());
-            return Json(new { result = _groupRepository.RemoveMember(id, UserId) });
+            try
+            {
+                return Json(new {result = _groupRepository.RemoveMember(id, UserId)});
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserGroupListController.DeleteUser()", ex);
+                return new JsonResult{Data = false};
+            }
         }
 
         public JsonResult AddUser(int groupId, int userId)
         {
-            //int userId = int.Parse(CompositeId.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries)[0].ToString());
-            //int groupId = int.Parse(CompositeId.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries)[1].ToString());
-            return Json(new { result = _groupRepository.AddMember(groupId, userId) });
+            try
+            {
+                return Json(new {result = _groupRepository.AddMember(groupId, userId)});
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserGroupListController.AddUser()", ex);
+                return new JsonResult { Data = false };
+            }
         }
     }
 }
