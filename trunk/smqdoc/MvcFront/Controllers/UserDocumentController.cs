@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using MvcFront.DB;
 using MvcFront.Enums;
 using MvcFront.Helpers;
+using MvcFront.Infrastructure.Security;
 using MvcFront.Interfaces;
 using MvcFront.Models;
 using NLog;
@@ -12,6 +13,7 @@ using Telerik.Web.Mvc;
 
 namespace MvcFront.Controllers
 {
+    [GroupUserAuthorize]
     public class UserDocumentController : Controller
     {
         private readonly IDocumentRepository _documentRepository;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using MvcFront.Enums;
+using MvcFront.Infrastructure.Security;
 using MvcFront.Interfaces;
 using MvcFront.DB;
 using MvcFront.Models;
@@ -11,6 +12,7 @@ using Telerik.Web.Mvc;
 
 namespace MvcFront.Controllers
 {
+    [AdminAuthorize]
     public class DocTemplateListController : Controller
     {
         private readonly IDocTemplateRepository _templateRepository;

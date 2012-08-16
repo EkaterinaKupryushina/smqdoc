@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using MvcFront.Infrastructure.Security;
 using MvcFront.Models;
 using MvcFront.Interfaces;
 using NLog;
 
 namespace MvcFront.Controllers
 {
+    [AdminAuthorize]
     public class UserTagsListController : Controller
     {
         private readonly IUserTagRepository _userTagRepository;
