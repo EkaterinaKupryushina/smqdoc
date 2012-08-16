@@ -161,8 +161,10 @@
     <Compile Include="Helpers\SessionHelper.cs" />
     <Compile Include="Infrastructure\AssetService.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
-    <Compile Include="Infrastructure\ReportService.cs" />
+    <Compile Include="Services\ReportService.cs" />
     <Compile Include="Infrastructure\Security\AdminAuthorizeAttribute.cs" />
+    <Compile Include="Infrastructure\Security\GroupUserAuthorizeAttribute.cs" />
+    <Compile Include="Infrastructure\Security\GroupManagerAuthorizeAttribute.cs" />
     <Compile Include="Infrastructure\Security\SmqSecurityFilter.cs" />
     <Compile Include="Infrastructure\SmqSettings.cs" />
     <Compile Include="Infrastructure\UnitOfWork.cs" />

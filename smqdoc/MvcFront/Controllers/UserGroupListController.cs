@@ -4,13 +4,15 @@ using System.Linq;
 using System.Web.Mvc;
 using MvcFront.DB;
 using MvcFront.Enums;
+using MvcFront.Infrastructure.Security;
 using MvcFront.Interfaces;
 using MvcFront.Models;
 using NLog;
 using Telerik.Web.Mvc;
 
 namespace MvcFront.Controllers
-{
+{   
+    [AdminAuthorize]
     public class UserGroupListController : Controller
     {
         private readonly IUserGroupRepository _groupRepository;

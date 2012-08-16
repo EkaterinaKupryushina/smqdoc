@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using MvcFront.DB;
 using MvcFront.Entities;
@@ -8,7 +7,7 @@ using MvcFront.Enums;
 using MvcFront.Interfaces;
 using MvcFront.Models;
 
-namespace MvcFront.Infrastructure
+namespace MvcFront.Services
 {
     public class ReportService
     {

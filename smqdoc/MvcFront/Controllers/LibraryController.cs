@@ -4,6 +4,7 @@ using System.IO;
 using System.Web.Mvc;
 using MvcFront.DB;
 using MvcFront.Infrastructure;
+using MvcFront.Infrastructure.Security;
 using MvcFront.Interfaces;
 using System.Linq;
 using MvcFront.Models;
@@ -43,6 +44,7 @@ namespace MvcFront.Controllers
         /// Страница редактирования библиотеки документов
         /// </summary>
         /// <returns></returns>
+        [AdminAuthorize]
         public ActionResult EditAssetLibrary()
         {
             try
@@ -63,6 +65,7 @@ namespace MvcFront.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
+        [AdminAuthorize]
         public ActionResult CreateAsset(int id)
         {
             try
@@ -83,6 +86,7 @@ namespace MvcFront.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
+        [AdminAuthorize]
         public ActionResult CreateAsset(AssetEditModel model)
         {
 
@@ -109,6 +113,7 @@ namespace MvcFront.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+        [AdminAuthorize]
         public ActionResult CreateAssetFolder()
         {
             try
@@ -129,6 +134,7 @@ namespace MvcFront.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
+        [AdminAuthorize]
         public ActionResult CreateAssetFolder(AssetFolderEditModel model)
         {
 
@@ -157,6 +163,7 @@ namespace MvcFront.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
+        [AdminAuthorize]
         public ActionResult EditAssetFolder(int id)
         {
             try
@@ -177,6 +184,7 @@ namespace MvcFront.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
+        [AdminAuthorize]
         public ActionResult EditAssetFolder(AssetFolderEditModel model)
         {
             if (ModelState.IsValid)
@@ -203,6 +211,7 @@ namespace MvcFront.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        [AdminAuthorize]
         public ActionResult DeleteAssetFolder(int id)
         {
             try
@@ -222,6 +231,7 @@ namespace MvcFront.Controllers
         /// </summary>
         /// <param name="assetId"></param>
         /// <returns></returns>
+        [AdminAuthorize]
         public FileStreamResult Download(int assetId)
         {
             try
