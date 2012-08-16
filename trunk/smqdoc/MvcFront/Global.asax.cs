@@ -1,6 +1,7 @@
 ﻿using System.Web.Mvc;
 using System.Web.Routing;
 using MvcFront.Infrastructure;
+using MvcFront.Infrastructure.Security;
 
 namespace MvcFront
 {

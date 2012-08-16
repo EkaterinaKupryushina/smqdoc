@@ -162,7 +162,8 @@
     <Compile Include="Infrastructure\AssetService.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
     <Compile Include="Infrastructure\ReportService.cs" />
-    <Compile Include="Infrastructure\SmqSecurityFilter.cs" />
+    <Compile Include="Infrastructure\Security\AdminAuthorizeAttribute.cs" />
+    <Compile Include="Infrastructure\Security\SmqSecurityFilter.cs" />
     <Compile Include="Infrastructure\SmqSettings.cs" />
     <Compile Include="Infrastructure\UnitOfWork.cs" />
     <Compile Include="Interfaces\IAssetRepository.cs" />
