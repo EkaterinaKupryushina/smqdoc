@@ -6,8 +6,9 @@ using MvcFront.Entities;
 using MvcFront.Enums;
 using MvcFront.Helpers;
 using MvcFront.Interfaces;
+using NLog;
 
-namespace MvcFront.Infrastructure
+namespace MvcFront.Infrastructure.Security
 {
     public class SmqSecurityFilter : FilterAttribute, IAuthorizationFilter
     {
@@ -107,10 +108,11 @@ namespace MvcFront.Infrastructure
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 SessionHelper.ClearUserSessionData(filterContext.HttpContext.Session);
                 filterContext.Result = new HttpUnauthorizedResult();
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "SmqSecurityFilter.OnAuthorization()", ex);
             }
         }
     }
