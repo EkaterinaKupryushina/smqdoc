@@ -1,4 +1,6 @@
-﻿using System.Web;
+﻿using System.Data.Objects.DataClasses;
+using System.IO;
+using System.Web;
 using MvcFront.DB;
 using MvcFront.Interfaces;
 
@@ -8,6 +10,8 @@ namespace MvcFront.Services
     {
         private readonly IAssetRepository _assetRepository;
         private readonly IFileLibaryRepository _fileLibaryRepository;
+        //Имя папки внутри папки хранения асетов
+        private const string FolderName = "Library";
 
         public FileLibraryService(IAssetRepository assetRepository, IFileLibaryRepository fileLibaryRepository)
         {
@@ -23,11 +27,12 @@ namespace MvcFront.Services
         /// <param name="comment"></param>
         public void CreateNewAsset(HttpPostedFileBase file, int parentFolderId, string comment)
         {
-            var newAsset = (new AssetService(_assetRepository)).CreateNewAsset(file);
+            var newAsset = (new AssetService(_assetRepository)).CreateNewAsset(file, FolderName);
             var newFileAsset = new FileLibraryAsset
                 {
                     filelibraryassetid = 0,
-                    Asset = newAsset,
+                    Asset = new Asset{assetid = newAsset.assetid},
+                    Name = Path.GetFileName(file.FileName),
                     FileLibraryFolder_filelibraryfolderid = parentFolderId,
                     Comment = comment
                 };
@@ -46,7 +51,9 @@ namespace MvcFront.Services
             {
                 foreach (var libraryAsset in folder.FileLibraryAssets)
                 {
-                    asserService.DeleteAsset(libraryAsset.Asset);
+                    var tmpAssetId = libraryAsset.Asset.assetid;
+                    _fileLibaryRepository.DeleteAsset(libraryAsset.filelibraryassetid);
+                    asserService.DeleteAsset(_assetRepository.GetAssetById(tmpAssetId));
                 }
                 _fileLibaryRepository.DeleteAssetFolder(folder.filelibraryfolderid);
             }

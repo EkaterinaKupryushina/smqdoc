@@ -10,7 +10,7 @@ namespace MvcFront.Interfaces
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        FileLibraryAsset GetAssetById(int id);
+        FileLibraryAsset GetAssetById(long id);
 
         /// <summary>
         /// Возвращает assetFolder по Id
@@ -41,7 +41,7 @@ namespace MvcFront.Interfaces
         /// Удалить asset
         /// </summary>
         /// <param name="assetId"></param>
-        void DeleteAsset(int assetId);
+        void DeleteAsset(long assetId);
 
         /// <summary>
         /// Сохранить AssetFolder

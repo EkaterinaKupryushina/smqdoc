@@ -264,7 +264,8 @@ namespace MvcFront.Controllers
         {
             try
             {
-                (new AssetService(_assetRepository)).DeleteAsset(_assetRepository.GetAssetById(id));
+                //TODO Fix
+                //(new FileLibraryService(_assetRepository, _fileLibaryRepository)).DeleteFileAssetFolder(_assetRepository.GetAssetById(id)););
                 return Json(new { result = true });
             }
             catch (Exception ex)

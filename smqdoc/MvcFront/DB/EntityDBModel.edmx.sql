@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 08/12/2012 13:14:44
--- Generated from EDMX file: C:\Projects\smqdoc\smqdoc\MvcFront\DB\EntityDBModel.edmx
+-- Date Created: 08/22/2012 00:04:06
+-- Generated from EDMX file: D:\Work\smqdoc\trunk\smqdoc\MvcFront\DB\EntityDBModel.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -65,12 +65,6 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_DocTemplatesForUserDocTemplate]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[DocTemplatesForUsers] DROP CONSTRAINT [FK_DocTemplatesForUserDocTemplate];
 GO
-IF OBJECT_ID(N'[dbo].[FK_AssetAssetFolder]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Assets] DROP CONSTRAINT [FK_AssetAssetFolder];
-GO
-IF OBJECT_ID(N'[dbo].[FK_AssetFolderParentAssetFolder]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[AssetFolders] DROP CONSTRAINT [FK_AssetFolderParentAssetFolder];
-GO
 IF OBJECT_ID(N'[dbo].[FK_ReportDocTemplate]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[DocReports] DROP CONSTRAINT [FK_ReportDocTemplate];
 GO
@@ -123,9 +117,6 @@ IF OBJECT_ID(N'[dbo].[DocTemplatesForUsers]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[Assets]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Assets];
-GO
-IF OBJECT_ID(N'[dbo].[AssetFolders]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[AssetFolders];
 GO
 IF OBJECT_ID(N'[dbo].[DocReports]', 'U') IS NOT NULL
     DROP TABLE [dbo].[DocReports];
@@ -263,20 +254,8 @@ GO
 
 -- Creating table 'Assets'
 CREATE TABLE [dbo].[Assets] (
-    [assetid] int IDENTITY(1,1) NOT NULL,
-    [LastEditDate] datetime  NOT NULL,
-    [FileName] nvarchar(max)  NOT NULL,
-    [Name] nvarchar(max)  NOT NULL,
-    [AssetFolder_assetfolderid] int  NOT NULL,
-    [Comment] nvarchar(max)  NOT NULL
-);
-GO
-
--- Creating table 'AssetFolders'
-CREATE TABLE [dbo].[AssetFolders] (
-    [assetfolderid] int IDENTITY(1,1) NOT NULL,
-    [Name] nvarchar(max)  NOT NULL,
-    [AssetFolder_assetfolderid] int  NULL
+    [assetid] bigint IDENTITY(1,1) NOT NULL,
+    [FileName] nvarchar(max)  NOT NULL
 );
 GO
 
@@ -300,6 +279,25 @@ CREATE TABLE [dbo].[ReportFields] (
     [DocReport_reportid] int  NOT NULL,
     [ReportOperationType] int  NOT NULL,
     [OrderNumber] int  NOT NULL
+);
+GO
+
+-- Creating table 'FileLibraryFolders'
+CREATE TABLE [dbo].[FileLibraryFolders] (
+    [filelibraryfolderid] int IDENTITY(1,1) NOT NULL,
+    [Name] nvarchar(max)  NOT NULL,
+    [FileLibraryFolder_filelibraryfolderid] int  NULL
+);
+GO
+
+-- Creating table 'FileLibraryAssets'
+CREATE TABLE [dbo].[FileLibraryAssets] (
+    [filelibraryassetid] bigint IDENTITY(1,1) NOT NULL,
+    [Name] nvarchar(max)  NOT NULL,
+    [FileLibraryFolder_filelibraryfolderid] int  NOT NULL,
+    [LastEditDate] datetime  NOT NULL,
+    [Comment] nvarchar(max)  NOT NULL,
+    [Asset_assetid] bigint  NOT NULL
 );
 GO
 
@@ -394,12 +392,6 @@ ADD CONSTRAINT [PK_Assets]
     PRIMARY KEY CLUSTERED ([assetid] ASC);
 GO
 
--- Creating primary key on [assetfolderid] in table 'AssetFolders'
-ALTER TABLE [dbo].[AssetFolders]
-ADD CONSTRAINT [PK_AssetFolders]
-    PRIMARY KEY CLUSTERED ([assetfolderid] ASC);
-GO
-
 -- Creating primary key on [docreportid] in table 'DocReports'
 ALTER TABLE [dbo].[DocReports]
 ADD CONSTRAINT [PK_DocReports]
@@ -410,6 +402,18 @@ GO
 ALTER TABLE [dbo].[ReportFields]
 ADD CONSTRAINT [PK_ReportFields]
     PRIMARY KEY CLUSTERED ([reportfieldid] ASC);
+GO
+
+-- Creating primary key on [filelibraryfolderid] in table 'FileLibraryFolders'
+ALTER TABLE [dbo].[FileLibraryFolders]
+ADD CONSTRAINT [PK_FileLibraryFolders]
+    PRIMARY KEY CLUSTERED ([filelibraryfolderid] ASC);
+GO
+
+-- Creating primary key on [filelibraryassetid] in table 'FileLibraryAssets'
+ALTER TABLE [dbo].[FileLibraryAssets]
+ADD CONSTRAINT [PK_FileLibraryAssets]
+    PRIMARY KEY CLUSTERED ([filelibraryassetid] ASC);
 GO
 
 -- Creating primary key on [MemberGroups_usergroupid], [Members_userid] in table 'GroupUsers'
@@ -648,34 +652,6 @@ ON [dbo].[DocTemplatesForUsers]
     ([DocTemplate_docteplateid]);
 GO
 
--- Creating foreign key on [AssetFolder_assetfolderid] in table 'Assets'
-ALTER TABLE [dbo].[Assets]
-ADD CONSTRAINT [FK_AssetAssetFolder]
-    FOREIGN KEY ([AssetFolder_assetfolderid])
-    REFERENCES [dbo].[AssetFolders]
-        ([assetfolderid])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- Creating non-clustered index for FOREIGN KEY 'FK_AssetAssetFolder'
-CREATE INDEX [IX_FK_AssetAssetFolder]
-ON [dbo].[Assets]
-    ([AssetFolder_assetfolderid]);
-GO
-
--- Creating foreign key on [AssetFolder_assetfolderid] in table 'AssetFolders'
-ALTER TABLE [dbo].[AssetFolders]
-ADD CONSTRAINT [FK_AssetFolderParentAssetFolder]
-    FOREIGN KEY ([AssetFolder_assetfolderid])
-    REFERENCES [dbo].[AssetFolders]
-        ([assetfolderid])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- Creating non-clustered index for FOREIGN KEY 'FK_AssetFolderParentAssetFolder'
-CREATE INDEX [IX_FK_AssetFolderParentAssetFolder]
-ON [dbo].[AssetFolders]
-    ([AssetFolder_assetfolderid]);
-GO
-
 -- Creating foreign key on [DocTemplate_docteplateid] in table 'DocReports'
 ALTER TABLE [dbo].[DocReports]
 ADD CONSTRAINT [FK_ReportDocTemplate]
@@ -739,6 +715,48 @@ ADD CONSTRAINT [FK_ReportFieldDocReport]
 CREATE INDEX [IX_FK_ReportFieldDocReport]
 ON [dbo].[ReportFields]
     ([DocReport_reportid]);
+GO
+
+-- Creating foreign key on [FileLibraryFolder_filelibraryfolderid] in table 'FileLibraryFolders'
+ALTER TABLE [dbo].[FileLibraryFolders]
+ADD CONSTRAINT [FK_FileLibraryFolderFileLibraryFolder]
+    FOREIGN KEY ([FileLibraryFolder_filelibraryfolderid])
+    REFERENCES [dbo].[FileLibraryFolders]
+        ([filelibraryfolderid])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_FileLibraryFolderFileLibraryFolder'
+CREATE INDEX [IX_FK_FileLibraryFolderFileLibraryFolder]
+ON [dbo].[FileLibraryFolders]
+    ([FileLibraryFolder_filelibraryfolderid]);
+GO
+
+-- Creating foreign key on [FileLibraryFolder_filelibraryfolderid] in table 'FileLibraryAssets'
+ALTER TABLE [dbo].[FileLibraryAssets]
+ADD CONSTRAINT [FK_FileLibraryAssetFileLibraryFolder]
+    FOREIGN KEY ([FileLibraryFolder_filelibraryfolderid])
+    REFERENCES [dbo].[FileLibraryFolders]
+        ([filelibraryfolderid])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_FileLibraryAssetFileLibraryFolder'
+CREATE INDEX [IX_FK_FileLibraryAssetFileLibraryFolder]
+ON [dbo].[FileLibraryAssets]
+    ([FileLibraryFolder_filelibraryfolderid]);
+GO
+
+-- Creating foreign key on [Asset_assetid] in table 'FileLibraryAssets'
+ALTER TABLE [dbo].[FileLibraryAssets]
+ADD CONSTRAINT [FK_FileLibraryAssetAsset]
+    FOREIGN KEY ([Asset_assetid])
+    REFERENCES [dbo].[Assets]
+        ([assetid])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_FileLibraryAssetAsset'
+CREATE INDEX [IX_FK_FileLibraryAssetAsset]
+ON [dbo].[FileLibraryAssets]
+    ([Asset_assetid]);
 GO
 
 -- --------------------------------------------------
