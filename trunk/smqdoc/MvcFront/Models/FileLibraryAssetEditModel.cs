@@ -7,11 +7,11 @@ using MvcFront.DB;
 
 namespace MvcFront.Models
 {
-    public class AssetEditModel :IValidatableObject
+    public class FileLibraryAssetEditModel :IValidatableObject
     {
         [Display(Name = "ID")]
         [UIHint("Hidden")]
-        public Int32 AssetId { get; set; }
+        public long AssetId { get; set; }
 
         [Required]
         [Display(Name = "Описание")]
@@ -25,7 +25,7 @@ namespace MvcFront.Models
         [Display(Name = "Файл")]
         public IEnumerable<HttpPostedFileBase> Files { get; set; }
 
-        public AssetEditModel()
+        public FileLibraryAssetEditModel()
         {
         }
 

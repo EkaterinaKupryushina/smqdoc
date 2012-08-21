@@ -4,11 +4,11 @@ using MvcFront.DB;
 
 namespace MvcFront.Models
 {
-    public class AssetListViewModel
+    public class FileLibraryAssetListViewModel
     {
         [Display(Name = "ID")]
         [UIHint("Hidden")]
-        public int AssetId { get; set; }
+        public long AssetId { get; set; }
         [Display(Name = "Название")]
         public string Name { get; set; }
         [Display(Name = "Изменение")]
@@ -18,25 +18,25 @@ namespace MvcFront.Models
         [Display(Name = "Описание")]
         public string Comment { get; set; }
 
-        public AssetListViewModel()
+        public FileLibraryAssetListViewModel()
         {
         }
 
-        public AssetListViewModel(Asset asset)
+        public FileLibraryAssetListViewModel(FileLibraryAsset asset)
         {
             if(asset != null)
             {
-                AssetId = asset.assetid;
+                AssetId = asset.filelibraryassetid;
                 Name = asset.Name;
-                FileName = asset.FileName;
+                FileName = asset.Asset.FileName;
                 LastEditDate = asset.LastEditDate;
                 Comment = asset.Comment;
             }
         }
 
-        public static AssetListViewModel AssetsToModelConverter(Asset templ)
+        public static FileLibraryAssetListViewModel AssetsToModelConverter(FileLibraryAsset templ)
         {
-            return new AssetListViewModel(templ);
+            return new FileLibraryAssetListViewModel(templ);
         }
     }
 }

@@ -17,7 +17,6 @@
     <EntitySet Name="DocAppointments" EntityType="smqdocModel.Store.DocAppointments" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="DocTemplatesForUsers" EntityType="smqdocModel.Store.DocTemplatesForUsers" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Assets" EntityType="smqdocModel.Store.Assets" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="AssetFolders" EntityType="smqdocModel.Store.AssetFolders" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="DocReports" EntityType="smqdocModel.Store.DocReports" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="ReportFields" EntityType="smqdocModel.Store.ReportFields" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="GroupUsers" EntityType="smqdocModel.Store.GroupUsers" store:Type="Tables" Schema="dbo" />
@@ -86,14 +85,6 @@
     <AssociationSet Name="DocTemplatesForUserDocTemplate" Association="smqdocModel.Store.DocTemplatesForUserDocTemplate">
       <End Role="DocTemplatesForUser" EntitySet="DocTemplatesForUsers" />
       <End Role="DocTemplate" EntitySet="DocTemplates" />
-    </AssociationSet>
-    <AssociationSet Name="AssetAssetFolder" Association="smqdocModel.Store.AssetAssetFolder">
-      <End Role="Asset" EntitySet="Assets" />
-      <End Role="AssetFolder" EntitySet="AssetFolders" />
-    </AssociationSet>
-    <AssociationSet Name="AssetFolderParentAssetFolder" Association="smqdocModel.Store.AssetFolderParentAssetFolder">
-      <End Role="AssetFolder" EntitySet="AssetFolders" />
-      <End Role="AssetFolder1" EntitySet="AssetFolders" />
     </AssociationSet>
     <AssociationSet Name="ReportDocTemplate" Association="smqdocModel.Store.ReportDocTemplate">
       <End Role="Report" EntitySet="DocReports" />
@@ -240,14 +231,6 @@
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
     <Property Name="AssetFolder_assetfolderid" Type="int" Nullable="false" />
     <Property Name="Comment" Type="nvarchar(max)" Nullable="false" />
-  </EntityType>
-  <EntityType Name="AssetFolders">
-    <Key>
-      <PropertyRef Name="assetfolderid" />
-    </Key>
-    <Property Name="assetfolderid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="AssetFolder_assetfolderid" Type="int" Nullable="true" />
   </EntityType>
   <EntityType Name="DocReports">
     <Key>
@@ -442,30 +425,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="AssetAssetFolder">
-    <End Role="Asset" Type="smqdocModel.Store.Assets" Multiplicity="*" />
-    <End Role="AssetFolder" Type="smqdocModel.Store.AssetFolders" Multiplicity="1" />
-    <ReferentialConstraint>
-      <Principal Role="AssetFolder">
-        <PropertyRef Name="assetfolderid" />
-      </Principal>
-      <Dependent Role="Asset">
-        <PropertyRef Name="AssetFolder_assetfolderid" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="AssetFolderParentAssetFolder">
-    <End Role="AssetFolder" Type="smqdocModel.Store.AssetFolders" Multiplicity="0..1" />
-    <End Role="AssetFolder1" Type="smqdocModel.Store.AssetFolders" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="AssetFolder">
-        <PropertyRef Name="assetfolderid" />
-      </Principal>
-      <Dependent Role="AssetFolder1">
-        <PropertyRef Name="AssetFolder_assetfolderid" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="ReportDocTemplate">
     <End Role="Report" Type="smqdocModel.Store.DocReports" Multiplicity="*" />
     <End Role="DocTemplate" Type="smqdocModel.Store.DocTemplates" Multiplicity="1" />
@@ -646,15 +605,6 @@
             <End Role="DocTemplate" EntitySet="DocTemplates" />
           </AssociationSet>
           <EntitySet Name="Assets" EntityType="smqdocModel.Asset" />
-          <EntitySet Name="AssetFolders" EntityType="smqdocModel.AssetFolder" />
-          <AssociationSet Name="AssetAssetFolder" Association="smqdocModel.AssetAssetFolder">
-            <End Role="Asset" EntitySet="Assets" />
-            <End Role="AssetFolder" EntitySet="AssetFolders" />
-          </AssociationSet>
-          <AssociationSet Name="AssetFolderParentAssetFolder" Association="smqdocModel.AssetFolderParentAssetFolder">
-            <End Role="AssetFolder" EntitySet="AssetFolders" />
-            <End Role="AssetFolder1" EntitySet="AssetFolders" />
-          </AssociationSet>
           <EntitySet Name="DocReports" EntityType="smqdocModel.DocReport" />
           <AssociationSet Name="ReportDocTemplate" Association="smqdocModel.ReportDocTemplate">
             <End Role="Report" EntitySet="DocReports" />
@@ -672,6 +622,20 @@
           <AssociationSet Name="ReportFieldDocReport" Association="smqdocModel.ReportFieldDocReport">
             <End Role="ReportField" EntitySet="ReportFields" />
             <End Role="DocReport" EntitySet="DocReports" />
+          </AssociationSet>
+          <EntitySet Name="FileLibraryFolders" EntityType="smqdocModel.FileLibraryFolder" />
+          <AssociationSet Name="FileLibraryFolderFileLibraryFolder" Association="smqdocModel.FileLibraryFolderFileLibraryFolder">
+            <End Role="FileLibraryFolder" EntitySet="FileLibraryFolders" />
+            <End Role="FileLibraryFolder1" EntitySet="FileLibraryFolders" />
+          </AssociationSet>
+          <EntitySet Name="FileLibraryAssets" EntityType="smqdocModel.FileLibraryAsset" />
+          <AssociationSet Name="FileLibraryAssetFileLibraryFolder" Association="smqdocModel.FileLibraryAssetFileLibraryFolder">
+            <End Role="FileLibraryAsset" EntitySet="FileLibraryAssets" />
+            <End Role="FileLibraryFolder" EntitySet="FileLibraryFolders" />
+          </AssociationSet>
+          <AssociationSet Name="FileLibraryAssetAsset" Association="smqdocModel.FileLibraryAssetAsset">
+            <End Role="FileLibraryAsset" EntitySet="FileLibraryAssets" />
+            <End Role="Asset" EntitySet="Assets" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="UserAccount">
@@ -973,49 +937,10 @@
           <Key>
             <PropertyRef Name="assetid" />
           </Key>
-          <Property Type="Int32" Name="assetid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="DateTime" Name="LastEditDate" Nullable="false" />
+          <Property Type="Int64" Name="assetid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="String" Name="FileName" Nullable="false" />
-          <Property Type="String" Name="Name" Nullable="false" />
-          <NavigationProperty Name="AssetFolder" Relationship="smqdocModel.AssetAssetFolder" FromRole="Asset" ToRole="AssetFolder" />
-          <Property Type="Int32" Name="AssetFolder_assetfolderid" Nullable="false" />
-          <Property Type="String" Name="Comment" Nullable="false" />
+          <NavigationProperty Name="FileLibraryAsset" Relationship="smqdocModel.FileLibraryAssetAsset" FromRole="Asset" ToRole="FileLibraryAsset" />
         </EntityType>
-        <EntityType Name="AssetFolder">
-          <Key>
-            <PropertyRef Name="assetfolderid" />
-          </Key>
-          <Property Type="Int32" Name="assetfolderid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <NavigationProperty Name="Assets" Relationship="smqdocModel.AssetAssetFolder" FromRole="AssetFolder" ToRole="Asset" />
-          <Property Type="String" Name="Name" Nullable="false" />
-          <NavigationProperty Name="ChildAssetFolders" Relationship="smqdocModel.AssetFolderParentAssetFolder" FromRole="AssetFolder" ToRole="AssetFolder1" />
-          <NavigationProperty Name="ParentAssetFolder" Relationship="smqdocModel.AssetFolderParentAssetFolder" FromRole="AssetFolder1" ToRole="AssetFolder" />
-          <Property Type="Int32" Name="AssetFolder_assetfolderid" Nullable="true" />
-        </EntityType>
-        <Association Name="AssetAssetFolder">
-          <End Type="smqdocModel.Asset" Role="Asset" Multiplicity="*" />
-          <End Type="smqdocModel.AssetFolder" Role="AssetFolder" Multiplicity="1" />
-          <ReferentialConstraint>
-            <Principal Role="AssetFolder">
-              <PropertyRef Name="assetfolderid" />
-            </Principal>
-            <Dependent Role="Asset">
-              <PropertyRef Name="AssetFolder_assetfolderid" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="AssetFolderParentAssetFolder">
-          <End Type="smqdocModel.AssetFolder" Role="AssetFolder" Multiplicity="0..1" />
-          <End Type="smqdocModel.AssetFolder" Role="AssetFolder1" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AssetFolder">
-              <PropertyRef Name="assetfolderid" />
-            </Principal>
-            <Dependent Role="AssetFolder1">
-              <PropertyRef Name="AssetFolder_assetfolderid" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="DocReport">
           <Key>
             <PropertyRef Name="docreportid" />
@@ -1083,6 +1008,57 @@
               <PropertyRef Name="DocReport_reportid" />
             </Dependent>
           </ReferentialConstraint>
+        </Association>
+        <EntityType Name="FileLibraryFolder">
+          <Key>
+            <PropertyRef Name="filelibraryfolderid" />
+          </Key>
+          <Property Type="Int32" Name="filelibraryfolderid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" />
+          <NavigationProperty Name="ChildFileLibraryFolders" Relationship="smqdocModel.FileLibraryFolderFileLibraryFolder" FromRole="FileLibraryFolder" ToRole="FileLibraryFolder1" />
+          <NavigationProperty Name="ParentFileLibraryFolder" Relationship="smqdocModel.FileLibraryFolderFileLibraryFolder" FromRole="FileLibraryFolder1" ToRole="FileLibraryFolder" />
+          <Property Type="Int32" Name="FileLibraryFolder_filelibraryfolderid" Nullable="true" />
+          <NavigationProperty Name="FileLibraryAssets" Relationship="smqdocModel.FileLibraryAssetFileLibraryFolder" FromRole="FileLibraryFolder" ToRole="FileLibraryAsset" />
+        </EntityType>
+        <Association Name="FileLibraryFolderFileLibraryFolder">
+          <End Type="smqdocModel.FileLibraryFolder" Role="FileLibraryFolder" Multiplicity="0..1" />
+          <End Type="smqdocModel.FileLibraryFolder" Role="FileLibraryFolder1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FileLibraryFolder">
+              <PropertyRef Name="filelibraryfolderid" />
+            </Principal>
+            <Dependent Role="FileLibraryFolder1">
+              <PropertyRef Name="FileLibraryFolder_filelibraryfolderid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="FileLibraryAsset">
+          <Key>
+            <PropertyRef Name="filelibraryassetid" />
+          </Key>
+          <Property Type="Int64" Name="filelibraryassetid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" />
+          <NavigationProperty Name="FileLibraryFolder" Relationship="smqdocModel.FileLibraryAssetFileLibraryFolder" FromRole="FileLibraryAsset" ToRole="FileLibraryFolder" />
+          <Property Type="Int32" Name="FileLibraryFolder_filelibraryfolderid" Nullable="false" />
+          <Property Type="DateTime" Name="LastEditDate" Nullable="false" />
+          <NavigationProperty Name="Asset" Relationship="smqdocModel.FileLibraryAssetAsset" FromRole="FileLibraryAsset" ToRole="Asset" />
+          <Property Type="String" Name="Comment" Nullable="false" />
+        </EntityType>
+        <Association Name="FileLibraryAssetFileLibraryFolder">
+          <End Type="smqdocModel.FileLibraryAsset" Role="FileLibraryAsset" Multiplicity="*" />
+          <End Type="smqdocModel.FileLibraryFolder" Role="FileLibraryFolder" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="FileLibraryFolder">
+              <PropertyRef Name="filelibraryfolderid" />
+            </Principal>
+            <Dependent Role="FileLibraryAsset">
+              <PropertyRef Name="FileLibraryFolder_filelibraryfolderid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FileLibraryAssetAsset">
+          <End Type="smqdocModel.FileLibraryAsset" Role="FileLibraryAsset" Multiplicity="0..1" />
+          <End Type="smqdocModel.Asset" Role="Asset" Multiplicity="1" />
         </Association>
         </Schema>
     </edmx:ConceptualModels>
@@ -1217,20 +1193,7 @@
       <EntityTypeMapping TypeName="IsTypeOf(smqdocModel.Asset)">
         <MappingFragment StoreEntitySet="Assets">
           <ScalarProperty Name="assetid" ColumnName="assetid" />
-          <ScalarProperty Name="LastEditDate" ColumnName="LastEditDate" />
           <ScalarProperty Name="FileName" ColumnName="FileName" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="AssetFolder_assetfolderid" ColumnName="AssetFolder_assetfolderid" />
-          <ScalarProperty Name="Comment" ColumnName="Comment" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="AssetFolders">
-      <EntityTypeMapping TypeName="IsTypeOf(smqdocModel.AssetFolder)">
-        <MappingFragment StoreEntitySet="AssetFolders">
-          <ScalarProperty Name="assetfolderid" ColumnName="assetfolderid" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="AssetFolder_assetfolderid" ColumnName="AssetFolder_assetfolderid" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -1388,18 +1351,7 @@
           <ConnectorPoint PointX="7.875" PointY="11.216095377604166" />
           <ConnectorPoint PointX="7.375" PointY="11.216095377604166" />
         </AssociationConnector>
-        <EntityTypeShape EntityType="smqdocModel.Asset" Width="1.5" PointX="20.5" PointY="12" Height="2.3648893229166656" />
-        <EntityTypeShape EntityType="smqdocModel.AssetFolder" Width="2.5" PointX="19.875" PointY="9.125" Height="2.1725878906249996" />
-        <AssociationConnector Association="smqdocModel.AssetAssetFolder">
-          <ConnectorPoint PointX="21.25" PointY="12" />
-          <ConnectorPoint PointX="21.25" PointY="11.297587890625" />
-        </AssociationConnector>
-        <AssociationConnector Association="smqdocModel.AssetFolderParentAssetFolder">
-          <ConnectorPoint PointX="20.756249496694711" PointY="9.125" />
-          <ConnectorPoint PointX="20.756249496694711" PointY="8.875" />
-          <ConnectorPoint PointX="21.511310051081733" PointY="8.875" />
-          <ConnectorPoint PointX="21.511310051081733" PointY="9.125" />
-        </AssociationConnector>
+        <EntityTypeShape EntityType="smqdocModel.Asset" Width="1.5" PointX="20.875" PointY="13.875" Height="1.4033821614583335" />
         <EntityTypeShape EntityType="smqdocModel.DocReport" Width="2" PointX="15.5" PointY="10.375" Height="3.1340950520833335" />
         <AssociationConnector Association="smqdocModel.ReportDocTemplate">
           <ConnectorPoint PointX="15.5" PointY="10.53125" />
@@ -1418,6 +1370,22 @@
         <AssociationConnector Association="smqdocModel.ReportFieldDocReport">
           <ConnectorPoint PointX="14.875" PointY="13.004547526041666" />
           <ConnectorPoint PointX="15.5" PointY="13.004547526041666" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="smqdocModel.FileLibraryFolder" Width="2.75" PointX="19.375" PointY="9.875" Height="2.1725878906249996" />
+        <AssociationConnector Association="smqdocModel.FileLibraryFolderFileLibraryFolder">
+          <ConnectorPoint PointX="20.340864881310097" PointY="12.047587890625" />
+          <ConnectorPoint PointX="20.340864881310097" PointY="12.297587890625" />
+          <ConnectorPoint PointX="21.178617743389424" PointY="12.297587890625" />
+          <ConnectorPoint PointX="21.178617743389424" PointY="12.047587890625" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="smqdocModel.FileLibraryAsset" Width="1.5" PointX="22.625" PointY="11" Height="2.3648893229166674" />
+        <AssociationConnector Association="smqdocModel.FileLibraryAssetFileLibraryFolder">
+          <ConnectorPoint PointX="22.625" PointY="11.5237939453125" />
+          <ConnectorPoint PointX="22.125" PointY="11.5237939453125" />
+        </AssociationConnector>
+        <AssociationConnector Association="smqdocModel.FileLibraryAssetAsset">
+          <ConnectorPoint PointX="22.625" PointY="13.364889322916667" />
+          <ConnectorPoint PointX="22.375" PointY="13.875" />
         </AssociationConnector>
         </Diagram>
     </Diagrams>

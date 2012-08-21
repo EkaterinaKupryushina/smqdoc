@@ -4,7 +4,7 @@ using MvcFront.DB;
 
 namespace MvcFront.Models
 {
-    public class AssetFolderEditModel
+    public class FileLibraryFolderEditModel
     {
         [Display(Name = "ID")]
         [UIHint("Hidden")]
@@ -20,28 +20,28 @@ namespace MvcFront.Models
         [Display(Name = "Папка")]
         public int? ParentAssetFolderId { get; set; }
 
-        public AssetFolderEditModel()
+        public FileLibraryFolderEditModel()
         {
         }
 
-        public AssetFolderEditModel(AssetFolder folder)
+        public FileLibraryFolderEditModel(FileLibraryFolder folder)
         {
-            AssetFolderId = folder.assetfolderid;
+            AssetFolderId = folder.filelibraryfolderid;
             Name = folder.Name;
-            IsRootFolder = folder.AssetFolder_assetfolderid == null;
-            ParentAssetFolderId = folder.AssetFolder_assetfolderid;
+            IsRootFolder = folder.FileLibraryFolder_filelibraryfolderid == null;
+            ParentAssetFolderId = folder.FileLibraryFolder_filelibraryfolderid;
         }
 
-        public AssetFolder Update(AssetFolder folder)
+        public FileLibraryFolder Update(FileLibraryFolder folder)
         {
             folder.Name = Name;
             if(IsRootFolder || !ParentAssetFolderId.HasValue)
             {
-                folder.AssetFolder_assetfolderid = null;
+                folder.FileLibraryFolder_filelibraryfolderid = null;
             }
             else
             {
-                folder.AssetFolder_assetfolderid = ParentAssetFolderId.Value;
+                folder.FileLibraryFolder_filelibraryfolderid = ParentAssetFolderId.Value;
             }
             return folder;
         }
