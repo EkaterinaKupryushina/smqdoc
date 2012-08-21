@@ -20,14 +20,20 @@ namespace MvcFront.Services
         /// Содает новый asset (создает запись в базе и файл на диске)
         /// </summary>
         /// <param name="file"></param>
-        public Asset CreateNewAsset(HttpPostedFileBase file)
+        /// <param name="folderName"> </param>
+        public Asset CreateNewAsset(HttpPostedFileBase file, string folderName)
         {
             var newFileName = string.Format("{0}_{1}", DateTime.Now.ToString("ssmmHHMMddyyyy"), Path.GetFileName(file.FileName));
-            file.SaveAs(Path.Combine(SmqSettings.Instance.AssetFolder, newFileName));
+            var assetFolder = new DirectoryInfo(Path.Combine(SmqSettings.Instance.AssetFolder, folderName));
+            if (!assetFolder.Exists)
+            {
+                assetFolder.Create();
+            }
+            file.SaveAs(Path.Combine(SmqSettings.Instance.AssetFolder, folderName, newFileName));
             var asset = new Asset
                             {
                                 assetid = 0, 
-                                FileName = newFileName
+                                FileName =  Path.Combine(folderName, newFileName)
                             };
             _assetRepository.SaveAsset(asset);
             return asset;

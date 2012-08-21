@@ -19,6 +19,8 @@
     <EntitySet Name="Assets" EntityType="smqdocModel.Store.Assets" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="DocReports" EntityType="smqdocModel.Store.DocReports" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="ReportFields" EntityType="smqdocModel.Store.ReportFields" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="FileLibraryFolders" EntityType="smqdocModel.Store.FileLibraryFolders" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="FileLibraryAssets" EntityType="smqdocModel.Store.FileLibraryAssets" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="GroupUsers" EntityType="smqdocModel.Store.GroupUsers" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="UserAccountUserTags" EntityType="smqdocModel.Store.UserAccountUserTags" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="ReportUserTags" EntityType="smqdocModel.Store.ReportUserTags" store:Type="Tables" Schema="dbo" />
@@ -105,6 +107,18 @@
     <AssociationSet Name="ReportFieldDocReport" Association="smqdocModel.Store.ReportFieldDocReport">
       <End Role="ReportField" EntitySet="ReportFields" />
       <End Role="DocReport" EntitySet="DocReports" />
+    </AssociationSet>
+    <AssociationSet Name="FileLibraryFolderFileLibraryFolder" Association="smqdocModel.Store.FileLibraryFolderFileLibraryFolder">
+      <End Role="FileLibraryFolder" EntitySet="FileLibraryFolders" />
+      <End Role="FileLibraryFolder1" EntitySet="FileLibraryFolders" />
+    </AssociationSet>
+    <AssociationSet Name="FileLibraryAssetFileLibraryFolder" Association="smqdocModel.Store.FileLibraryAssetFileLibraryFolder">
+      <End Role="FileLibraryAsset" EntitySet="FileLibraryAssets" />
+      <End Role="FileLibraryFolder" EntitySet="FileLibraryFolders" />
+    </AssociationSet>
+    <AssociationSet Name="FileLibraryAssetAsset" Association="smqdocModel.Store.FileLibraryAssetAsset">
+      <End Role="FileLibraryAsset" EntitySet="FileLibraryAssets" />
+      <End Role="Asset" EntitySet="Assets" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="UserAccounts">
@@ -225,12 +239,8 @@
     <Key>
       <PropertyRef Name="assetid" />
     </Key>
-    <Property Name="assetid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="LastEditDate" Type="datetime" Nullable="false" />
+    <Property Name="assetid" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="FileName" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="AssetFolder_assetfolderid" Type="int" Nullable="false" />
-    <Property Name="Comment" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
   <EntityType Name="DocReports">
     <Key>
@@ -254,6 +264,25 @@
     <Property Name="DocReport_reportid" Type="int" Nullable="false" />
     <Property Name="ReportOperationType" Type="int" Nullable="false" />
     <Property Name="OrderNumber" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="FileLibraryFolders">
+    <Key>
+      <PropertyRef Name="filelibraryfolderid" />
+    </Key>
+    <Property Name="filelibraryfolderid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="FileLibraryFolder_filelibraryfolderid" Type="int" Nullable="true" />
+  </EntityType>
+  <EntityType Name="FileLibraryAssets">
+    <Key>
+      <PropertyRef Name="filelibraryassetid" />
+    </Key>
+    <Property Name="filelibraryassetid" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="FileLibraryFolder_filelibraryfolderid" Type="int" Nullable="false" />
+    <Property Name="LastEditDate" Type="datetime" Nullable="false" />
+    <Property Name="Comment" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Asset_assetid" Type="bigint" Nullable="false" />
   </EntityType>
   <EntityType Name="GroupUsers">
     <Key>
@@ -458,6 +487,42 @@
       </Principal>
       <Dependent Role="ReportField">
         <PropertyRef Name="DocReport_reportid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FileLibraryFolderFileLibraryFolder">
+    <End Role="FileLibraryFolder" Type="smqdocModel.Store.FileLibraryFolders" Multiplicity="0..1" />
+    <End Role="FileLibraryFolder1" Type="smqdocModel.Store.FileLibraryFolders" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FileLibraryFolder">
+        <PropertyRef Name="filelibraryfolderid" />
+      </Principal>
+      <Dependent Role="FileLibraryFolder1">
+        <PropertyRef Name="FileLibraryFolder_filelibraryfolderid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FileLibraryAssetFileLibraryFolder">
+    <End Role="FileLibraryAsset" Type="smqdocModel.Store.FileLibraryAssets" Multiplicity="*" />
+    <End Role="FileLibraryFolder" Type="smqdocModel.Store.FileLibraryFolders" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="FileLibraryFolder">
+        <PropertyRef Name="filelibraryfolderid" />
+      </Principal>
+      <Dependent Role="FileLibraryAsset">
+        <PropertyRef Name="FileLibraryFolder_filelibraryfolderid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FileLibraryAssetAsset">
+    <End Role="FileLibraryAsset" Type="smqdocModel.Store.FileLibraryAssets" Multiplicity="*" />
+    <End Role="Asset" Type="smqdocModel.Store.Assets" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Asset">
+        <PropertyRef Name="assetid" />
+      </Principal>
+      <Dependent Role="FileLibraryAsset">
+        <PropertyRef Name="Asset_assetid" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -1222,6 +1287,26 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="FileLibraryFolders">
+      <EntityTypeMapping TypeName="IsTypeOf(smqdocModel.FileLibraryFolder)">
+        <MappingFragment StoreEntitySet="FileLibraryFolders">
+          <ScalarProperty Name="filelibraryfolderid" ColumnName="filelibraryfolderid" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="FileLibraryFolder_filelibraryfolderid" ColumnName="FileLibraryFolder_filelibraryfolderid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FileLibraryAssets">
+      <EntityTypeMapping TypeName="IsTypeOf(smqdocModel.FileLibraryAsset)">
+        <MappingFragment StoreEntitySet="FileLibraryAssets">
+          <ScalarProperty Name="filelibraryassetid" ColumnName="filelibraryassetid" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="FileLibraryFolder_filelibraryfolderid" ColumnName="FileLibraryFolder_filelibraryfolderid" />
+          <ScalarProperty Name="LastEditDate" ColumnName="LastEditDate" />
+          <ScalarProperty Name="Comment" ColumnName="Comment" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <AssociationSetMapping Name="GroupUsers" TypeName="smqdocModel.GroupUsers" StoreEntitySet="GroupUsers">
       <EndProperty Name="UserGroup">
         <ScalarProperty Name="usergroupid" ColumnName="MemberGroups_usergroupid" />
@@ -1252,6 +1337,14 @@
       </EndProperty>
       <EndProperty Name="UserTags">
         <ScalarProperty Name="Id" ColumnName="UserTags_Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="FileLibraryAssetAsset" TypeName="smqdocModel.FileLibraryAssetAsset" StoreEntitySet="FileLibraryAssets">
+      <EndProperty Name="Asset">
+        <ScalarProperty Name="assetid" ColumnName="Asset_assetid" />
+      </EndProperty>
+      <EndProperty Name="FileLibraryAsset">
+        <ScalarProperty Name="filelibraryassetid" ColumnName="filelibraryassetid" />
       </EndProperty>
     </AssociationSetMapping>
   </EntityContainerMapping>
