@@ -2,7 +2,7 @@
 @using MvcFront.Models
 @using Telerik.Web.Mvc.UI
 @using MvcFront.DB
-@model IEnumerable<AssetFolder>
+@model IEnumerable<FileLibraryFolder>
            
 @{
     ViewBag.Title = "Библиотека";
@@ -14,13 +14,13 @@
                @(Html.Telerik().TreeView().ExpandAll(true).Items(i => i.Add().Value("0").Text("Все разделы"))
                 .Name("FoldersTreeView")
                 .ClientEvents(events => events.OnSelect("onFolderSelected"))
-                .BindTo(Model, mappings => mappings.For<AssetFolder>(binding => binding
+                        .BindTo(Model, mappings => mappings.For<FileLibraryFolder>(binding => binding
                                                                                .ItemDataBound((item, category) =>
                                                                                                   {
                                                                                                       item.Text = category.Name;
-                                                                                                      item.Value = category.assetfolderid.ToString(CultureInfo.InvariantCulture);
+                                                                                                      item.Value = category.filelibraryfolderid.ToString(CultureInfo.InvariantCulture);
                                                                                                   })
-                                                                               .Children(category => category.ChildAssetFolders)))
+                                                                               .Children(category => category.ChildFileLibraryFolders)))
                      ) 
            </td>
            <td>

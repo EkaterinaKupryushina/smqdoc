@@ -10,26 +10,13 @@ namespace MvcFront.Interfaces
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Asset GetAssetById(int id);
-
-        /// <summary>
-        /// Возвращает assetFolder по Id
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        AssetFolder GetAssetFolderById(int id);
+        Asset GetAssetById(long id);
 
         /// <summary>
         /// Возвращает список всех доступных asset
         /// </summary>
         /// <returns></returns>
         IQueryable<Asset> GetAllAssets();
-
-        /// <summary>
-        /// Возвращает список всех доступных assetFolder
-        /// </summary>
-        /// <returns></returns>
-        IQueryable<AssetFolder> GetAllAssetFolders();
 
         /// <summary>
         /// Создать или сохранить asses
@@ -41,18 +28,7 @@ namespace MvcFront.Interfaces
         /// Удалить asset
         /// </summary>
         /// <param name="assetId"></param>
-        void DeleteAsset(int assetId);
+        void DeleteAsset(long assetId);
 
-        /// <summary>
-        /// Сохранить AssetFolder
-        /// </summary>
-        /// <param name="assetFolder"></param>
-        void SaveAssetFolder(AssetFolder assetFolder);
-
-        /// <summary>
-        /// Удалить assetFolder
-        /// </summary>
-        /// <param name="assetFolderId"></param>
-        void DeleteAssetFolder(int assetFolderId);
     }
 }

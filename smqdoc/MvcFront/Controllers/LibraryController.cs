@@ -8,6 +8,7 @@ using MvcFront.Infrastructure.Security;
 using MvcFront.Interfaces;
 using System.Linq;
 using MvcFront.Models;
+using MvcFront.Services;
 using NLog;
 using Telerik.Web.Mvc;
 
@@ -15,11 +16,13 @@ namespace MvcFront.Controllers
 {
     public class LibraryController : Controller
     {
+        private readonly IFileLibaryRepository _fileLibaryRepository;
         private readonly IAssetRepository _assetRepository;
 
-        public LibraryController(IAssetRepository assetRepository)
+        public LibraryController(IAssetRepository assetRepository, IFileLibaryRepository fileLibaryRepository)
         {
             _assetRepository = assetRepository;
+            _fileLibaryRepository = fileLibaryRepository;
         }
 
         /// <summary>
@@ -30,13 +33,13 @@ namespace MvcFront.Controllers
         {
             try
             {
-                return View(_assetRepository.GetAllAssetFolders().Where(x => x.AssetFolder_assetfolderid == null));
+                return View(_fileLibaryRepository.GetAllAssetFolders().Where(x => x.FileLibraryFolder_filelibraryfolderid == null));
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError(string.Empty, "Произошла ошибка");
                 LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "LibraryController.Index()", ex);
-                return View(new List<AssetFolder>());
+                return View(new List<FileLibraryFolder>());
             }
         }
 
@@ -49,13 +52,13 @@ namespace MvcFront.Controllers
         {
             try
             {
-                return View(_assetRepository.GetAllAssetFolders().Where(x => x.AssetFolder_assetfolderid == null));
+                return View(_fileLibaryRepository.GetAllAssetFolders().Where(x => x.FileLibraryFolder_filelibraryfolderid == null));
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError(string.Empty, "Произошла ошибка");
                 LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "LibraryController.EditAssetLibrary()", ex);
-                return View(new List<AssetFolder>());
+                return View(new List<FileLibraryFolder>());
             }
         }
 
@@ -70,13 +73,13 @@ namespace MvcFront.Controllers
         {
             try
             {
-                return View(new AssetEditModel { AssetFolderId = id });
+                return View(new FileLibraryAssetEditModel { AssetFolderId = id });
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError(string.Empty, "Произошла ошибка");
                 LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "LibraryController.CreateAsset()", ex);
-                return View(new AssetEditModel());
+                return View(new FileLibraryAssetEditModel());
             }
         }
 
@@ -87,14 +90,14 @@ namespace MvcFront.Controllers
         /// <returns></returns>
         [HttpPost]
         [AdminAuthorize]
-        public ActionResult CreateAsset(AssetEditModel model)
+        public ActionResult CreateAsset(FileLibraryAssetEditModel model)
         {
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    (new AssetService(_assetRepository)).CreateNewAsset(model.Files.ElementAt(0), model.AssetFolderId, model.Comment);
+                    (new FileLibraryService(_assetRepository, _fileLibaryRepository)).CreateNewAsset(model.Files.ElementAt(0), model.AssetFolderId, model.Comment);
                 }
                 catch (Exception ex)
                 {
@@ -118,13 +121,13 @@ namespace MvcFront.Controllers
         {
             try
             {
-                return View(new AssetFolderEditModel { AssetFolderId = 0 });
+                return View(new FileLibraryFolderEditModel { AssetFolderId = 0 });
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError(string.Empty, "Произошла ошибка");
                 LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "LibraryController.CreateAssetFolder()", ex);
-                return View(new AssetFolderEditModel());
+                return View(new FileLibraryFolderEditModel());
             }
         }
 
@@ -135,15 +138,15 @@ namespace MvcFront.Controllers
         /// <returns></returns>
         [HttpPost]
         [AdminAuthorize]
-        public ActionResult CreateAssetFolder(AssetFolderEditModel model)
+        public ActionResult CreateAssetFolder(FileLibraryFolderEditModel model)
         {
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var assetFolder = model.Update(new AssetFolder());
-                    _assetRepository.SaveAssetFolder(assetFolder);
+                    var assetFolder = model.Update(new FileLibraryFolder());
+                    _fileLibaryRepository.SaveAssetFolder(assetFolder);
                     return RedirectToAction("EditAssetLibrary");
                 }
                 catch (Exception ex)
@@ -168,13 +171,13 @@ namespace MvcFront.Controllers
         {
             try
             {
-                return View(new AssetFolderEditModel(_assetRepository.GetAssetFolderById(id)));
+                return View(new FileLibraryFolderEditModel(_fileLibaryRepository.GetAssetFolderById(id)));
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError(string.Empty, "Произошла ошибка");
                 LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "LibraryController.EditAssetFolder()", ex);
-                return View(new AssetFolderEditModel());
+                return View(new FileLibraryFolderEditModel());
             }
         }
 
@@ -185,14 +188,14 @@ namespace MvcFront.Controllers
         /// <returns></returns>
         [HttpPost]
         [AdminAuthorize]
-        public ActionResult EditAssetFolder(AssetFolderEditModel model)
+        public ActionResult EditAssetFolder(FileLibraryFolderEditModel model)
         {
             if (ModelState.IsValid)
                 {
                     try
                     {
-                        var assetFolder = model.Update(_assetRepository.GetAssetFolderById(model.AssetFolderId));
-                        _assetRepository.SaveAssetFolder(assetFolder);
+                        var assetFolder = model.Update(_fileLibaryRepository.GetAssetFolderById(model.AssetFolderId));
+                        _fileLibaryRepository.SaveAssetFolder(assetFolder);
                         return RedirectToAction("EditAssetLibrary");
                     }
                     catch (Exception ex)
@@ -216,7 +219,7 @@ namespace MvcFront.Controllers
         {
             try
             {
-                (new AssetService(_assetRepository)).DeleteAssetFolder(_assetRepository.GetAssetFolderById(id));
+                (new FileLibraryService(_assetRepository, _fileLibaryRepository)).DeleteFileAssetFolder(id);
             }
             catch (Exception ex)
             {
@@ -236,10 +239,10 @@ namespace MvcFront.Controllers
         {
             try
             {
-                var document = _assetRepository.GetAssetById(assetId);
+                var document = _fileLibaryRepository.GetAssetById(assetId);
                 return
                     File(
-                        new FileStream(Path.Combine(SmqSettings.Instance.AssetFolder, document.FileName), FileMode.Open),
+                        new FileStream(Path.Combine(SmqSettings.Instance.AssetFolder, document.Asset.FileName), FileMode.Open),
                         "application", document.Name);
             }
             catch (Exception ex)
@@ -283,21 +286,21 @@ namespace MvcFront.Controllers
             {
                 var badAssFolderd = new List<int> {assetFolderId};
 
-                var folder = _assetRepository.GetAssetFolderById(assetFolderId);
-                var listOfChilds = new List<AssetFolder>();
-                listOfChilds.AddRange(folder.ChildAssetFolders.ToList());
+                var folder = _fileLibaryRepository.GetAssetFolderById(assetFolderId);
+                var listOfChilds = new List<FileLibraryFolder>();
+                listOfChilds.AddRange(folder.ChildFileLibraryFolders.ToList());
                 while (listOfChilds.Count > 0)
                 {
                     var current = listOfChilds.ElementAt(0);
-                    badAssFolderd.Add(current.assetfolderid);
-                    listOfChilds.AddRange(current.ChildAssetFolders.ToList());
+                    badAssFolderd.Add(current.filelibraryfolderid);
+                    listOfChilds.AddRange(current.ChildFileLibraryFolders.ToList());
                     listOfChilds.Remove(current);
                 }
-                var data = _assetRepository.GetAllAssetFolders().Where(x => !badAssFolderd.Contains(x.assetfolderid));
+                var data = _fileLibaryRepository.GetAllAssetFolders().Where(x => !badAssFolderd.Contains(x.filelibraryfolderid));
                 return new JsonResult
                            {
                                Data =
-                                   new SelectList(data.ToList().Select(x => new {Id = x.assetfolderid, x.Name}), "Id",
+                                   new SelectList(data.ToList().Select(x => new {Id = x.filelibraryfolderid, x.Name}), "Id",
                                                   "Name", assetFolderId)
                            };
             }
@@ -323,10 +326,10 @@ namespace MvcFront.Controllers
             try
             {
                 var query = id.HasValue && id.Value != 0
-                                ? _assetRepository.GetAssetFolderById(id.Value).Assets.AsQueryable()
-                                : _assetRepository.GetAllAssets();
+                                ? _fileLibaryRepository.GetAssetFolderById(id.Value).FileLibraryAssets.AsQueryable()
+                                : _fileLibaryRepository.GetAllAssets();
 
-                var data = query.ToList().ConvertAll(AssetListViewModel.AssetsToModelConverter).ToList();
+                var data = query.ToList().ConvertAll(FileLibraryAssetListViewModel.AssetsToModelConverter).ToList();
                 if (!string.IsNullOrWhiteSpace(text))
                 {
                     text = text.ToLowerInvariant();
@@ -335,12 +338,12 @@ namespace MvcFront.Controllers
                             x => x.Name.ToLowerInvariant().Contains(text) || x.Comment.ToLowerInvariant().Contains(text))
                             .ToList();
                 }
-                return View(new GridModel<AssetListViewModel> {Data = data});
+                return View(new GridModel<FileLibraryAssetListViewModel> {Data = data});
             }
             catch (Exception ex)
             {
                 LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "LibraryController._AssetsFromFolder()", ex);
-                return View(new GridModel<AssetListViewModel> { Data = new List<AssetListViewModel>() });
+                return View(new GridModel<FileLibraryAssetListViewModel> { Data = new List<FileLibraryAssetListViewModel>() });
             }
         }
 
@@ -354,14 +357,14 @@ namespace MvcFront.Controllers
             try
             {
                 var data =
-                    _assetRepository.GetAllAssetFolders().ToList().ConvertAll(
-                        AssetFolderListViewModel.AssetFolderToModelConverter);
-                return View(new GridModel<AssetFolderListViewModel> {Data = data});
+                    _fileLibaryRepository.GetAllAssetFolders().ToList().ConvertAll(
+                        FileLibraryFolderListViewModel.AssetFolderToModelConverter);
+                return View(new GridModel<FileLibraryFolderListViewModel> {Data = data});
             }
             catch (Exception ex)
             {
                 LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "LibraryController._AssetFoldersGridList()", ex);
-                return View(new GridModel<AssetFolderListViewModel> { Data = new List<AssetFolderListViewModel>() });
+                return View(new GridModel<FileLibraryFolderListViewModel> { Data = new List<FileLibraryFolderListViewModel>() });
             }
         }
 

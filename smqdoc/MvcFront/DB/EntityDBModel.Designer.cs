@@ -32,12 +32,13 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("smqdocModel", "UserAccountDocAppointment", "UserAccount", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(MvcFront.DB.UserAccount), "DocAppointment", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.DocAppointment), true)]
 [assembly: EdmRelationshipAttribute("smqdocModel", "UserGroupDocAppointment", "UserGroup", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(MvcFront.DB.UserGroup), "DocAppointment", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.DocAppointment), true)]
 [assembly: EdmRelationshipAttribute("smqdocModel", "DocTemplatesForUserDocTemplate", "DocTemplatesForUser", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(MvcFront.DB.DocTemplatesForUser), "DocTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.DocTemplate))]
-[assembly: EdmRelationshipAttribute("smqdocModel", "AssetAssetFolder", "Asset", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.Asset), "AssetFolder", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.AssetFolder), true)]
-[assembly: EdmRelationshipAttribute("smqdocModel", "AssetFolderParentAssetFolder", "AssetFolder", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(MvcFront.DB.AssetFolder), "AssetFolder1", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.AssetFolder), true)]
 [assembly: EdmRelationshipAttribute("smqdocModel", "ReportDocTemplate", "Report", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.DocReport), "DocTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.DocTemplate), true)]
 [assembly: EdmRelationshipAttribute("smqdocModel", "ReportUserTags", "Report", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.DocReport), "UserTags", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.UserTags))]
 [assembly: EdmRelationshipAttribute("smqdocModel", "ReportFieldFieldTemplate", "ReportField", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.ReportField), "FieldTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.FieldTemplate), true)]
 [assembly: EdmRelationshipAttribute("smqdocModel", "ReportFieldDocReport", "ReportField", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.ReportField), "DocReport", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.DocReport), true)]
+[assembly: EdmRelationshipAttribute("smqdocModel", "FileLibraryFolderFileLibraryFolder", "FileLibraryFolder", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(MvcFront.DB.FileLibraryFolder), "FileLibraryFolder1", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.FileLibraryFolder), true)]
+[assembly: EdmRelationshipAttribute("smqdocModel", "FileLibraryAssetFileLibraryFolder", "FileLibraryAsset", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.FileLibraryAsset), "FileLibraryFolder", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.FileLibraryFolder), true)]
+[assembly: EdmRelationshipAttribute("smqdocModel", "FileLibraryAssetAsset", "FileLibraryAsset", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(MvcFront.DB.FileLibraryAsset), "Asset", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.Asset))]
 
 #endregion
 
@@ -268,22 +269,6 @@ namespace MvcFront.DB
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<AssetFolder> AssetFolders
-        {
-            get
-            {
-                if ((_AssetFolders == null))
-                {
-                    _AssetFolders = base.CreateObjectSet<AssetFolder>("AssetFolders");
-                }
-                return _AssetFolders;
-            }
-        }
-        private ObjectSet<AssetFolder> _AssetFolders;
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
         public ObjectSet<DocReport> DocReports
         {
             get
@@ -312,6 +297,38 @@ namespace MvcFront.DB
             }
         }
         private ObjectSet<ReportField> _ReportFields;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<FileLibraryFolder> FileLibraryFolders
+        {
+            get
+            {
+                if ((_FileLibraryFolders == null))
+                {
+                    _FileLibraryFolders = base.CreateObjectSet<FileLibraryFolder>("FileLibraryFolders");
+                }
+                return _FileLibraryFolders;
+            }
+        }
+        private ObjectSet<FileLibraryFolder> _FileLibraryFolders;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<FileLibraryAsset> FileLibraryAssets
+        {
+            get
+            {
+                if ((_FileLibraryAssets == null))
+                {
+                    _FileLibraryAssets = base.CreateObjectSet<FileLibraryAsset>("FileLibraryAssets");
+                }
+                return _FileLibraryAssets;
+            }
+        }
+        private ObjectSet<FileLibraryAsset> _FileLibraryAssets;
 
         #endregion
         #region AddTo Methods
@@ -405,14 +422,6 @@ namespace MvcFront.DB
         }
     
         /// <summary>
-        /// Deprecated Method for adding a new object to the AssetFolders EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
-        /// </summary>
-        public void AddToAssetFolders(AssetFolder assetFolder)
-        {
-            base.AddObject("AssetFolders", assetFolder);
-        }
-    
-        /// <summary>
         /// Deprecated Method for adding a new object to the DocReports EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
         public void AddToDocReports(DocReport docReport)
@@ -426,6 +435,22 @@ namespace MvcFront.DB
         public void AddToReportFields(ReportField reportField)
         {
             base.AddObject("ReportFields", reportField);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the FileLibraryFolders EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToFileLibraryFolders(FileLibraryFolder fileLibraryFolder)
+        {
+            base.AddObject("FileLibraryFolders", fileLibraryFolder);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the FileLibraryAssets EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToFileLibraryAssets(FileLibraryAsset fileLibraryAsset)
+        {
+            base.AddObject("FileLibraryAssets", fileLibraryAsset);
         }
 
         #endregion
@@ -450,20 +475,12 @@ namespace MvcFront.DB
         /// Create a new Asset object.
         /// </summary>
         /// <param name="assetid">Initial value of the assetid property.</param>
-        /// <param name="lastEditDate">Initial value of the LastEditDate property.</param>
         /// <param name="fileName">Initial value of the FileName property.</param>
-        /// <param name="name">Initial value of the Name property.</param>
-        /// <param name="assetFolder_assetfolderid">Initial value of the AssetFolder_assetfolderid property.</param>
-        /// <param name="comment">Initial value of the Comment property.</param>
-        public static Asset CreateAsset(global::System.Int32 assetid, global::System.DateTime lastEditDate, global::System.String fileName, global::System.String name, global::System.Int32 assetFolder_assetfolderid, global::System.String comment)
+        public static Asset CreateAsset(global::System.Int64 assetid, global::System.String fileName)
         {
             Asset asset = new Asset();
             asset.assetid = assetid;
-            asset.LastEditDate = lastEditDate;
             asset.FileName = fileName;
-            asset.Name = name;
-            asset.AssetFolder_assetfolderid = assetFolder_assetfolderid;
-            asset.Comment = comment;
             return asset;
         }
 
@@ -475,7 +492,7 @@ namespace MvcFront.DB
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.Int32 assetid
+        public global::System.Int64 assetid
         {
             get
             {
@@ -493,33 +510,9 @@ namespace MvcFront.DB
                 }
             }
         }
-        private global::System.Int32 _assetid;
-        partial void OnassetidChanging(global::System.Int32 value);
+        private global::System.Int64 _assetid;
+        partial void OnassetidChanging(global::System.Int64 value);
         partial void OnassetidChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.DateTime LastEditDate
-        {
-            get
-            {
-                return _LastEditDate;
-            }
-            set
-            {
-                OnLastEditDateChanging(value);
-                ReportPropertyChanging("LastEditDate");
-                _LastEditDate = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("LastEditDate");
-                OnLastEditDateChanged();
-            }
-        }
-        private global::System.DateTime _LastEditDate;
-        partial void OnLastEditDateChanging(global::System.DateTime value);
-        partial void OnLastEditDateChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -544,78 +537,6 @@ namespace MvcFront.DB
         private global::System.String _FileName;
         partial void OnFileNameChanging(global::System.String value);
         partial void OnFileNameChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.String Name
-        {
-            get
-            {
-                return _Name;
-            }
-            set
-            {
-                OnNameChanging(value);
-                ReportPropertyChanging("Name");
-                _Name = StructuralObject.SetValidValue(value, false);
-                ReportPropertyChanged("Name");
-                OnNameChanged();
-            }
-        }
-        private global::System.String _Name;
-        partial void OnNameChanging(global::System.String value);
-        partial void OnNameChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int32 AssetFolder_assetfolderid
-        {
-            get
-            {
-                return _AssetFolder_assetfolderid;
-            }
-            set
-            {
-                OnAssetFolder_assetfolderidChanging(value);
-                ReportPropertyChanging("AssetFolder_assetfolderid");
-                _AssetFolder_assetfolderid = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("AssetFolder_assetfolderid");
-                OnAssetFolder_assetfolderidChanged();
-            }
-        }
-        private global::System.Int32 _AssetFolder_assetfolderid;
-        partial void OnAssetFolder_assetfolderidChanging(global::System.Int32 value);
-        partial void OnAssetFolder_assetfolderidChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.String Comment
-        {
-            get
-            {
-                return _Comment;
-            }
-            set
-            {
-                OnCommentChanging(value);
-                ReportPropertyChanging("Comment");
-                _Comment = StructuralObject.SetValidValue(value, false);
-                ReportPropertyChanged("Comment");
-                OnCommentChanged();
-            }
-        }
-        private global::System.String _Comment;
-        partial void OnCommentChanging(global::System.String value);
-        partial void OnCommentChanged();
 
         #endregion
     
@@ -627,16 +548,16 @@ namespace MvcFront.DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "AssetAssetFolder", "AssetFolder")]
-        public AssetFolder AssetFolder
+        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "FileLibraryAssetAsset", "FileLibraryAsset")]
+        public FileLibraryAsset FileLibraryAsset
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<AssetFolder>("smqdocModel.AssetAssetFolder", "AssetFolder").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<FileLibraryAsset>("smqdocModel.FileLibraryAssetAsset", "FileLibraryAsset").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<AssetFolder>("smqdocModel.AssetAssetFolder", "AssetFolder").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<FileLibraryAsset>("smqdocModel.FileLibraryAssetAsset", "FileLibraryAsset").Value = value;
             }
         }
         /// <summary>
@@ -644,207 +565,17 @@ namespace MvcFront.DB
         /// </summary>
         [BrowsableAttribute(false)]
         [DataMemberAttribute()]
-        public EntityReference<AssetFolder> AssetFolderReference
+        public EntityReference<FileLibraryAsset> FileLibraryAssetReference
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<AssetFolder>("smqdocModel.AssetAssetFolder", "AssetFolder");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<FileLibraryAsset>("smqdocModel.FileLibraryAssetAsset", "FileLibraryAsset");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<AssetFolder>("smqdocModel.AssetAssetFolder", "AssetFolder", value);
-                }
-            }
-        }
-
-        #endregion
-    }
-    
-    /// <summary>
-    /// No Metadata Documentation available.
-    /// </summary>
-    [EdmEntityTypeAttribute(NamespaceName="smqdocModel", Name="AssetFolder")]
-    [Serializable()]
-    [DataContractAttribute(IsReference=true)]
-    public partial class AssetFolder : EntityObject
-    {
-        #region Factory Method
-    
-        /// <summary>
-        /// Create a new AssetFolder object.
-        /// </summary>
-        /// <param name="assetfolderid">Initial value of the assetfolderid property.</param>
-        /// <param name="name">Initial value of the Name property.</param>
-        public static AssetFolder CreateAssetFolder(global::System.Int32 assetfolderid, global::System.String name)
-        {
-            AssetFolder assetFolder = new AssetFolder();
-            assetFolder.assetfolderid = assetfolderid;
-            assetFolder.Name = name;
-            return assetFolder;
-        }
-
-        #endregion
-        #region Primitive Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int32 assetfolderid
-        {
-            get
-            {
-                return _assetfolderid;
-            }
-            set
-            {
-                if (_assetfolderid != value)
-                {
-                    OnassetfolderidChanging(value);
-                    ReportPropertyChanging("assetfolderid");
-                    _assetfolderid = StructuralObject.SetValidValue(value);
-                    ReportPropertyChanged("assetfolderid");
-                    OnassetfolderidChanged();
-                }
-            }
-        }
-        private global::System.Int32 _assetfolderid;
-        partial void OnassetfolderidChanging(global::System.Int32 value);
-        partial void OnassetfolderidChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.String Name
-        {
-            get
-            {
-                return _Name;
-            }
-            set
-            {
-                OnNameChanging(value);
-                ReportPropertyChanging("Name");
-                _Name = StructuralObject.SetValidValue(value, false);
-                ReportPropertyChanged("Name");
-                OnNameChanged();
-            }
-        }
-        private global::System.String _Name;
-        partial void OnNameChanging(global::System.String value);
-        partial void OnNameChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public Nullable<global::System.Int32> AssetFolder_assetfolderid
-        {
-            get
-            {
-                return _AssetFolder_assetfolderid;
-            }
-            set
-            {
-                OnAssetFolder_assetfolderidChanging(value);
-                ReportPropertyChanging("AssetFolder_assetfolderid");
-                _AssetFolder_assetfolderid = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("AssetFolder_assetfolderid");
-                OnAssetFolder_assetfolderidChanged();
-            }
-        }
-        private Nullable<global::System.Int32> _AssetFolder_assetfolderid;
-        partial void OnAssetFolder_assetfolderidChanging(Nullable<global::System.Int32> value);
-        partial void OnAssetFolder_assetfolderidChanged();
-
-        #endregion
-    
-        #region Navigation Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "AssetAssetFolder", "Asset")]
-        public EntityCollection<Asset> Assets
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Asset>("smqdocModel.AssetAssetFolder", "Asset");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Asset>("smqdocModel.AssetAssetFolder", "Asset", value);
-                }
-            }
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "AssetFolderParentAssetFolder", "AssetFolder1")]
-        public EntityCollection<AssetFolder> ChildAssetFolders
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<AssetFolder>("smqdocModel.AssetFolderParentAssetFolder", "AssetFolder1");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<AssetFolder>("smqdocModel.AssetFolderParentAssetFolder", "AssetFolder1", value);
-                }
-            }
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "AssetFolderParentAssetFolder", "AssetFolder")]
-        public AssetFolder ParentAssetFolder
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<AssetFolder>("smqdocModel.AssetFolderParentAssetFolder", "AssetFolder").Value;
-            }
-            set
-            {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<AssetFolder>("smqdocModel.AssetFolderParentAssetFolder", "AssetFolder").Value = value;
-            }
-        }
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [BrowsableAttribute(false)]
-        [DataMemberAttribute()]
-        public EntityReference<AssetFolder> ParentAssetFolderReference
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<AssetFolder>("smqdocModel.AssetFolderParentAssetFolder", "AssetFolder");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<AssetFolder>("smqdocModel.AssetFolderParentAssetFolder", "AssetFolder", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<FileLibraryAsset>("smqdocModel.FileLibraryAssetAsset", "FileLibraryAsset", value);
                 }
             }
         }
@@ -3187,6 +2918,434 @@ namespace MvcFront.DB
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<ReportField>("smqdocModel.ReportFieldFieldTemplate", "ReportField", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="smqdocModel", Name="FileLibraryAsset")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class FileLibraryAsset : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new FileLibraryAsset object.
+        /// </summary>
+        /// <param name="filelibraryassetid">Initial value of the filelibraryassetid property.</param>
+        /// <param name="name">Initial value of the Name property.</param>
+        /// <param name="fileLibraryFolder_filelibraryfolderid">Initial value of the FileLibraryFolder_filelibraryfolderid property.</param>
+        /// <param name="lastEditDate">Initial value of the LastEditDate property.</param>
+        /// <param name="comment">Initial value of the Comment property.</param>
+        public static FileLibraryAsset CreateFileLibraryAsset(global::System.Int64 filelibraryassetid, global::System.String name, global::System.Int32 fileLibraryFolder_filelibraryfolderid, global::System.DateTime lastEditDate, global::System.String comment)
+        {
+            FileLibraryAsset fileLibraryAsset = new FileLibraryAsset();
+            fileLibraryAsset.filelibraryassetid = filelibraryassetid;
+            fileLibraryAsset.Name = name;
+            fileLibraryAsset.FileLibraryFolder_filelibraryfolderid = fileLibraryFolder_filelibraryfolderid;
+            fileLibraryAsset.LastEditDate = lastEditDate;
+            fileLibraryAsset.Comment = comment;
+            return fileLibraryAsset;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int64 filelibraryassetid
+        {
+            get
+            {
+                return _filelibraryassetid;
+            }
+            set
+            {
+                if (_filelibraryassetid != value)
+                {
+                    OnfilelibraryassetidChanging(value);
+                    ReportPropertyChanging("filelibraryassetid");
+                    _filelibraryassetid = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("filelibraryassetid");
+                    OnfilelibraryassetidChanged();
+                }
+            }
+        }
+        private global::System.Int64 _filelibraryassetid;
+        partial void OnfilelibraryassetidChanging(global::System.Int64 value);
+        partial void OnfilelibraryassetidChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Name
+        {
+            get
+            {
+                return _Name;
+            }
+            set
+            {
+                OnNameChanging(value);
+                ReportPropertyChanging("Name");
+                _Name = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Name");
+                OnNameChanged();
+            }
+        }
+        private global::System.String _Name;
+        partial void OnNameChanging(global::System.String value);
+        partial void OnNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 FileLibraryFolder_filelibraryfolderid
+        {
+            get
+            {
+                return _FileLibraryFolder_filelibraryfolderid;
+            }
+            set
+            {
+                OnFileLibraryFolder_filelibraryfolderidChanging(value);
+                ReportPropertyChanging("FileLibraryFolder_filelibraryfolderid");
+                _FileLibraryFolder_filelibraryfolderid = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("FileLibraryFolder_filelibraryfolderid");
+                OnFileLibraryFolder_filelibraryfolderidChanged();
+            }
+        }
+        private global::System.Int32 _FileLibraryFolder_filelibraryfolderid;
+        partial void OnFileLibraryFolder_filelibraryfolderidChanging(global::System.Int32 value);
+        partial void OnFileLibraryFolder_filelibraryfolderidChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime LastEditDate
+        {
+            get
+            {
+                return _LastEditDate;
+            }
+            set
+            {
+                OnLastEditDateChanging(value);
+                ReportPropertyChanging("LastEditDate");
+                _LastEditDate = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("LastEditDate");
+                OnLastEditDateChanged();
+            }
+        }
+        private global::System.DateTime _LastEditDate;
+        partial void OnLastEditDateChanging(global::System.DateTime value);
+        partial void OnLastEditDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Comment
+        {
+            get
+            {
+                return _Comment;
+            }
+            set
+            {
+                OnCommentChanging(value);
+                ReportPropertyChanging("Comment");
+                _Comment = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Comment");
+                OnCommentChanged();
+            }
+        }
+        private global::System.String _Comment;
+        partial void OnCommentChanging(global::System.String value);
+        partial void OnCommentChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "FileLibraryAssetFileLibraryFolder", "FileLibraryFolder")]
+        public FileLibraryFolder FileLibraryFolder
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<FileLibraryFolder>("smqdocModel.FileLibraryAssetFileLibraryFolder", "FileLibraryFolder").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<FileLibraryFolder>("smqdocModel.FileLibraryAssetFileLibraryFolder", "FileLibraryFolder").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<FileLibraryFolder> FileLibraryFolderReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<FileLibraryFolder>("smqdocModel.FileLibraryAssetFileLibraryFolder", "FileLibraryFolder");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<FileLibraryFolder>("smqdocModel.FileLibraryAssetFileLibraryFolder", "FileLibraryFolder", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "FileLibraryAssetAsset", "Asset")]
+        public Asset Asset
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Asset>("smqdocModel.FileLibraryAssetAsset", "Asset").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Asset>("smqdocModel.FileLibraryAssetAsset", "Asset").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Asset> AssetReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Asset>("smqdocModel.FileLibraryAssetAsset", "Asset");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Asset>("smqdocModel.FileLibraryAssetAsset", "Asset", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="smqdocModel", Name="FileLibraryFolder")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class FileLibraryFolder : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new FileLibraryFolder object.
+        /// </summary>
+        /// <param name="filelibraryfolderid">Initial value of the filelibraryfolderid property.</param>
+        /// <param name="name">Initial value of the Name property.</param>
+        public static FileLibraryFolder CreateFileLibraryFolder(global::System.Int32 filelibraryfolderid, global::System.String name)
+        {
+            FileLibraryFolder fileLibraryFolder = new FileLibraryFolder();
+            fileLibraryFolder.filelibraryfolderid = filelibraryfolderid;
+            fileLibraryFolder.Name = name;
+            return fileLibraryFolder;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 filelibraryfolderid
+        {
+            get
+            {
+                return _filelibraryfolderid;
+            }
+            set
+            {
+                if (_filelibraryfolderid != value)
+                {
+                    OnfilelibraryfolderidChanging(value);
+                    ReportPropertyChanging("filelibraryfolderid");
+                    _filelibraryfolderid = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("filelibraryfolderid");
+                    OnfilelibraryfolderidChanged();
+                }
+            }
+        }
+        private global::System.Int32 _filelibraryfolderid;
+        partial void OnfilelibraryfolderidChanging(global::System.Int32 value);
+        partial void OnfilelibraryfolderidChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Name
+        {
+            get
+            {
+                return _Name;
+            }
+            set
+            {
+                OnNameChanging(value);
+                ReportPropertyChanging("Name");
+                _Name = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Name");
+                OnNameChanged();
+            }
+        }
+        private global::System.String _Name;
+        partial void OnNameChanging(global::System.String value);
+        partial void OnNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int32> FileLibraryFolder_filelibraryfolderid
+        {
+            get
+            {
+                return _FileLibraryFolder_filelibraryfolderid;
+            }
+            set
+            {
+                OnFileLibraryFolder_filelibraryfolderidChanging(value);
+                ReportPropertyChanging("FileLibraryFolder_filelibraryfolderid");
+                _FileLibraryFolder_filelibraryfolderid = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("FileLibraryFolder_filelibraryfolderid");
+                OnFileLibraryFolder_filelibraryfolderidChanged();
+            }
+        }
+        private Nullable<global::System.Int32> _FileLibraryFolder_filelibraryfolderid;
+        partial void OnFileLibraryFolder_filelibraryfolderidChanging(Nullable<global::System.Int32> value);
+        partial void OnFileLibraryFolder_filelibraryfolderidChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "FileLibraryFolderFileLibraryFolder", "FileLibraryFolder1")]
+        public EntityCollection<FileLibraryFolder> ChildFileLibraryFolders
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<FileLibraryFolder>("smqdocModel.FileLibraryFolderFileLibraryFolder", "FileLibraryFolder1");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<FileLibraryFolder>("smqdocModel.FileLibraryFolderFileLibraryFolder", "FileLibraryFolder1", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "FileLibraryFolderFileLibraryFolder", "FileLibraryFolder")]
+        public FileLibraryFolder ParentFileLibraryFolder
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<FileLibraryFolder>("smqdocModel.FileLibraryFolderFileLibraryFolder", "FileLibraryFolder").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<FileLibraryFolder>("smqdocModel.FileLibraryFolderFileLibraryFolder", "FileLibraryFolder").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<FileLibraryFolder> ParentFileLibraryFolderReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<FileLibraryFolder>("smqdocModel.FileLibraryFolderFileLibraryFolder", "FileLibraryFolder");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<FileLibraryFolder>("smqdocModel.FileLibraryFolderFileLibraryFolder", "FileLibraryFolder", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "FileLibraryAssetFileLibraryFolder", "FileLibraryAsset")]
+        public EntityCollection<FileLibraryAsset> FileLibraryAssets
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<FileLibraryAsset>("smqdocModel.FileLibraryAssetFileLibraryFolder", "FileLibraryAsset");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<FileLibraryAsset>("smqdocModel.FileLibraryAssetFileLibraryFolder", "FileLibraryAsset", value);
                 }
             }
         }
