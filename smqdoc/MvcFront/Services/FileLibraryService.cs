@@ -1,5 +1,5 @@
-﻿using System.Data.Objects.DataClasses;
-using System.IO;
+﻿using System.IO;
+using System.Linq;
 using System.Web;
 using MvcFront.DB;
 using MvcFront.Interfaces;
@@ -8,14 +8,12 @@ namespace MvcFront.Services
 {
     public class FileLibraryService
     {
-        private readonly IAssetRepository _assetRepository;
         private readonly IFileLibaryRepository _fileLibaryRepository;
         //Имя папки внутри папки хранения асетов
         private const string FolderName = "Library";
 
-        public FileLibraryService(IAssetRepository assetRepository, IFileLibaryRepository fileLibaryRepository)
+        public FileLibraryService(IFileLibaryRepository fileLibaryRepository)
         {
-            _assetRepository = assetRepository;
             _fileLibaryRepository = fileLibaryRepository;
         }
 
@@ -27,11 +25,11 @@ namespace MvcFront.Services
         /// <param name="comment"></param>
         public void CreateNewAsset(HttpPostedFileBase file, int parentFolderId, string comment)
         {
-            var newAsset = (new AssetService(_assetRepository)).CreateNewAsset(file, FolderName);
+            var newFileName = (new AssetService()).CreateNewAsset(file, FolderName);
             var newFileAsset = new FileLibraryAsset
                 {
                     filelibraryassetid = 0,
-                    Asset = new Asset{assetid = newAsset.assetid},
+                    FileName = newFileName,
                     Name = Path.GetFileName(file.FileName),
                     FileLibraryFolder_filelibraryfolderid = parentFolderId,
                     Comment = comment
@@ -45,15 +43,15 @@ namespace MvcFront.Services
         /// <param name="folderId"></param>
         public void DeleteFileAssetFolder(int folderId)
         {
-            var asserService = new AssetService(_assetRepository);
+            var asserService = new AssetService();
             var folder = _fileLibaryRepository.GetAssetFolderById(folderId);
             if(folder != null)
             {
-                foreach (var libraryAsset in folder.FileLibraryAssets)
+                var assets = folder.FileLibraryAssets.ToList();
+                foreach (var libraryAsset in assets)
                 {
-                    var tmpAssetId = libraryAsset.Asset.assetid;
                     _fileLibaryRepository.DeleteAsset(libraryAsset.filelibraryassetid);
-                    asserService.DeleteAsset(_assetRepository.GetAssetById(tmpAssetId));
+                    asserService.DeleteAsset(libraryAsset.FileName);
                 }
                 _fileLibaryRepository.DeleteAssetFolder(folder.filelibraryfolderid);
             }

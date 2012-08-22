@@ -2,7 +2,6 @@
 using System.Data.Objects;
 using System.Linq;
 using MvcFront.DB;
-using MvcFront.Enums;
 using MvcFront.Interfaces;
 
 namespace MvcFront.Repositories
@@ -45,10 +44,6 @@ namespace MvcFront.Repositories
             asset.LastEditDate = DateTime.Now;
             if (asset.filelibraryassetid == 0)
             {
-                //TODO убрать этот хак
-                var tmpAssId = asset.Asset.assetid;
-                asset.Asset = null;
-                asset.Asset = _unitOfWork.DbModel.Assets.Single(x => x.assetid == tmpAssId);
                 _unitOfWork.DbModel.FileLibraryAssets.AddObject(asset);
                 _unitOfWork.DbModel.SaveChanges();
                 _unitOfWork.DbModel.Refresh(RefreshMode.StoreWins, asset);

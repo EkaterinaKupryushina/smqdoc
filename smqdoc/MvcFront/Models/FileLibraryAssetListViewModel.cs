@@ -28,7 +28,7 @@ namespace MvcFront.Models
             {
                 AssetId = asset.filelibraryassetid;
                 Name = asset.Name;
-                FileName = asset.Asset.FileName;
+                FileName = asset.FileName;
                 LastEditDate = asset.LastEditDate;
                 Comment = asset.Comment;
             }

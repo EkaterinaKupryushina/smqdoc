@@ -161,8 +161,6 @@
     <Compile Include="Helpers\SessionHelper.cs" />
     <Compile Include="Services\AssetService.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
-    <Compile Include="Interfaces\IAssetRepository.cs" />
-    <Compile Include="Repositories\AssetRepository.cs" />
     <Compile Include="Services\FileLibraryService.cs" />
     <Compile Include="Services\ReportService.cs" />
     <Compile Include="Infrastructure\Security\AdminAuthorizeAttribute.cs" />

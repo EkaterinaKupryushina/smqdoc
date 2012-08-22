@@ -17,11 +17,9 @@ namespace MvcFront.Controllers
     public class LibraryController : Controller
     {
         private readonly IFileLibaryRepository _fileLibaryRepository;
-        private readonly IAssetRepository _assetRepository;
 
-        public LibraryController(IAssetRepository assetRepository, IFileLibaryRepository fileLibaryRepository)
+        public LibraryController( IFileLibaryRepository fileLibaryRepository)
         {
-            _assetRepository = assetRepository;
             _fileLibaryRepository = fileLibaryRepository;
         }
 
@@ -97,7 +95,7 @@ namespace MvcFront.Controllers
             {
                 try
                 {
-                    (new FileLibraryService(_assetRepository, _fileLibaryRepository)).CreateNewAsset(model.Files.ElementAt(0), model.AssetFolderId, model.Comment);
+                    (new FileLibraryService( _fileLibaryRepository)).CreateNewAsset(model.Files.ElementAt(0), model.AssetFolderId, model.Comment);
                 }
                 catch (Exception ex)
                 {
@@ -219,7 +217,7 @@ namespace MvcFront.Controllers
         {
             try
             {
-                (new FileLibraryService(_assetRepository, _fileLibaryRepository)).DeleteFileAssetFolder(id);
+                (new FileLibraryService( _fileLibaryRepository)).DeleteFileAssetFolder(id);
             }
             catch (Exception ex)
             {
@@ -241,8 +239,7 @@ namespace MvcFront.Controllers
             {
                 var document = _fileLibaryRepository.GetAssetById(assetId);
                 return
-                    File(
-                        new FileStream(Path.Combine(SmqSettings.Instance.AssetFolder, document.Asset.FileName), FileMode.Open),
+                    File( new FileStream(Path.Combine(SmqSettings.Instance.AssetFolder, document.FileName), FileMode.Open),
                         "application", document.Name);
             }
             catch (Exception ex)

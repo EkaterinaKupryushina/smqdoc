@@ -20,6 +20,9 @@ namespace MvcFront.Models
         [Display(Name = "Папка")]
         public int? ParentAssetFolderId { get; set; }
 
+        [Display(Name = "Есть дочерние папки")]
+        public bool HasChicldFolders { get; set; }
+
         public FileLibraryFolderEditModel()
         {
         }
@@ -30,6 +33,7 @@ namespace MvcFront.Models
             Name = folder.Name;
             IsRootFolder = folder.FileLibraryFolder_filelibraryfolderid == null;
             ParentAssetFolderId = folder.FileLibraryFolder_filelibraryfolderid;
+            HasChicldFolders = folder.ChildFileLibraryFolders.Count > 0;
         }
 
         public FileLibraryFolder Update(FileLibraryFolder folder)
