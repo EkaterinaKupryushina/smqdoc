@@ -25,7 +25,10 @@ namespace MvcFront.Models
         
         [Display(Name = "Дата последнего изменения")]
         public DateTime LastEditDate { get; set; }
-        
+
+        [Display(Name = "Только для чтения")]
+        [UIHint("Hidden")]
+        public bool IsReadOnly { get; set; }
 
         [Display(Name = "Название приложения")]
         public string AttachmentName { get; set; }
@@ -55,6 +58,7 @@ namespace MvcFront.Models
             {
                 AttachmentName = templ.DisplayFileName;
             }
+            IsReadOnly = templ.DocStatus != DocumentStatus.PlanEditing && templ.DocStatus != DocumentStatus.FactEditing;
         }
 
     }

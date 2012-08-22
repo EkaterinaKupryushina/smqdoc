@@ -15,8 +15,10 @@ namespace MvcFront.Models
         public string Comment { get; set; }
         [Display(Name = "Разрешить самоназначение")]
         public bool AllowUserUse { get; set; }
-         [Display(Name = "Разрешить много документов")]
+        [Display(Name = "Разрешить много документов")]
         public bool AllowMultyDocs { get; set; }
+        [Display(Name = "Разрешить приложения")]
+        public bool AllowAttachment { get; set; }
 
         public DocTemplateEditModel()
         {
@@ -27,6 +29,7 @@ namespace MvcFront.Models
             DocTemplateId = templ.docteplateid;
             DocTemplateName = templ.TemplateName;
             Comment = templ.Comment;
+            AllowAttachment = templ.AllowAttachment;
             if(templ.DocTemplatesForUser != null)
             {
                 AllowUserUse = true;
@@ -39,6 +42,7 @@ namespace MvcFront.Models
             templ.docteplateid = DocTemplateId;
             templ.TemplateName = DocTemplateName;
             templ.Comment = Comment;
+            templ.AllowAttachment = AllowAttachment;
             if(AllowUserUse)
             {
                if(templ.DocTemplatesForUser == null)

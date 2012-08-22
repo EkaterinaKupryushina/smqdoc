@@ -49,6 +49,8 @@ namespace MvcFront.DB
         [Display(Name = "Код статуса")]
         [Required]
         public Int32 Status { get; set; }
+        [Display(Name = "Приложение")]
+        public string DisplayFileName { get; set; }
         [Display(Name = "Последний комментарий")]
         [DataType(DataType.MultilineText)]
         public String LastComment { get; set; }

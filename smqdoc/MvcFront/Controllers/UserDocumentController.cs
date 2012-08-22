@@ -10,6 +10,7 @@ using MvcFront.Infrastructure;
 using MvcFront.Infrastructure.Security;
 using MvcFront.Interfaces;
 using MvcFront.Models;
+using MvcFront.Services;
 using NLog;
 using Telerik.Web.Mvc;
 
@@ -183,7 +184,7 @@ namespace MvcFront.Controllers
                 {
                     throw new Exception("Проверьте введенные данные");
                 }
-                return RedirectToAction("CreateDocument", new { id = docAppId }); ;
+                return RedirectToAction("CreateDocument", new { id = docAppId });
             }
             catch (Exception ex)
             {
@@ -228,7 +229,7 @@ namespace MvcFront.Controllers
         {
             try
             {
-                // Удаляем Провайдр валидации типов со стороны клиента, чтобы не появлялось сообщение на англ.
+                // Удаляем Провайдер валидации типов со стороны клиента, чтобы не появлялось сообщение на англ.
                 // The field xxxx must be a number
                 foreach (ModelValidatorProvider prov in ModelValidatorProviders.Providers)
                 {
@@ -274,8 +275,17 @@ namespace MvcFront.Controllers
 
                 if (Request.Form["calculate"] != null)
                 {
-
                     return View(new DocumentEditModel(doc));
+                }
+                if (model.Files != null && model.Files.Any())
+                {
+                    if (!string.IsNullOrEmpty(doc.StoredFileName))
+                    {
+                        (new AssetService()).DeleteAsset(doc.StoredFileName);
+                        doc.DisplayFileName = string.Empty;
+                    }
+                    doc.StoredFileName = (new AssetService()).CreateNewAsset(model.Files.ElementAt(0),SmqSettings.Instance.DocumentAttachmentsFolderName );
+                    doc.DisplayFileName = Path.GetFileName(model.Files.ElementAt(0).FileName);
                 }
                 _documentRepository.SaveDocument(doc);
                 if (Request.Form["send"] != null)
@@ -300,28 +310,6 @@ namespace MvcFront.Controllers
                 ModelState.AddModelError(string.Empty, "Произошла ошибка");
                 LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserDocumentController.EditDocument()", ex);
                 return View(model);
-            }
-        }
-
-        /// <summary>
-        /// Возвращает Файл ассета
-        /// </summary>
-        /// <param name="documentId"></param>
-        /// <returns></returns>
-        public FileStreamResult Download(long documentId)
-        {
-            try
-            {
-                var document = _documentRepository.GetDocumentById(documentId);
-                return
-                    File(new FileStream(Path.Combine(SmqSettings.Instance.AssetFolder, document.StoredFileName), FileMode.Open),
-                        "application", document.DisplayFileName);
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError(string.Empty, "Произошла ошибка");
-                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserDocumentController.Download()", ex);
-                return null;
             }
         }
 

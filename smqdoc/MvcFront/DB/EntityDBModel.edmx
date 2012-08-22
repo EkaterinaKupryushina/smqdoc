@@ -180,8 +180,8 @@
     <Property Name="LastComment" Type="nvarchar(max)" Nullable="true" />
     <Property Name="UserAccount_userid" Type="int" Nullable="false" />
     <Property Name="DocAppointment_docappointmentid" Type="bigint" Nullable="false" />
-    <Property Name="DisplayFileName" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="StoredFileName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="DisplayFileName" Type="nvarchar(max)" Nullable="true" />
+    <Property Name="StoredFileName" Type="nvarchar(max)" Nullable="true" />
   </EntityType>
   <EntityType Name="DocFields">
     <Key>
@@ -790,8 +790,8 @@
           <NavigationProperty Name="DocFields" Relationship="smqdocModel.DocFieldDocument" FromRole="Document" ToRole="DocField" />
           <NavigationProperty Name="DocAppointment" Relationship="smqdocModel.DocumentDocAppointment" FromRole="Document" ToRole="DocAppointment" />
           <Property Type="Int64" Name="DocAppointment_docappointmentid" Nullable="false" />
-          <Property Type="String" Name="DisplayFileName" Nullable="false" />
-          <Property Type="String" Name="StoredFileName" Nullable="false" />
+          <Property Type="String" Name="DisplayFileName" Nullable="true" />
+          <Property Type="String" Name="StoredFileName" Nullable="true" />
         </EntityType>
         <Association Name="DocumentUserAccount">
           <End Type="smqdocModel.Document" Role="Document" Multiplicity="*" />

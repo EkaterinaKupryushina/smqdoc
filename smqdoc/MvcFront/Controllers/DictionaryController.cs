@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 using MvcFront.Enums;
+using MvcFront.Infrastructure;
 using MvcFront.Interfaces;
 using MvcFront.Helpers;
 using MvcFront.Models;
@@ -14,11 +16,13 @@ namespace MvcFront.Controllers
     {
         private readonly IUserAccountRepository _userRepository;
         private readonly IUserTagRepository _userTagRepository;
+        private readonly IDocumentRepository _documentRepository;
 
-        public DictionaryController(IUserAccountRepository userRepository, IUserTagRepository userTagRepository)
+        public DictionaryController(IUserAccountRepository userRepository, IUserTagRepository userTagRepository,IDocumentRepository documentRepository)
         {
             _userRepository = userRepository;
             _userTagRepository = userTagRepository;
+            _documentRepository = documentRepository;
         }
 
         #region Пользователи
@@ -170,6 +174,28 @@ namespace MvcFront.Controllers
             {
                 LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DictionaryController.AjaxUserTagsList()", ex);
                 return new JsonResult { Data = false };
+            }
+        }
+
+        /// <summary>
+        /// Возвращает Файл ассета
+        /// </summary>
+        /// <param name="documentId"></param>
+        /// <returns></returns>
+        public FileStreamResult DownloadDocAttachment(long documentId)
+        {
+            try
+            {
+                var document = _documentRepository.GetDocumentById(documentId);
+                return
+                    File(new FileStream(Path.Combine(SmqSettings.Instance.AssetFolder, document.StoredFileName), FileMode.Open),
+                        "application", document.DisplayFileName);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DictionaryController.Download()", ex);
+                return null;
             }
         }
 
