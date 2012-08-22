@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 08/22/2012 00:04:06
+-- Date Created: 08/22/2012 15:52:32
 -- Generated from EDMX file: D:\Work\smqdoc\trunk\smqdoc\MvcFront\DB\EntityDBModel.edmx
 -- --------------------------------------------------
 
@@ -80,6 +80,12 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_ReportFieldDocReport]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[ReportFields] DROP CONSTRAINT [FK_ReportFieldDocReport];
 GO
+IF OBJECT_ID(N'[dbo].[FK_FileLibraryFolderFileLibraryFolder]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[FileLibraryFolders] DROP CONSTRAINT [FK_FileLibraryFolderFileLibraryFolder];
+GO
+IF OBJECT_ID(N'[dbo].[FK_FileLibraryAssetFileLibraryFolder]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[FileLibraryAssets] DROP CONSTRAINT [FK_FileLibraryAssetFileLibraryFolder];
+GO
 
 -- --------------------------------------------------
 -- Dropping existing tables
@@ -115,14 +121,17 @@ GO
 IF OBJECT_ID(N'[dbo].[DocTemplatesForUsers]', 'U') IS NOT NULL
     DROP TABLE [dbo].[DocTemplatesForUsers];
 GO
-IF OBJECT_ID(N'[dbo].[Assets]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Assets];
-GO
 IF OBJECT_ID(N'[dbo].[DocReports]', 'U') IS NOT NULL
     DROP TABLE [dbo].[DocReports];
 GO
 IF OBJECT_ID(N'[dbo].[ReportFields]', 'U') IS NOT NULL
     DROP TABLE [dbo].[ReportFields];
+GO
+IF OBJECT_ID(N'[dbo].[FileLibraryFolders]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[FileLibraryFolders];
+GO
+IF OBJECT_ID(N'[dbo].[FileLibraryAssets]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[FileLibraryAssets];
 GO
 IF OBJECT_ID(N'[dbo].[GroupUsers]', 'U') IS NOT NULL
     DROP TABLE [dbo].[GroupUsers];
@@ -252,13 +261,6 @@ CREATE TABLE [dbo].[DocTemplatesForUsers] (
 );
 GO
 
--- Creating table 'Assets'
-CREATE TABLE [dbo].[Assets] (
-    [assetid] bigint IDENTITY(1,1) NOT NULL,
-    [FileName] nvarchar(max)  NOT NULL
-);
-GO
-
 -- Creating table 'DocReports'
 CREATE TABLE [dbo].[DocReports] (
     [docreportid] int IDENTITY(1,1) NOT NULL,
@@ -297,7 +299,7 @@ CREATE TABLE [dbo].[FileLibraryAssets] (
     [FileLibraryFolder_filelibraryfolderid] int  NOT NULL,
     [LastEditDate] datetime  NOT NULL,
     [Comment] nvarchar(max)  NOT NULL,
-    [Asset_assetid] bigint  NOT NULL
+    [FileName] nvarchar(max)  NOT NULL
 );
 GO
 
@@ -384,12 +386,6 @@ GO
 ALTER TABLE [dbo].[DocTemplatesForUsers]
 ADD CONSTRAINT [PK_DocTemplatesForUsers]
     PRIMARY KEY CLUSTERED ([doctemplateforuseid] ASC);
-GO
-
--- Creating primary key on [assetid] in table 'Assets'
-ALTER TABLE [dbo].[Assets]
-ADD CONSTRAINT [PK_Assets]
-    PRIMARY KEY CLUSTERED ([assetid] ASC);
 GO
 
 -- Creating primary key on [docreportid] in table 'DocReports'
@@ -743,20 +739,6 @@ ADD CONSTRAINT [FK_FileLibraryAssetFileLibraryFolder]
 CREATE INDEX [IX_FK_FileLibraryAssetFileLibraryFolder]
 ON [dbo].[FileLibraryAssets]
     ([FileLibraryFolder_filelibraryfolderid]);
-GO
-
--- Creating foreign key on [Asset_assetid] in table 'FileLibraryAssets'
-ALTER TABLE [dbo].[FileLibraryAssets]
-ADD CONSTRAINT [FK_FileLibraryAssetAsset]
-    FOREIGN KEY ([Asset_assetid])
-    REFERENCES [dbo].[Assets]
-        ([assetid])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- Creating non-clustered index for FOREIGN KEY 'FK_FileLibraryAssetAsset'
-CREATE INDEX [IX_FK_FileLibraryAssetAsset]
-ON [dbo].[FileLibraryAssets]
-    ([Asset_assetid]);
 GO
 
 -- --------------------------------------------------

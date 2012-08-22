@@ -33,7 +33,7 @@
     
                
 
-               @(Html.Telerik().Grid<AssetListViewModel>()
+               @(Html.Telerik().Grid<FileLibraryAssetListViewModel>()
                 .Name("AssetsListGrid")
                 .DataBinding(dataBinding => dataBinding.Ajax().Select("_AssetsFromFolder", "Library"))
                 .ClientEvents(events => events.OnDataBinding("onGridDataBinding"))

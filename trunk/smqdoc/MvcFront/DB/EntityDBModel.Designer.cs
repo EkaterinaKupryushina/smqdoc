@@ -38,7 +38,6 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("smqdocModel", "ReportFieldDocReport", "ReportField", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.ReportField), "DocReport", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.DocReport), true)]
 [assembly: EdmRelationshipAttribute("smqdocModel", "FileLibraryFolderFileLibraryFolder", "FileLibraryFolder", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(MvcFront.DB.FileLibraryFolder), "FileLibraryFolder1", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.FileLibraryFolder), true)]
 [assembly: EdmRelationshipAttribute("smqdocModel", "FileLibraryAssetFileLibraryFolder", "FileLibraryAsset", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.FileLibraryAsset), "FileLibraryFolder", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.FileLibraryFolder), true)]
-[assembly: EdmRelationshipAttribute("smqdocModel", "FileLibraryAssetAsset", "FileLibraryAsset", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(MvcFront.DB.FileLibraryAsset), "Asset", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.Asset))]
 
 #endregion
 
@@ -253,22 +252,6 @@ namespace MvcFront.DB
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<Asset> Assets
-        {
-            get
-            {
-                if ((_Assets == null))
-                {
-                    _Assets = base.CreateObjectSet<Asset>("Assets");
-                }
-                return _Assets;
-            }
-        }
-        private ObjectSet<Asset> _Assets;
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
         public ObjectSet<DocReport> DocReports
         {
             get
@@ -414,14 +397,6 @@ namespace MvcFront.DB
         }
     
         /// <summary>
-        /// Deprecated Method for adding a new object to the Assets EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
-        /// </summary>
-        public void AddToAssets(Asset asset)
-        {
-            base.AddObject("Assets", asset);
-        }
-    
-        /// <summary>
         /// Deprecated Method for adding a new object to the DocReports EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
         public void AddToDocReports(DocReport docReport)
@@ -460,128 +435,6 @@ namespace MvcFront.DB
     #endregion
     
     #region Entities
-    
-    /// <summary>
-    /// No Metadata Documentation available.
-    /// </summary>
-    [EdmEntityTypeAttribute(NamespaceName="smqdocModel", Name="Asset")]
-    [Serializable()]
-    [DataContractAttribute(IsReference=true)]
-    public partial class Asset : EntityObject
-    {
-        #region Factory Method
-    
-        /// <summary>
-        /// Create a new Asset object.
-        /// </summary>
-        /// <param name="assetid">Initial value of the assetid property.</param>
-        /// <param name="fileName">Initial value of the FileName property.</param>
-        public static Asset CreateAsset(global::System.Int64 assetid, global::System.String fileName)
-        {
-            Asset asset = new Asset();
-            asset.assetid = assetid;
-            asset.FileName = fileName;
-            return asset;
-        }
-
-        #endregion
-        #region Primitive Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int64 assetid
-        {
-            get
-            {
-                return _assetid;
-            }
-            set
-            {
-                if (_assetid != value)
-                {
-                    OnassetidChanging(value);
-                    ReportPropertyChanging("assetid");
-                    _assetid = StructuralObject.SetValidValue(value);
-                    ReportPropertyChanged("assetid");
-                    OnassetidChanged();
-                }
-            }
-        }
-        private global::System.Int64 _assetid;
-        partial void OnassetidChanging(global::System.Int64 value);
-        partial void OnassetidChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.String FileName
-        {
-            get
-            {
-                return _FileName;
-            }
-            set
-            {
-                OnFileNameChanging(value);
-                ReportPropertyChanging("FileName");
-                _FileName = StructuralObject.SetValidValue(value, false);
-                ReportPropertyChanged("FileName");
-                OnFileNameChanged();
-            }
-        }
-        private global::System.String _FileName;
-        partial void OnFileNameChanging(global::System.String value);
-        partial void OnFileNameChanged();
-
-        #endregion
-    
-        #region Navigation Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "FileLibraryAssetAsset", "FileLibraryAsset")]
-        public FileLibraryAsset FileLibraryAsset
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<FileLibraryAsset>("smqdocModel.FileLibraryAssetAsset", "FileLibraryAsset").Value;
-            }
-            set
-            {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<FileLibraryAsset>("smqdocModel.FileLibraryAssetAsset", "FileLibraryAsset").Value = value;
-            }
-        }
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [BrowsableAttribute(false)]
-        [DataMemberAttribute()]
-        public EntityReference<FileLibraryAsset> FileLibraryAssetReference
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<FileLibraryAsset>("smqdocModel.FileLibraryAssetAsset", "FileLibraryAsset");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<FileLibraryAsset>("smqdocModel.FileLibraryAssetAsset", "FileLibraryAsset", value);
-                }
-            }
-        }
-
-        #endregion
-    }
     
     /// <summary>
     /// No Metadata Documentation available.
@@ -2943,7 +2796,8 @@ namespace MvcFront.DB
         /// <param name="fileLibraryFolder_filelibraryfolderid">Initial value of the FileLibraryFolder_filelibraryfolderid property.</param>
         /// <param name="lastEditDate">Initial value of the LastEditDate property.</param>
         /// <param name="comment">Initial value of the Comment property.</param>
-        public static FileLibraryAsset CreateFileLibraryAsset(global::System.Int64 filelibraryassetid, global::System.String name, global::System.Int32 fileLibraryFolder_filelibraryfolderid, global::System.DateTime lastEditDate, global::System.String comment)
+        /// <param name="fileName">Initial value of the FileName property.</param>
+        public static FileLibraryAsset CreateFileLibraryAsset(global::System.Int64 filelibraryassetid, global::System.String name, global::System.Int32 fileLibraryFolder_filelibraryfolderid, global::System.DateTime lastEditDate, global::System.String comment, global::System.String fileName)
         {
             FileLibraryAsset fileLibraryAsset = new FileLibraryAsset();
             fileLibraryAsset.filelibraryassetid = filelibraryassetid;
@@ -2951,6 +2805,7 @@ namespace MvcFront.DB
             fileLibraryAsset.FileLibraryFolder_filelibraryfolderid = fileLibraryFolder_filelibraryfolderid;
             fileLibraryAsset.LastEditDate = lastEditDate;
             fileLibraryAsset.Comment = comment;
+            fileLibraryAsset.FileName = fileName;
             return fileLibraryAsset;
         }
 
@@ -3079,6 +2934,30 @@ namespace MvcFront.DB
         private global::System.String _Comment;
         partial void OnCommentChanging(global::System.String value);
         partial void OnCommentChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String FileName
+        {
+            get
+            {
+                return _FileName;
+            }
+            set
+            {
+                OnFileNameChanging(value);
+                ReportPropertyChanging("FileName");
+                _FileName = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("FileName");
+                OnFileNameChanged();
+            }
+        }
+        private global::System.String _FileName;
+        partial void OnFileNameChanging(global::System.String value);
+        partial void OnFileNameChanged();
 
         #endregion
     
@@ -3118,44 +2997,6 @@ namespace MvcFront.DB
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<FileLibraryFolder>("smqdocModel.FileLibraryAssetFileLibraryFolder", "FileLibraryFolder", value);
-                }
-            }
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "FileLibraryAssetAsset", "Asset")]
-        public Asset Asset
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Asset>("smqdocModel.FileLibraryAssetAsset", "Asset").Value;
-            }
-            set
-            {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Asset>("smqdocModel.FileLibraryAssetAsset", "Asset").Value = value;
-            }
-        }
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [BrowsableAttribute(false)]
-        [DataMemberAttribute()]
-        public EntityReference<Asset> AssetReference
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Asset>("smqdocModel.FileLibraryAssetAsset", "Asset");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Asset>("smqdocModel.FileLibraryAssetAsset", "Asset", value);
                 }
             }
         }

@@ -7,8 +7,12 @@
     </fieldset>
          <p>
                 <input type="submit" value="Сохранить" />|
-             @Html.ActionLink("Отмена", "EditAssetLibrary")|<br/>
-             @Html.ActionLink("Удалить", "DeleteAssetFolder", new {id = Model.AssetFolderId})
+             @Html.ActionLink("Отмена", "EditAssetLibrary")
+             @if (!Model.HasChicldFolders)
+             {
+                 <text>|<br/></text>
+                 @Html.ActionLink("Удалить", "DeleteAssetFolder", new {id = Model.AssetFolderId})
+             }
         </p>
 }
 

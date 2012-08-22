@@ -1,53 +1,37 @@
 ﻿using System;
 using System.IO;
 using System.Web;
-using MvcFront.DB;
 using MvcFront.Infrastructure;
-using MvcFront.Interfaces;
 
 namespace MvcFront.Services
 {
     public class AssetService
     {
-        private readonly IAssetRepository _assetRepository;
-
-        public AssetService(IAssetRepository assetRepository)
-        {
-            _assetRepository = assetRepository;
-        }
-
         /// <summary>
         /// Содает новый asset (создает запись в базе и файл на диске)
         /// </summary>
         /// <param name="file"></param>
         /// <param name="folderName"> </param>
-        public Asset CreateNewAsset(HttpPostedFileBase file, string folderName)
+        public string CreateNewAsset(HttpPostedFileBase file, string folderName)
         {
-            var newFileName = string.Format("{0}_{1}", DateTime.Now.ToString("ssmmHHMMddyyyy"), Path.GetFileName(file.FileName));
+            var newFileName = Path.Combine(folderName, string.Format("{0}_{1}", DateTime.Now.ToString("ssmmHHddMMyyyy"), Path.GetFileName(file.FileName)));
             var assetFolder = new DirectoryInfo(Path.Combine(SmqSettings.Instance.AssetFolder, folderName));
             if (!assetFolder.Exists)
             {
                 assetFolder.Create();
             }
-            file.SaveAs(Path.Combine(SmqSettings.Instance.AssetFolder, folderName, newFileName));
-            var asset = new Asset
-                            {
-                                assetid = 0, 
-                                FileName =  Path.Combine(folderName, newFileName)
-                            };
-            _assetRepository.SaveAsset(asset);
-            return asset;
+            file.SaveAs(Path.Combine(SmqSettings.Instance.AssetFolder, newFileName));
+            return newFileName;
         }
 
         /// <summary>
         /// Удаляет Asset
         /// </summary>
-        /// <param name="asset"></param>
-        public void DeleteAsset(Asset asset)
+        /// <param name="fileName"></param>
+        public void DeleteAsset(string fileName)
         {
-            var file = new FileInfo(Path.Combine(SmqSettings.Instance.AssetFolder, asset.FileName));
+            var file = new FileInfo(Path.Combine(SmqSettings.Instance.AssetFolder, fileName));
             file.Delete(); 
-            _assetRepository.DeleteAsset(asset.assetid);
         }
     }
 }
