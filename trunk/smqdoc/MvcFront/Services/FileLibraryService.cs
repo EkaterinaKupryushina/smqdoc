@@ -56,5 +56,20 @@ namespace MvcFront.Services
                 _fileLibaryRepository.DeleteAssetFolder(folder.filelibraryfolderid);
             }
         }
+
+        /// <summary>
+        /// Удаляет папку из библиотеки
+        /// </summary>
+        /// <param name="assetId"></param>
+        public void DeleteFileAsset(long assetId)
+        {
+            var asserService = new AssetService();
+            var asset = _fileLibaryRepository.GetAssetById(assetId);
+            if (asset != null)
+            {
+                _fileLibaryRepository.DeleteAsset(asset.filelibraryassetid);
+                asserService.DeleteAsset(asset.FileName);
+            }
+        }
     }
 }

@@ -232,7 +232,6 @@ namespace MvcFront.Controllers
         /// </summary>
         /// <param name="assetId"></param>
         /// <returns></returns>
-        [AdminAuthorize]
         public FileStreamResult Download(int assetId)
         {
             try
@@ -257,12 +256,11 @@ namespace MvcFront.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public JsonResult DeleteAsset(int id)
+        public JsonResult DeleteAsset(long id)
         {
             try
             {
-                //TODO Fix
-                //(new FileLibraryService(_assetRepository, _fileLibaryRepository)).DeleteFileAssetFolder(_assetRepository.GetAssetById(id)););
+                (new FileLibraryService( _fileLibaryRepository)).DeleteFileAsset(id);
                 return Json(new { result = true });
             }
             catch (Exception ex)

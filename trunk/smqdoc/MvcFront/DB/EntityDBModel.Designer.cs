@@ -1628,7 +1628,8 @@ namespace MvcFront.DB
         /// <param name="status">Initial value of the Status property.</param>
         /// <param name="comment">Initial value of the Comment property.</param>
         /// <param name="lastEditDate">Initial value of the LastEditDate property.</param>
-        public static DocTemplate CreateDocTemplate(global::System.Int64 docteplateid, global::System.String templateName, global::System.Int32 status, global::System.String comment, global::System.DateTime lastEditDate)
+        /// <param name="allowAttachment">Initial value of the AllowAttachment property.</param>
+        public static DocTemplate CreateDocTemplate(global::System.Int64 docteplateid, global::System.String templateName, global::System.Int32 status, global::System.String comment, global::System.DateTime lastEditDate, global::System.Boolean allowAttachment)
         {
             DocTemplate docTemplate = new DocTemplate();
             docTemplate.docteplateid = docteplateid;
@@ -1636,6 +1637,7 @@ namespace MvcFront.DB
             docTemplate.Status = status;
             docTemplate.Comment = comment;
             docTemplate.LastEditDate = lastEditDate;
+            docTemplate.AllowAttachment = allowAttachment;
             return docTemplate;
         }
 
@@ -1764,6 +1766,30 @@ namespace MvcFront.DB
         private global::System.DateTime _LastEditDate;
         partial void OnLastEditDateChanging(global::System.DateTime value);
         partial void OnLastEditDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean AllowAttachment
+        {
+            get
+            {
+                return _AllowAttachment;
+            }
+            set
+            {
+                OnAllowAttachmentChanging(value);
+                ReportPropertyChanging("AllowAttachment");
+                _AllowAttachment = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("AllowAttachment");
+                OnAllowAttachmentChanged();
+            }
+        }
+        private global::System.Boolean _AllowAttachment;
+        partial void OnAllowAttachmentChanging(global::System.Boolean value);
+        partial void OnAllowAttachmentChanged();
 
         #endregion
     
@@ -2017,7 +2043,9 @@ namespace MvcFront.DB
         /// <param name="status">Initial value of the Status property.</param>
         /// <param name="userAccount_userid">Initial value of the UserAccount_userid property.</param>
         /// <param name="docAppointment_docappointmentid">Initial value of the DocAppointment_docappointmentid property.</param>
-        public static Document CreateDocument(global::System.Int64 documentid, global::System.DateTime creationDate, global::System.DateTime lastEditDate, global::System.Int32 status, global::System.Int32 userAccount_userid, global::System.Int64 docAppointment_docappointmentid)
+        /// <param name="displayFileName">Initial value of the DisplayFileName property.</param>
+        /// <param name="storedFileName">Initial value of the StoredFileName property.</param>
+        public static Document CreateDocument(global::System.Int64 documentid, global::System.DateTime creationDate, global::System.DateTime lastEditDate, global::System.Int32 status, global::System.Int32 userAccount_userid, global::System.Int64 docAppointment_docappointmentid, global::System.String displayFileName, global::System.String storedFileName)
         {
             Document document = new Document();
             document.documentid = documentid;
@@ -2026,6 +2054,8 @@ namespace MvcFront.DB
             document.Status = status;
             document.UserAccount_userid = userAccount_userid;
             document.DocAppointment_docappointmentid = docAppointment_docappointmentid;
+            document.DisplayFileName = displayFileName;
+            document.StoredFileName = storedFileName;
             return document;
         }
 
@@ -2202,6 +2232,54 @@ namespace MvcFront.DB
         private global::System.Int64 _DocAppointment_docappointmentid;
         partial void OnDocAppointment_docappointmentidChanging(global::System.Int64 value);
         partial void OnDocAppointment_docappointmentidChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String DisplayFileName
+        {
+            get
+            {
+                return _DisplayFileName;
+            }
+            set
+            {
+                OnDisplayFileNameChanging(value);
+                ReportPropertyChanging("DisplayFileName");
+                _DisplayFileName = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("DisplayFileName");
+                OnDisplayFileNameChanged();
+            }
+        }
+        private global::System.String _DisplayFileName;
+        partial void OnDisplayFileNameChanging(global::System.String value);
+        partial void OnDisplayFileNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String StoredFileName
+        {
+            get
+            {
+                return _StoredFileName;
+            }
+            set
+            {
+                OnStoredFileNameChanging(value);
+                ReportPropertyChanging("StoredFileName");
+                _StoredFileName = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("StoredFileName");
+                OnStoredFileNameChanged();
+            }
+        }
+        private global::System.String _StoredFileName;
+        partial void OnStoredFileNameChanging(global::System.String value);
+        partial void OnStoredFileNameChanged();
 
         #endregion
     

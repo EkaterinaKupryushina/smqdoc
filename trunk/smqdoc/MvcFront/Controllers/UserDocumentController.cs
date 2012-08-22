@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 using MvcFront.DB;
 using MvcFront.Enums;
 using MvcFront.Helpers;
+using MvcFront.Infrastructure;
 using MvcFront.Infrastructure.Security;
 using MvcFront.Interfaces;
 using MvcFront.Models;
@@ -298,6 +300,28 @@ namespace MvcFront.Controllers
                 ModelState.AddModelError(string.Empty, "Произошла ошибка");
                 LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserDocumentController.EditDocument()", ex);
                 return View(model);
+            }
+        }
+
+        /// <summary>
+        /// Возвращает Файл ассета
+        /// </summary>
+        /// <param name="documentId"></param>
+        /// <returns></returns>
+        public FileStreamResult Download(long documentId)
+        {
+            try
+            {
+                var document = _documentRepository.GetDocumentById(documentId);
+                return
+                    File(new FileStream(Path.Combine(SmqSettings.Instance.AssetFolder, document.StoredFileName), FileMode.Open),
+                        "application", document.DisplayFileName);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserDocumentController.Download()", ex);
+                return null;
             }
         }
 
