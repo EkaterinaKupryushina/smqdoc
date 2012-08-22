@@ -10,6 +10,7 @@
 @Html.HiddenFor(model => model.LastComment)
 @Html.HiddenFor(model => model.AllowAttachments)
 @Html.HiddenFor(model => model.AttachmentName)
+@Html.HiddenFor(model => model.IsReadOnly)
 <div class="display-label">@Html.LabelFor(model => model.Name)</div>
 <div class="display-field">
     @Html.DisplayFor(model => model.Name)
@@ -29,8 +30,15 @@
 {
     <div class="editor-field">
         @Html.DisplayTextFor(model => model.AttachmentName)
-        @Html.Telerik().Upload().Name("Files").Multiple(false)
-        @Html.ValidationMessageFor(model => model.Files)
+        @if (!string.IsNullOrEmpty(Model.AttachmentName))
+            {
+                @Html.ActionLink("Скачать", "DownloadDocAttachment", "Dictionary", new { documentId = Model.DocumentId }, new { target = "_blank" })
+            }
+        @if (!Model.IsReadOnly)
+        {
+            <br/><text>Заменить файл:</text>
+            @Html.Telerik().Upload().Name("Files").Multiple(false)
+        }
     </div>
 }
 <div class="display-label">@Html.LabelFor(model => model.LastComment)</div>

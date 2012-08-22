@@ -24,9 +24,28 @@ namespace MvcFront.Infrastructure
             set { _deadlineDays = value; }
         }
 
+        /// <summary>
+        /// Папка хранений файлов
+        /// </summary>
         public string AssetFolder
         {
             get { return ConfigurationManager.AppSettings["AssetFolder"]; }
+        }
+
+        /// <summary>
+        /// папка для хранения файлов для библиотеки
+        /// </summary>
+        public string FileLibraryFolderName
+        {
+            get { return "Library"; }
+        }
+
+        /// <summary>
+        /// папка для хранения файлов для докуменитов
+        /// </summary>
+        public string DocumentAttachmentsFolderName
+        {
+            get { return "DocumentFiles"; }
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Web;
 using MvcFront.DB;
+using MvcFront.Infrastructure;
 using MvcFront.Interfaces;
 
 namespace MvcFront.Services
@@ -9,8 +10,6 @@ namespace MvcFront.Services
     public class FileLibraryService
     {
         private readonly IFileLibaryRepository _fileLibaryRepository;
-        //Имя папки внутри папки хранения асетов
-        private const string FolderName = "Library";
 
         public FileLibraryService(IFileLibaryRepository fileLibaryRepository)
         {
@@ -25,7 +24,7 @@ namespace MvcFront.Services
         /// <param name="comment"></param>
         public void CreateNewAsset(HttpPostedFileBase file, int parentFolderId, string comment)
         {
-            var newFileName = (new AssetService()).CreateNewAsset(file, FolderName);
+            var newFileName = (new AssetService()).CreateNewAsset(file, SmqSettings.Instance.FileLibraryFolderName);
             var newFileAsset = new FileLibraryAsset
                 {
                     filelibraryassetid = 0,

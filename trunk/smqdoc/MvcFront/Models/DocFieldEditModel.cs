@@ -48,7 +48,7 @@ namespace MvcFront.Models
         [Display(Name = "Значение")]
         public bool BoolValue { get; set; }
 
-        [Display(Name = "IsEditable")]
+        [Display(Name = "ТОлько чтение")]
         [UIHint("Hidden")]
         public bool IsReadOnly { get; set; }
 

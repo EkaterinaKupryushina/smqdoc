@@ -26,7 +26,17 @@
     <div class="display-field">
         @Html.DisplayFor(model => model.DocStatusText)
     </div>
-
+    @if (Model.DocAppointment.DocTemplate.AllowAttachment)
+    {
+        <div class="display-label">@Html.LabelFor(model => model.DisplayFileName)</div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.DisplayFileName)
+            @if(!string.IsNullOrEmpty(Model.StoredFileName))
+            {
+                @Html.ActionLink("Скачать", "DownloadDocAttachment", "Dictionary", new { documentId = Model.documentid }, new { target = "_blank" })
+            }
+        </div>
+    }
     <div class="display-label">@Html.LabelFor(model => model.LastComment)</div>
     <div class="display-field">
         @Html.DisplayFor(model => model.LastComment)

@@ -2043,9 +2043,7 @@ namespace MvcFront.DB
         /// <param name="status">Initial value of the Status property.</param>
         /// <param name="userAccount_userid">Initial value of the UserAccount_userid property.</param>
         /// <param name="docAppointment_docappointmentid">Initial value of the DocAppointment_docappointmentid property.</param>
-        /// <param name="displayFileName">Initial value of the DisplayFileName property.</param>
-        /// <param name="storedFileName">Initial value of the StoredFileName property.</param>
-        public static Document CreateDocument(global::System.Int64 documentid, global::System.DateTime creationDate, global::System.DateTime lastEditDate, global::System.Int32 status, global::System.Int32 userAccount_userid, global::System.Int64 docAppointment_docappointmentid, global::System.String displayFileName, global::System.String storedFileName)
+        public static Document CreateDocument(global::System.Int64 documentid, global::System.DateTime creationDate, global::System.DateTime lastEditDate, global::System.Int32 status, global::System.Int32 userAccount_userid, global::System.Int64 docAppointment_docappointmentid)
         {
             Document document = new Document();
             document.documentid = documentid;
@@ -2054,8 +2052,6 @@ namespace MvcFront.DB
             document.Status = status;
             document.UserAccount_userid = userAccount_userid;
             document.DocAppointment_docappointmentid = docAppointment_docappointmentid;
-            document.DisplayFileName = displayFileName;
-            document.StoredFileName = storedFileName;
             return document;
         }
 
@@ -2236,7 +2232,7 @@ namespace MvcFront.DB
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
         public global::System.String DisplayFileName
         {
@@ -2248,7 +2244,7 @@ namespace MvcFront.DB
             {
                 OnDisplayFileNameChanging(value);
                 ReportPropertyChanging("DisplayFileName");
-                _DisplayFileName = StructuralObject.SetValidValue(value, false);
+                _DisplayFileName = StructuralObject.SetValidValue(value, true);
                 ReportPropertyChanged("DisplayFileName");
                 OnDisplayFileNameChanged();
             }
@@ -2260,7 +2256,7 @@ namespace MvcFront.DB
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
         public global::System.String StoredFileName
         {
@@ -2272,7 +2268,7 @@ namespace MvcFront.DB
             {
                 OnStoredFileNameChanging(value);
                 ReportPropertyChanging("StoredFileName");
-                _StoredFileName = StructuralObject.SetValidValue(value, false);
+                _StoredFileName = StructuralObject.SetValidValue(value, true);
                 ReportPropertyChanged("StoredFileName");
                 OnStoredFileNameChanged();
             }
