@@ -31,13 +31,14 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("smqdocModel", "FK_FieldTemplates_FieldTemplates1", "FieldTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(MvcFront.DB.FieldTemplate), "FieldTemplate1", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.FieldTemplate), true)]
 [assembly: EdmRelationshipAttribute("smqdocModel", "UserAccountDocAppointment", "UserAccount", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(MvcFront.DB.UserAccount), "DocAppointment", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.DocAppointment), true)]
 [assembly: EdmRelationshipAttribute("smqdocModel", "UserGroupDocAppointment", "UserGroup", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(MvcFront.DB.UserGroup), "DocAppointment", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.DocAppointment), true)]
-[assembly: EdmRelationshipAttribute("smqdocModel", "DocTemplatesForUserDocTemplate", "DocTemplatesForUser", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(MvcFront.DB.DocTemplatesForUser), "DocTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.DocTemplate))]
 [assembly: EdmRelationshipAttribute("smqdocModel", "ReportDocTemplate", "Report", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.DocReport), "DocTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.DocTemplate), true)]
 [assembly: EdmRelationshipAttribute("smqdocModel", "ReportUserTags", "Report", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.DocReport), "UserTags", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.UserTags))]
 [assembly: EdmRelationshipAttribute("smqdocModel", "ReportFieldFieldTemplate", "ReportField", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.ReportField), "FieldTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.FieldTemplate), true)]
 [assembly: EdmRelationshipAttribute("smqdocModel", "ReportFieldDocReport", "ReportField", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.ReportField), "DocReport", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.DocReport), true)]
 [assembly: EdmRelationshipAttribute("smqdocModel", "FileLibraryFolderFileLibraryFolder", "FileLibraryFolder", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(MvcFront.DB.FileLibraryFolder), "FileLibraryFolder1", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.FileLibraryFolder), true)]
 [assembly: EdmRelationshipAttribute("smqdocModel", "FileLibraryAssetFileLibraryFolder", "FileLibraryAsset", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.FileLibraryAsset), "FileLibraryFolder", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.FileLibraryFolder), true)]
+[assembly: EdmRelationshipAttribute("smqdocModel", "PersonalDocTemplateDocTemplate", "PersonalDocTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.PersonalDocTemplate), "DocTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.DocTemplate), true)]
+[assembly: EdmRelationshipAttribute("smqdocModel", "PersonalDocTemplateUserGroup", "PersonalDocTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.PersonalDocTemplate), "UserGroup", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.UserGroup), true)]
 
 #endregion
 
@@ -236,22 +237,6 @@ namespace MvcFront.DB
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<DocTemplatesForUser> DocTemplatesForUsers
-        {
-            get
-            {
-                if ((_DocTemplatesForUsers == null))
-                {
-                    _DocTemplatesForUsers = base.CreateObjectSet<DocTemplatesForUser>("DocTemplatesForUsers");
-                }
-                return _DocTemplatesForUsers;
-            }
-        }
-        private ObjectSet<DocTemplatesForUser> _DocTemplatesForUsers;
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
         public ObjectSet<DocReport> DocReports
         {
             get
@@ -312,6 +297,22 @@ namespace MvcFront.DB
             }
         }
         private ObjectSet<FileLibraryAsset> _FileLibraryAssets;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<PersonalDocTemplate> PersonalDocTemplates
+        {
+            get
+            {
+                if ((_PersonalDocTemplates == null))
+                {
+                    _PersonalDocTemplates = base.CreateObjectSet<PersonalDocTemplate>("PersonalDocTemplates");
+                }
+                return _PersonalDocTemplates;
+            }
+        }
+        private ObjectSet<PersonalDocTemplate> _PersonalDocTemplates;
 
         #endregion
         #region AddTo Methods
@@ -389,14 +390,6 @@ namespace MvcFront.DB
         }
     
         /// <summary>
-        /// Deprecated Method for adding a new object to the DocTemplatesForUsers EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
-        /// </summary>
-        public void AddToDocTemplatesForUsers(DocTemplatesForUser docTemplatesForUser)
-        {
-            base.AddObject("DocTemplatesForUsers", docTemplatesForUser);
-        }
-    
-        /// <summary>
         /// Deprecated Method for adding a new object to the DocReports EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
         public void AddToDocReports(DocReport docReport)
@@ -426,6 +419,14 @@ namespace MvcFront.DB
         public void AddToFileLibraryAssets(FileLibraryAsset fileLibraryAsset)
         {
             base.AddObject("FileLibraryAssets", fileLibraryAsset);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the PersonalDocTemplates EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToPersonalDocTemplates(PersonalDocTemplate personalDocTemplate)
+        {
+            base.AddObject("PersonalDocTemplates", personalDocTemplate);
         }
 
         #endregion
@@ -1845,44 +1846,6 @@ namespace MvcFront.DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "DocTemplatesForUserDocTemplate", "DocTemplatesForUser")]
-        public DocTemplatesForUser DocTemplatesForUser
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<DocTemplatesForUser>("smqdocModel.DocTemplatesForUserDocTemplate", "DocTemplatesForUser").Value;
-            }
-            set
-            {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<DocTemplatesForUser>("smqdocModel.DocTemplatesForUserDocTemplate", "DocTemplatesForUser").Value = value;
-            }
-        }
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [BrowsableAttribute(false)]
-        [DataMemberAttribute()]
-        public EntityReference<DocTemplatesForUser> DocTemplatesForUserReference
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<DocTemplatesForUser>("smqdocModel.DocTemplatesForUserDocTemplate", "DocTemplatesForUser");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<DocTemplatesForUser>("smqdocModel.DocTemplatesForUserDocTemplate", "DocTemplatesForUser", value);
-                }
-            }
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
         [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "ReportDocTemplate", "Report")]
         public EntityCollection<DocReport> Reports
         {
@@ -1898,90 +1861,6 @@ namespace MvcFront.DB
                 }
             }
         }
-
-        #endregion
-    }
-    
-    /// <summary>
-    /// No Metadata Documentation available.
-    /// </summary>
-    [EdmEntityTypeAttribute(NamespaceName="smqdocModel", Name="DocTemplatesForUser")]
-    [Serializable()]
-    [DataContractAttribute(IsReference=true)]
-    public partial class DocTemplatesForUser : EntityObject
-    {
-        #region Factory Method
-    
-        /// <summary>
-        /// Create a new DocTemplatesForUser object.
-        /// </summary>
-        /// <param name="doctemplateforuseid">Initial value of the doctemplateforuseid property.</param>
-        /// <param name="allowManyInstances">Initial value of the AllowManyInstances property.</param>
-        public static DocTemplatesForUser CreateDocTemplatesForUser(global::System.Int64 doctemplateforuseid, global::System.Boolean allowManyInstances)
-        {
-            DocTemplatesForUser docTemplatesForUser = new DocTemplatesForUser();
-            docTemplatesForUser.doctemplateforuseid = doctemplateforuseid;
-            docTemplatesForUser.AllowManyInstances = allowManyInstances;
-            return docTemplatesForUser;
-        }
-
-        #endregion
-        #region Primitive Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int64 doctemplateforuseid
-        {
-            get
-            {
-                return _doctemplateforuseid;
-            }
-            set
-            {
-                if (_doctemplateforuseid != value)
-                {
-                    OndoctemplateforuseidChanging(value);
-                    ReportPropertyChanging("doctemplateforuseid");
-                    _doctemplateforuseid = StructuralObject.SetValidValue(value);
-                    ReportPropertyChanged("doctemplateforuseid");
-                    OndoctemplateforuseidChanged();
-                }
-            }
-        }
-        private global::System.Int64 _doctemplateforuseid;
-        partial void OndoctemplateforuseidChanging(global::System.Int64 value);
-        partial void OndoctemplateforuseidChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Boolean AllowManyInstances
-        {
-            get
-            {
-                return _AllowManyInstances;
-            }
-            set
-            {
-                OnAllowManyInstancesChanging(value);
-                ReportPropertyChanging("AllowManyInstances");
-                _AllowManyInstances = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("AllowManyInstances");
-                OnAllowManyInstancesChanged();
-            }
-        }
-        private global::System.Boolean _AllowManyInstances;
-        partial void OnAllowManyInstancesChanging(global::System.Boolean value);
-        partial void OnAllowManyInstancesChanged();
-
-        #endregion
-    
-        #region Navigation Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -1989,34 +1868,18 @@ namespace MvcFront.DB
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "DocTemplatesForUserDocTemplate", "DocTemplate")]
-        public DocTemplate DocTemplate
+        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "PersonalDocTemplateDocTemplate", "PersonalDocTemplate")]
+        public EntityCollection<PersonalDocTemplate> PersonalDocTemplates
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<DocTemplate>("smqdocModel.DocTemplatesForUserDocTemplate", "DocTemplate").Value;
-            }
-            set
-            {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<DocTemplate>("smqdocModel.DocTemplatesForUserDocTemplate", "DocTemplate").Value = value;
-            }
-        }
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [BrowsableAttribute(false)]
-        [DataMemberAttribute()]
-        public EntityReference<DocTemplate> DocTemplateReference
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<DocTemplate>("smqdocModel.DocTemplatesForUserDocTemplate", "DocTemplate");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<PersonalDocTemplate>("smqdocModel.PersonalDocTemplateDocTemplate", "PersonalDocTemplate");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<DocTemplate>("smqdocModel.DocTemplatesForUserDocTemplate", "DocTemplate", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<PersonalDocTemplate>("smqdocModel.PersonalDocTemplateDocTemplate", "PersonalDocTemplate", value);
                 }
             }
         }
@@ -3271,6 +3134,192 @@ namespace MvcFront.DB
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="smqdocModel", Name="PersonalDocTemplate")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class PersonalDocTemplate : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new PersonalDocTemplate object.
+        /// </summary>
+        /// <param name="personaldoctemplateid">Initial value of the personaldoctemplateid property.</param>
+        /// <param name="docTemplate_docteplateid">Initial value of the DocTemplate_docteplateid property.</param>
+        /// <param name="userGroup_usergroupid">Initial value of the UserGroup_usergroupid property.</param>
+        public static PersonalDocTemplate CreatePersonalDocTemplate(global::System.Int32 personaldoctemplateid, global::System.Int64 docTemplate_docteplateid, global::System.Int32 userGroup_usergroupid)
+        {
+            PersonalDocTemplate personalDocTemplate = new PersonalDocTemplate();
+            personalDocTemplate.personaldoctemplateid = personaldoctemplateid;
+            personalDocTemplate.DocTemplate_docteplateid = docTemplate_docteplateid;
+            personalDocTemplate.UserGroup_usergroupid = userGroup_usergroupid;
+            return personalDocTemplate;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 personaldoctemplateid
+        {
+            get
+            {
+                return _personaldoctemplateid;
+            }
+            set
+            {
+                if (_personaldoctemplateid != value)
+                {
+                    OnpersonaldoctemplateidChanging(value);
+                    ReportPropertyChanging("personaldoctemplateid");
+                    _personaldoctemplateid = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("personaldoctemplateid");
+                    OnpersonaldoctemplateidChanged();
+                }
+            }
+        }
+        private global::System.Int32 _personaldoctemplateid;
+        partial void OnpersonaldoctemplateidChanging(global::System.Int32 value);
+        partial void OnpersonaldoctemplateidChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int64 DocTemplate_docteplateid
+        {
+            get
+            {
+                return _DocTemplate_docteplateid;
+            }
+            set
+            {
+                OnDocTemplate_docteplateidChanging(value);
+                ReportPropertyChanging("DocTemplate_docteplateid");
+                _DocTemplate_docteplateid = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DocTemplate_docteplateid");
+                OnDocTemplate_docteplateidChanged();
+            }
+        }
+        private global::System.Int64 _DocTemplate_docteplateid;
+        partial void OnDocTemplate_docteplateidChanging(global::System.Int64 value);
+        partial void OnDocTemplate_docteplateidChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 UserGroup_usergroupid
+        {
+            get
+            {
+                return _UserGroup_usergroupid;
+            }
+            set
+            {
+                OnUserGroup_usergroupidChanging(value);
+                ReportPropertyChanging("UserGroup_usergroupid");
+                _UserGroup_usergroupid = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("UserGroup_usergroupid");
+                OnUserGroup_usergroupidChanged();
+            }
+        }
+        private global::System.Int32 _UserGroup_usergroupid;
+        partial void OnUserGroup_usergroupidChanging(global::System.Int32 value);
+        partial void OnUserGroup_usergroupidChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "PersonalDocTemplateDocTemplate", "DocTemplate")]
+        public DocTemplate DocTemplate
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<DocTemplate>("smqdocModel.PersonalDocTemplateDocTemplate", "DocTemplate").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<DocTemplate>("smqdocModel.PersonalDocTemplateDocTemplate", "DocTemplate").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<DocTemplate> DocTemplateReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<DocTemplate>("smqdocModel.PersonalDocTemplateDocTemplate", "DocTemplate");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<DocTemplate>("smqdocModel.PersonalDocTemplateDocTemplate", "DocTemplate", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "PersonalDocTemplateUserGroup", "UserGroup")]
+        public UserGroup UserGroup
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<UserGroup>("smqdocModel.PersonalDocTemplateUserGroup", "UserGroup").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<UserGroup>("smqdocModel.PersonalDocTemplateUserGroup", "UserGroup").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<UserGroup> UserGroupReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<UserGroup>("smqdocModel.PersonalDocTemplateUserGroup", "UserGroup");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<UserGroup>("smqdocModel.PersonalDocTemplateUserGroup", "UserGroup", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
     [EdmEntityTypeAttribute(NamespaceName="smqdocModel", Name="ReportField")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
@@ -4167,6 +4216,28 @@ namespace MvcFront.DB
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<DocAppointment>("smqdocModel.UserGroupDocAppointment", "DocAppointment", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "PersonalDocTemplateUserGroup", "PersonalDocTemplate")]
+        public EntityCollection<PersonalDocTemplate> PersonalDocTemplates
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<PersonalDocTemplate>("smqdocModel.PersonalDocTemplateUserGroup", "PersonalDocTemplate");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<PersonalDocTemplate>("smqdocModel.PersonalDocTemplateUserGroup", "PersonalDocTemplate", value);
                 }
             }
         }

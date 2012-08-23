@@ -5,7 +5,7 @@
 }
 <h2>Необходимо начать заполнять документы:</h2>
     @Html.ValidationSummary(true)
-<h3>Назначенные вашей группе документы:</h3>
+<h3>Назначения вашей группе:</h3>
 @(Html.Telerik().Grid<DocAppointmentListViewModel>()
      .DataBinding(dataBinding => dataBinding.Ajax().Select("_GroupDocAppointList", "UserDocument", new {  }))
              .ClientEvents(events => events.OnRowDataBound("onGroupDocAppointmentListGridRowDataBound"))
@@ -27,9 +27,9 @@
 
     ) 
     
-<h3>Личные назначения документы:</h3>
+<h3>Персональные назначения:</h3>
 @(Html.Telerik().Grid<DocAppointmentListViewModel>()
-             .DataBinding(dataBinding => dataBinding.Ajax().Select("_UserDocAppointmentList", "UserDocument", new { }))
+             .DataBinding(dataBinding => dataBinding.Ajax().Select("_PersonalDocAppointmentList", "UserDocument", new { }))
              .ClientEvents(events => events.OnRowDataBound("onGroupDocAppointmentListGridRowDataBound"))
             .Name("UserDocAppointmentListGrid")
                    .Columns(columns =>

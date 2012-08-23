@@ -14,7 +14,7 @@ namespace MvcFront.Repositories
             _unitOfWork = unitOfWork;
         }
 
-        public IQueryable<DocAppointment> GetAllUserDocAppointments(long accountId, bool includeNotStarted = false)
+        public IQueryable<DocAppointment> GetAllPersonalDocAppointments(long accountId, bool includeNotStarted = false)
         {
             var query =
                 _unitOfWork.DbModel.DocAppointments.Where(

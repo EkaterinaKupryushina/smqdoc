@@ -18,10 +18,13 @@ namespace MvcFront.Controllers
     {
         private readonly IDocAppointmentRepository _appointmentRepository;
         private readonly IDocTemplateRepository _docTemplateRepository;
-        public GroupDocAppointmentController(IDocAppointmentRepository appointmentRepository, IDocTemplateRepository docTemplateRepository)
+        private readonly IPersonalDocTemplateRepository _personalDocTemplateRepository;
+
+        public GroupDocAppointmentController(IDocAppointmentRepository appointmentRepository, IDocTemplateRepository docTemplateRepository,IPersonalDocTemplateRepository personalDocTemplateRepository)
         {
             _appointmentRepository = appointmentRepository;
             _docTemplateRepository = docTemplateRepository;
+            _personalDocTemplateRepository = personalDocTemplateRepository;
         }
 
         /// <summary>
@@ -38,7 +41,7 @@ namespace MvcFront.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public ActionResult Details(long id)
+        public ActionResult DetailsGroupDocAppointment(long id)
         {
             try
             {
@@ -60,9 +63,7 @@ namespace MvcFront.Controllers
         {
             try
             {
-                return
-                    View(
-                        _docTemplateRepository.GetAllDocTeplates().Where(
+                    return View(_docTemplateRepository.GetAllDocTeplates().Where(
                             x => x.Status != (int) DocTemplateStatus.Deleted).ToList().ConvertAll(
                                 DocTemplateListViewModel.DocTemplateToModelConverter).ToList());
             }
@@ -73,6 +74,56 @@ namespace MvcFront.Controllers
                 return View(new List<DocTemplateListViewModel>());
             }
         }
+
+        /// <summary>
+        /// Показывает страницу выбора формы для привязки
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult SelectDocTemplateForPersonal()
+        {
+            try
+            {
+                var sessData = SessionHelper.GetUserSessionData(Session);
+                var persDocTemplsIds =
+                    _personalDocTemplateRepository.GetAllGroupPersonalDocTemplates(sessData.UserGroupId).Select(x => x.DocTemplate_docteplateid)
+                    .Distinct().ToList();
+                return View(_docTemplateRepository.GetAllDocTeplates().Where(
+                        x => x.Status != (int)DocTemplateStatus.Deleted && !persDocTemplsIds.Contains(x.docteplateid)).ToList().ConvertAll(
+                            DocTemplateListViewModel.DocTemplateToModelConverter).ToList());
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "GroupDocAppointmentController.SelectDocTemplate()", ex);
+                return View(new List<DocTemplateListViewModel>());
+            }
+        }
+
+        /// <summary>
+        /// Создание привязки к группе (песрональные дкоументы)
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult CreatePersonalDocTemplate(long docTemplateId)
+        {
+            try
+            {
+                var sessData = SessionHelper.GetUserSessionData(Session);
+                var newPersDocTempl = new PersonalDocTemplate
+                    {
+                        DocTemplate_docteplateid = docTemplateId, 
+                        UserGroup_usergroupid = sessData.UserGroupId,
+                        personaldoctemplateid = 0
+                    };
+                _personalDocTemplateRepository.SavePersonalDocTemplate(newPersDocTempl);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "GroupDocAppointmentController.CreateGroupAppointment()", ex);
+                
+            }
+            return RedirectToAction("Index");
+        } 
 
         /// <summary>
         /// Создание привязки к группе
@@ -131,7 +182,7 @@ namespace MvcFront.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public ActionResult Edit(long id)
+        public ActionResult EditGroupDocAppointment(long id)
         {
             try
             {
@@ -151,7 +202,7 @@ namespace MvcFront.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult Edit(DocAppointmentEditModel model)
+        public ActionResult EditGroupDocAppointment(DocAppointmentEditModel model)
         {
             try
             {
@@ -181,7 +232,7 @@ namespace MvcFront.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public ActionResult Delete(long id)
+        public ActionResult DeleteGroupDocAppointment(long id)
         {
             try
             {
@@ -202,7 +253,7 @@ namespace MvcFront.Controllers
        /// <param name="collection"></param>
        /// <returns></returns>
         [HttpPost]
-        public ActionResult Delete(long id, FormCollection collection)
+        public ActionResult DeleteGroupDocAppointment(long id, FormCollection collection)
         {
             try
             {
@@ -238,6 +289,25 @@ namespace MvcFront.Controllers
             }
         }
 
+        /// <summary>
+        /// Меняет стутс формы 
+        /// </summary>
+        /// <param name="personalDocTemplateId"></param>
+        /// <returns></returns>
+        public ActionResult DeletePersonalDocTemplate(int personalDocTemplateId)
+        {
+            try
+            {
+                _personalDocTemplateRepository.DeletePersonalDocTemplate(personalDocTemplateId);
+                return Json(new { result = true });
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "GroupDocAppointmentController.DeletePersonalDocTemplate()", ex);
+                return new JsonResult { Data = false };
+            }
+        }
+
         #endregion
 
         #region GridActions
@@ -259,11 +329,27 @@ namespace MvcFront.Controllers
             }
             catch (Exception ex)
             {
-                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "GroupDocAppointmentController._DocReportList()", ex);
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "GroupDocAppointmentController._GroupDocAppointmentList()", ex);
                 return View(new GridModel<GroupDocAppointmentListViewModel> { Data = new List<GroupDocAppointmentListViewModel>() });
             }
         }
 
+        [GridAction]
+        public ActionResult _PersonalDocTemplateList()
+        {
+            try
+            {
+                var sessData = SessionHelper.GetUserSessionData(Session);
+                var data = _personalDocTemplateRepository.GetAllGroupPersonalDocTemplates(sessData.UserGroupId).ToList()
+                    .ConvertAll(PersonalDocTemplateListViewModel.PersonalDocTemplateListViewModelToModelConverter);
+                return View(new GridModel<PersonalDocTemplateListViewModel> { Data = data });
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "GroupDocAppointmentController._PersonalDocTemplateList()", ex);
+                return View(new GridModel<PersonalDocTemplateListViewModel> { Data = new List<PersonalDocTemplateListViewModel>() });
+            }
+        }
         #endregion
     }
 }
