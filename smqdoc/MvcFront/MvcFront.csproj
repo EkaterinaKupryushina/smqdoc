@@ -159,6 +159,9 @@
     <Compile Include="Helpers\CalculationHelper.cs" />
     <Compile Include="Helpers\DictionaryHelper.cs" />
     <Compile Include="Helpers\SessionHelper.cs" />
+    <Compile Include="Interfaces\IPersonalDocTemplateRepository.cs" />
+    <Compile Include="Models\PersonalDocTemplateListViewModel.cs" />
+    <Compile Include="Repositories\PersonalDocTemplateRepository.cs" />
     <Compile Include="Services\AssetService.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
     <Compile Include="Services\FileLibraryService.cs" />
@@ -623,11 +626,11 @@
     <Content Include="Views\Shared\EditorTemplates\UserTagFilter.cshtml" />
     <Content Include="Views\GroupDocAppointment\Index.cshtml" />
     <Content Include="Views\GroupDocAppointment\CreateGroupAppointment.cshtml" />
-    <Content Include="Views\GroupDocAppointment\Details.cshtml" />
+    <Content Include="Views\GroupDocAppointment\DetailsGroupDocAppointment.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\DocAppointmentEditModel.cshtml" />
     <Content Include="Views\GroupDocAppointment\SelectDocTemplate.cshtml" />
-    <Content Include="Views\GroupDocAppointment\Edit.cshtml" />
-    <Content Include="Views\GroupDocAppointment\Delete.cshtml" />
+    <Content Include="Views\GroupDocAppointment\EditGroupDocAppointment.cshtml" />
+    <Content Include="Views\GroupDocAppointment\DeleteGroupDocAppointment.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\DocAppointmentEditModel.cshtml" />
     <Content Include="Views\ManagerDocument\Index.cshtml" />
     <Content Include="Views\ManagerDocument\ViewDocumentDetails.cshtml" />
@@ -656,6 +659,7 @@
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="Views\GroupDocAppointment\SelectDocTemplateForPersonal.cshtml" />
     <None Include="Views\UserAccountList\ChangeState.cshtml" />
     <Content Include="Views\UserGroupList\Index.cshtml" />
     <Content Include="Views\UserGroupList\Delete.cshtml" />

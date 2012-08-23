@@ -11,7 +11,7 @@
 @(Html.Telerik().Grid<GroupDocAppointmentListViewModel>()
         .Name("GroupDocAppintmentListGrid")
         .DataBinding(dataBinding => dataBinding.Ajax().Select("_GroupDocAppointmentList", "GroupDocAppointment"))
-        .ClientEvents(events => events.OnComplete("onComplete"))
+        .ClientEvents(events => events.OnComplete("onCompleteGroupAppointment"))
                    .Columns(columns =>
                    {
                        columns.AutoGenerate(column =>
@@ -24,11 +24,11 @@
                        {
                            command.Custom("viewDetails").Text("Информация")
                             .DataRouteValues(route => route.Add(o => o.ID).RouteKey("id"))
-                            .Action("Details", "GroupDocAppointment")
+                            .Action("DetailsGroupDocAppointment", "GroupDocAppointment")
                             .HtmlAttributes(new { style = "text-align: center" });
                            command.Custom("EditDetails").Text("Редактировать")
                             .DataRouteValues(route => route.Add(o => o.ID).RouteKey("id"))
-                            .Action("Edit", "GroupDocAppointment")
+                            .Action("EditGroupDocAppointment", "GroupDocAppointment")
                             .HtmlAttributes(new { style = "text-align: center" });
                            command.Custom("ChangeStateDetails").Text("Выключить/Выключить")
                             .DataRouteValues(route => route.Add(o => o.ID).RouteKey("id"))
@@ -37,7 +37,7 @@
                             .HtmlAttributes(new { style = "text-align: center" });
                            command.Custom("DeleteDetails").Text("Удалить")
                             .DataRouteValues(route => route.Add(o => o.ID).RouteKey("id"))
-                            .Action("Delete", "GroupDocAppointment")
+                            .Action("DeleteGroupDocAppointment", "GroupDocAppointment")
                             .HtmlAttributes(new { style = "text-align: center" });
                        }).Width(50);
                    })
@@ -45,11 +45,43 @@
                 .Pageable()
 
     ) 
-      
+     
+<h2>Доступные для самозаполнения участникам группы формы документов</h2>
+
+@Html.ActionLink("Добавить  форму", "SelectDocTemplateForPersonal")
+@(Html.Telerik().Grid<PersonalDocTemplateListViewModel>()
+        .Name("PersonalDocTemplateListGrid")
+        .DataBinding(dataBinding => dataBinding.Ajax().Select("_PersonalDocTemplateList", "GroupDocAppointment"))
+            .ClientEvents(events => events.OnComplete("onCompletePersonalDocTemplate"))
+                       .Columns(columns =>
+                       {
+                           columns.AutoGenerate(column =>
+                           {
+                               column.Width = "150px";
+                               if (column.Member == "PersonalDocTemplateId")
+                                   column.Visible = false;
+                           });
+                           columns.Command(command => command.Custom("DeleteDetails").Text("Удалить")
+                                                          .DataRouteValues(route => route.Add(o => o.PersonalDocTemplateId).RouteKey("personalDocTemplateId"))
+                                                          .Ajax(true)
+                                                          .Action("DeletePersonalDocTemplate", "GroupDocAppointment")
+                                                          .HtmlAttributes(new { style = "text-align: center" })).Width(50);
+                       })
+                     .Sortable()
+                    .Pageable()
+    )  
 <script type="text/javascript">
-       function onComplete(e) {
+    function onCompleteGroupAppointment(e) {
               if (e.name == "ChangeStateDetails") {
                   var grid = $('#GroupDocAppintmentListGrid').data("tGrid");
+                  if (grid != null) {
+                      grid.rebind();
+                  }
+              }
+          }
+          function onCompletePersonalDocTemplate(e) {
+              if (e.name == "DeleteDetails") {
+                  var grid = $('#PersonalDocTemplateListGrid').data("tGrid");
                   if (grid != null) {
                       grid.rebind();
                   }

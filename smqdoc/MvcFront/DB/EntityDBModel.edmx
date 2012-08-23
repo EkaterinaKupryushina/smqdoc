@@ -15,11 +15,11 @@
     <EntitySet Name="ComputableFieldTemplateParts" EntityType="smqdocModel.Store.ComputableFieldTemplateParts" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="UserTags" EntityType="smqdocModel.Store.UserTags" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="DocAppointments" EntityType="smqdocModel.Store.DocAppointments" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="DocTemplatesForUsers" EntityType="smqdocModel.Store.DocTemplatesForUsers" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="DocReports" EntityType="smqdocModel.Store.DocReports" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="ReportFields" EntityType="smqdocModel.Store.ReportFields" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="FileLibraryFolders" EntityType="smqdocModel.Store.FileLibraryFolders" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="FileLibraryAssets" EntityType="smqdocModel.Store.FileLibraryAssets" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="PersonalDocTemplates" EntityType="smqdocModel.Store.PersonalDocTemplates" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="GroupUsers" EntityType="smqdocModel.Store.GroupUsers" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="UserAccountUserTags" EntityType="smqdocModel.Store.UserAccountUserTags" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="ReportUserTags" EntityType="smqdocModel.Store.ReportUserTags" store:Type="Tables" Schema="dbo" />
@@ -83,10 +83,6 @@
       <End Role="UserGroup" EntitySet="UserGroups" />
       <End Role="DocAppointment" EntitySet="DocAppointments" />
     </AssociationSet>
-    <AssociationSet Name="DocTemplatesForUserDocTemplate" Association="smqdocModel.Store.DocTemplatesForUserDocTemplate">
-      <End Role="DocTemplatesForUser" EntitySet="DocTemplatesForUsers" />
-      <End Role="DocTemplate" EntitySet="DocTemplates" />
-    </AssociationSet>
     <AssociationSet Name="ReportDocTemplate" Association="smqdocModel.Store.ReportDocTemplate">
       <End Role="Report" EntitySet="DocReports" />
       <End Role="DocTemplate" EntitySet="DocTemplates" />
@@ -114,6 +110,14 @@
     <AssociationSet Name="FileLibraryAssetFileLibraryFolder" Association="smqdocModel.Store.FileLibraryAssetFileLibraryFolder">
       <End Role="FileLibraryAsset" EntitySet="FileLibraryAssets" />
       <End Role="FileLibraryFolder" EntitySet="FileLibraryFolders" />
+    </AssociationSet>
+    <AssociationSet Name="PersonalDocTemplateDocTemplate" Association="smqdocModel.Store.PersonalDocTemplateDocTemplate">
+      <End Role="PersonalDocTemplate" EntitySet="PersonalDocTemplates" />
+      <End Role="DocTemplate" EntitySet="DocTemplates" />
+    </AssociationSet>
+    <AssociationSet Name="PersonalDocTemplateUserGroup" Association="smqdocModel.Store.PersonalDocTemplateUserGroup">
+      <End Role="PersonalDocTemplate" EntitySet="PersonalDocTemplates" />
+      <End Role="UserGroup" EntitySet="UserGroups" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="UserAccounts">
@@ -225,14 +229,6 @@
     <Property Name="UserAccount_userid" Type="int" Nullable="true" />
     <Property Name="UserGroup_usergroupid" Type="int" Nullable="true" />
   </EntityType>
-  <EntityType Name="DocTemplatesForUsers">
-    <Key>
-      <PropertyRef Name="doctemplateforuseid" />
-    </Key>
-    <Property Name="doctemplateforuseid" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="AllowManyInstances" Type="bit" Nullable="false" />
-    <Property Name="DocTemplate_docteplateid" Type="bigint" Nullable="false" />
-  </EntityType>
   <EntityType Name="DocReports">
     <Key>
       <PropertyRef Name="docreportid" />
@@ -274,6 +270,14 @@
     <Property Name="LastEditDate" Type="datetime" Nullable="false" />
     <Property Name="Comment" Type="nvarchar(max)" Nullable="false" />
     <Property Name="FileName" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PersonalDocTemplates">
+    <Key>
+      <PropertyRef Name="personaldoctemplateid" />
+    </Key>
+    <Property Name="personaldoctemplateid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DocTemplate_docteplateid" Type="bigint" Nullable="false" />
+    <Property Name="UserGroup_usergroupid" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="GroupUsers">
     <Key>
@@ -431,20 +435,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="DocTemplatesForUserDocTemplate">
-    <End Role="DocTemplatesForUser" Type="smqdocModel.Store.DocTemplatesForUsers" Multiplicity="*" />
-    <End Role="DocTemplate" Type="smqdocModel.Store.DocTemplates" Multiplicity="1">
-      <OnDelete Action="Cascade" />
-    </End>
-    <ReferentialConstraint>
-      <Principal Role="DocTemplate">
-        <PropertyRef Name="docteplateid" />
-      </Principal>
-      <Dependent Role="DocTemplatesForUser">
-        <PropertyRef Name="DocTemplate_docteplateid" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="ReportDocTemplate">
     <End Role="Report" Type="smqdocModel.Store.DocReports" Multiplicity="*" />
     <End Role="DocTemplate" Type="smqdocModel.Store.DocTemplates" Multiplicity="1" />
@@ -502,6 +492,30 @@
       </Principal>
       <Dependent Role="FileLibraryAsset">
         <PropertyRef Name="FileLibraryFolder_filelibraryfolderid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="PersonalDocTemplateDocTemplate">
+    <End Role="PersonalDocTemplate" Type="smqdocModel.Store.PersonalDocTemplates" Multiplicity="*" />
+    <End Role="DocTemplate" Type="smqdocModel.Store.DocTemplates" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="DocTemplate">
+        <PropertyRef Name="docteplateid" />
+      </Principal>
+      <Dependent Role="PersonalDocTemplate">
+        <PropertyRef Name="DocTemplate_docteplateid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="PersonalDocTemplateUserGroup">
+    <End Role="PersonalDocTemplate" Type="smqdocModel.Store.PersonalDocTemplates" Multiplicity="*" />
+    <End Role="UserGroup" Type="smqdocModel.Store.UserGroups" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="UserGroup">
+        <PropertyRef Name="usergroupid" />
+      </Principal>
+      <Dependent Role="PersonalDocTemplate">
+        <PropertyRef Name="UserGroup_usergroupid" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -643,11 +657,6 @@
             <End Role="UserGroup" EntitySet="UserGroups" />
             <End Role="DocAppointment" EntitySet="DocAppointments" />
           </AssociationSet>
-          <EntitySet Name="DocTemplatesForUsers" EntityType="smqdocModel.DocTemplatesForUser" />
-          <AssociationSet Name="DocTemplatesForUserDocTemplate" Association="smqdocModel.DocTemplatesForUserDocTemplate">
-            <End Role="DocTemplatesForUser" EntitySet="DocTemplatesForUsers" />
-            <End Role="DocTemplate" EntitySet="DocTemplates" />
-          </AssociationSet>
           <EntitySet Name="DocReports" EntityType="smqdocModel.DocReport" />
           <AssociationSet Name="ReportDocTemplate" Association="smqdocModel.ReportDocTemplate">
             <End Role="Report" EntitySet="DocReports" />
@@ -675,6 +684,15 @@
           <AssociationSet Name="FileLibraryAssetFileLibraryFolder" Association="smqdocModel.FileLibraryAssetFileLibraryFolder">
             <End Role="FileLibraryAsset" EntitySet="FileLibraryAssets" />
             <End Role="FileLibraryFolder" EntitySet="FileLibraryFolders" />
+          </AssociationSet>
+          <EntitySet Name="PersonalDocTemplates" EntityType="smqdocModel.PersonalDocTemplate" />
+          <AssociationSet Name="PersonalDocTemplateDocTemplate" Association="smqdocModel.PersonalDocTemplateDocTemplate">
+            <End Role="PersonalDocTemplate" EntitySet="PersonalDocTemplates" />
+            <End Role="DocTemplate" EntitySet="DocTemplates" />
+          </AssociationSet>
+          <AssociationSet Name="PersonalDocTemplateUserGroup" Association="smqdocModel.PersonalDocTemplateUserGroup">
+            <End Role="PersonalDocTemplate" EntitySet="PersonalDocTemplates" />
+            <End Role="UserGroup" EntitySet="UserGroups" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="UserAccount">
@@ -710,6 +728,7 @@
           <NavigationProperty Name="Members" Relationship="smqdocModel.GroupUsers" FromRole="UserGroup" ToRole="UserAccount" />
           <Property Type="Int32" Name="Status" Nullable="false" />
           <NavigationProperty Name="DocAppointments" Relationship="smqdocModel.UserGroupDocAppointment" FromRole="UserGroup" ToRole="DocAppointment" />
+          <NavigationProperty Name="PersonalDocTemplates" Relationship="smqdocModel.PersonalDocTemplateUserGroup" FromRole="UserGroup" ToRole="PersonalDocTemplate" />
         </EntityType>
         <Association Name="GroupManager">
           <End Type="smqdocModel.UserGroup" Role="UserGroup" Multiplicity="*" />
@@ -738,9 +757,9 @@
           <NavigationProperty Name="FieldTeplates" Relationship="smqdocModel.FieldTeplateDocTemplate" FromRole="DocTemplate" ToRole="FieldTeplate" />
           <Property Type="DateTime" Name="LastEditDate" Nullable="false" />
           <NavigationProperty Name="DocAppointments" Relationship="smqdocModel.DocTemplateDocAppointment" FromRole="DocTemplate" ToRole="DocAppointment" />
-          <NavigationProperty Name="DocTemplatesForUser" Relationship="smqdocModel.DocTemplatesForUserDocTemplate" FromRole="DocTemplate" ToRole="DocTemplatesForUser" />
           <NavigationProperty Name="Reports" Relationship="smqdocModel.ReportDocTemplate" FromRole="DocTemplate" ToRole="Report" />
           <Property Type="Boolean" Name="AllowAttachment" Nullable="false" />
+          <NavigationProperty Name="PersonalDocTemplates" Relationship="smqdocModel.PersonalDocTemplateDocTemplate" FromRole="DocTemplate" ToRole="PersonalDocTemplate" />
         </EntityType>
         <EntityType Name="FieldTemplate">
           <Key>
@@ -960,21 +979,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="DocTemplatesForUser">
-          <Key>
-            <PropertyRef Name="doctemplateforuseid" />
-          </Key>
-          <Property Type="Int64" Name="doctemplateforuseid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="Boolean" Name="AllowManyInstances" Nullable="false" />
-          <NavigationProperty Name="DocTemplate" Relationship="smqdocModel.DocTemplatesForUserDocTemplate" FromRole="DocTemplatesForUser" ToRole="DocTemplate" />
-        </EntityType>
-        <Association Name="DocTemplatesForUserDocTemplate">
-          <End Type="smqdocModel.DocTemplatesForUser" Role="DocTemplatesForUser" Multiplicity="0..1" >
-          </End>
-          <End Type="smqdocModel.DocTemplate" Role="DocTemplate" Multiplicity="1" >
-            <OnDelete Action="Cascade" />
-          </End>
-        </Association>
         <EntityType Name="DocReport">
           <Key>
             <PropertyRef Name="docreportid" />
@@ -1087,6 +1091,40 @@
             </Principal>
             <Dependent Role="FileLibraryAsset">
               <PropertyRef Name="FileLibraryFolder_filelibraryfolderid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="PersonalDocTemplate">
+          <Key>
+            <PropertyRef Name="personaldoctemplateid" />
+          </Key>
+          <Property Type="Int32" Name="personaldoctemplateid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="DocTemplate" Relationship="smqdocModel.PersonalDocTemplateDocTemplate" FromRole="PersonalDocTemplate" ToRole="DocTemplate" />
+          <Property Type="Int64" Name="DocTemplate_docteplateid" Nullable="false" />
+          <NavigationProperty Name="UserGroup" Relationship="smqdocModel.PersonalDocTemplateUserGroup" FromRole="PersonalDocTemplate" ToRole="UserGroup" />
+          <Property Type="Int32" Name="UserGroup_usergroupid" Nullable="false" />
+        </EntityType>
+        <Association Name="PersonalDocTemplateDocTemplate">
+          <End Type="smqdocModel.PersonalDocTemplate" Role="PersonalDocTemplate" Multiplicity="*" />
+          <End Type="smqdocModel.DocTemplate" Role="DocTemplate" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="DocTemplate">
+              <PropertyRef Name="docteplateid" />
+            </Principal>
+            <Dependent Role="PersonalDocTemplate">
+              <PropertyRef Name="DocTemplate_docteplateid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PersonalDocTemplateUserGroup">
+          <End Type="smqdocModel.PersonalDocTemplate" Role="PersonalDocTemplate" Multiplicity="*" />
+          <End Type="smqdocModel.UserGroup" Role="UserGroup" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="UserGroup">
+              <PropertyRef Name="usergroupid" />
+            </Principal>
+            <Dependent Role="PersonalDocTemplate">
+              <PropertyRef Name="UserGroup_usergroupid" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1214,14 +1252,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="DocTemplatesForUsers">
-      <EntityTypeMapping TypeName="IsTypeOf(smqdocModel.DocTemplatesForUser)">
-        <MappingFragment StoreEntitySet="DocTemplatesForUsers">
-          <ScalarProperty Name="doctemplateforuseid" ColumnName="doctemplateforuseid" />
-          <ScalarProperty Name="AllowManyInstances" ColumnName="AllowManyInstances" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="DocReports">
       <EntityTypeMapping TypeName="IsTypeOf(smqdocModel.DocReport)">
         <MappingFragment StoreEntitySet="DocReports">
@@ -1268,6 +1298,15 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="PersonalDocTemplates">
+      <EntityTypeMapping TypeName="IsTypeOf(smqdocModel.PersonalDocTemplate)">
+        <MappingFragment StoreEntitySet="PersonalDocTemplates">
+          <ScalarProperty Name="personaldoctemplateid" ColumnName="personaldoctemplateid" />
+          <ScalarProperty Name="DocTemplate_docteplateid" ColumnName="DocTemplate_docteplateid" />
+          <ScalarProperty Name="UserGroup_usergroupid" ColumnName="UserGroup_usergroupid" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <AssociationSetMapping Name="GroupUsers" TypeName="smqdocModel.GroupUsers" StoreEntitySet="GroupUsers">
       <EndProperty Name="UserGroup">
         <ScalarProperty Name="usergroupid" ColumnName="MemberGroups_usergroupid" />
@@ -1282,14 +1321,6 @@
       </EndProperty>
       <EndProperty Name="UserTags">
         <ScalarProperty Name="Id" ColumnName="UserTags_Id" />
-      </EndProperty>
-    </AssociationSetMapping>
-    <AssociationSetMapping Name="DocTemplatesForUserDocTemplate" TypeName="smqdocModel.DocTemplatesForUserDocTemplate" StoreEntitySet="DocTemplatesForUsers">
-      <EndProperty Name="DocTemplate">
-        <ScalarProperty Name="docteplateid" ColumnName="DocTemplate_docteplateid" />
-      </EndProperty>
-      <EndProperty Name="DocTemplatesForUser">
-        <ScalarProperty Name="doctemplateforuseid" ColumnName="doctemplateforuseid" />
       </EndProperty>
     </AssociationSetMapping>
     <AssociationSetMapping Name="ReportUserTags" TypeName="smqdocModel.ReportUserTags" StoreEntitySet="ReportUserTags">
@@ -1368,11 +1399,15 @@
         <EntityTypeShape EntityType="smqdocModel.DocAppointment" Width="2" PointX="13.375" PointY="4.5" Height="3.7109993489583317" />
         <AssociationConnector Association="smqdocModel.DocTemplateDocAppointment" ManuallyRouted="false">
           <ConnectorPoint PointX="6.625" PointY="9.125" />
-          <ConnectorPoint PointX="6.625" PointY="5.17968875" />
-          <ConnectorPoint PointX="13.375" PointY="5.17968875" />
+          <ConnectorPoint PointX="6.625" PointY="5.0839834375" />
+          <ConnectorPoint PointX="10.260416666666666" PointY="5.0839834374999988" />
+          <ConnectorPoint PointX="10.427083333333334" PointY="5.0839834375" />
+          <ConnectorPoint PointX="13.375" PointY="5.0839834375" />
         </AssociationConnector>
         <AssociationConnector Association="smqdocModel.DocumentDocAppointment">
           <ConnectorPoint PointX="10.25" PointY="6.9179996744791659" />
+          <ConnectorPoint PointX="10.260416666666666" PointY="6.917999674479165" />
+          <ConnectorPoint PointX="10.427083333333334" PointY="6.9179996744791659" />
           <ConnectorPoint PointX="13.375" PointY="6.9179996744791659" />
         </AssociationConnector>
         <AssociationConnector Association="smqdocModel.FK_FieldTemplates_FieldTemplates1" >
@@ -1385,22 +1420,19 @@
           <ConnectorPoint PointX="5.5" PointY="5.433594375" />
           <ConnectorPoint PointX="6.541666666666667" PointY="5.4335943749999993" />
           <ConnectorPoint PointX="6.708333333333333" PointY="5.433594375" />
+          <ConnectorPoint PointX="10.260416666666666" PointY="5.4335943749999993" />
+          <ConnectorPoint PointX="10.427083333333334" PointY="5.433594375" />
           <ConnectorPoint PointX="13.375" PointY="5.433594375" />
         </AssociationConnector>
         <AssociationConnector Association="smqdocModel.UserGroupDocAppointment">
-          <ConnectorPoint PointX="10.34375" PointY="3.8071907552083331" />
-          <ConnectorPoint PointX="10.34375" PointY="4.7343724999999992" />
-          <ConnectorPoint PointX="13.375" PointY="4.7343724999999992" />
-        </AssociationConnector>
-        <EntityTypeShape EntityType="smqdocModel.DocTemplatesForUser" Width="1.875" PointX="7.875" PointY="10.75" Height="1.5956835937499996" />
-        <AssociationConnector Association="smqdocModel.DocTemplatesForUserDocTemplate">
-          <ConnectorPoint PointX="7.875" PointY="11.408396809895834" />
-          <ConnectorPoint PointX="7.375" PointY="11.408396809895834" />
+          <ConnectorPoint PointX="10.375" PointY="2.5447973902295353" />
+          <ConnectorPoint PointX="14.375" PointY="2.5447973902295353" />
+          <ConnectorPoint PointX="14.375" PointY="4.5" />
         </AssociationConnector>
         <EntityTypeShape EntityType="smqdocModel.DocReport" Width="2" PointX="15.5" PointY="10.375" Height="3.1340950520833335" />
         <AssociationConnector Association="smqdocModel.ReportDocTemplate">
-          <ConnectorPoint PointX="15.5" PointY="10.53125" />
-          <ConnectorPoint PointX="7.375" PointY="10.53125" />
+          <ConnectorPoint PointX="15.5" PointY="11.9297900390625" />
+          <ConnectorPoint PointX="7.375" PointY="11.9297900390625" />
         </AssociationConnector>
         <AssociationConnector Association="smqdocModel.ReportUserTags">
           <ConnectorPoint PointX="16.5" PointY="10.375" />
@@ -1427,6 +1459,15 @@
         <AssociationConnector Association="smqdocModel.FileLibraryAssetFileLibraryFolder">
           <ConnectorPoint PointX="22.625" PointY="11.5237939453125" />
           <ConnectorPoint PointX="22.125" PointY="11.5237939453125" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="smqdocModel.PersonalDocTemplate" Width="2.125" PointX="9.125" PointY="9.75" Height="1.9802864583333335" />
+        <AssociationConnector Association="smqdocModel.PersonalDocTemplateDocTemplate">
+          <ConnectorPoint PointX="9.125" PointY="10.740143229166666" />
+          <ConnectorPoint PointX="7.375" PointY="10.740143229166666" />
+        </AssociationConnector>
+        <AssociationConnector Association="smqdocModel.PersonalDocTemplateUserGroup">
+          <ConnectorPoint PointX="10.34375" PointY="9.75" />
+          <ConnectorPoint PointX="10.34375" PointY="3.9994921875" />
         </AssociationConnector>
         </Diagram>
     </Diagrams>

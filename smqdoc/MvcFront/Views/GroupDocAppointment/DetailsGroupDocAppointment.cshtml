@@ -1,0 +1,14 @@
+﻿@model MvcFront.Models.DocAppointmentEditModel
+
+@{
+    ViewBag.Title = "Details";
+}
+    @Html.ValidationSummary(true)
+<h2>Инфомрация</h2>
+<fieldset>
+@Html.DisplayForModel()
+</fieldset>
+<p>
+    @Html.ActionLink("Редактировать", "Edit", new { id=Model.DocAppointmentId}) |
+    @Html.ActionLink("Назад", "Index")
+</p>

@@ -10,7 +10,7 @@ namespace MvcFront.Interfaces
         /// Возвращает список назначений доступных всем пользвателеям
         /// </summary>
         /// <returns></returns>
-        IQueryable<DocAppointment> GetAllUserDocAppointments(long accountId, bool includeNotStarted = false );
+        IQueryable<DocAppointment> GetAllPersonalDocAppointments(long accountId, bool includeNotStarted = false );
 
         /// <summary>
         /// Возвращает список назначений доступных всем пользвателеям группы

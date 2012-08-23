@@ -22,11 +22,15 @@ namespace MvcFront.Controllers
         private readonly IDocumentRepository _documentRepository;
         private readonly IDocAppointmentRepository _appointmentRepository;
         private readonly IDocTemplateRepository _docTemplateRepository;
-        public UserDocumentController(IDocAppointmentRepository appointmentRepository, IDocumentRepository documentRepository, IDocTemplateRepository docTemplateRepository)
+        private readonly IPersonalDocTemplateRepository _personalDocTemplateRepository;
+
+        public UserDocumentController(IDocAppointmentRepository appointmentRepository, IDocumentRepository documentRepository, 
+            IDocTemplateRepository docTemplateRepository, IPersonalDocTemplateRepository personalDocTemplateRepository)
         {
             _documentRepository = documentRepository;
             _appointmentRepository = appointmentRepository;
             _docTemplateRepository = docTemplateRepository;
+            _personalDocTemplateRepository = personalDocTemplateRepository;
         }
 
        /// <summary>
@@ -125,10 +129,11 @@ namespace MvcFront.Controllers
         {
             try
             {
+                var sessData = SessionHelper.GetUserSessionData(Session);
                 return
                     View(
-                        _docTemplateRepository.GetAllDocTeplates().Where(
-                            x => x.Status == (int) DocTemplateStatus.Active && x.DocTemplatesForUser != null).ToList().
+                        _personalDocTemplateRepository.GetAllGroupPersonalDocTemplates(sessData.UserGroupId).Where(
+                            x => x.DocTemplate.Status == (int)DocTemplateStatus.Active).Select(x => x.DocTemplate).ToList().
                             ConvertAll(DocTemplateListViewModel.DocTemplateToModelConverter).ToList());
             }
             catch (Exception ex)
@@ -373,30 +378,20 @@ namespace MvcFront.Controllers
         /// </summary>
         /// <returns></returns>
         [GridAction]
-        public ActionResult _UserDocAppointmentList()
+        public ActionResult _PersonalDocAppointmentList()
         {
             try
             {
                 var sessData = SessionHelper.GetUserSessionData(Session);
-                var allUserGroupDocs =
-                    _documentRepository.GetUserDocumentsByUserId(sessData.UserId).Where(
-                        x => x.Status != (int) DocumentStatus.Deleted
-                             && x.DocAppointment.UserAccount_userid == sessData.UserId)
-                        .Select(x => x.DocAppointment_docappointmentid).ToList();
 
-                var data = _appointmentRepository.GetAllUserDocAppointments(sessData.UserId)
-                    .Where(
-                        x =>
-                        ((!allUserGroupDocs.Contains(x.docappointmentid) &&
-                          !x.DocTemplate.DocTemplatesForUser.AllowManyInstances) ||
-                         x.DocTemplate.DocTemplatesForUser.AllowManyInstances))
-                    .ToList().ConvertAll(DocAppointmentListViewModel.DocAppointmentToModelConverter).ToList();
-                return View(new GridModel<DocAppointmentListViewModel> {Data = data});
+                var data = _appointmentRepository.GetAllPersonalDocAppointments(sessData.UserId).ToList()
+                    .ConvertAll(DocAppointmentListViewModel.DocAppointmentToModelConverter).ToList();
+                return View(new GridModel<DocAppointmentListViewModel> { Data = data });
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError(string.Empty, "Произошла ошибка");
-                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserDocumentController._UserDocAppointmentList()", ex);
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserDocumentController._PersonalDocAppointmentList()", ex);
                 return View(new GridModel<DocAppointmentListViewModel> { Data = new List<DocAppointmentListViewModel>() });
             }
         }

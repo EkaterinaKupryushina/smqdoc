@@ -28,23 +28,14 @@ namespace MvcFront.Repositories
 
         public bool SaveDocTemplate(DocTemplate entity)
         {
+            entity.LastEditDate = DateTime.Now;
             if (entity.docteplateid == 0)
             {
-                entity.LastEditDate = DateTime.Now;
+                
                 _unitOfWork.DbModel.DocTemplates.AddObject(entity);
             }
             else
             {
-                
-                if (entity.DocTemplatesForUser == null)
-                {
-                    var dtForUser = _unitOfWork.DbModel.DocTemplatesForUsers.SingleOrDefault(
-                        x => x.DocTemplate.docteplateid == entity.docteplateid);
-                    if(dtForUser != null)
-                    {
-                        _unitOfWork.DbModel.DocTemplatesForUsers.DeleteObject(dtForUser);
-                    }
-                }
                 _unitOfWork.DbModel.DocTemplates.ApplyCurrentValues(entity);
             }
             _unitOfWork.DbModel.SaveChanges();
@@ -104,21 +95,6 @@ namespace MvcFront.Repositories
             }            
             _unitOfWork.DbModel.SaveChanges();
             return true;
-        }
-
-        private void SaveCalculatedFieldTemplateParts(FieldTemplate entity)
-        {
-            var lstOld = _unitOfWork.DbModel.ComputableFieldTemplateParts.Where(x => x.FieldTemplate.fieldteplateid == entity.fieldteplateid).ToList();
-            foreach (ComputableFieldTemplateParts oldItem in lstOld)
-            {
-                _unitOfWork.DbModel.ComputableFieldTemplateParts.DeleteObject(oldItem);
-            }
-
-            foreach (ComputableFieldTemplateParts newItem in entity.ComputableFieldTemplateParts)
-            {
-                _unitOfWork.DbModel.ComputableFieldTemplateParts.AddObject(newItem);
-            }
-            _unitOfWork.DbModel.SaveChanges();
         }
 
         public void DeleteFieldTemplate(long templateFieldId)
