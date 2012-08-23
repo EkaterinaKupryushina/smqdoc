@@ -324,3 +324,7 @@ div#title {
 .tri-state {
     width: 6em;
 }
+
+.current {
+    color: #DA70D6 !important;
+}

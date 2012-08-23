@@ -8,10 +8,5 @@ namespace MvcFront.Controllers
         {
             return View();
         }
-
-        public ActionResult About()
-        {
-            return View();
-        }
     }
 }

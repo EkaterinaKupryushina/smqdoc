@@ -158,6 +158,7 @@
     </Compile>
     <Compile Include="Helpers\CalculationHelper.cs" />
     <Compile Include="Helpers\DictionaryHelper.cs" />
+    <Compile Include="Helpers\HtmlExtentions.cs" />
     <Compile Include="Helpers\SessionHelper.cs" />
     <Compile Include="Interfaces\IPersonalDocTemplateRepository.cs" />
     <Compile Include="Models\PersonalDocTemplateListViewModel.cs" />
@@ -517,7 +518,6 @@
     <Content Include="Views\Account\ChangePassword.cshtml" />
     <Content Include="Views\Account\ChangePasswordSuccess.cshtml" />
     <Content Include="Views\Account\LogOn.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_LogOnPartial.cshtml" />
