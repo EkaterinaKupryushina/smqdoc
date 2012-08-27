@@ -27,7 +27,7 @@ namespace MvcFront.Controllers
         {
             try
             {
-                return View(_groupRepository.GetAll().Where(x => x.Status != (int) UserGroupStatus.Deleted)
+                return View(_groupRepository.GetAll().Where(x => x.Status != (int) UserGroupStatus.Deleted).ToList()
                                 .Select(
                                     x =>
                                     new UserGroupListViewModel
@@ -36,7 +36,8 @@ namespace MvcFront.Controllers
                                             Manager =
                                                 x.Manager.SecondName + " " + x.Manager.FirstName + " " + x.Manager.LastName +
                                                 " (" + x.Manager.Login + ")",
-                                            GroupName = x.GroupName
+                                            GroupName = x.GroupName,
+                                            Status = x.GroupStatusText
                                         }).ToList());
             }
             catch (Exception ex)

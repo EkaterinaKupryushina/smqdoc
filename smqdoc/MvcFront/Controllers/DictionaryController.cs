@@ -39,9 +39,11 @@ namespace MvcFront.Controllers
                 var data = _userRepository.GetAll();
                 if (!String.IsNullOrEmpty(text))
                 {
-                    data = data.Where(p => p.Login != null && p.Login.ToLower().Contains(text.ToLower())
-                                           || p.FirstName.Contains(text.ToLower()) ||
-                                           p.LastName.Contains(text.ToLower()) || p.SecondName.Contains(text.ToLower()))
+                    data = data.Where(p => (p.Status != (int)UserAccountStatus.Deleted && p.Login != null) 
+                        && (p.Login.ToLower().Contains(text.ToLower())
+                        || p.FirstName.Contains(text.ToLower()) 
+                        || p.LastName.Contains(text.ToLower()) 
+                        || p.SecondName.Contains(text.ToLower())))
                         .Take(20);
                 }
                 return new JsonResult
