@@ -14,12 +14,12 @@ namespace MvcFront.Repositories
             _unitOfWork = unitOfWork;
         }
 
-        public IQueryable<DocAppointment> GetAllPersonalDocAppointments(long accountId, bool includeNotStarted = false)
+        public IQueryable<DocAppointment> GetAllPersonalDocAppointments(long accountId, int groupId, bool includeNotStarted = false)
         {
             var query =
                 _unitOfWork.DbModel.DocAppointments.Where(
                     x =>
-                    x.UserGroup == null && x.UserAccount != null && x.UserAccount_userid == accountId 
+                    x.UserGroup_usergroupid == groupId && x.UserAccount_userid == accountId 
                     && x.DocTemplate.Status == (int) DocTemplateStatus.Active &&
                     x.Status == (int) DocAppointmentStatus.Active);
             if (!includeNotStarted)
@@ -34,7 +34,7 @@ namespace MvcFront.Repositories
             var query =
                 _unitOfWork.DbModel.DocAppointments.Where(
                     x =>
-                    x.UserGroup != null && x.UserAccount == null && x.UserGroup_usergroupid == groupId 
+                    x.UserAccount == null && x.UserGroup_usergroupid == groupId 
                     && x.DocTemplate.Status == (int) DocTemplateStatus.Active &&
                     x.Status == (int) DocAppointmentStatus.Active);
             if (!includeNotStarted)

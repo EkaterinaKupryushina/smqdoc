@@ -182,6 +182,7 @@ namespace MvcFront.Controllers
                     templ = model.Update(templ);
                     var sessData = SessionHelper.GetUserSessionData(Session);
                     templ.UserAccount_userid= sessData.UserId;
+                    templ.UserGroup_usergroupid = sessData.UserGroupId;
                     _appointmentRepository.SaveDocAppointment(templ);
                     docAppId = templ.docappointmentid;
                 }
@@ -384,7 +385,7 @@ namespace MvcFront.Controllers
             {
                 var sessData = SessionHelper.GetUserSessionData(Session);
 
-                var data = _appointmentRepository.GetAllPersonalDocAppointments(sessData.UserId).ToList()
+                var data = _appointmentRepository.GetAllPersonalDocAppointments(sessData.UserId, sessData.UserGroupId).ToList()
                     .ConvertAll(DocAppointmentListViewModel.DocAppointmentToModelConverter).ToList();
                 return View(new GridModel<DocAppointmentListViewModel> { Data = data });
             }
