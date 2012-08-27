@@ -55,7 +55,7 @@ namespace MvcFront.Repositories
         {
             if (entity.userid == 0)
             {
-                if (GetByLogin(entity.Login) == null && GetByLogin(entity.Email) == null)
+                if (GetByLogin(entity.Login) == null)
                 {
                     _unitOfWork.DbModel.UserAccounts.AddObject(entity);
                     _unitOfWork.DbModel.SaveChanges();

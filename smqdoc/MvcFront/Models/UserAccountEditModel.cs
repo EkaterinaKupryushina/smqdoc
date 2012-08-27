@@ -27,10 +27,6 @@ namespace MvcFront.Models
         [Display(Name = "Администратор?")]
         public bool IsAdmin { get; set; }
         [Required]
-        [DataType(DataType.EmailAddress)]
-        [Display(Name = "Email")]
-        public string Email { get; set; }
-        [Required]
         [Display(Name = "Пароль")]
         public string Password { get; set; }
         
@@ -46,7 +42,6 @@ namespace MvcFront.Models
             SecondName = acc.SecondName;
             LastName = acc.LastName;
             IsAdmin = acc.IsAdmin;
-            Email = acc.Email;
             Password = acc.Password;            
         }
 
@@ -57,7 +52,6 @@ namespace MvcFront.Models
             acc.SecondName = SecondName;
             acc.LastName = LastName;
             acc.IsAdmin = IsAdmin;
-            acc.Email = Email;
             acc.Password = Password;
             acc.userid = UserId;            
             return acc;

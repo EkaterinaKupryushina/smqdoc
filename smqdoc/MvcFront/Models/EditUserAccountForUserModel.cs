@@ -20,10 +20,6 @@ namespace MvcFront.Models
         [Display(Name = "Отчество")]
         public string SecondName { get; set; }
 
-        [Required]
-        [Display(Name = "Email")]
-        public string Email { get; set; }
-
         public EditUserAccountForUserModel() { }
 
         public EditUserAccountForUserModel(UserAccount user)
@@ -33,7 +29,6 @@ namespace MvcFront.Models
                 LastName = user.LastName;
                 FirstName = user.FirstName;
                 SecondName = user.SecondName;
-                Email = user.Email;
             }
         }
         // ReSharper restore MemberCanBePrivate.Global

@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 08/23/2012 14:28:24
+-- Date Created: 08/27/2012 10:26:01
 -- Generated from EDMX file: D:\Work\smqdoc\trunk\smqdoc\MvcFront\DB\EntityDBModel.edmx
 -- --------------------------------------------------
 
@@ -17,8 +17,20 @@ GO
 -- Dropping existing FOREIGN KEY constraints
 -- --------------------------------------------------
 
-IF OBJECT_ID(N'[dbo].[FK_ComputableFieldTemplatePartsFieldTemplate]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[ComputableFieldTemplateParts] DROP CONSTRAINT [FK_ComputableFieldTemplatePartsFieldTemplate];
+IF OBJECT_ID(N'[dbo].[FK_GroupManager]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[UserGroups] DROP CONSTRAINT [FK_GroupManager];
+GO
+IF OBJECT_ID(N'[dbo].[FK_GroupUsers_UserGroup]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[GroupUsers] DROP CONSTRAINT [FK_GroupUsers_UserGroup];
+GO
+IF OBJECT_ID(N'[dbo].[FK_GroupUsers_UserAccount]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[GroupUsers] DROP CONSTRAINT [FK_GroupUsers_UserAccount];
+GO
+IF OBJECT_ID(N'[dbo].[FK_FieldTeplateDocTemplate]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[FieldTemplates] DROP CONSTRAINT [FK_FieldTeplateDocTemplate];
+GO
+IF OBJECT_ID(N'[dbo].[FK_DocumentUserAccount]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Documents] DROP CONSTRAINT [FK_DocumentUserAccount];
 GO
 IF OBJECT_ID(N'[dbo].[FK_DocFieldDocument]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[DocFields] DROP CONSTRAINT [FK_DocFieldDocument];
@@ -26,59 +38,8 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_DocFieldFieldTemplate]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[DocFields] DROP CONSTRAINT [FK_DocFieldFieldTemplate];
 GO
-IF OBJECT_ID(N'[dbo].[FK_DocTemplateDocAppointment]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[DocAppointments] DROP CONSTRAINT [FK_DocTemplateDocAppointment];
-GO
-IF OBJECT_ID(N'[dbo].[FK_DocumentDocAppointment]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Documents] DROP CONSTRAINT [FK_DocumentDocAppointment];
-GO
-IF OBJECT_ID(N'[dbo].[FK_DocumentUserAccount]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Documents] DROP CONSTRAINT [FK_DocumentUserAccount];
-GO
-IF OBJECT_ID(N'[dbo].[FK_FieldTemplates_FieldTemplates1]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[FieldTemplates] DROP CONSTRAINT [FK_FieldTemplates_FieldTemplates1];
-GO
-IF OBJECT_ID(N'[dbo].[FK_FieldTeplateDocTemplate]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[FieldTemplates] DROP CONSTRAINT [FK_FieldTeplateDocTemplate];
-GO
-IF OBJECT_ID(N'[dbo].[FK_FileLibraryAssetFileLibraryFolder]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[FileLibraryAssets] DROP CONSTRAINT [FK_FileLibraryAssetFileLibraryFolder];
-GO
-IF OBJECT_ID(N'[dbo].[FK_FileLibraryFolderFileLibraryFolder]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[FileLibraryFolders] DROP CONSTRAINT [FK_FileLibraryFolderFileLibraryFolder];
-GO
-IF OBJECT_ID(N'[dbo].[FK_GroupManager]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[UserGroups] DROP CONSTRAINT [FK_GroupManager];
-GO
-IF OBJECT_ID(N'[dbo].[FK_GroupUsers_UserAccount]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[GroupUsers] DROP CONSTRAINT [FK_GroupUsers_UserAccount];
-GO
-IF OBJECT_ID(N'[dbo].[FK_GroupUsers_UserGroup]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[GroupUsers] DROP CONSTRAINT [FK_GroupUsers_UserGroup];
-GO
-IF OBJECT_ID(N'[dbo].[FK_PersonalDocTemplateDocTemplate]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[PersonalDocTemplates] DROP CONSTRAINT [FK_PersonalDocTemplateDocTemplate];
-GO
-IF OBJECT_ID(N'[dbo].[FK_PersonalDocTemplateUserGroup]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[PersonalDocTemplates] DROP CONSTRAINT [FK_PersonalDocTemplateUserGroup];
-GO
-IF OBJECT_ID(N'[dbo].[FK_ReportDocTemplate]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[DocReports] DROP CONSTRAINT [FK_ReportDocTemplate];
-GO
-IF OBJECT_ID(N'[dbo].[FK_ReportFieldDocReport]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[ReportFields] DROP CONSTRAINT [FK_ReportFieldDocReport];
-GO
-IF OBJECT_ID(N'[dbo].[FK_ReportFieldFieldTemplate]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[ReportFields] DROP CONSTRAINT [FK_ReportFieldFieldTemplate];
-GO
-IF OBJECT_ID(N'[dbo].[FK_ReportUserTags_Report]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[ReportUserTags] DROP CONSTRAINT [FK_ReportUserTags_Report];
-GO
-IF OBJECT_ID(N'[dbo].[FK_ReportUserTags_UserTags]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[ReportUserTags] DROP CONSTRAINT [FK_ReportUserTags_UserTags];
-GO
-IF OBJECT_ID(N'[dbo].[FK_UserAccountDocAppointment]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[DocAppointments] DROP CONSTRAINT [FK_UserAccountDocAppointment];
+IF OBJECT_ID(N'[dbo].[FK_ComputableFieldTemplatePartsFieldTemplate]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ComputableFieldTemplateParts] DROP CONSTRAINT [FK_ComputableFieldTemplatePartsFieldTemplate];
 GO
 IF OBJECT_ID(N'[dbo].[FK_UserAccountUserTags_UserAccount]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[UserAccountUserTags] DROP CONSTRAINT [FK_UserAccountUserTags_UserAccount];
@@ -86,64 +47,103 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_UserAccountUserTags_UserTags]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[UserAccountUserTags] DROP CONSTRAINT [FK_UserAccountUserTags_UserTags];
 GO
+IF OBJECT_ID(N'[dbo].[FK_DocTemplateDocAppointment]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[DocAppointments] DROP CONSTRAINT [FK_DocTemplateDocAppointment];
+GO
+IF OBJECT_ID(N'[dbo].[FK_DocumentDocAppointment]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Documents] DROP CONSTRAINT [FK_DocumentDocAppointment];
+GO
+IF OBJECT_ID(N'[dbo].[FK_FieldTemplates_FieldTemplates1]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[FieldTemplates] DROP CONSTRAINT [FK_FieldTemplates_FieldTemplates1];
+GO
+IF OBJECT_ID(N'[dbo].[FK_UserAccountDocAppointment]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[DocAppointments] DROP CONSTRAINT [FK_UserAccountDocAppointment];
+GO
 IF OBJECT_ID(N'[dbo].[FK_UserGroupDocAppointment]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[DocAppointments] DROP CONSTRAINT [FK_UserGroupDocAppointment];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ReportDocTemplate]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[DocReports] DROP CONSTRAINT [FK_ReportDocTemplate];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ReportUserTags_Report]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ReportUserTags] DROP CONSTRAINT [FK_ReportUserTags_Report];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ReportUserTags_UserTags]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ReportUserTags] DROP CONSTRAINT [FK_ReportUserTags_UserTags];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ReportFieldFieldTemplate]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ReportFields] DROP CONSTRAINT [FK_ReportFieldFieldTemplate];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ReportFieldDocReport]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ReportFields] DROP CONSTRAINT [FK_ReportFieldDocReport];
+GO
+IF OBJECT_ID(N'[dbo].[FK_FileLibraryFolderFileLibraryFolder]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[FileLibraryFolders] DROP CONSTRAINT [FK_FileLibraryFolderFileLibraryFolder];
+GO
+IF OBJECT_ID(N'[dbo].[FK_FileLibraryAssetFileLibraryFolder]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[FileLibraryAssets] DROP CONSTRAINT [FK_FileLibraryAssetFileLibraryFolder];
+GO
+IF OBJECT_ID(N'[dbo].[FK_PersonalDocTemplateDocTemplate]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[PersonalDocTemplates] DROP CONSTRAINT [FK_PersonalDocTemplateDocTemplate];
+GO
+IF OBJECT_ID(N'[dbo].[FK_PersonalDocTemplateUserGroup]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[PersonalDocTemplates] DROP CONSTRAINT [FK_PersonalDocTemplateUserGroup];
 GO
 
 -- --------------------------------------------------
 -- Dropping existing tables
 -- --------------------------------------------------
 
-IF OBJECT_ID(N'[dbo].[ComputableFieldTemplateParts]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[ComputableFieldTemplateParts];
-GO
-IF OBJECT_ID(N'[dbo].[DocAppointments]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[DocAppointments];
-GO
-IF OBJECT_ID(N'[dbo].[DocFields]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[DocFields];
-GO
-IF OBJECT_ID(N'[dbo].[DocReports]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[DocReports];
-GO
-IF OBJECT_ID(N'[dbo].[DocTemplates]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[DocTemplates];
-GO
-IF OBJECT_ID(N'[dbo].[Documents]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Documents];
-GO
-IF OBJECT_ID(N'[dbo].[FieldTemplates]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[FieldTemplates];
-GO
-IF OBJECT_ID(N'[dbo].[FileLibraryAssets]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[FileLibraryAssets];
-GO
-IF OBJECT_ID(N'[dbo].[FileLibraryFolders]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[FileLibraryFolders];
-GO
-IF OBJECT_ID(N'[dbo].[GroupUsers]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[GroupUsers];
-GO
-IF OBJECT_ID(N'[dbo].[PersonalDocTemplates]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[PersonalDocTemplates];
-GO
-IF OBJECT_ID(N'[dbo].[ReportFields]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[ReportFields];
-GO
-IF OBJECT_ID(N'[dbo].[ReportUserTags]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[ReportUserTags];
-GO
 IF OBJECT_ID(N'[dbo].[UserAccounts]', 'U') IS NOT NULL
     DROP TABLE [dbo].[UserAccounts];
-GO
-IF OBJECT_ID(N'[dbo].[UserAccountUserTags]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[UserAccountUserTags];
 GO
 IF OBJECT_ID(N'[dbo].[UserGroups]', 'U') IS NOT NULL
     DROP TABLE [dbo].[UserGroups];
 GO
+IF OBJECT_ID(N'[dbo].[DocTemplates]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[DocTemplates];
+GO
+IF OBJECT_ID(N'[dbo].[FieldTemplates]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[FieldTemplates];
+GO
+IF OBJECT_ID(N'[dbo].[Documents]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Documents];
+GO
+IF OBJECT_ID(N'[dbo].[DocFields]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[DocFields];
+GO
+IF OBJECT_ID(N'[dbo].[ComputableFieldTemplateParts]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ComputableFieldTemplateParts];
+GO
 IF OBJECT_ID(N'[dbo].[UserTags]', 'U') IS NOT NULL
     DROP TABLE [dbo].[UserTags];
+GO
+IF OBJECT_ID(N'[dbo].[DocAppointments]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[DocAppointments];
+GO
+IF OBJECT_ID(N'[dbo].[DocReports]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[DocReports];
+GO
+IF OBJECT_ID(N'[dbo].[ReportFields]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ReportFields];
+GO
+IF OBJECT_ID(N'[dbo].[FileLibraryFolders]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[FileLibraryFolders];
+GO
+IF OBJECT_ID(N'[dbo].[FileLibraryAssets]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[FileLibraryAssets];
+GO
+IF OBJECT_ID(N'[dbo].[PersonalDocTemplates]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[PersonalDocTemplates];
+GO
+IF OBJECT_ID(N'[dbo].[GroupUsers]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[GroupUsers];
+GO
+IF OBJECT_ID(N'[dbo].[UserAccountUserTags]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[UserAccountUserTags];
+GO
+IF OBJECT_ID(N'[dbo].[ReportUserTags]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ReportUserTags];
 GO
 
 -- --------------------------------------------------
@@ -161,7 +161,6 @@ CREATE TABLE [dbo].[UserAccounts] (
     [LastAccess] datetime  NULL,
     [IsAdmin] bit  NOT NULL,
     [Password] nvarchar(50)  NOT NULL,
-    [Email] nvarchar(50)  NOT NULL,
     [LastAccessProfileCode] nvarchar(max)  NULL
 );
 GO
