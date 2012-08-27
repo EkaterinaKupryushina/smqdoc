@@ -3576,8 +3576,7 @@ namespace MvcFront.DB
         /// <param name="status">Initial value of the Status property.</param>
         /// <param name="isAdmin">Initial value of the IsAdmin property.</param>
         /// <param name="password">Initial value of the Password property.</param>
-        /// <param name="email">Initial value of the Email property.</param>
-        public static UserAccount CreateUserAccount(global::System.Int32 userid, global::System.String login, global::System.String firstName, global::System.String secondName, global::System.String lastName, global::System.Int32 status, global::System.Boolean isAdmin, global::System.String password, global::System.String email)
+        public static UserAccount CreateUserAccount(global::System.Int32 userid, global::System.String login, global::System.String firstName, global::System.String secondName, global::System.String lastName, global::System.Int32 status, global::System.Boolean isAdmin, global::System.String password)
         {
             UserAccount userAccount = new UserAccount();
             userAccount.userid = userid;
@@ -3588,7 +3587,6 @@ namespace MvcFront.DB
             userAccount.Status = status;
             userAccount.IsAdmin = isAdmin;
             userAccount.Password = password;
-            userAccount.Email = email;
             return userAccount;
         }
 
@@ -3813,30 +3811,6 @@ namespace MvcFront.DB
         private global::System.String _Password;
         partial void OnPasswordChanging(global::System.String value);
         partial void OnPasswordChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.String Email
-        {
-            get
-            {
-                return _Email;
-            }
-            set
-            {
-                OnEmailChanging(value);
-                ReportPropertyChanging("Email");
-                _Email = StructuralObject.SetValidValue(value, false);
-                ReportPropertyChanged("Email");
-                OnEmailChanged();
-            }
-        }
-        private global::System.String _Email;
-        partial void OnEmailChanging(global::System.String value);
-        partial void OnEmailChanged();
     
         /// <summary>
         /// No Metadata Documentation available.

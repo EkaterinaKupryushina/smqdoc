@@ -449,7 +449,6 @@
     <Content Include="Content\themes\base\jquery.ui.theme.css" />
     <Content Include="DB\FillUsersData.sql" />
     <Content Include="DB\EntityDBModel.edmx.sql" />
-    <Content Include="DB\FillData.sql" />
     <Content Include="Global.asax" />
     <Content Include="log\DoNotDeleteMe.txt" />
     <Content Include="MediaFolder\DocumentFiles\DoNotDeleteMe.txt" />

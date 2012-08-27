@@ -7,15 +7,14 @@ INSERT INTO [smqdoc].[dbo].[UserAccounts]
            ,[Status]
            ,[LastAccess]
            ,[IsAdmin]
-           ,[Password]
-           ,[Email])
+           ,[Password])
      VALUES
-           ('Pavel','Павел','Сердюков','Алексеевич',0,NULL,1,'Pavel','p@mail.ru'),
-           ('Dima','Дмитрий','Хаустов','Геннадьевич',0,NULL,1,'Dima','d@mail.ru'),
-           ('TestUser1','TestUser1F','TestUser1S','TestUser1L',0,NULL,1,'TestUser1','TestUser1@mail.ru'),
-           ('TestUser2','TestUser2F','TestUser2S','TestUser2L',0,NULL,0,'TestUser2','TestUser2@mail.ru'),
-           ('TestUser3','TestUser3F','TestUser3S','TestUser3L',1,NULL,0,'TestUser3','TestUser3@mail.ru'),
-           ('TestUser4','TestUser4F','TestUser4S','TestUser4L',2,NULL,0,'TestUser4','TestUser4@mail.ru')
+           ('Pavel','Павел','Сердюков','Алексеевич',0,NULL,1,'Pavel'),
+           ('Dima','Дмитрий','Хаустов','Геннадьевич',0,NULL,1,'Dima'),
+           ('TestUser1','TestUser1F','TestUser1S','TestUser1L',0,NULL,1,'TestUser1'),
+           ('TestUser2','TestUser2F','TestUser2S','TestUser2L',0,NULL,0,'TestUser2'),
+           ('TestUser3','TestUser3F','TestUser3S','TestUser3L',1,NULL,0,'TestUser3'),
+           ('TestUser4','TestUser4F','TestUser4S','TestUser4L',2,NULL,0,'TestUser4')
 GO
 
 ---Заполняем группы

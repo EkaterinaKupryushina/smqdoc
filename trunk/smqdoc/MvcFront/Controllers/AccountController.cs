@@ -338,7 +338,6 @@ namespace MvcFront.Controllers
                     currentUser.FirstName = model.FirstName;
                     currentUser.SecondName = model.SecondName;
                     currentUser.LastName = model.LastName;
-                    currentUser.Email = model.Email;
                     _userRepository.Save(currentUser);
                 }
                 catch (Exception ex)
