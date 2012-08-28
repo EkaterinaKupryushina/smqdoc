@@ -44,7 +44,7 @@ namespace MvcFront.Infrastructure.Security
                 if(sessData == null)
                 {
                     //Если в сессии пусто получаем пользователя
-                    var user = _userAccountRepository.GetByLogin(filterContext.HttpContext.User.Identity.Name,true);
+                    var user = _userAccountRepository.GetByLogin(filterContext.HttpContext.User.Identity.Name, true);
                     if(user!= null)
                     {
                         //Читаем код последнего профиля пользовтаеля
