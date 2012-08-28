@@ -30,8 +30,6 @@
             </div>
             <div id="menucontainer">
                 <ul id="menu">
-                    <li>@Html.MenuLink("Профиль", "Index", "Account")</li>
-                    <li>@Html.MenuLink("Библиотека файлов", "Index", "Library")</li>
                     @{
                         var sessState = SessionHelper.GetUserSessionData(Session);
                         if (sessState != null)
@@ -39,6 +37,8 @@
                             switch (sessState.UserType)
                             {
                                 case UserProfileTypes.Systemadmin:
+                                    <li>@Html.MenuLink("Профиль", "Index", "Account")</li>
+                                    <li>@Html.MenuLink("Библиотека", "Index", "Library")</li>
                                     <li>@Html.MenuLink("Пользователи", "Index", "UserAccountList")</li>
                                     <li>@Html.MenuLink("Группы", "Index", "UserGroupList")</li>
                                     <li>@Html.MenuLink("Формы", "Index", "DocTemplateList")</li>
@@ -46,22 +46,32 @@
                                     <li>@Html.MenuLink("Редактор библиотеки", "EditAssetLibrary", "Library")</li>
                                    break;
                                 case UserProfileTypes.Groupmanager:
+                                    <li>@Html.MenuLink("Профиль", "Index", "Account")</li>
+                                    <li>@Html.MenuLink("Библиотека", "Index", "Library")</li>
                                     <li>@Html.MenuLink("Документы группы", "Index", "ManagerDocument")</li>
                                     <li>@Html.MenuLink("Утвержденные документы", "SubmitedUserDocuments", "ManagerDocument")</li>
                                     <li>@Html.MenuLink("Формы группы", "Index", "GroupDocAppointment")</li>
                                    break;
                                 case UserProfileTypes.Groupuser:
+                                    <li>@Html.MenuLink("Профиль", "Index", "Account")</li>
+                                    <li>@Html.MenuLink("Библиотека", "Index", "Library")</li>
                                     <li>@Html.MenuLink("Документы", "Index", "UserDocument")</li>
-                                    <li>@Html.MenuLink("Документы для заполнения", "UserDocAppointments", "UserDocument")</li> 
+                                    <li>@Html.MenuLink("Для заполнения", "UserDocAppointments", "UserDocument")</li> 
                                     <li>@Html.MenuLink("Утвержденные документы", "SubmitedUserDocuments", "UserDocument")</li>   
                                    break;
                                 case UserProfileTypes.User:
+                                   <li>@Html.MenuLink("Профиль", "Index", "Account")</li>
+                                    <li>@Html.MenuLink("Библиотека", "Index", "Library")</li>
                                    break;
                                 case UserProfileTypes.Anonymous:
                                    break;
                                 default:
-                                    throw new ArgumentOutOfRangeException();
+                                   throw new ArgumentOutOfRangeException();
                             }
+                        }
+                        else
+                        {
+                            <li>@Html.MenuLink("Вход", "LogOn", "Account")</li>
                         }
                     }
                 </ul>

@@ -212,6 +212,7 @@ namespace MvcFront.Controllers
         ///  GET: /Account/ChangePasswordSuccess (смена пароля прошла успешно)
         /// </summary>
         /// <returns></returns>
+        [Authorize]
         public ActionResult ChangePasswordSuccess()
         {
             return View();
@@ -223,6 +224,7 @@ namespace MvcFront.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
+        [Authorize]
         public ActionResult ChangeUserProfile(ChangeUserProfileModel model)
         {
             if (ModelState.IsValid)
