@@ -91,6 +91,13 @@ namespace MvcFront.Repositories
             }
             else
             {
+                if(entity.TemplateType != FieldTemplateType.Calculated && entity.ComputableFieldTemplateParts != null)
+                {
+                    while (entity.ComputableFieldTemplateParts.Any())
+                    {
+                        _unitOfWork.DbModel.ComputableFieldTemplateParts.DeleteObject(entity.ComputableFieldTemplateParts.ElementAt(0));
+                    }
+                }
                 _unitOfWork.DbModel.FieldTemplates.ApplyCurrentValues(entity);
             }            
             _unitOfWork.DbModel.SaveChanges();
@@ -108,6 +115,13 @@ namespace MvcFront.Repositories
                     for (var i = 0; i < entity.PlanFieldTemplates.Count; i++ )
                     {
                         _unitOfWork.DbModel.FieldTemplates.DeleteObject(entity.PlanFieldTemplates.ElementAt(i));
+                    }
+                }
+                if (entity.ComputableFieldTemplateParts != null)
+                {
+                    while (entity.ComputableFieldTemplateParts.Any())
+                    {
+                        _unitOfWork.DbModel.ComputableFieldTemplateParts.DeleteObject(entity.ComputableFieldTemplateParts.ElementAt(0));
                     }
                 }
             }
