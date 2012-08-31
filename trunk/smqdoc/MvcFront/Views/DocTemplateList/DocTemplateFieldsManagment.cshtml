@@ -27,7 +27,7 @@
     @(Html.Telerik().Grid<FieldTemplateListViewModel>()
            .DataBinding(dataBinding => dataBinding.Ajax().Select("_FieldTemplateList", "DocTemplateList", new { templId = Model.docteplateid }))
            .Name("FieldTeplateListGrid")
-           .ClientEvents(events => events.OnComplete("onComplete"))
+           .ClientEvents(events => events.OnComplete("onComplete").OnCommand("onCommand"))
            .Columns(columns =>
                         {
                             columns.AutoGenerate(column =>
@@ -77,6 +77,13 @@
             var grid = $('#FieldTeplateListGrid').data("tGrid");
             if (grid != null) {
                 grid.rebind();
+            }
+        }
+    }
+    function onCommand(e) {
+        if (e.name == 'DeleteDetails') {
+            if (!confirm("Вы уверены что хотите удалить поле?")) {
+                e.preventDefault();
             }
         }
     }
