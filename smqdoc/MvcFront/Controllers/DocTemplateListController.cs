@@ -80,9 +80,9 @@ namespace MvcFront.Controllers
         {
             try
             {
+                var templ = _templateRepository.GetDocTemplateById(0);
                 if (ModelState.IsValid)
                 {
-                    var templ = _templateRepository.GetDocTemplateById(0);
                     templ = model.Update(templ);
                     if (!_templateRepository.SaveDocTemplate(templ))
                     {
@@ -93,7 +93,7 @@ namespace MvcFront.Controllers
                 {
                     throw new Exception("Проверьте введенные данные");
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction("DocTemplateFieldsManagment",new {id = templ.docteplateid});
             }
             catch (Exception ex)
             {
@@ -306,9 +306,10 @@ namespace MvcFront.Controllers
         {
             try
             {
+                var templ = _templateRepository.GetFieldTemplateById(0);
                 if (ModelState.IsValid)
                 {
-                    var templ = _templateRepository.GetFieldTemplateById(0);
+                    
                     templ = model.Update(templ);
                     if (!_templateRepository.SaveFieldTemplate(templ))
                     {
@@ -319,7 +320,9 @@ namespace MvcFront.Controllers
                 {
                     throw new Exception("Проверьте введенные данные");
                 }
-                return RedirectToAction("DocTemplateFieldsManagment", new { id = model.DocTemplateId });
+                return templ.TemplateType == FieldTemplateType.Calculated 
+                    ? RedirectToAction("EditField", new {id = templ.fieldteplateid}) 
+                    : RedirectToAction("DocTemplateFieldsManagment", new { id = model.DocTemplateId });
             }
             catch (Exception ex)
             {
