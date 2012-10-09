@@ -52,7 +52,7 @@
 @(Html.Telerik().Grid<PersonalDocTemplateListViewModel>()
         .Name("PersonalDocTemplateListGrid")
         .DataBinding(dataBinding => dataBinding.Ajax().Select("_PersonalDocTemplateList", "GroupDocAppointment"))
-            .ClientEvents(events => events.OnComplete("onCompletePersonalDocTemplate"))
+                    .ClientEvents(events => events.OnComplete("onCompletePersonalDocTemplate").OnCommand("onCommandPersonalDocTemplate"))
                        .Columns(columns =>
                        {
                            columns.AutoGenerate(column =>
@@ -84,6 +84,13 @@
                   var grid = $('#PersonalDocTemplateListGrid').data("tGrid");
                   if (grid != null) {
                       grid.rebind();
+                  }
+              }
+          }
+          function onCommandPersonalDocTemplate(e) {
+              if (e.name == 'DeleteDetails') {
+                  if (!confirm("Вы уверены что хотите удалить возможность заполнения шаблона?")) {
+                      e.preventDefault();
                   }
               }
           }
