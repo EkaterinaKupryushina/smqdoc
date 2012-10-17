@@ -126,6 +126,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UserAccountListController.cs" />
     <Compile Include="Controllers\UserGroupListController.cs" />
+    <Compile Include="Controllers\UserReportController.cs" />
     <Compile Include="Controllers\UserTagsListController.cs" />
     <Compile Include="DB\DocField.cs" />
     <Compile Include="DB\DocReport.cs" />
@@ -420,6 +421,7 @@
     <Content Include="Content\2012.1.214\Windows7\slider-v.gif" />
     <Content Include="Content\2012.1.214\Windows7\sprite-vertical.png" />
     <Content Include="Content\2012.1.214\Windows7\sprite.png" />
+    <Content Include="Content\Reports.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -685,6 +687,7 @@
     <Content Include="WebAppSettings.config" />
     <Content Include="Views\UserDocument\SubmitedUserDocuments.cshtml" />
     <Content Include="WebConnectionStrings.config" />
+    <Content Include="Views\UserReport\PrintUserReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ELW.Library.Math\ELW.Library.Math.csproj">

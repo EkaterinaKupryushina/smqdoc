@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.Mvc;
 using MvcFront.DB;
 using MvcFront.Entities;
 using MvcFront.Enums;
@@ -15,11 +16,11 @@ namespace MvcFront.Services
         private readonly IUserAccountRepository _userAccountRepository;
         private readonly IDocAppointmentRepository _docAppointmentRepository;
 
-        public ReportService(IDocumentRepository documentRepository, IUserAccountRepository userAccountRepository, IDocAppointmentRepository docAppointmentRepository)
+        public ReportService(IDocumentRepository documentRepository = null, IUserAccountRepository userAccountRepository = null, IDocAppointmentRepository docAppointmentRepository = null)
         {
-            _documentRepository = documentRepository;
-            _userAccountRepository = userAccountRepository;
-            _docAppointmentRepository = docAppointmentRepository;
+            _documentRepository = documentRepository ??  DependencyResolver.Current.GetService<IDocumentRepository>();
+            _userAccountRepository = userAccountRepository ??  DependencyResolver.Current.GetService<IUserAccountRepository>();
+            _docAppointmentRepository = docAppointmentRepository ??  DependencyResolver.Current.GetService<IDocAppointmentRepository>();
         }
 
         /// <summary>
@@ -27,8 +28,9 @@ namespace MvcFront.Services
         /// </summary>
         /// <param name="report"></param>
         /// <param name="userId"></param>
+        /// <param name="groupId"> </param>
         /// <returns></returns>
-        public ReportTableViewModel GenerateUserReport(DocReport report, int userId)
+        public ReportTableViewModel GenerateUserReport(DocReport report, int userId, int groupId)
         {
             var result = new ReportTableViewModel 
             {
@@ -36,7 +38,8 @@ namespace MvcFront.Services
                 DocReport = report
             };
 
-            var query = _documentRepository.GetUserDocumentsByUserId(userId, DocumentStatus.Submited);
+            var query = _documentRepository.GetUserDocumentsByUserId(userId, DocumentStatus.Submited)
+                .Where(x => x.DocAppointment.UserGroup_usergroupid == groupId);
 
             query = ApplyFilders(report.FilterStartDate, report.FilterEndDate, report.ReportAppointmentType, null, query);
 
@@ -102,15 +105,13 @@ namespace MvcFront.Services
                     query =
                         query.Where(
                             x =>
-                            x.DocAppointment.UserAccount_userid != null &&
-                            x.DocAppointment.UserGroup_usergroupid == null);
+                            x.DocAppointment.UserAccount_userid != null);
                     break;
                 case DocReportAppointmentType.Group:
                     query =
                         query.Where(
                             x =>
-                            x.DocAppointment.UserAccount_userid == null &&
-                            x.DocAppointment.UserGroup_usergroupid != null);
+                            x.DocAppointment.UserAccount_userid == null);
                     break;
                 case DocReportAppointmentType.Both:
                     break;
@@ -146,7 +147,7 @@ namespace MvcFront.Services
                     }));
                     break;
                 case DocReportGroupType.User:
-                    var userIds = query.Select(x => x.UserAccount_userid).Distinct();
+                    var userIds = query.Select(x => x.UserAccount_userid).Distinct().ToList();
                     result.AddRange(userIds.Select(userId => new DocumentGroup
                     {
                         EntityId = userId,
@@ -154,7 +155,7 @@ namespace MvcFront.Services
                     }));
                     break;
                 case DocReportGroupType.DocAppointment:
-                    var docAppIds = query.Select(x => x.DocAppointment_docappointmentid).Distinct();
+                    var docAppIds = query.Select(x => x.DocAppointment_docappointmentid).Distinct().ToList();
                     result.AddRange(docAppIds.Select(docAppId => new DocumentGroup
                     {
                         EntityId = docAppId,
@@ -190,7 +191,7 @@ namespace MvcFront.Services
                     x.reportfieldid, 
                     doc.DocFields.Single(y => 
                         y.FieldTemplate_fieldteplateid == x.FieldTemplate_fieldteplateid)
-                        .StringValue));
+                        .GetValueString()));
             }
             //Если документов больше 1, то нужно вычсилять каждое значение как среднее или сумму
             if (documentGroup.Documents.Count > 1)
