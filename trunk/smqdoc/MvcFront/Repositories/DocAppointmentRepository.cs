@@ -34,7 +34,7 @@ namespace MvcFront.Repositories
             var query =
                 _unitOfWork.DbModel.DocAppointments.Where(
                     x =>
-                    x.UserAccount == null && x.UserGroup_usergroupid == groupId 
+                    x.UserAccount_userid == null && x.UserGroup_usergroupid == groupId 
                     && x.DocTemplate.Status == (int) DocTemplateStatus.Active &&
                     x.Status == (int) DocAppointmentStatus.Active);
             if (!includeNotStarted)

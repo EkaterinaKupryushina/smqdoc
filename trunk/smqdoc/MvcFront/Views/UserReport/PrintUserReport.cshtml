@@ -1,0 +1,55 @@
+﻿@using MvcFront.Enums
+@model MvcFront.Models.ReportTableViewModel
+@{
+    Layout = null;
+    var columns = Model.DocReport.ReportFields.OrderBy(x => x.OrderNumber);
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>@Model.Name</title>
+    <link href="@Url.Content("~/Content/Reports.css")" rel="stylesheet" type="text/css" />
+</head>
+    <body>
+        <h1>@Model.Name</h1>
+        <div>
+            <table>
+                <!-- шапка -->
+                @if (Model.DocReport.GroupType != (int)DocReportGroupType.None)
+                {
+                    <th>№</th>
+                }
+                @foreach(var col in  columns)
+                {
+                    <th>@col.FieldTemplate.FieldName</th>
+                }
+                <!-- Тело таблицы-->
+                @foreach(var row in Model.Rows)
+                {
+                    <tr>
+                        @if (Model.DocReport.GroupType != (int)DocReportGroupType.None)
+                        {
+                         <td>
+                            @row.Name
+                         </td>
+                        }
+                        
+                        @foreach (var col in columns)
+                        {
+                            <td>
+                            
+                                @{
+                            string value;
+                            row.Values.TryGetValue(col.reportfieldid, out value);
+                                }
+                                @value
+                            </td>
+                        }
+                    </tr>
+                }
+            </table>
+        </div>
+    </body>
+</html>
