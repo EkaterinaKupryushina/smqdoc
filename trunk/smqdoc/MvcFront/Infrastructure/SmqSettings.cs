@@ -47,5 +47,10 @@ namespace MvcFront.Infrastructure
         {
             get { return "DocumentFiles"; }
         }
+
+        public string DoubleFormatStr
+        {
+            get { return "{0:0.##}"; }
+        }
     }
 }

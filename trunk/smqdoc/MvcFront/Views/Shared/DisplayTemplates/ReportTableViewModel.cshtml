@@ -1,12 +1,65 @@
-﻿@model MvcFront.Models.ReportTableViewModel
+﻿@using System.Globalization
+@using MvcFront.Enums
+@model MvcFront.Models.ReportTableViewModel
+@{
+    var columns = Model.DocReport.ReportFields.OrderBy(x => x.OrderNumber);
+}
+<h1>@Model.Name</h1>
+        <div>
+            <table>
+                <!-- шапка -->
+                <th>№</th>
 
+                @foreach(var col in  columns)
+                {
+                    <th>@col.FieldTemplate.FieldName</th>
+                }
+                <!-- Тело таблицы-->
+                @for (var i = 0; i < Model.Rows.Count; i++ )
+                {
+                    <tr>
 
-    <legend>ReportTableViewModel</legend>
+                         <td>
+                            @{ 
+                                 var rowName = Model.DocReport.GroupType != (int)DocReportGroupType.None 
+                                    ? Model.Rows[i].Name 
+                                    : (i + 1).ToString(CultureInfo.InvariantCulture); 
+                            }
+                             @rowName
+                         </td>
 
-    <div class="display-label">Название</div>
-<div class="display-field">
-    @Html.DisplayFor(model => model.Name)
-</div>
+                        @foreach (var col in columns)
+                        {
+                            <td>
+                            
+                                @{
+                                    string value;
+                                    Model.Rows[i].Values.TryGetValue(col.reportfieldid, out value);
+                                }
+                                @value
+                            </td>
+                        }
+                    </tr>
+                }
+                <!-- строка итого-->
+                <tr class="totalRow">
+                    <td>
+                        @Model.TotalRow.Name
+                    </td>
+                    @foreach (var col in columns)
+                    {
+                        <td>
+                            
+                            @{
+                                string value;
+                                Model.TotalRow.Values.TryGetValue(col.reportfieldid, out value);
+                            }
+                            @value
+                        </td>
+                    }
+                </tr>
+            </table>
+        </div>
 
 
 

@@ -5,3 +5,9 @@ table, th, td
 {
 border: 1px solid black;
 }
+th {
+    font-size: 10pt;
+}
+.totalRow {
+    background-color: #AAAAAA;
+}
