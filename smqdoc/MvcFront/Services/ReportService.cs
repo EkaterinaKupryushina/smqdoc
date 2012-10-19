@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
 using MvcFront.DB;
 using MvcFront.Entities;
 using MvcFront.Enums;
+using MvcFront.Infrastructure;
 using MvcFront.Interfaces;
 using MvcFront.Models;
 
@@ -72,6 +74,7 @@ namespace MvcFront.Services
                 names.TryGetValue(documentGroup.EntityId, out name);
                 result.Rows.Add(GenerateRow(repFields, documentGroup, name));
             }
+            result.TotalRow = GenerateTotalRow(repFields, result.Rows, "Итого");
             return result;
         }
 
@@ -202,16 +205,59 @@ namespace MvcFront.Services
                     var fields = new List<DocField>();
                     documentGroup.Documents.ForEach(x => fields.Add(x.DocFields.Single(y => y.FieldTemplate_fieldteplateid == reportFiled.FieldTemplate_fieldteplateid)));
                     result.Values.Add(
-                        reportFiled.reportfieldid, 
-                        reportFiled.ReportFieldOperationType == ReportFieldOperationType.Midle 
-                            ? fields.Average(x => x.DoubleValue).ToString()
-                            : fields.Sum(x => x.DoubleValue).ToString());
+                        reportFiled.reportfieldid,
+                        reportFiled.ReportFieldOperationType == ReportFieldOperationType.Midle
+                            ? string.Format(SmqSettings.Instance.DoubleFormatStr, fields.Average(x => x.DoubleValue))
+                            : string.Format(SmqSettings.Instance.DoubleFormatStr, fields.Sum(x => x.DoubleValue)));
                 }
                
             }
             return result;
         }
 
+        /// <summary>
+        /// Вычисляет строку из группы документов
+        /// Надо обдумать как оптимизировать (убрать string to double)
+        /// </summary>
+        /// <param name="reportFileds"></param>
+        /// <param name="rows"> </param>
+        /// <param name="rowName"> </param>
+        /// <returns></returns>
+        private ReportDataRow GenerateTotalRow(List<ReportField> reportFileds,List<ReportDataRow> rows, string rowName)
+        {
+            var result = new ReportDataRow { Name = rowName };
+            //если строк нет - то строка пустая
+            if (rows.Count == 0)
+            {
+                reportFileds.ForEach(x => result.Values.Add(x.reportfieldid, string.Empty));
+            }
+            //Если строк 1 - то просто выводим этот документ в строку
+            if (rows.Count == 1)
+            {
+                foreach (var value in rows.ElementAt(0).Values)
+                {
+                    result.Values.Add(value.Key, value.Value);
+                }
+            }
+            //Если документов больше 1, то нужно вычсилять каждое значение как среднее или сумму
+            if (rows.Count > 1)
+            {
+                foreach (var reportFiled in reportFileds)
+                {
+                    //Получаем список полей данного типа из всех документов
+                    var strFields = new List<string>();
+                    rows.ForEach(x => strFields.Add(x.Values.Single(y => y.Key == reportFiled.reportfieldid).Value));
+                    var fields = strFields.Select(Convert.ToDouble).ToList();
+                    result.Values.Add(
+                        reportFiled.reportfieldid,
+                        reportFiled.ReportFieldOperationType == ReportFieldOperationType.Midle
+                            ? string.Format(SmqSettings.Instance.DoubleFormatStr, fields.Average())
+                            : string.Format(SmqSettings.Instance.DoubleFormatStr, fields.Sum()));
+                }
+
+            }
+            return result;
+        }
         #endregion
       
     }

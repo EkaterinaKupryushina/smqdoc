@@ -12,6 +12,7 @@ namespace MvcFront.Models
         public string Name { get; set; }
         public DocReport DocReport { get; set; }
         public List<ReportDataRow> Rows { get; set; }
+        public ReportDataRow TotalRow { get; set; }
 
         public ReportTableViewModel()
         {
