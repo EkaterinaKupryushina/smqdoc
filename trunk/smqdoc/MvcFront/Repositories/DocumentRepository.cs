@@ -72,6 +72,19 @@ namespace MvcFront.Repositories
                     && x.DocAppointment.DocTemplate.Status != (int)DocTemplateStatus.Deleted);
         }
 
+        public IQueryable<Document> GetUserInGroupDocumentsByGroupId(long id, DocumentStatus? status = null)
+        {
+            return status.HasValue
+                ? _unitOfWork.DbModel.Documents.Where(x =>
+                    x.DocAppointment.UserGroup_usergroupid == id 
+                    && x.Status == (int)status && x.DocAppointment.Status != (int)DocAppointmentStatus.Deleted
+                    && x.DocAppointment.DocTemplate.Status != (int)DocTemplateStatus.Deleted)
+                : _unitOfWork.DbModel.Documents.Where(x =>
+                    x.DocAppointment.UserGroup_usergroupid == id 
+                    && x.DocAppointment.Status != (int)DocAppointmentStatus.Deleted
+                    && x.DocAppointment.DocTemplate.Status != (int)DocTemplateStatus.Deleted);
+        }
+
         public IQueryable<Document> GetPersonalDocumentsByGroupId(int id, DocumentStatus? status = null)
         {
             var query = status.HasValue

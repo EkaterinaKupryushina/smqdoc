@@ -1,65 +1,71 @@
 ﻿@using System.Globalization
 @using MvcFront.Enums
+@using MvcFront.Helpers
 @model MvcFront.Models.ReportTableViewModel
 @{
     var columns = Model.DocReport.ReportFields.OrderBy(x => x.OrderNumber);
 }
-<h1>@Model.Name</h1>
-        <div>
-            <table>
-                <!-- шапка -->
-                <th>№</th>
+<div class="GridBlock">
+    <h1 class="TableHeader">@Model.Name</h1>
+    <table>
+        <!-- шапка -->
+        <tr>
+            <th>№</th>
 
-                @foreach(var col in  columns)
-                {
-                    <th>@col.FieldTemplate.FieldName</th>
-                }
-                <!-- Тело таблицы-->
-                @for (var i = 0; i < Model.Rows.Count; i++ )
-                {
-                    <tr>
+            @foreach(var col in  columns)
+            {
+                <th>
+                    @col.FieldTemplate.FieldName 
+                    <br/>(@DictionaryHelper.GetEnumText(typeof(ReportFieldOperationType), col.ReportOperationType))
+                </th>
+            }
+        </tr>
+        <!-- Тело таблицы-->
+        @for (var i = 0; i < Model.Rows.Count; i++ )
+        {
+            <tr>
 
-                         <td>
-                            @{ 
-                                 var rowName = Model.DocReport.GroupType != (int)DocReportGroupType.None 
-                                    ? Model.Rows[i].Name 
-                                    : (i + 1).ToString(CultureInfo.InvariantCulture); 
-                            }
-                             @rowName
-                         </td>
-
-                        @foreach (var col in columns)
-                        {
-                            <td>
-                            
-                                @{
-                                    string value;
-                                    Model.Rows[i].Values.TryGetValue(col.reportfieldid, out value);
-                                }
-                                @value
-                            </td>
-                        }
-                    </tr>
-                }
-                <!-- строка итого-->
-                <tr class="totalRow">
-                    <td>
-                        @Model.TotalRow.Name
-                    </td>
-                    @foreach (var col in columns)
-                    {
-                        <td>
-                            
-                            @{
-                                string value;
-                                Model.TotalRow.Values.TryGetValue(col.reportfieldid, out value);
-                            }
-                            @value
-                        </td>
+                <td>
+                    @{ 
+                        var rowName = Model.DocReport.GroupType != (int)DocReportGroupType.None 
+                                          ? Model.Rows[i].Name 
+                                          : (i + 1).ToString(CultureInfo.InvariantCulture); 
                     }
-                </tr>
-            </table>
-        </div>
+                    @rowName
+                </td>
 
+                @foreach (var col in columns)
+                {
+                    <td>
+                            
+                        @{
+                            string value;
+                            Model.Rows[i].Values.TryGetValue(col.reportfieldid, out value);
+                        }
+                        @value
+                    </td>
+                }
+            </tr>
+        }
+        <!-- строка итого-->
+        <tr class="totalRow">
+            <td>
+                @Model.TotalRow.Name
+            </td>
+            @foreach (var col in columns)
+            {
+                <td>
+                            
+                    @{
+                        string value;
+                        Model.TotalRow.Values.TryGetValue(col.reportfieldid, out value);
+                    }
+                    @value
+                </td>
+            }
+        </tr>
+    </table>
+    @Html.TextAreaFor(model => model.DocReport.Legend, new Dictionary<string, object> { { "readonly", "true" }, { "class", "LegendBlock" } })
+</div>
 
 

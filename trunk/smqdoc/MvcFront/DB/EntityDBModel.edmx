@@ -167,6 +167,7 @@
           <Property Name="FilterStartDate" Type="datetime" Nullable="false" />
           <Property Name="FilterEndDate" Type="datetime" Nullable="false" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="Legend" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
         <EntityType Name="DocTemplates">
           <Key>
@@ -992,6 +993,7 @@
           <NavigationProperty Name="UserTags" Relationship="smqdocModel.ReportUserTags" FromRole="Report" ToRole="UserTags" />
           <NavigationProperty Name="ReportFields" Relationship="smqdocModel.ReportFieldDocReport" FromRole="DocReport" ToRole="ReportField" />
           <Property Type="Boolean" Name="IsActive" Nullable="false" />
+          <Property Type="String" Name="Legend" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="ReportDocTemplate">
           <End Type="smqdocModel.DocReport" Role="Report" Multiplicity="*" />
@@ -1252,7 +1254,8 @@
     <EntitySetMapping Name="DocReports">
       <EntityTypeMapping TypeName="IsTypeOf(smqdocModel.DocReport)">
         <MappingFragment StoreEntitySet="DocReports">
-          <ScalarProperty Name="docreportid" ColumnName="docreportid" />
+          <ScalarProperty Name="Legend" ColumnName="Legend" />
+                <ScalarProperty Name="docreportid" ColumnName="docreportid" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="DocTemplate_docteplateid" ColumnName="DocTemplate_docteplateid" />
           <ScalarProperty Name="DocAppointmetType" ColumnName="DocAppointmetType" />

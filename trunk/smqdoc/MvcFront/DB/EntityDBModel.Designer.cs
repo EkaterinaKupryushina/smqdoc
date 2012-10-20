@@ -1310,7 +1310,8 @@ namespace MvcFront.DB
         /// <param name="filterStartDate">Initial value of the FilterStartDate property.</param>
         /// <param name="filterEndDate">Initial value of the FilterEndDate property.</param>
         /// <param name="isActive">Initial value of the IsActive property.</param>
-        public static DocReport CreateDocReport(global::System.Int32 docreportid, global::System.String name, global::System.Int64 docTemplate_docteplateid, global::System.Int32 docAppointmetType, global::System.Int32 groupType, global::System.DateTime filterStartDate, global::System.DateTime filterEndDate, global::System.Boolean isActive)
+        /// <param name="legend">Initial value of the Legend property.</param>
+        public static DocReport CreateDocReport(global::System.Int32 docreportid, global::System.String name, global::System.Int64 docTemplate_docteplateid, global::System.Int32 docAppointmetType, global::System.Int32 groupType, global::System.DateTime filterStartDate, global::System.DateTime filterEndDate, global::System.Boolean isActive, global::System.String legend)
         {
             DocReport docReport = new DocReport();
             docReport.docreportid = docreportid;
@@ -1321,6 +1322,7 @@ namespace MvcFront.DB
             docReport.FilterStartDate = filterStartDate;
             docReport.FilterEndDate = filterEndDate;
             docReport.IsActive = isActive;
+            docReport.Legend = legend;
             return docReport;
         }
 
@@ -1521,6 +1523,30 @@ namespace MvcFront.DB
         private global::System.Boolean _IsActive;
         partial void OnIsActiveChanging(global::System.Boolean value);
         partial void OnIsActiveChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Legend
+        {
+            get
+            {
+                return _Legend;
+            }
+            set
+            {
+                OnLegendChanging(value);
+                ReportPropertyChanging("Legend");
+                _Legend = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Legend");
+                OnLegendChanged();
+            }
+        }
+        private global::System.String _Legend;
+        partial void OnLegendChanging(global::System.String value);
+        partial void OnLegendChanged();
 
         #endregion
     
