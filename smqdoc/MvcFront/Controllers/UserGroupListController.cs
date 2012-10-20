@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web.Mvc;
 using MvcFront.DB;
 using MvcFront.Enums;
+using MvcFront.Helpers;
 using MvcFront.Infrastructure.Security;
 using MvcFront.Interfaces;
 using MvcFront.Models;
@@ -12,7 +13,6 @@ using Telerik.Web.Mvc;
 
 namespace MvcFront.Controllers
 {   
-    [AdminAuthorize]
     public class UserGroupListController : Controller
     {
         private readonly IUserGroupRepository _groupRepository;
@@ -22,7 +22,7 @@ namespace MvcFront.Controllers
         }
         //
         // GET: /UserGroup/
-
+        [AdminAuthorize]
         public ActionResult Index()
         {
             try
@@ -47,6 +47,7 @@ namespace MvcFront.Controllers
                 return View(new List<UserGroupListViewModel>());
             }
         }
+
         //Возращает список пользователей группы
         [GridAction]
         public ActionResult _GroupUsersList(int groupId)
@@ -66,9 +67,27 @@ namespace MvcFront.Controllers
                 return View(new GridModel<UserAccountListViewModel> { Data = new List<UserAccountListViewModel>() });
             }
         }
+
+        // GET: /UserGroup/Details/5
+        [GroupManagerAuthorize]
+        public ActionResult DetailsForManager()
+        {
+            try
+            {
+                var sessData = SessionHelper.GetUserSessionData(Session);
+                return View(_groupRepository.GetById(sessData.UserGroupId));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserGroupListController.DetailsForManager()", ex);
+                return View(new UserGroup());
+            }
+        }
+
         //
         // GET: /UserGroup/Details/5
-
+        [AdminAuthorize]
         public ActionResult Details(int id)
         {
             try
@@ -85,7 +104,7 @@ namespace MvcFront.Controllers
 
         //
         // GET: /UserGroup/Create
-
+        [AdminAuthorize]
         public ActionResult Create()
         {
             try
@@ -102,7 +121,7 @@ namespace MvcFront.Controllers
 
         //
         // POST: /UserGroup/Create
-
+        [AdminAuthorize]
         [HttpPost]
         public ActionResult Create(UserGroupEditModel model)
         {
@@ -133,7 +152,7 @@ namespace MvcFront.Controllers
         
         //
         // GET: /UserGroup/Edit/5
- 
+        [AdminAuthorize]
         public ActionResult Edit(int id)
         {
             try
@@ -150,7 +169,7 @@ namespace MvcFront.Controllers
 
         //
         // POST: /UserGroup/Edit/5
-
+        [AdminAuthorize]
         [HttpPost]
         public ActionResult Edit(UserGroupEditModel model)
         {
@@ -181,7 +200,7 @@ namespace MvcFront.Controllers
 
         //
         // GET: /UserGroup/Delete/5
- 
+        [AdminAuthorize]
         public ActionResult Delete(int id)
         {
             try
@@ -198,7 +217,7 @@ namespace MvcFront.Controllers
 
         //
         // POST: /UserGroup/Delete/5
-
+        [AdminAuthorize]
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)
         {
@@ -220,6 +239,7 @@ namespace MvcFront.Controllers
             return View(_groupRepository.GetById(id));
         }
 
+        [AdminAuthorize]
         [HttpPost]
         public ActionResult ChangeState(int id, FormCollection collection)
         {
@@ -236,7 +256,8 @@ namespace MvcFront.Controllers
                 return View(new UserGroup());
             }
         }
-        
+
+        [AdminAuthorize]
         public ActionResult GroupUsersManagment(int id)
         {
             try
@@ -250,7 +271,8 @@ namespace MvcFront.Controllers
                 return View(new UserGroup());
             }
         }
-        
+
+        [AdminAuthorize]
         public JsonResult DeleteUser(int id, int UserId)
         {
             try
@@ -265,6 +287,7 @@ namespace MvcFront.Controllers
             }
         }
 
+        [AdminAuthorize]
         public JsonResult AddUser(int groupId, int userId)
         {
             try

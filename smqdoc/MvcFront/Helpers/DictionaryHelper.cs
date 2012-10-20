@@ -174,7 +174,22 @@ namespace MvcFront.Helpers
                             }
                             break;
                         }
-                   
+                    case "ReportFieldOperationType":
+                        switch (item)
+                        {
+                            case 0:
+                                {
+                                    retVal = "Среднее";
+                                    break;
+                                }
+                            case 1:
+                                {
+                                    retVal = "Сумма";
+                                    break;
+                                }
+                        }
+                        break;
+
                 }
             }
             catch (Exception)

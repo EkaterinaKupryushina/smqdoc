@@ -47,7 +47,15 @@ namespace MvcFront.Interfaces
         IQueryable<Document> GetGroupDocumentsByGroupId(long id, DocumentStatus? status = null);
 
         /// <summary>
-        /// Возвращает User  документы по id группы по его Id
+        /// Возвращает документы всех пользователей группы (как персональные так и грипповые назначения)
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        
+        IQueryable<Document> GetUserInGroupDocumentsByGroupId(long id, DocumentStatus? status = null);
+        /// <summary>
+        /// Возвращает User  документы по id группы 
         /// </summary>
         /// <param name="id">GroupId</param>
         /// <param name="status"> </param>

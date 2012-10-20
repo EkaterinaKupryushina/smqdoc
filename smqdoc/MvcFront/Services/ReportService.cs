@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
 using MvcFront.DB;
@@ -17,14 +16,18 @@ namespace MvcFront.Services
         private readonly IDocumentRepository _documentRepository;
         private readonly IUserAccountRepository _userAccountRepository;
         private readonly IDocAppointmentRepository _docAppointmentRepository;
+        //private readonly IUserGroupRepository _userGroupRepository;
 
-        public ReportService(IDocumentRepository documentRepository = null, IUserAccountRepository userAccountRepository = null, IDocAppointmentRepository docAppointmentRepository = null)
+        public ReportService(IDocumentRepository documentRepository = null, IUserAccountRepository userAccountRepository = null, 
+            IDocAppointmentRepository docAppointmentRepository = null/*, IUserGroupRepository userGroupRepository = null*/)
         {
             _documentRepository = documentRepository ??  DependencyResolver.Current.GetService<IDocumentRepository>();
             _userAccountRepository = userAccountRepository ??  DependencyResolver.Current.GetService<IUserAccountRepository>();
             _docAppointmentRepository = docAppointmentRepository ??  DependencyResolver.Current.GetService<IDocAppointmentRepository>();
+           // _userGroupRepository = userGroupRepository ?? DependencyResolver.Current.GetService<IUserGroupRepository>();
         }
 
+        #region public
         /// <summary>
         /// Генерирует отчет по пользователю
         /// </summary>
@@ -32,7 +35,7 @@ namespace MvcFront.Services
         /// <param name="userId"></param>
         /// <param name="groupId"> </param>
         /// <returns></returns>
-        public ReportTableViewModel GenerateUserReport(DocReport report, int userId, int groupId)
+        public ReportTableViewModel GenerateReport(DocReport report, int? userId, int groupId)
         {
             var result = new ReportTableViewModel 
             {
@@ -40,14 +43,18 @@ namespace MvcFront.Services
                 DocReport = report
             };
 
-            var query = _documentRepository.GetUserDocumentsByUserId(userId, DocumentStatus.Submited)
-                .Where(x => x.DocAppointment.UserGroup_usergroupid == groupId);
+            var query = userId.HasValue
+                            ? _documentRepository.GetUserDocumentsByUserId(userId.Value, DocumentStatus.Submited)
+                                  .Where(x => x.DocAppointment.UserGroup_usergroupid == groupId)
+                            : _documentRepository.GetUserInGroupDocumentsByGroupId(groupId, DocumentStatus.Submited);
 
             query = ApplyFilders(report.FilterStartDate, report.FilterEndDate, report.ReportAppointmentType, null, query);
 
             var docGroups = GroupDocuments(report.ReportGroupType, query);
 
+            //имена строк
             var names = new Dictionary<long, string>();
+
             switch (report.ReportGroupType)
             {
                 case DocReportGroupType.None:
@@ -62,6 +69,25 @@ namespace MvcFront.Services
                         names.Add(documentGroup.EntityId, _docAppointmentRepository.GetDocAppointmentById(documentGroup.EntityId).Name);
                     }
                     break;
+                case DocReportGroupType.User:
+                    {
+                        if(userId.HasValue)
+                        {
+                            foreach (var documentGroup in docGroups)
+                            {
+                                names.Add(documentGroup.EntityId, string.Empty);
+                            }
+                        }
+                        else
+                        {
+                            foreach (var documentGroup in docGroups)
+                            {
+                                //Convert.ToInt32 - сделан преднамернно для того что бы засунуть весь код генерации отчетов в 1 метод
+                                names.Add(documentGroup.EntityId, _userAccountRepository.GetById(Convert.ToInt32(documentGroup.EntityId)).FullName);
+                            }
+                        }
+                        break;
+                    }
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -77,6 +103,8 @@ namespace MvcFront.Services
             result.TotalRow = GenerateTotalRow(repFields, result.Rows, "Итого");
             return result;
         }
+
+        #endregion
 
         #region Misc
 
@@ -262,6 +290,7 @@ namespace MvcFront.Services
       
     }
 
+    #region Assist classes
     /// <summary>
     /// Класс помщник формирования
     /// </summary>
@@ -276,5 +305,6 @@ namespace MvcFront.Services
         /// </summary>
         public List<Document> Documents { get; set; } 
     }
+    #endregion
     
 }

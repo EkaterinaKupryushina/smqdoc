@@ -30,6 +30,10 @@ namespace MvcFront.Models
         [Display(Name = "Группировка строк")]
         public int ReportGroupType { get; set; }
 
+        [DataType(DataType.MultilineText)]
+        [Display(Name = "Легенда")]
+        public string Legend { get; set; }
+
         [Display(Name = "Включен?")]
         public bool IsActive { get; set; }
 
@@ -52,6 +56,7 @@ namespace MvcFront.Models
             ReportGroupType = entity.GroupType;
             IsActive = entity.IsActive;
             IsGroupChangeAvailable = entity.ReportFields== null || entity.ReportFields.Count == 0;
+            Legend = entity.Legend;
         }
 
         public DocReport Update(DocReport entity)
@@ -63,6 +68,7 @@ namespace MvcFront.Models
             entity.DocAppointmetType = ReportAppointmentType;
             entity.GroupType = ReportGroupType;
             entity.IsActive = IsActive;
+            entity.Legend = Legend;
 
             return entity;
         }

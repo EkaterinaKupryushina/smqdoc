@@ -116,6 +116,7 @@
       <DependentUpon>UploadLocalization.ru-RU.resx</DependentUpon>
     </Compile>
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ManagerReportController.cs" />
     <Compile Include="Controllers\DictionaryController.cs" />
     <Compile Include="Controllers\DocReportEditController.cs" />
     <Compile Include="Controllers\GroupDocAppointmentController.cs" />
@@ -496,6 +497,7 @@
     <Content Include="Scripts\jquery.watermark.min.js" />
     <Content Include="Scripts\modernizr-1.7.js" />
     <Content Include="Scripts\modernizr-1.7.min.js" />
+    <Content Include="Scripts\ReportScripts.js" />
     <Content Include="TestPage.htm" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -665,6 +667,8 @@
       <SubType>Designer</SubType>
     </None>
     <Content Include="Views\GroupDocAppointment\SelectDocTemplateForPersonal.cshtml" />
+    <Content Include="Views\ManagerReport\PrintUserReport.cshtml" />
+    <Content Include="Views\ManagerReport\PrintGroupReport.cshtml" />
     <None Include="Views\UserAccountList\ChangeState.cshtml" />
     <Content Include="Views\UserGroupList\Index.cshtml" />
     <Content Include="Views\UserGroupList\Delete.cshtml" />
@@ -688,6 +692,7 @@
     <Content Include="Views\UserDocument\SubmitedUserDocuments.cshtml" />
     <Content Include="WebConnectionStrings.config" />
     <Content Include="Views\UserReport\PrintUserReport.cshtml" />
+    <Content Include="Views\UserGroupList\DetailsForManager.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ELW.Library.Math\ELW.Library.Math.csproj">
