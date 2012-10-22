@@ -37,9 +37,20 @@ namespace MvcFront.Interfaces
         /// <param name="userId"></param>
         /// <param name="tagId"></param>
         /// <returns></returns>
-        bool AddUserTag(int userId, int tagId);
+        bool AddUserTagToUser(int userId, int tagId);
 
         //убрать у пользователя тэг
-        bool RemoveUserTag(int userId, int tagId);
+        bool RemoveUserTagFromUser(int userId, int tagId);
+
+        /// <summary>
+        /// Добавить в отчет тэг
+        /// </summary>
+        /// <param name="docReport"></param>
+        /// <param name="tagId"></param>
+        /// <returns></returns>
+        bool AddUserTagToDocReport(int docReport, int tagId);
+
+        //убрать у отчета тэг
+        bool RemoveUserTagFromDocReport(int docReport, int tagId);
     }
 }

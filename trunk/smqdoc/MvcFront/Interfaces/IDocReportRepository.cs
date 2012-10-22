@@ -18,6 +18,15 @@ namespace MvcFront.Interfaces
         /// <returns></returns>
         DocReport GetDocReportById(int id);
 
+
+        /// <summary>
+        /// Создает копию Instance объект отчет
+        /// </summary>
+        /// <param name="uw"></param>
+        /// <param name="docreportId"></param>
+        /// <returns></returns>
+        DocReport Copy(IUnitOfWork uw, int docreportId);
+
         /// <summary>
         /// Сохранить отчет
         /// </summary>

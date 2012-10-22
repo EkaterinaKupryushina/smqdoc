@@ -23,10 +23,7 @@
                        });
                        columns.Command(command =>
                        {
-                           command.Custom("viewDetails").Text("Информация")
-                            .DataRouteValues(route => route.Add(o => o.DocReportId).RouteKey("id"))
-                            .Action("DetailsDocReport", "DocReportEdit")
-                            .HtmlAttributes(new { style = "text-align: center" });
+                          
                            command.Custom("EditDetails").Text("Редактировать")
                             .DataRouteValues(route => route.Add(o => o.DocReportId).RouteKey("id"))
                             .Action("EditDocReport", "DocReportEdit")

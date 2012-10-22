@@ -124,5 +124,13 @@ namespace MvcFront.Repositories
                 _unitOfWork.DbModel.SaveChanges();
             }
         }
+
+
+        public DocReport Copy(IUnitOfWork uw, int docreportId)
+        {
+            if (docreportId == 0)
+                return new DocReport();
+            return uw.DbModel.DocReports.SingleOrDefault(x => x.docreportid == docreportId);
+        }
     }
 }

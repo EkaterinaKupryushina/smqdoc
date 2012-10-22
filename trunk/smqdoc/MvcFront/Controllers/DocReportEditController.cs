@@ -15,11 +15,13 @@ namespace MvcFront.Controllers
     {
         private readonly IDocReportRepository _docReportRepository;
         private readonly IDocTemplateRepository _docTemplateRepository;
+        private readonly IUserTagRepository _userTagRepository;
 
-        public DocReportEditController(IDocReportRepository docReportRepository,IDocTemplateRepository docTemplateRepository)
+        public DocReportEditController(IDocReportRepository docReportRepository, IDocTemplateRepository docTemplateRepository, IUserTagRepository userTagRepository)
         {
             _docReportRepository = docReportRepository;
             _docTemplateRepository = docTemplateRepository;
+            _userTagRepository = userTagRepository;
         }
 
         #region DocReport
@@ -460,6 +462,55 @@ namespace MvcFront.Controllers
         }
 
         #endregion
+
+        #endregion
+
+        #region UserTags
+
+        public JsonResult RemoveUserTag(int id, int tagId)
+        {
+            try
+            {
+                return Json(new { result = _userTagRepository.RemoveUserTagFromDocReport(id, tagId) });
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocReportEditController.RemoveUserTag()", ex);
+                return new JsonResult { Data = false };
+            }
+        }
+
+        public JsonResult AddUserTag(int docreportId, int tagId)
+        {
+            try
+            {
+                return Json(new { result = _userTagRepository.AddUserTagToDocReport(docreportId, tagId) });
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocReportEditController.AddUserTag()", ex);
+                return new JsonResult { Data = false };
+            }
+        }
+
+        //список меток пользователя
+        [GridAction]
+        public ActionResult _UserTagList(int docreportId)
+        {
+            try
+            {
+                var data = _docReportRepository.GetDocReportById(docreportId).UserTags.ToList()
+                    .ConvertAll(UserTagsListViewModel.UserTagNamesToModelConverter).ToList();
+
+                return View(new GridModel<UserTagsListViewModel> { Data = data });
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocReportEditController._UserTagList()", ex);
+                return View(new GridModel<UserTagsListViewModel> { Data = new List<UserTagsListViewModel>() });
+            }
+        }
 
         #endregion
     }
