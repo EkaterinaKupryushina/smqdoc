@@ -1,7 +1,6 @@
 ﻿using System.Data.Objects;
 using System.Linq;
 using MvcFront.DB;
-using MvcFront.Enums;
 using MvcFront.Interfaces;
 
 namespace MvcFront.Repositories
@@ -10,11 +9,13 @@ namespace MvcFront.Repositories
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IUserAccountRepository _userRepository;
+        private readonly IDocReportRepository _docReportRepository;
 
-        public UserTagRepository(IUnitOfWork unitOfWork, IUserAccountRepository userRepository)
+        public UserTagRepository(IUnitOfWork unitOfWork, IUserAccountRepository userRepository, IDocReportRepository docReportRepository)
         {
             _unitOfWork = unitOfWork;
             _userRepository = userRepository;
+            _docReportRepository = docReportRepository;
         }
 
         public bool SaveUserTag(UserTags tag)
@@ -57,19 +58,26 @@ namespace MvcFront.Repositories
             return _unitOfWork.DbModel.UserTags.AsQueryable();
         }
 
-        private IQueryable<UserTags> GetUserTagsByUserID(long uid)
+        private IQueryable<UserTags> GetUserTagsByUserId(long uid)
         {
             var user = _unitOfWork.DbModel.UserAccounts.First(x => x.userid == uid);
 
             return user.UserTags.AsQueryable();
         }
 
-        public bool AddUserTag(int userId, int tagId)
+        private IQueryable<UserTags> GetUserTagsByDocReportId(int docreportId)
+        {
+            var docReport = _unitOfWork.DbModel.DocReports.First(x => x.docreportid == docreportId);
+
+            return docReport.UserTags.AsQueryable();
+        }
+
+        public bool AddUserTagToUser(int userId, int tagId)
         {
             var user = _userRepository.Copy(_unitOfWork, userId);
             var tag = GetUserTagById(tagId);
 
-            var userTags = GetUserTagsByUserID(userId);
+            var userTags = GetUserTagsByUserId(userId);
 
             if (!userTags.Any(x => x.Id == tagId))
             {
@@ -80,12 +88,12 @@ namespace MvcFront.Repositories
             return true;
         }
 
-        public bool RemoveUserTag(int userId, int tagId)
+        public bool RemoveUserTagFromUser(int userId, int tagId)
         {
             var user = _userRepository.Copy(_unitOfWork, userId);
             var tag = GetUserTagById(tagId);
 
-            var userTags = GetUserTagsByUserID(userId);
+            var userTags = GetUserTagsByUserId(userId);
 
             if (userTags.Any(x => x.Id == tagId))
             {
@@ -93,6 +101,37 @@ namespace MvcFront.Repositories
                 _unitOfWork.DbModel.SaveChanges();
             }
             return true;
-        }  
+        }
+
+        public bool AddUserTagToDocReport(int docreportId, int tagId)
+        {
+            var docReport = _docReportRepository.Copy(_unitOfWork, docreportId);
+            var tag = GetUserTagById(tagId);
+
+            var userTags = GetUserTagsByDocReportId(docreportId);
+
+            if (!userTags.Any(x => x.Id == tagId))
+            {
+                docReport.UserTags.Add(tag);
+                _unitOfWork.DbModel.SaveChanges();
+            }
+
+            return true;
+        }
+
+        public bool RemoveUserTagFromDocReport(int docreportId, int tagId)
+        {
+            var docReport = _docReportRepository.Copy(_unitOfWork, docreportId);
+            var tag = GetUserTagById(tagId);
+
+            var userTags = GetUserTagsByDocReportId(docreportId);
+
+            if (userTags.Any(x => x.Id == tagId))
+            {
+                docReport.UserTags.Remove(tag);
+                _unitOfWork.DbModel.SaveChanges();
+            }
+            return true;
+        }
     }
 }

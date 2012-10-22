@@ -239,11 +239,11 @@ namespace MvcFront.Controllers
         {
             try
             {
-                return Json(new {result = _userTagRepository.RemoveUserTag(id, tagId)});
+                return Json(new {result = _userTagRepository.RemoveUserTagFromUser(id, tagId)});
             }
             catch (Exception ex)
             {
-                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserAccountListController.RemoveUserTag()", ex);
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserAccountListController.RemoveUserTagFromUser()", ex);
                 return new JsonResult { Data = false };
             }
         }
@@ -252,11 +252,11 @@ namespace MvcFront.Controllers
         {
             try
             {
-                return Json(new {result = _userTagRepository.AddUserTag(userId, tagId)});
+                return Json(new {result = _userTagRepository.AddUserTagToUser(userId, tagId)});
             }
             catch (Exception ex)
             {
-                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserAccountListController.AddUserTag()", ex);
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserAccountListController.AddUserTagToUser()", ex);
                 return new JsonResult { Data = false };
             }
         }
