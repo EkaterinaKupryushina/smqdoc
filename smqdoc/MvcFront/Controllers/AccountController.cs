@@ -11,6 +11,7 @@ using NLog;
 
 namespace MvcFront.Controllers
 {
+
     public class AccountController : Controller
     {
         private readonly IUserAccountRepository _userRepository;
