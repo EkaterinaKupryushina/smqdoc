@@ -123,11 +123,11 @@ namespace MvcFront.Services
             //Start date time
             query = query.Where(
                 x =>
-                (x.DocAppointment.PlanedStartDate != null && x.DocAppointment.PlanedStartDate > startDateTime) ||
-                (x.DocAppointment.PlanedStartDate == null && x.DocAppointment.ActualStartDate > startDateTime));
+                (x.DocAppointment.PlanedStartDate != null && x.DocAppointment.PlanedStartDate >= startDateTime) ||
+                (x.DocAppointment.PlanedStartDate == null && x.DocAppointment.ActualStartDate >= startDateTime));
             //End date time
             query = query.Where(
-                x => x.DocAppointment.PlanedEndDate < endDateTime);
+                x => x.DocAppointment.ActualEndDate <= endDateTime);
 
             //Applointment type
             switch (reportAppointmentType)
