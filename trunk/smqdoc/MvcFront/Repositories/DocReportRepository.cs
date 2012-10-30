@@ -23,6 +23,22 @@ namespace MvcFront.Repositories
             return _unitOfWork.DbModel.DocReports.First(x => x.docreportid == id);
         }
 
+
+        public IQueryable<DocReport> GetDocReportsAvailableForUser(int userId)
+        {
+            return
+                _unitOfWork.DbModel.DocReports.Where(
+                    x => x.DocTemplate.DocAppointments.Any(y => y.Documents.Any(z => z.UserAccount_userid == userId)));
+        }
+
+
+        public IQueryable<DocReport> GetDocReportsAvailableForGroupManager(int groupId)
+        {
+            return
+                _unitOfWork.DbModel.DocReports.Where(
+                    x => x.DocTemplate.DocAppointments.Any(y => y.UserGroup_usergroupid == groupId));
+        }
+
         public void SaveDocReport(DocReport entity)
         {
             if (entity.docreportid == 0)

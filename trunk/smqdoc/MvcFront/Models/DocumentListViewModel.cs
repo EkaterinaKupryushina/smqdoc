@@ -54,7 +54,8 @@ namespace MvcFront.Models
             DateEnd = (templ.DocStatus == DocumentStatus.PlanEditing || templ.DocStatus == DocumentStatus.PlanSended) && templ.DocAppointment.PlanedEndDate.HasValue
                           ? templ.DocAppointment.PlanedEndDate.Value
                           : templ.DocAppointment.ActualEndDate;
-            IsRed = DateTime.Now.AddDays(SmqSettings.Instance.DocumentsDedlineWarning) >= DateEnd;
+            IsRed = DateTime.Now.AddDays(SmqSettings.Instance.DocumentsDedlineWarning) >= DateEnd 
+                && templ.DocStatus != DocumentStatus.Submited && templ.DocStatus != DocumentStatus.Deleted;
             Owner = templ.UserAccount.FullName;
         }
         public static DocumentListViewModel DocumentToModelConverter(Document templ)

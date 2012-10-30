@@ -18,6 +18,19 @@ namespace MvcFront.Interfaces
         /// <returns></returns>
         DocReport GetDocReportById(int id);
 
+        /// <summary>
+        /// Возвращает список отчетов которые доступны пользователю (те на которые уже созданы назначения)
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        IQueryable<DocReport> GetDocReportsAvailableForUser(int userId);
+
+        /// <summary>
+        /// Возвращает список отчетов которые доступны менеджеру группы (те на которые уже созданы назначения)
+        /// </summary>
+        /// <param name="groupId"></param>
+        /// <returns></returns>
+        IQueryable<DocReport> GetDocReportsAvailableForGroupManager(int groupId);
 
         /// <summary>
         /// Создает копию Instance объект отчет
