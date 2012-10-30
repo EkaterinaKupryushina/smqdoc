@@ -8,12 +8,13 @@
 //------------------------------------------------------------------------------
 
 using System;
+using System.ComponentModel;
+using System.Data.EntityClient;
 using System.Data.Objects;
 using System.Data.Objects.DataClasses;
-using System.Data.EntityClient;
-using System.ComponentModel;
-using System.Xml.Serialization;
+using System.Linq;
 using System.Runtime.Serialization;
+using System.Xml.Serialization;
 
 [assembly: EdmSchemaAttribute()]
 #region EDM Relationship Metadata
@@ -315,6 +316,7 @@ namespace MvcFront.DB
         private ObjectSet<PersonalDocTemplate> _PersonalDocTemplates;
 
         #endregion
+
         #region AddTo Methods
     
         /// <summary>
@@ -430,11 +432,11 @@ namespace MvcFront.DB
         }
 
         #endregion
+
     }
-    
 
     #endregion
-    
+
     #region Entities
     
     /// <summary>
@@ -465,6 +467,7 @@ namespace MvcFront.DB
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -567,6 +570,7 @@ namespace MvcFront.DB
         partial void OnOrderNumberChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -609,6 +613,7 @@ namespace MvcFront.DB
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -643,6 +648,7 @@ namespace MvcFront.DB
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -889,6 +895,7 @@ namespace MvcFront.DB
         partial void OnUserGroup_usergroupidChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -1029,6 +1036,7 @@ namespace MvcFront.DB
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -1057,6 +1065,7 @@ namespace MvcFront.DB
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -1207,6 +1216,7 @@ namespace MvcFront.DB
         partial void OnDoubleValueChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -1287,6 +1297,7 @@ namespace MvcFront.DB
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -1327,6 +1338,7 @@ namespace MvcFront.DB
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -1549,6 +1561,7 @@ namespace MvcFront.DB
         partial void OnLegendChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -1635,6 +1648,7 @@ namespace MvcFront.DB
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -1669,6 +1683,7 @@ namespace MvcFront.DB
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -1819,6 +1834,7 @@ namespace MvcFront.DB
         partial void OnAllowAttachmentChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -1911,6 +1927,7 @@ namespace MvcFront.DB
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -1945,6 +1962,7 @@ namespace MvcFront.DB
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -2167,6 +2185,7 @@ namespace MvcFront.DB
         partial void OnStoredFileNameChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -2269,6 +2288,7 @@ namespace MvcFront.DB
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -2301,6 +2321,7 @@ namespace MvcFront.DB
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -2571,6 +2592,7 @@ namespace MvcFront.DB
         partial void OnFactFieldTemplate_fieldteplateidChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -2739,6 +2761,7 @@ namespace MvcFront.DB
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -2773,6 +2796,7 @@ namespace MvcFront.DB
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -2923,6 +2947,7 @@ namespace MvcFront.DB
         partial void OnFileNameChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -2965,6 +2990,7 @@ namespace MvcFront.DB
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -2991,6 +3017,7 @@ namespace MvcFront.DB
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -3069,6 +3096,7 @@ namespace MvcFront.DB
         partial void OnFileLibraryFolder_filelibraryfolderidChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -3155,6 +3183,7 @@ namespace MvcFront.DB
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -3183,6 +3212,7 @@ namespace MvcFront.DB
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -3261,6 +3291,7 @@ namespace MvcFront.DB
         partial void OnUserGroup_usergroupidChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -3341,6 +3372,7 @@ namespace MvcFront.DB
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -3373,6 +3405,7 @@ namespace MvcFront.DB
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -3499,6 +3532,7 @@ namespace MvcFront.DB
         partial void OnOrderNumberChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -3579,6 +3613,7 @@ namespace MvcFront.DB
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -3617,6 +3652,7 @@ namespace MvcFront.DB
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -3863,6 +3899,7 @@ namespace MvcFront.DB
         partial void OnLastAccessProfileCodeChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -3977,6 +4014,7 @@ namespace MvcFront.DB
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -4009,6 +4047,7 @@ namespace MvcFront.DB
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -4135,6 +4174,7 @@ namespace MvcFront.DB
         partial void OnStatusChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -4243,6 +4283,7 @@ namespace MvcFront.DB
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -4269,6 +4310,7 @@ namespace MvcFront.DB
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -4323,6 +4365,7 @@ namespace MvcFront.DB
         partial void OnNameChanged();
 
         #endregion
+
     
         #region Navigation Properties
     
@@ -4371,8 +4414,10 @@ namespace MvcFront.DB
         }
 
         #endregion
+
     }
 
     #endregion
+
     
 }

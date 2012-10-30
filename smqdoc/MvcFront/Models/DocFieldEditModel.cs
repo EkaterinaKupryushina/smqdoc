@@ -220,6 +220,10 @@ namespace MvcFront.Models
                     {
                         yield return new ValidationResult("Необходимо ввести значение (Число)");
                     }
+                    if (IsRestricted && ((!MaxVal.HasValue || !MinVal.HasValue) || MaxVal <= MinVal))
+                    {
+                        yield return new ValidationResult("Проверьте ограничение (Число)");
+                    }
                     break;
                 case FieldTemplateType.String:
                     if (string.IsNullOrWhiteSpace(StringValue))

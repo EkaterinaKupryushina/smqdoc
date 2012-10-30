@@ -1,7 +1,14 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
+using MvcFront.DB;
 using MvcFront.Helpers;
 using MvcFront.Interfaces;
+using MvcFront.Models;
 using MvcFront.Services;
+using NLog;
+using Telerik.Web.Mvc;
 
 namespace MvcFront.Controllers
 {
@@ -14,6 +21,11 @@ namespace MvcFront.Controllers
             _docReportRepository = docReportRepository;
         }
 
+        public ActionResult Index()
+        {
+            return View();
+        }
+
         public ActionResult PrintUserReport(int reportId)
         {
             var reportService = new ReportService();
@@ -22,6 +34,34 @@ namespace MvcFront.Controllers
             var report = reportService.GenerateReport(docReport, sessData.UserId, sessData.UserGroupId);
             return View(report);
         }
+
+
+
+        #region GridActions
+       
+        /// <summary>
+        /// Список документов пользователя
+        /// </summary>
+        /// <returns></returns>
+        [GridAction]
+        public ActionResult _UserDocReportsList()
+        {
+            try
+            {
+                var sessData = SessionHelper.GetUserSessionData(Session);
+                var data = _docReportRepository.GetDocReportsAvailableForUser(sessData.UserId).ToList()
+                        .ConvertAll(DocReportListViewModel.DocReportToModelConverter).ToList();
+                return View(new GridModel<DocReportListViewModel> { Data = data });
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserReportController._UserDocReportsList()", ex);
+                return View(new GridModel<DocReport> { Data = new List<DocReport>() });
+            }
+        }
+
+        #endregion
 
     }
 }

@@ -693,6 +693,7 @@
     <Content Include="WebConnectionStrings.config" />
     <Content Include="Views\UserReport\PrintUserReport.cshtml" />
     <Content Include="Views\UserGroupList\DetailsForManager.cshtml" />
+    <Content Include="Views\UserReport\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ELW.Library.Math\ELW.Library.Math.csproj">

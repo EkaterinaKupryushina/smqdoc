@@ -1,0 +1,30 @@
+﻿@using Telerik.Web.Mvc.UI
+@using MvcFront.Models
+@{
+    ViewBag.Title = "Отчеты";
+}
+    @Html.ValidationSummary(true)
+<h2>Отчеты</h2>
+
+@(Html.Telerik().Grid<DocReportListViewModel>()
+            .DataBinding(dataBinding => dataBinding.Ajax().Select("_UserDocReportsList", "UserReport", new { }))
+        .Name("DocReportsListGrid")
+
+                      .Columns(columns =>
+                      {
+                          columns.AutoGenerate(column =>
+                          {
+                              column.Width = "150px";
+                              if (column.Member == "DocReportId")
+                                  column.Visible = false;
+                          });
+                       columns.Command(command => command.Custom("viewDetails").Text("Просмотр")
+                                                      .DataRouteValues(route => route.Add(o => o.DocReportId).RouteKey("reportId"))
+                                                      .Action("PrintUserReport", "UserReport")
+                                                      .HtmlAttributes(new { style = "text-align: center" })).Width(50);
+                   })
+
+                 .Sortable()
+                .Pageable()
+                .Filterable()
+                )
