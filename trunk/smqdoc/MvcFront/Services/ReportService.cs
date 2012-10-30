@@ -16,15 +16,15 @@ namespace MvcFront.Services
         private readonly IDocumentRepository _documentRepository;
         private readonly IUserAccountRepository _userAccountRepository;
         private readonly IDocAppointmentRepository _docAppointmentRepository;
-        //private readonly IUserGroupRepository _userGroupRepository;
+        private readonly IUserGroupRepository _userGroupRepository;
 
         public ReportService(IDocumentRepository documentRepository = null, IUserAccountRepository userAccountRepository = null, 
-            IDocAppointmentRepository docAppointmentRepository = null/*, IUserGroupRepository userGroupRepository = null*/)
+            IDocAppointmentRepository docAppointmentRepository = null, IUserGroupRepository userGroupRepository = null)
         {
             _documentRepository = documentRepository ??  DependencyResolver.Current.GetService<IDocumentRepository>();
             _userAccountRepository = userAccountRepository ??  DependencyResolver.Current.GetService<IUserAccountRepository>();
             _docAppointmentRepository = docAppointmentRepository ??  DependencyResolver.Current.GetService<IDocAppointmentRepository>();
-           // _userGroupRepository = userGroupRepository ?? DependencyResolver.Current.GetService<IUserGroupRepository>();
+            _userGroupRepository = userGroupRepository ?? DependencyResolver.Current.GetService<IUserGroupRepository>();
         }
 
         #region public
@@ -48,7 +48,8 @@ namespace MvcFront.Services
                                   .Where(x => x.DocAppointment.UserGroup_usergroupid == groupId)
                             : _documentRepository.GetUserInGroupDocumentsByGroupId(groupId, DocumentStatus.Submited);
 
-            query = ApplyFilders(report.FilterStartDate, report.FilterEndDate, report.ReportAppointmentType, null, query);
+            var userWithTagsIds = report.UserTags.SelectMany(x => x.UserAccounts.Select(y => y.userid)).Distinct().ToList();
+            query = ApplyFilders(report.FilterStartDate, report.FilterEndDate, report.ReportAppointmentType, report.UserTags.Count > 0 ? userWithTagsIds : null, query);
 
             var docGroups = GroupDocuments(report.ReportGroupType, query);
 

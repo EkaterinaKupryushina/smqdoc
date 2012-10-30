@@ -7,7 +7,7 @@
 <h2>Отчеты</h2>
 
 @(Html.Telerik().Grid<DocReportListViewModel>()
-            .DataBinding(dataBinding => dataBinding.Ajax().Select("_UserDocReportsList", "UserReport", new { }))
+            .DataBinding(dataBinding => dataBinding.Ajax().Select("_ManagerDocReportsList", "ManagerReport", new { }))
         .Name("DocReportsListGrid")
 
                       .Columns(columns =>
@@ -20,7 +20,7 @@
                           });
                        columns.Command(command => command.Custom("viewDetails").Text("Просмотр")
                                                       .DataRouteValues(route => route.Add(o => o.DocReportId).RouteKey("reportId"))
-                                                      .Action("PrintUserReport", "UserReport")
+                                                      .Action("PrintGroupReport", "ManagerReport")
                                                       .HtmlAttributes(new { style = "text-align: center", target = "_blank" })).Width(50);
                    })
 

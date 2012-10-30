@@ -28,11 +28,20 @@ namespace MvcFront.Controllers
 
         public ActionResult PrintUserReport(int reportId)
         {
+            try
+            {
             var reportService = new ReportService();
             var docReport = _docReportRepository.GetDocReportById(reportId);
             var sessData = SessionHelper.GetUserSessionData(Session);
             var report = reportService.GenerateReport(docReport, sessData.UserId, sessData.UserGroupId);
             return View(report);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserReportController.PrintUserReport()", ex);
+                return View();
+            }
         }
 
 
