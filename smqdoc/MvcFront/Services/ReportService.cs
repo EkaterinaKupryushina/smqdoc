@@ -32,10 +32,10 @@ namespace MvcFront.Services
         /// Генерирует отчет по пользователю
         /// </summary>
         /// <param name="report"></param>
-        /// <param name="userId"></param>
+        /// <param name="userIds"></param>
         /// <param name="groupId"> </param>
         /// <returns></returns>
-        public ReportTableViewModel GenerateReport(DocReport report, int? userId, int groupId)
+        public ReportTableViewModel GenerateReport(DocReport report, List<int> userIds, int groupId)
         {
             var result = new ReportTableViewModel 
             {
@@ -43,13 +43,11 @@ namespace MvcFront.Services
                 DocReport = report
             };
 
-            var query = userId.HasValue
-                            ? _documentRepository.GetUserDocumentsByUserId(userId.Value, DocumentStatus.Submited)
-                                  .Where(x => x.DocAppointment.UserGroup_usergroupid == groupId)
-                            : _documentRepository.GetUserInGroupDocumentsByGroupId(groupId, DocumentStatus.Submited);
+            var query = _documentRepository.GetUserInGroupDocumentsByGroupId(groupId, DocumentStatus.Submited);
 
-            var userWithTagsIds = report.UserTags.SelectMany(x => x.UserAccounts.Select(y => y.userid)).Distinct().ToList();
-            query = ApplyFilders(report.FilterStartDate, report.FilterEndDate, report.ReportAppointmentType, report.UserTags.Count > 0 ? userWithTagsIds : null, query);
+            var userWithTagsIds = GetUserIdsListForReport(report, groupId);
+            var userIdsForFilter = userIds ?? (report.UserTags.Count > 0 ? userWithTagsIds : null);
+            query = ApplyFilders(report.FilterStartDate, report.FilterEndDate, report.ReportAppointmentType, userIdsForFilter , query);
 
             var docGroups = GroupDocuments(report.ReportGroupType, query);
 
@@ -72,20 +70,10 @@ namespace MvcFront.Services
                     break;
                 case DocReportGroupType.User:
                     {
-                        if(userId.HasValue)
+                        foreach (var documentGroup in docGroups)
                         {
-                            foreach (var documentGroup in docGroups)
-                            {
-                                names.Add(documentGroup.EntityId, string.Empty);
-                            }
-                        }
-                        else
-                        {
-                            foreach (var documentGroup in docGroups)
-                            {
-                                //Convert.ToInt32 - сделан преднамернно для того что бы засунуть весь код генерации отчетов в 1 метод
-                                names.Add(documentGroup.EntityId, _userAccountRepository.GetById(Convert.ToInt32(documentGroup.EntityId)).FullName);
-                            }
+                            //Convert.ToInt32 - сделан преднамернно для того что бы засунуть весь код генерации отчетов в 1 метод
+                            names.Add(documentGroup.EntityId, _userAccountRepository.GetById(Convert.ToInt32(documentGroup.EntityId)).FullName);
                         }
                         break;
                     }
@@ -105,6 +93,20 @@ namespace MvcFront.Services
             return result;
         }
 
+        /// <summary>
+        /// Возвращает список Id пользователей данных которых будут учтены в отчете
+        /// </summary>
+        /// <param name="report"></param>
+        /// <param name="groupId"> </param>
+        /// <returns></returns>
+        public List<int> GetUserIdsListForReport(DocReport report, int groupId)
+        {
+            if(report.UserTags != null && report.UserTags.Count > 0)
+            {
+                return report.UserTags.SelectMany(x => x.UserAccounts.Select(y => y.userid)).Distinct().ToList();
+            }
+            return _userGroupRepository.GetById(groupId).Members.Select(x => x.userid).ToList();
+        }
         #endregion
 
         #region Misc

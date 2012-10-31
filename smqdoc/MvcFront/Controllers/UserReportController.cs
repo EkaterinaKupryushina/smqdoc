@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web.Mvc;
 using MvcFront.DB;
 using MvcFront.Helpers;
+using MvcFront.Infrastructure.Security;
 using MvcFront.Interfaces;
 using MvcFront.Models;
 using MvcFront.Services;
@@ -12,6 +13,7 @@ using Telerik.Web.Mvc;
 
 namespace MvcFront.Controllers
 {
+    [GroupUserAuthorize]
     public class UserReportController : Controller
     {
         private readonly IDocReportRepository _docReportRepository;
@@ -30,11 +32,11 @@ namespace MvcFront.Controllers
         {
             try
             {
-            var reportService = new ReportService();
-            var docReport = _docReportRepository.GetDocReportById(reportId);
-            var sessData = SessionHelper.GetUserSessionData(Session);
-            var report = reportService.GenerateReport(docReport, sessData.UserId, sessData.UserGroupId);
-            return View(report);
+                var reportService = new ReportService();
+                var docReport = _docReportRepository.GetDocReportById(reportId);
+                var sessData = SessionHelper.GetUserSessionData(Session);
+                var report = reportService.GenerateReport(docReport, new List<int>{sessData.UserId}, sessData.UserGroupId);
+                return View(report);
             }
             catch (Exception ex)
             {
