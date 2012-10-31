@@ -1,7 +1,20 @@
-﻿@model MvcFront.Models.DocReportEditModel
+﻿@model MvcFront.Models.CustomDocReportModel
 
 @{
     ViewBag.Title = "title";
 }
 
-<h2>Модифицируемый отчет</h2>
+<link href="@Url.Content("~/Content/Reports.css")" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src='@Url.Content("~/Scripts/ReportScripts.js")'></script>
+
+<h2>Модифицируемый отчет @Model.Name</h2>
+@Html.ValidationSummary(true)
+
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(model => model.DocReportId)
+    @Html.HiddenFor(model => model.Name)
+    @Html.EditorFor(x => x.Users)
+    <button type="submit">OK</button>
+}
+@Html.DisplayFor(model => model.ReportTableView)

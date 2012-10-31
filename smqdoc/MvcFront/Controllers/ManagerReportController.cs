@@ -29,47 +29,73 @@ namespace MvcFront.Controllers
         [HttpGet]
         public ActionResult CustomReport(int reportId)
         {
-            return View(new DocReportEditModel(_docReportRepository.GetDocReportById(reportId)));
+            try
+            {
+                var reportService = new ReportService();
+                var docReport = _docReportRepository.GetDocReportById(reportId);
+                var sessData = SessionHelper.GetUserSessionData(Session);
+                var report = reportService.GenerateReport(docReport, null, sessData.UserGroupId);
+                return View(new CustomDocReportModel(report));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "ManagerReportController.CustomReport()", ex);
+                return View();
+            }
         }
 
         [HttpPost]
-        public ActionResult CustomReport(int reportId,DocReportEditModel model)
+        public ActionResult CustomReport(int reportId, CustomDocReportModel model)
         {
-            return RedirectToAction("Index");
+            try
+            {
+                var reportService = new ReportService();
+                var docReport = _docReportRepository.GetDocReportById(reportId);
+                var sessData = SessionHelper.GetUserSessionData(Session);
+                model.ReportTableView = reportService.GenerateReport(docReport, null, sessData.UserGroupId);
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "ManagerReportController.CustomReport()", ex);
+                return View();
+            }
         }
 
         public ActionResult PrintUserReport(int reportId, int userId)
         {
             try
             {
-            var reportService = new ReportService();
-            var docReport = _docReportRepository.GetDocReportById(reportId);
-            var sessData = SessionHelper.GetUserSessionData(Session);
-            var report = reportService.GenerateReport(docReport, userId, sessData.UserGroupId);
-            return View(report);
+                var reportService = new ReportService();
+                var docReport = _docReportRepository.GetDocReportById(reportId);
+                var sessData = SessionHelper.GetUserSessionData(Session);
+                var report = reportService.GenerateReport(docReport, userId, sessData.UserGroupId);
+                return View(report);
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError(string.Empty, "Произошла ошибка");
-                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserReportController.PrintUserReport()", ex);
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "ManagerReportController.PrintUserReport()", ex);
                 return View();
             }
         }
 
         public ActionResult PrintGroupReport(int reportId)
         {
-            try{
-
-            var reportService = new ReportService();
-            var docReport = _docReportRepository.GetDocReportById(reportId);
-            var sessData = SessionHelper.GetUserSessionData(Session);
-            var report = reportService.GenerateReport(docReport, null, sessData.UserGroupId);
-            return View(report);
+            try
+            {
+                var reportService = new ReportService();
+                var docReport = _docReportRepository.GetDocReportById(reportId);
+                var sessData = SessionHelper.GetUserSessionData(Session);
+                var report = reportService.GenerateReport(docReport, null, sessData.UserGroupId);
+                return View(report);
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError(string.Empty, "Произошла ошибка");
-                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserReportController.PrintGroupReport()", ex);
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "ManagerReportController.PrintGroupReport()", ex);
                 return View();
             }
         }
@@ -94,7 +120,7 @@ namespace MvcFront.Controllers
             catch (Exception ex)
             {
                 ModelState.AddModelError(string.Empty, "Произошла ошибка");
-                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "UserReportController._ManagerDocReportsList()", ex);
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "ManagerReportController._ManagerDocReportsList()", ex);
                 return View(new GridModel<DocReport> { Data = new List<DocReport>() });
             }
         }

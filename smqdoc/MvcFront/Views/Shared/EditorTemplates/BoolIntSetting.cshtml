@@ -1,0 +1,6 @@
+﻿@model MvcFront.Models.BoolIntSetting
+<div>
+    @Html.CheckBoxFor(x => x.Value)
+    @Html.LabelFor(x => x.Value, Model.DisplayName)
+    @Html.HiddenFor(x => x.IntCode)
+</div>
