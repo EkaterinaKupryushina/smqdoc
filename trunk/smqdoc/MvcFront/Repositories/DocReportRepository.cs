@@ -28,7 +28,7 @@ namespace MvcFront.Repositories
         {
             return
                 _unitOfWork.DbModel.DocReports.Where(
-                    x => x.DocTemplate.DocAppointments.Any(y => y.Documents.Any(z => z.UserAccount_userid == userId)));
+                    x => x.IsActive && x.DocTemplate.DocAppointments.Any(y => y.Documents.Any(z => z.UserAccount_userid == userId)));
         }
 
 
@@ -36,7 +36,7 @@ namespace MvcFront.Repositories
         {
             return
                 _unitOfWork.DbModel.DocReports.Where(
-                    x => x.DocTemplate.DocAppointments.Any(y => y.UserGroup_usergroupid == groupId));
+                    x => x.IsActive && x.DocTemplate.DocAppointments.Any(y => y.UserGroup_usergroupid == groupId));
         }
 
         public void SaveDocReport(DocReport entity)

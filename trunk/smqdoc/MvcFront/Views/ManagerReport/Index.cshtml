@@ -18,10 +18,17 @@
                               if (column.Member == "DocReportId")
                                   column.Visible = false;
                           });
-                       columns.Command(command => command.Custom("viewDetails").Text("Просмотр")
-                                                      .DataRouteValues(route => route.Add(o => o.DocReportId).RouteKey("reportId"))
-                                                      .Action("PrintGroupReport", "ManagerReport")
-                                                      .HtmlAttributes(new { style = "text-align: center", target = "_blank" })).Width(50);
+                       columns.Command(command =>
+                                           {
+                                               command.Custom("viewDetails").Text("Просмотр")
+                                                   .DataRouteValues(route => route.Add(o => o.DocReportId).RouteKey("reportId"))
+                                                   .Action("PrintGroupReport", "ManagerReport")
+                                                   .HtmlAttributes(new {style = "text-align: center", target = "_blank"});
+                                               command.Custom("viewCustom").Text("Custom отчет")
+                                                   .DataRouteValues(route => route.Add(o => o.DocReportId).RouteKey("reportId"))
+                                                   .Action("CustomReport", "ManagerReport")
+                                                   .HtmlAttributes(new {style = "text-align: center"});
+                                           }).Width(50);
                    })
 
                 .Sortable()
