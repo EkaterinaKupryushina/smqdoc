@@ -328,3 +328,16 @@ div#title {
 .current {
     color: #DA70D6 !important;
 }
+
+.totalRow {
+    background-color: #DDDDDD;
+}
+
+.LegendBlock {
+    border: 0 none white;
+    overflow: hidden;
+    padding: 0;
+    outline: none;
+    resize: none;
+    width: 842px;
+}

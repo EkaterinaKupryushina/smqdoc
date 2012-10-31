@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web.Mvc;
 using MvcFront.DB;
 using MvcFront.Helpers;
+using MvcFront.Infrastructure.Security;
 using MvcFront.Interfaces;
 using MvcFront.Models;
 using MvcFront.Services;
@@ -12,13 +13,16 @@ using Telerik.Web.Mvc;
 
 namespace MvcFront.Controllers
 {
+    [GroupManagerAuthorize]
     public class ManagerReportController : Controller
     {
         private readonly IDocReportRepository _docReportRepository;
+        private readonly IUserGroupRepository _userGroupRepository;
 
-        public ManagerReportController(IDocReportRepository docReportRepository)
+        public ManagerReportController(IDocReportRepository docReportRepository, IUserGroupRepository userGroupRepository)
         {
             _docReportRepository = docReportRepository;
+            _userGroupRepository = userGroupRepository;
         }
 
         public ActionResult Index()
@@ -31,11 +35,15 @@ namespace MvcFront.Controllers
         {
             try
             {
+                var sessData = SessionHelper.GetUserSessionData(Session);
                 var reportService = new ReportService();
                 var docReport = _docReportRepository.GetDocReportById(reportId);
-                var sessData = SessionHelper.GetUserSessionData(Session);
-                var report = reportService.GenerateReport(docReport, null, sessData.UserGroupId);
-                return View(new CustomDocReportModel(report));
+                //получаем список используемых в отчете пользователей(для отметки их по умолчанию)
+                var usedUsers = reportService.GetUserIdsListForReport(docReport, sessData.UserGroupId);
+
+                var report = reportService.GenerateReport(docReport, usedUsers, sessData.UserGroupId);
+
+                return View(new CustomDocReportModel(report, _userGroupRepository.GetById(sessData.UserGroupId).Members, usedUsers));
             }
             catch (Exception ex)
             {
@@ -53,31 +61,13 @@ namespace MvcFront.Controllers
                 var reportService = new ReportService();
                 var docReport = _docReportRepository.GetDocReportById(reportId);
                 var sessData = SessionHelper.GetUserSessionData(Session);
-                model.ReportTableView = reportService.GenerateReport(docReport, null, sessData.UserGroupId);
+                model.ReportTableView = reportService.GenerateReport(docReport, model.Users.Where(x => x.Value).Select(x => x.IntCode).ToList(), sessData.UserGroupId);
                 return View(model);
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError(string.Empty, "Произошла ошибка");
                 LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "ManagerReportController.CustomReport()", ex);
-                return View();
-            }
-        }
-
-        public ActionResult PrintUserReport(int reportId, int userId)
-        {
-            try
-            {
-                var reportService = new ReportService();
-                var docReport = _docReportRepository.GetDocReportById(reportId);
-                var sessData = SessionHelper.GetUserSessionData(Session);
-                var report = reportService.GenerateReport(docReport, userId, sessData.UserGroupId);
-                return View(report);
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError(string.Empty, "Произошла ошибка");
-                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "ManagerReportController.PrintUserReport()", ex);
                 return View();
             }
         }

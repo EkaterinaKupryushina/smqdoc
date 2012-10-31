@@ -27,11 +27,18 @@ namespace MvcFront.Models
             Users = new List<BoolIntSetting>();
         }
 
-        public CustomDocReportModel(ReportTableViewModel entity):base()
+        public CustomDocReportModel(ReportTableViewModel entity,IEnumerable<UserAccount> groupUsers, ICollection<int> usedUserId  ):base()
         {
             Name = entity.Name;
             DocReportId = entity.DocReport.docreportid;
             ReportTableView = entity;
+            Users = groupUsers.Select(
+                        x => new BoolIntSetting
+                            {
+                                DisplayName = x.FullName, 
+                                IntCode = x.userid, 
+                                Value = usedUserId.Contains(x.userid)
+                            }).ToList();
         }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
