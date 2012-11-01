@@ -3,6 +3,7 @@ using MvcFront.DB;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 using System.Globalization;
+using System.Linq;
 
 namespace MvcFront.Models
 {
@@ -21,6 +22,9 @@ namespace MvcFront.Models
         [Display(Name = "Последний вход")]
         [UIHint("DateTime")]
         public DateTime? LastLogin { get; set; }
+        [Display(Name = "Метки")]
+        public string TagsString { get; set; }
+
         [Display(Name = "CompositeId")]
         [UIHint("Hidden")]
         public string CompositeId { get; set; }        
@@ -37,7 +41,9 @@ namespace MvcFront.Models
                 Login = acc.Login;
                 FullName = acc.FullName;
                 LastLogin = acc.LastAccess;
-                StatusText = acc.UserStatusText;                
+                StatusText = acc.UserStatusText;
+                var tags = acc.UserTags.Select(x => x.Name);
+                TagsString = string.Join(", ", tags);
             }
         }
         

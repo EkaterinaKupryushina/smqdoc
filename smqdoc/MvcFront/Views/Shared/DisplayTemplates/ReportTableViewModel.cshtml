@@ -1,9 +1,10 @@
 ﻿@using System.Globalization
+@using MvcFront.DB
 @using MvcFront.Enums
 @using MvcFront.Helpers
 @model MvcFront.Models.ReportTableViewModel
 @{
-    var columns = Model.DocReport.ReportFields.OrderBy(x => x.OrderNumber);
+    var columns = Model.DocReport.ReportFields.OrderBy(x => x.OrderNumber).ToList();
 }
 <div class="GridBlock">
     <h1 class="TableHeader">@Model.Name</h1>
@@ -27,7 +28,7 @@
 
                 <td>
                     @{ 
-                        var rowName = Model.DocReport.GroupType != (int)DocReportGroupType.None 
+            var rowName = Model.DocReport.GroupType != (int)DocReportGroupType.None 
                                           ? Model.Rows[i].Name 
                                           : (i + 1).ToString(CultureInfo.InvariantCulture); 
                     }
@@ -48,22 +49,25 @@
             </tr>
         }
         <!-- строка итого-->
-        <tr class="totalRow">
-            <td>
-                @Model.TotalRow.Name
-            </td>
-            @foreach (var col in columns)
-            {
+        @if (@Model.TotalRow != null)
+        {
+            <tr class="totalRow">
                 <td>
-                            
-                    @{
-                        string value;
-                        Model.TotalRow.Values.TryGetValue(col.reportfieldid, out value);
-                    }
-                    @value
+                    @Model.TotalRow.Name
                 </td>
-            }
-        </tr>
+                @foreach (var col in columns)
+                {
+                    <td>
+                            
+                        @{
+                            string value;
+                            Model.TotalRow.Values.TryGetValue(col.reportfieldid, out value);
+                        }
+                        @value
+                    </td>
+                }
+            </tr>
+        }
     </table>
     @Html.TextAreaFor(model => model.DocReport.Legend, new Dictionary<string, object> { { "readonly", "true" }, { "class", "LegendBlock" } })
 </div>

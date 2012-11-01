@@ -42,14 +42,13 @@ namespace MvcFront.Controllers
                 var usedUsers = reportService.GetUserIdsListForReport(docReport, sessData.UserGroupId);
 
                 var report = reportService.GenerateReport(docReport, usedUsers, sessData.UserGroupId);
-
                 return View(new CustomDocReportModel(report, _userGroupRepository.GetById(sessData.UserGroupId).Members, usedUsers));
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError(string.Empty, "Произошла ошибка");
                 LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "ManagerReportController.CustomReport()", ex);
-                return View();
+                return View(new CustomDocReportModel());
             }
         }
 
@@ -68,7 +67,7 @@ namespace MvcFront.Controllers
             {
                 ModelState.AddModelError(string.Empty, "Произошла ошибка");
                 LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "ManagerReportController.CustomReport()", ex);
-                return View();
+                return View(model);
             }
         }
 

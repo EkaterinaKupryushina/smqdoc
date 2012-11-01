@@ -10,8 +10,11 @@
 {
     @Html.HiddenFor(model => model.DocReportId)
     @Html.HiddenFor(model => model.Name)
-    <h3>Выберите пользователей который будут входить в отчет</h3>
+    <h3>Выберите пользователей данные которых будут входить в отчет</h3>
     @Html.EditorFor(x => x.Users)
     <button type="submit">Сформировать</button>
 }
-@Html.DisplayFor(model => model.ReportTableView)
+@if(Model.ReportTableView != null)
+{
+    @Html.DisplayFor(model => model.ReportTableView)
+}

@@ -89,7 +89,10 @@ namespace MvcFront.Services
                 names.TryGetValue(documentGroup.EntityId, out name);
                 result.Rows.Add(GenerateRow(repFields, documentGroup, name));
             }
-            result.TotalRow = GenerateTotalRow(repFields, result.Rows, "Итого");
+            if (report.ReportGroupType != DocReportGroupType.None)
+            {
+                result.TotalRow = GenerateTotalRow(repFields, result.Rows, "Итого");
+            }
             return result;
         }
 
