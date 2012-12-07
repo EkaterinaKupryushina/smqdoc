@@ -38,8 +38,7 @@ namespace MvcFront.Services
         public ReportTableViewModel GenerateReport(DocReport report, List<int> userIds, int groupId)
         {
             var result = new ReportTableViewModel 
-            {
-                Name = report.Name, 
+            { 
                 DocReport = report
             };
 
