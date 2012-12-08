@@ -143,6 +143,7 @@
     <Compile Include="DB\ReportField.cs" />
     <Compile Include="DB\UserAccount.cs" />
     <Compile Include="DB\UserGroup.cs" />
+    <Compile Include="Entities\ReportDataFieldForRPV.cs" />
     <Compile Include="Entities\ReportDataRow.cs" />
     <Compile Include="Entities\UserSessionData.cs" />
     <Compile Include="Enums\DocReportAppointmentType.cs" />
