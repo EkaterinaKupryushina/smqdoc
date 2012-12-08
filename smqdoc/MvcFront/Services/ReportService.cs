@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using MvcFront.DB;
 using MvcFront.Entities;
 using MvcFront.Enums;
+using MvcFront.Helpers;
 using MvcFront.Infrastructure;
 using MvcFront.Interfaces;
 using MvcFront.Models;
@@ -108,6 +109,44 @@ namespace MvcFront.Services
                 return report.UserTags.SelectMany(x => x.UserAccounts.Select(y => y.userid)).Distinct().ToList();
             }
             return _userGroupRepository.GetById(groupId).Members.Select(x => x.userid).ToList();
+        }
+
+        /// <summary>
+        /// Конвертирует из Модели данных для таблицы отчета в матричное представление
+        /// </summary>
+        /// <param name="reportTableViewModel"></param>
+        /// <returns></returns>
+        public List<ReportDataFieldForRPV> ConvertReportForRPV(ReportTableViewModel reportTableViewModel)
+        {
+            var result = new List<ReportDataFieldForRPV>();
+            var rowNumber = 0;
+            foreach (var reportRow in reportTableViewModel.Rows)
+            {
+                result.AddRange(from val in reportRow.Values
+                                let col = reportTableViewModel.DocReport.ReportFields.Single(x => x.reportfieldid == val.Key)
+                                select new ReportDataFieldForRPV
+                                    {
+                                        Row = reportRow.Name, 
+                                        Column = col.FieldTemplate.FieldName + DictionaryHelper.GetEnumText(typeof (ReportFieldOperationType), col.ReportOperationType), 
+                                        ColumnNumber = col.OrderNumber, Value = val.Value, 
+                                        RowNumber = rowNumber++
+                                    });
+            }
+
+            if(reportTableViewModel.TotalRow != null)
+            {
+                result.AddRange(from val in reportTableViewModel.TotalRow.Values
+                                let col = reportTableViewModel.DocReport.ReportFields.Single(x => x.reportfieldid == val.Key)
+                                select new ReportDataFieldForRPV
+                                    {
+                                        Row = reportTableViewModel.TotalRow.Name, 
+                                        Column = col.FieldTemplate.FieldName + DictionaryHelper.GetEnumText(typeof (ReportFieldOperationType), col.ReportOperationType),
+                                        ColumnNumber = col.OrderNumber, 
+                                        Value = val.Value, 
+                                        RowNumber = rowNumber++
+                                    });
+            }
+            return result;
         }
         #endregion
 
