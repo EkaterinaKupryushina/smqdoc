@@ -24,6 +24,10 @@
                                                    .DataRouteValues(route => route.Add(o => o.DocReportId).RouteKey("reportId"))
                                                    .Action("PrintGroupReport", "ManagerReport")
                                                    .HtmlAttributes(new {style = "text-align: center", target = "_blank"});
+                                               command.Custom("downloadDetails").Text("Скачать")
+                                                   .DataRouteValues(route => route.Add(o => o.DocReportId).RouteKey("reportId"))
+                                                   .Action("DownloadGroupReport", "ManagerReport")
+                                                   .HtmlAttributes(new { style = "text-align: center", target = "_blank" });
                                                command.Custom("viewCustom").Text("Custom отчет")
                                                    .DataRouteValues(route => route.Add(o => o.DocReportId).RouteKey("reportId"))
                                                    .Action("CustomReport", "ManagerReport")

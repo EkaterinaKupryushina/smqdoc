@@ -40,6 +40,8 @@
       <HintPath>..\packages\EntityFramework.4.1.10331.0\lib\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.ReportViewer.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Ninject">
       <HintPath>..\packages\Ninject.2.2.1.4\lib\net40-Full\Ninject.dll</HintPath>
     </Reference>
@@ -143,7 +145,6 @@
     <Compile Include="DB\ReportField.cs" />
     <Compile Include="DB\UserAccount.cs" />
     <Compile Include="DB\UserGroup.cs" />
-    <Compile Include="Entities\ReportDataFieldForRPV.cs" />
     <Compile Include="Entities\ReportDataRow.cs" />
     <Compile Include="Entities\UserSessionData.cs" />
     <Compile Include="Enums\DocReportAppointmentType.cs" />
@@ -501,7 +502,6 @@
     <Content Include="Scripts\modernizr-1.7.js" />
     <Content Include="Scripts\modernizr-1.7.min.js" />
     <Content Include="Scripts\ReportScripts.js" />
-    <Content Include="TestPage.htm" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -706,6 +706,13 @@
       <Project>{0374C9F1-8508-421C-82A7-8D5DADB2B49A}</Project>
       <Name>ELW.Library.Math</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ReportExportGenerator\ReportExportGenerator.csproj">
+      <Project>{74F76D5A-1983-4AFC-9C8E-626F8DD80A0E}</Project>
+      <Name>ReportExportGenerator</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Content\Reports\SmallReport.rdlc" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

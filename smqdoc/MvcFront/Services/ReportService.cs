@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
 using MvcFront.DB;
@@ -9,6 +10,7 @@ using MvcFront.Helpers;
 using MvcFront.Infrastructure;
 using MvcFront.Interfaces;
 using MvcFront.Models;
+using ReportExportGenerator;
 
 namespace MvcFront.Services
 {
@@ -116,7 +118,7 @@ namespace MvcFront.Services
         /// </summary>
         /// <param name="reportTableViewModel"></param>
         /// <returns></returns>
-        public List<ReportDataFieldForRPV> ConvertReportForRPV(ReportTableViewModel reportTableViewModel)
+        public IEnumerable<ReportDataFieldForRPV> ConvertReportForRPV(ReportTableViewModel reportTableViewModel)
         {
             var result = new List<ReportDataFieldForRPV>();
             var rowNumber = 0;
@@ -125,11 +127,12 @@ namespace MvcFront.Services
                 result.AddRange(from val in reportRow.Values
                                 let col = reportTableViewModel.DocReport.ReportFields.Single(x => x.reportfieldid == val.Key)
                                 select new ReportDataFieldForRPV
-                                    {
-                                        Row = reportRow.Name, 
+                                    { 
                                         Column = col.FieldTemplate.FieldName + DictionaryHelper.GetEnumText(typeof (ReportFieldOperationType), col.ReportOperationType), 
                                         ColumnNumber = col.OrderNumber, Value = val.Value, 
-                                        RowNumber = rowNumber++
+                                        RowNumber = rowNumber++,
+                                        //BUG
+                                        Row = reportRow.Name
                                     });
             }
 
@@ -139,11 +142,12 @@ namespace MvcFront.Services
                                 let col = reportTableViewModel.DocReport.ReportFields.Single(x => x.reportfieldid == val.Key)
                                 select new ReportDataFieldForRPV
                                     {
-                                        Row = reportTableViewModel.TotalRow.Name, 
                                         Column = col.FieldTemplate.FieldName + DictionaryHelper.GetEnumText(typeof (ReportFieldOperationType), col.ReportOperationType),
                                         ColumnNumber = col.OrderNumber, 
                                         Value = val.Value, 
-                                        RowNumber = rowNumber++
+                                        RowNumber = rowNumber++,
+                                        //BUG
+                                        Row = reportTableViewModel.TotalRow.Name
                                     });
             }
             return result;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using Microsoft.Reporting.WebForms;
 using MvcFront.DB;
 using MvcFront.Helpers;
 using MvcFront.Infrastructure.Security;
@@ -89,7 +90,62 @@ namespace MvcFront.Controllers
             }
         }
 
+        public ActionResult DownloadGroupReport(int reportId)
+        {
+            try
+            {
+                var reportService = new ReportService();
+                var docReport = _docReportRepository.GetDocReportById(reportId);
+                var sessData = SessionHelper.GetUserSessionData(Session);
+                var report = reportService.GenerateReport(docReport, null, sessData.UserGroupId);
 
+                var localReport = new LocalReport {ReportPath = Server.MapPath("~/Content/Reports/SmallReport.rdlc")};
+                var reportDataSource = new ReportDataSource("MainDataSet", reportService.ConvertReportForRPV(report));
+                localReport.SetParameters(new ReportParameter("ReportName",report.Name));
+                localReport.SetParameters(new ReportParameter("ReportDescription", report.Legend));
+                
+                localReport.DataSources.Add(reportDataSource);
+                const string reportType = "PDF";
+                string mimeType;
+                string encoding;
+                string fileNameExtension;
+
+                //The DeviceInfo settings should be changed based on the reportType
+                //http://msdn2.microsoft.com/en-us/library/ms155397.aspx
+                const string deviceInfo = "<DeviceInfo>" +
+                                          "  <OutputFormat>PDF</OutputFormat>" +
+                                          //"  <PageWidth>8.5in</PageWidth>" +
+                                          //"  <PageHeight>11in</PageHeight>" +
+                                          //"  <MarginTop>0.5in</MarginTop>" +
+                                          //"  <MarginLeft>1in</MarginLeft>" +
+                                          //"  <MarginRight>1in</MarginRight>" +
+                                          //"  <MarginBottom>0.5in</MarginBottom>" +
+                                          "</DeviceInfo>";
+
+                Warning[] warnings;
+                string[] streams;
+
+                //Render the report
+                var renderedBytes = localReport.Render(
+                    reportType,
+                    deviceInfo,
+                    out mimeType,
+                    out encoding,
+                    out fileNameExtension,
+                    out streams,
+                    out warnings);
+                //Response.AddHeader("content-disposition", "attachment; filename=NorthWindCustomers." + fileNameExtension);
+                return File(renderedBytes, mimeType);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "ManagerReportController.DownloadGroupReport()", ex);
+                return null;
+            }
+          
+        }
+ 
         #region GridActions
 
         /// <summary>
