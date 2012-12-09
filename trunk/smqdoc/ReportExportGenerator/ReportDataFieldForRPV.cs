@@ -1,4 +1,4 @@
-﻿namespace MvcFront.Entities
+﻿namespace ReportExportGenerator
 {
     //Класс для отображения данных в виде матрицы в  ReportViewer
     public class ReportDataFieldForRPV
