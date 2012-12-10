@@ -114,12 +114,12 @@ namespace MvcFront.Controllers
                 //http://msdn2.microsoft.com/en-us/library/ms155397.aspx
                 const string deviceInfo = "<DeviceInfo>" +
                                           "  <OutputFormat>PDF</OutputFormat>" +
-                                          //"  <PageWidth>8.5in</PageWidth>" +
-                                          //"  <PageHeight>11in</PageHeight>" +
-                                          //"  <MarginTop>0.5in</MarginTop>" +
-                                          //"  <MarginLeft>1in</MarginLeft>" +
-                                          //"  <MarginRight>1in</MarginRight>" +
-                                          //"  <MarginBottom>0.5in</MarginBottom>" +
+                                          //"  <PageWidth>2870mm</PageWidth>" +
+                                          //"  <PageHeight>2100mm</PageHeight>" +
+                                          //"  <MarginTop>10mm</MarginTop>" +
+                                          //"  <MarginLeft>20mm</MarginLeft>" +
+                                          //"  <MarginRight>10mm</MarginRight>" +
+                                          //"  <MarginBottom>10mm</MarginBottom>" +
                                           "</DeviceInfo>";
 
                 Warning[] warnings;
@@ -128,7 +128,7 @@ namespace MvcFront.Controllers
                 //Render the report
                 var renderedBytes = localReport.Render(
                     reportType,
-                    deviceInfo,
+                    null,
                     out mimeType,
                     out encoding,
                     out fileNameExtension,
