@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 using Microsoft.Reporting.WebForms;
@@ -19,6 +20,8 @@ namespace MvcFront.Controllers
     {
         private readonly IDocReportRepository _docReportRepository;
         private readonly IUserGroupRepository _userGroupRepository;
+
+        private int rptId = 1;
 
         public ManagerReportController(IDocReportRepository docReportRepository, IUserGroupRepository userGroupRepository)
         {
@@ -99,12 +102,13 @@ namespace MvcFront.Controllers
                 var sessData = SessionHelper.GetUserSessionData(Session);
                 var report = reportService.GenerateReport(docReport, null, sessData.UserGroupId);
 
-                var localReport = new LocalReport {ReportPath = Server.MapPath("~/Content/Reports/SmallReport.rdlc")};
-                var reportDataSource = new ReportDataSource("MainDataSet", reportService.ConvertReportForRPV(report));
-                localReport.SetParameters(new ReportParameter("ReportName",report.Name));
-                localReport.SetParameters(new ReportParameter("ReportDescription", report.Legend));
-                
-                localReport.DataSources.Add(reportDataSource);
+                var mainReport = new LocalReport { ReportPath = Server.MapPath("~/Content/Reports/MainReport.rdlc") };
+                var subReport = new StreamReader(Server.MapPath("~/Content/Reports/SmallReport.rdlc"));
+                mainReport.LoadSubreportDefinition("SmallSubreport1", subReport);
+                mainReport.LoadSubreportDefinition("SmallSubreport2", subReport);
+                mainReport.SubreportProcessing += SetSubDataSource;
+               
+
                 const string reportType = "PDF";
                 string mimeType;
                 string encoding;
@@ -112,21 +116,21 @@ namespace MvcFront.Controllers
 
                 //The DeviceInfo settings should be changed based on the reportType
                 //http://msdn2.microsoft.com/en-us/library/ms155397.aspx
-                const string deviceInfo = "<DeviceInfo>" +
-                                          "  <OutputFormat>PDF</OutputFormat>" +
-                                          //"  <PageWidth>2870mm</PageWidth>" +
-                                          //"  <PageHeight>2100mm</PageHeight>" +
-                                          //"  <MarginTop>10mm</MarginTop>" +
-                                          //"  <MarginLeft>20mm</MarginLeft>" +
-                                          //"  <MarginRight>10mm</MarginRight>" +
-                                          //"  <MarginBottom>10mm</MarginBottom>" +
-                                          "</DeviceInfo>";
+                //const string deviceInfo = "<DeviceInfo>" +
+                //                          "  <OutputFormat>PDF</OutputFormat>" +
+                //                          //"  <PageWidth>2870mm</PageWidth>" +
+                //                          //"  <PageHeight>2100mm</PageHeight>" +
+                //                          //"  <MarginTop>10mm</MarginTop>" +
+                //                          //"  <MarginLeft>20mm</MarginLeft>" +
+                //                          //"  <MarginRight>10mm</MarginRight>" +
+                //                          //"  <MarginBottom>10mm</MarginBottom>" +
+                //                          "</DeviceInfo>";
 
                 Warning[] warnings;
                 string[] streams;
 
                 //Render the report
-                var renderedBytes = localReport.Render(
+                var renderedBytes = mainReport.Render(
                     reportType,
                     null,
                     out mimeType,
@@ -145,7 +149,23 @@ namespace MvcFront.Controllers
             }
           
         }
- 
+
+        public void SetSubDataSource(object sender, SubreportProcessingEventArgs e)
+        {
+            //TODO test only
+
+            var reportService = new ReportService();
+            
+            var sessData = SessionHelper.GetUserSessionData(Session);
+            var docReport = _docReportRepository.GetDocReportById(rptId);
+            var report = reportService.GenerateReport(docReport, null, sessData.UserGroupId);
+            e.DataSources.Add(new ReportDataSource("MainDataSet", reportService.ConvertReportForRPV(report)));
+            rptId = 2;
+            //e.Parameters.SetParameters(new ReportParameter("ReportName", report.Name));
+            //localReport.SetParameters(new ReportParameter("ReportDescription", report.Legend));
+
+        }
+
         #region GridActions
 
         /// <summary>

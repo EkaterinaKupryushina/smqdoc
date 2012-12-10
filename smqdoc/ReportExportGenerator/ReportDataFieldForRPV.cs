@@ -8,5 +8,9 @@
         public string Value { get; set; }
         public int ColumnNumber { get; set; }
         public int RowNumber { get; set; }
+
+        //HAck что бы передавать имя отчета и его описание как датасорс в отчет
+        public string ReportName { get; set; }
+        public string Legend { get; set; }
     }
 }
