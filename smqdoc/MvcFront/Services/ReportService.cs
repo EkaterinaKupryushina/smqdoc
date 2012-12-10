@@ -124,30 +124,31 @@ namespace MvcFront.Services
             var rowNumber = 0;
             foreach (var reportRow in reportTableViewModel.Rows)
             {
+                rowNumber++;
                 result.AddRange(from val in reportRow.Values
                                 let col = reportTableViewModel.DocReport.ReportFields.Single(x => x.reportfieldid == val.Key)
                                 select new ReportDataFieldForRPV
                                     { 
-                                        Column = col.FieldTemplate.FieldName + DictionaryHelper.GetEnumText(typeof (ReportFieldOperationType), col.ReportOperationType), 
-                                        ColumnNumber = col.OrderNumber, Value = val.Value, 
-                                        RowNumber = rowNumber++,
-                                        //BUG
-                                        Row = reportRow.Name
+                                        Column = string.Format("{0} {1}",col.FieldTemplate.FieldName, DictionaryHelper.GetEnumText(typeof (ReportFieldOperationType), col.ReportOperationType)), 
+                                        ColumnNumber = col.OrderNumber, 
+                                        Value = val.Value, 
+                                        RowNumber = rowNumber,
+                                        Row = string.IsNullOrWhiteSpace(reportRow.Name) ? string.Format("{0:000}", rowNumber) : reportRow.Name
                                     });
             }
 
             if(reportTableViewModel.TotalRow != null)
             {
+                rowNumber++;
                 result.AddRange(from val in reportTableViewModel.TotalRow.Values
                                 let col = reportTableViewModel.DocReport.ReportFields.Single(x => x.reportfieldid == val.Key)
                                 select new ReportDataFieldForRPV
                                     {
-                                        Column = col.FieldTemplate.FieldName + DictionaryHelper.GetEnumText(typeof (ReportFieldOperationType), col.ReportOperationType),
+                                        Column = string.Format("{0} {1}",col.FieldTemplate.FieldName, DictionaryHelper.GetEnumText(typeof (ReportFieldOperationType), col.ReportOperationType)),
                                         ColumnNumber = col.OrderNumber, 
                                         Value = val.Value, 
-                                        RowNumber = rowNumber++,
-                                        //BUG
-                                        Row = reportTableViewModel.TotalRow.Name
+                                        RowNumber = rowNumber,
+                                        Row = string.IsNullOrWhiteSpace(reportTableViewModel.TotalRow.Name) ? string.Format("{0:000}", rowNumber) : reportTableViewModel.TotalRow.Name
                                     });
             }
             return result;
