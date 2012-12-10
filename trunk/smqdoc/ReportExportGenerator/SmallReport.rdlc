@@ -46,38 +46,34 @@
   </DataSets>
   <Body>
     <ReportItems>
-      <Tablix Name="Tablix1">
+      <Tablix Name="ReportTablix">
         <TablixCorner>
           <TablixCornerRows>
             <TablixCornerRow>
               <TablixCornerCell>
                 <CellContents>
-                  <Textbox Name="Textbox3">
+                  <Textbox Name="Textbox">
                     <CanGrow>true</CanGrow>
                     <KeepTogether>true</KeepTogether>
                     <Paragraphs>
                       <Paragraph>
                         <TextRuns>
                           <TextRun>
-                            <Value>Row</Value>
+                            <Value />
                             <Style>
                               <FontFamily>Tahoma</FontFamily>
                               <FontSize>11pt</FontSize>
                               <FontWeight>Bold</FontWeight>
-                              <Color>White</Color>
                             </Style>
                           </TextRun>
                         </TextRuns>
                         <Style />
                       </Paragraph>
                     </Paragraphs>
-                    <rd:DefaultName>Textbox3</rd:DefaultName>
                     <Style>
                       <Border>
-                        <Color>#7292cc</Color>
                         <Style>Solid</Style>
                       </Border>
-                      <BackgroundColor>#4c68a2</BackgroundColor>
                       <PaddingLeft>2pt</PaddingLeft>
                       <PaddingRight>2pt</PaddingRight>
                       <PaddingTop>2pt</PaddingTop>
@@ -108,7 +104,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=First(Fields!Value.Value)</Value>
+                              <Value>=Fields!Value.Value</Value>
                               <Style>
                                 <FontFamily>Tahoma</FontFamily>
                                 <Color>#4d4d4d</Color>
@@ -121,7 +117,6 @@
                       <rd:DefaultName>Value</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>#e5e5e5</Color>
                           <Style>Solid</Style>
                         </Border>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -152,31 +147,28 @@
               <TablixHeader>
                 <Size>0.23622in</Size>
                 <CellContents>
-                  <Textbox Name="Column">
+                  <Textbox Name="ColumnNumber">
                     <CanGrow>true</CanGrow>
                     <KeepTogether>true</KeepTogether>
                     <Paragraphs>
                       <Paragraph>
                         <TextRuns>
                           <TextRun>
-                            <Value>=Fields!Column.Value</Value>
+                            <Value>=Fields!ColumnNumber.Value</Value>
                             <Style>
                               <FontFamily>Tahoma</FontFamily>
                               <FontWeight>Bold</FontWeight>
-                              <Color>#465678</Color>
                             </Style>
                           </TextRun>
                         </TextRuns>
                         <Style />
                       </Paragraph>
                     </Paragraphs>
-                    <rd:DefaultName>Column</rd:DefaultName>
+                    <rd:DefaultName>ColumnNumber</rd:DefaultName>
                     <Style>
                       <Border>
-                        <Color>#c6daf8</Color>
                         <Style>Solid</Style>
                       </Border>
-                      <BackgroundColor>#9eb6e4</BackgroundColor>
                       <PaddingLeft>2pt</PaddingLeft>
                       <PaddingRight>2pt</PaddingRight>
                       <PaddingTop>2pt</PaddingTop>
@@ -218,7 +210,6 @@
                             <Style>
                               <FontFamily>Tahoma</FontFamily>
                               <FontWeight>Bold</FontWeight>
-                              <Color>#465678</Color>
                             </Style>
                           </TextRun>
                         </TextRuns>
@@ -228,10 +219,8 @@
                     <rd:DefaultName>Row</rd:DefaultName>
                     <Style>
                       <Border>
-                        <Color>#c6daf8</Color>
                         <Style>Solid</Style>
                       </Border>
-                      <BackgroundColor>#9eb6e4</BackgroundColor>
                       <PaddingLeft>2pt</PaddingLeft>
                       <PaddingRight>2pt</PaddingRight>
                       <PaddingTop>2pt</PaddingTop>
@@ -246,9 +235,6 @@
             </TablixMember>
           </TablixMembers>
         </TablixRowHierarchy>
-        <RepeatColumnHeaders>true</RepeatColumnHeaders>
-        <FixedColumnHeaders>true</FixedColumnHeaders>
-        <FixedRowHeaders>true</FixedRowHeaders>
         <DataSetName>MainDataSet</DataSetName>
         <SortExpressions>
           <SortExpression>
@@ -258,9 +244,9 @@
             <Value>=Fields!RowNumber.Value</Value>
           </SortExpression>
         </SortExpressions>
-        <Top>0.54708cm</Top>
+        <Top>0.83812cm</Top>
         <Height>1.2cm</Height>
-        <Width>5cm</Width>
+        <Width>4.99999cm</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -275,7 +261,10 @@
             <TextRuns>
               <TextRun>
                 <Value>=Parameters!ReportName.Value</Value>
-                <Style />
+                <Style>
+                  <FontSize>14pt</FontSize>
+                  <FontWeight>Bold</FontWeight>
+                </Style>
               </TextRun>
             </TextRuns>
             <Style>
@@ -284,7 +273,7 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>ReportName</rd:DefaultName>
-        <Height>0.6cm</Height>
+        <Height>0.80284cm</Height>
         <Width>16.51cm</Width>
         <ZIndex>1</ZIndex>
         <Style>
@@ -312,8 +301,8 @@
           </Paragraph>
         </Paragraphs>
         <rd:DefaultName>ReportDescription</rd:DefaultName>
-        <Top>1.74708cm</Top>
-        <Height>1.98354cm</Height>
+        <Top>2.0734cm</Top>
+        <Height>0.67826cm</Height>
         <Width>16.51cm</Width>
         <ZIndex>2</ZIndex>
         <Style>
@@ -327,7 +316,7 @@
         </Style>
       </Textbox>
     </ReportItems>
-    <Height>1.46875in</Height>
+    <Height>1.10417in</Height>
     <Style />
   </Body>
   <ReportParameters>

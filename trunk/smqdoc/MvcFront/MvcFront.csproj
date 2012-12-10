@@ -460,6 +460,7 @@
     <Content Include="log\DoNotDeleteMe.txt" />
     <Content Include="MediaFolder\DocumentFiles\DoNotDeleteMe.txt" />
     <Content Include="MediaFolder\Library\DoNotDeleteMe.txt" />
+    <Content Include="ReportWebPage.aspx" />
     <Content Include="Scripts\2012.1.214\jquery-1.7.1.min.js" />
     <Content Include="Scripts\2012.1.214\jquery.validate.min.js" />
     <Content Include="Scripts\2012.1.214\telerik.all.min.js" />
