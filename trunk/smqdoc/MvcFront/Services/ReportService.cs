@@ -133,7 +133,9 @@ namespace MvcFront.Services
                                         ColumnNumber = col.OrderNumber, 
                                         Value = val.Value, 
                                         RowNumber = rowNumber,
-                                        Row = string.IsNullOrWhiteSpace(reportRow.Name) ? string.Format("{0:000}", rowNumber) : reportRow.Name
+                                        Row = string.IsNullOrWhiteSpace(reportRow.Name) ? string.Format("{0:000}", rowNumber) : reportRow.Name,
+                                        Legend = reportTableViewModel.Legend,
+                                        ReportName = reportTableViewModel.Name
                                     });
             }
 
@@ -148,7 +150,9 @@ namespace MvcFront.Services
                                         ColumnNumber = col.OrderNumber, 
                                         Value = val.Value, 
                                         RowNumber = rowNumber,
-                                        Row = string.IsNullOrWhiteSpace(reportTableViewModel.TotalRow.Name) ? string.Format("{0:000}", rowNumber) : reportTableViewModel.TotalRow.Name
+                                        Row = string.IsNullOrWhiteSpace(reportTableViewModel.TotalRow.Name) ? string.Format("{0:000}", rowNumber) : reportTableViewModel.TotalRow.Name,
+                                        Legend = reportTableViewModel.Legend,
+                                        ReportName = reportTableViewModel.Name
                                     });
             }
             return result;
