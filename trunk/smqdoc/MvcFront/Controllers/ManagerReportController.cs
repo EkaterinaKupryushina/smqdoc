@@ -114,12 +114,12 @@ namespace MvcFront.Controllers
                 //http://msdn2.microsoft.com/en-us/library/ms155397.aspx
                 const string deviceInfo = "<DeviceInfo>" +
                                           "  <OutputFormat>PDF</OutputFormat>" +
-                                          //"  <PageWidth>8.5in</PageWidth>" +
-                                          //"  <PageHeight>11in</PageHeight>" +
-                                          //"  <MarginTop>0.5in</MarginTop>" +
-                                          //"  <MarginLeft>1in</MarginLeft>" +
-                                          //"  <MarginRight>1in</MarginRight>" +
-                                          //"  <MarginBottom>0.5in</MarginBottom>" +
+                                          "  <PageWidth>8.5in</PageWidth>" +
+                                          "  <PageHeight>11in</PageHeight>" +
+                                          "  <MarginTop>0.5in</MarginTop>" +
+                                          "  <MarginLeft>1in</MarginLeft>" +
+                                          "  <MarginRight>1in</MarginRight>" +
+                                          "  <MarginBottom>0.5in</MarginBottom>" +
                                           "</DeviceInfo>";
 
                 Warning[] warnings;
