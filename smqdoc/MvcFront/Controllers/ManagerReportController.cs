@@ -102,29 +102,16 @@ namespace MvcFront.Controllers
                 var sessData = SessionHelper.GetUserSessionData(Session);
                 var report = reportService.GenerateReport(docReport, null, sessData.UserGroupId);
 
-                var mainReport = new LocalReport { ReportPath = Server.MapPath("~/Content/Reports/MainReport.rdlc") };
-                var subReport = new StreamReader(Server.MapPath("~/Content/Reports/SmallReport.rdlc"));
-                mainReport.LoadSubreportDefinition("SmallSubreport1", subReport);
-                mainReport.LoadSubreportDefinition("SmallSubreport2", subReport);
-                mainReport.SubreportProcessing += SetSubDataSource;
-               
+                var mainReport = new LocalReport { ReportPath = Server.MapPath("~/Content/Reports/SmallReport.rdlc") };
+
+                var reportDataSource = new ReportDataSource("MainDataSet", reportService.ConvertReportForRPV(report));
+                mainReport.DataSources.Clear();
+                mainReport.DataSources.Add(reportDataSource);
 
                 const string reportType = "PDF";
                 string mimeType;
                 string encoding;
                 string fileNameExtension;
-
-                //The DeviceInfo settings should be changed based on the reportType
-                //http://msdn2.microsoft.com/en-us/library/ms155397.aspx
-                //const string deviceInfo = "<DeviceInfo>" +
-                //                          "  <OutputFormat>PDF</OutputFormat>" +
-                //                          //"  <PageWidth>2870mm</PageWidth>" +
-                //                          //"  <PageHeight>2100mm</PageHeight>" +
-                //                          //"  <MarginTop>10mm</MarginTop>" +
-                //                          //"  <MarginLeft>20mm</MarginLeft>" +
-                //                          //"  <MarginRight>10mm</MarginRight>" +
-                //                          //"  <MarginBottom>10mm</MarginBottom>" +
-                //                          "</DeviceInfo>";
 
                 Warning[] warnings;
                 string[] streams;
@@ -150,21 +137,78 @@ namespace MvcFront.Controllers
           
         }
 
-        public void SetSubDataSource(object sender, SubreportProcessingEventArgs e)
-        {
-            //TODO test only
+        //public ActionResult DownloadGroupReport(int reportId)
+        //{
+        //    try
+        //    {
+        //        var reportService = new ReportService();
+        //        var docReport = _docReportRepository.GetDocReportById(reportId);
+        //        var sessData = SessionHelper.GetUserSessionData(Session);
+        //        var report = reportService.GenerateReport(docReport, null, sessData.UserGroupId);
 
-            var reportService = new ReportService();
+        //        var mainReport = new LocalReport { ReportPath = Server.MapPath("~/Content/Reports/MainReport.rdlc") };
+        //        var subReport = new StreamReader(Server.MapPath("~/Content/Reports/SmallReport.rdlc"));
+
+        //        mainReport.LoadSubreportDefinition("SmallSubreport1", subReport);
+        //        mainReport.LoadSubreportDefinition("SmallSubreport2", subReport);
+        //        mainReport.SubreportProcessing += SetSubDataSource;
+
+
+        //        const string reportType = "PDF";
+        //        string mimeType;
+        //        string encoding;
+        //        string fileNameExtension;
+
+        //        //The DeviceInfo settings should be changed based on the reportType
+        //        //http://msdn2.microsoft.com/en-us/library/ms155397.aspx
+        //        //const string deviceInfo = "<DeviceInfo>" +
+        //        //                          "  <OutputFormat>PDF</OutputFormat>" +
+        //        //                          //"  <PageWidth>2870mm</PageWidth>" +
+        //        //                          //"  <PageHeight>2100mm</PageHeight>" +
+        //        //                          //"  <MarginTop>10mm</MarginTop>" +
+        //        //                          //"  <MarginLeft>20mm</MarginLeft>" +
+        //        //                          //"  <MarginRight>10mm</MarginRight>" +
+        //        //                          //"  <MarginBottom>10mm</MarginBottom>" +
+        //        //                          "</DeviceInfo>";
+
+        //        Warning[] warnings;
+        //        string[] streams;
+
+        //        //Render the report
+        //        var renderedBytes = mainReport.Render(
+        //            reportType,
+        //            null,
+        //            out mimeType,
+        //            out encoding,
+        //            out fileNameExtension,
+        //            out streams,
+        //            out warnings);
+        //        //Response.AddHeader("content-disposition", "attachment; filename=NorthWindCustomers." + fileNameExtension);
+        //        return File(renderedBytes, mimeType);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ModelState.AddModelError(string.Empty, "Произошла ошибка");
+        //        LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "ManagerReportController.DownloadGroupReport()", ex);
+        //        return null;
+        //    }
+
+        //}
+        //public void SetSubDataSource(object sender, SubreportProcessingEventArgs e)
+        //{
+        //    //TODO test only
+
+        //    var reportService = new ReportService();
             
-            var sessData = SessionHelper.GetUserSessionData(Session);
-            var docReport = _docReportRepository.GetDocReportById(rptId);
-            var report = reportService.GenerateReport(docReport, null, sessData.UserGroupId);
-            e.DataSources.Add(new ReportDataSource("MainDataSet", reportService.ConvertReportForRPV(report)));
-            rptId = 2;
-            //e.Parameters.SetParameters(new ReportParameter("ReportName", report.Name));
-            //localReport.SetParameters(new ReportParameter("ReportDescription", report.Legend));
+        //    var sessData = SessionHelper.GetUserSessionData(Session);
+        //    var docReport = _docReportRepository.GetDocReportById(rptId);
+        //    var report = reportService.GenerateReport(docReport, null, sessData.UserGroupId);
+        //    e.DataSources.Add(new ReportDataSource("MainDataSet", reportService.ConvertReportForRPV(report)));
+        //    rptId = 2;
+        //    //e.Parameters.SetParameters(new ReportParameter("ReportName", report.Name));
+        //    //localReport.SetParameters(new ReportParameter("ReportDescription", report.Legend));
 
-        }
+        //}
 
         #region GridActions
 
