@@ -1,6 +1,6 @@
 ﻿@using MvcFront.Models
 @using Telerik.Web.Mvc.UI
-@model MvcFront.Models.MainDocReportEditModel
+@model MainDocReportEditModel
 
 @{
     ViewBag.Title = "Изменение суммарного отчета";
@@ -12,8 +12,25 @@
     @Html.ValidationSummary(true)
     <fieldset>
         @Html.EditorForModel()
-        
-        
+
+    </fieldset>
+<p>
+    <input type="submit" value="Сохранить"/>
+    @Html.ActionLink("Отмена", "Index")
+    <a href="#" onclick="ShowEditSubReportsWindow()">Редактировать подотчеты</a>
+</p>
+}
+
+  
+     @(Html.Telerik().Window()
+    .Name("EditSubReportsWindow")
+    .Visible(false)
+    .Title("Редактировать подотчеты")
+    .Modal(true)
+    .Width(800)
+    .Content( 
+        @<text>                
+         
     @Html.ActionLink("Добавить подотчет", "AddDimReport", new { id = Model.MainDocReportId })
 
     @(Html.Telerik().Grid<DocInMainReportsOrderListViewModel>()
@@ -50,12 +67,8 @@
                                                 }).Width(80);
                         })
           )
-    </fieldset>
-<p>
-    <input type="submit" value="Сохранить"/>
-    @Html.ActionLink("Отмена", "Index")
-</p>
-}
+           </text>)
+          )  
 <script type="text/javascript">
     function onComplete(e) {
         if (e.name == "DeleteDimReportDetails" || e.name == "DownDimReportDetails" || e.name == "UpDimReportDetails") {
@@ -64,6 +77,11 @@
                 grid.rebind();
             }
         }
+    }
+
+    function ShowEditSubReportsWindow() {
+        var addWindow = $("#EditSubReportsWindow").data("tWindow");
+        addWindow.center().open();
     }
 </script>
 
