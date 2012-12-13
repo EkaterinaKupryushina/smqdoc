@@ -8,13 +8,12 @@
 //------------------------------------------------------------------------------
 
 using System;
-using System.ComponentModel;
-using System.Data.EntityClient;
 using System.Data.Objects;
 using System.Data.Objects.DataClasses;
-using System.Linq;
-using System.Runtime.Serialization;
+using System.Data.EntityClient;
+using System.ComponentModel;
 using System.Xml.Serialization;
+using System.Runtime.Serialization;
 
 [assembly: EdmSchemaAttribute()]
 #region EDM Relationship Metadata
@@ -40,6 +39,8 @@ using System.Xml.Serialization;
 [assembly: EdmRelationshipAttribute("smqdocModel", "FileLibraryAssetFileLibraryFolder", "FileLibraryAsset", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.FileLibraryAsset), "FileLibraryFolder", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.FileLibraryFolder), true)]
 [assembly: EdmRelationshipAttribute("smqdocModel", "PersonalDocTemplateDocTemplate", "PersonalDocTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.PersonalDocTemplate), "DocTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.DocTemplate), true)]
 [assembly: EdmRelationshipAttribute("smqdocModel", "PersonalDocTemplateUserGroup", "PersonalDocTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.PersonalDocTemplate), "UserGroup", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.UserGroup), true)]
+[assembly: EdmRelationshipAttribute("smqdocModel", "FK_DocInMainReportsOrderDocReport", "DocReport", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.DocReport), "DocInMainReportsOrder", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.DocInMainReportsOrder), true)]
+[assembly: EdmRelationshipAttribute("smqdocModel", "FK_DocInMainReportsOrderMainDocReport", "MainDocReport", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(MvcFront.DB.MainDocReport), "DocInMainReportsOrder", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(MvcFront.DB.DocInMainReportsOrder), true)]
 
 #endregion
 
@@ -314,9 +315,40 @@ namespace MvcFront.DB
             }
         }
         private ObjectSet<PersonalDocTemplate> _PersonalDocTemplates;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<MainDocReport> MainDocReports
+        {
+            get
+            {
+                if ((_MainDocReports == null))
+                {
+                    _MainDocReports = base.CreateObjectSet<MainDocReport>("MainDocReports");
+                }
+                return _MainDocReports;
+            }
+        }
+        private ObjectSet<MainDocReport> _MainDocReports;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<DocInMainReportsOrder> DocInMainReportsOrders
+        {
+            get
+            {
+                if ((_DocInMainReportsOrders == null))
+                {
+                    _DocInMainReportsOrders = base.CreateObjectSet<DocInMainReportsOrder>("DocInMainReportsOrders");
+                }
+                return _DocInMainReportsOrders;
+            }
+        }
+        private ObjectSet<DocInMainReportsOrder> _DocInMainReportsOrders;
 
         #endregion
-
         #region AddTo Methods
     
         /// <summary>
@@ -430,13 +462,29 @@ namespace MvcFront.DB
         {
             base.AddObject("PersonalDocTemplates", personalDocTemplate);
         }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the MainDocReports EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToMainDocReports(MainDocReport mainDocReport)
+        {
+            base.AddObject("MainDocReports", mainDocReport);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the DocInMainReportsOrders EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToDocInMainReportsOrders(DocInMainReportsOrder docInMainReportsOrder)
+        {
+            base.AddObject("DocInMainReportsOrders", docInMainReportsOrder);
+        }
 
         #endregion
-
     }
+    
 
     #endregion
-
+    
     #region Entities
     
     /// <summary>
@@ -467,7 +515,6 @@ namespace MvcFront.DB
         }
 
         #endregion
-
         #region Primitive Properties
     
         /// <summary>
@@ -570,7 +617,6 @@ namespace MvcFront.DB
         partial void OnOrderNumberChanged();
 
         #endregion
-
     
         #region Navigation Properties
     
@@ -613,7 +659,6 @@ namespace MvcFront.DB
         }
 
         #endregion
-
     }
     
     /// <summary>
@@ -648,7 +693,6 @@ namespace MvcFront.DB
         }
 
         #endregion
-
         #region Primitive Properties
     
         /// <summary>
@@ -895,7 +939,6 @@ namespace MvcFront.DB
         partial void OnUserGroup_usergroupidChanged();
 
         #endregion
-
     
         #region Navigation Properties
     
@@ -1036,7 +1079,6 @@ namespace MvcFront.DB
         }
 
         #endregion
-
     }
     
     /// <summary>
@@ -1065,7 +1107,6 @@ namespace MvcFront.DB
         }
 
         #endregion
-
         #region Primitive Properties
     
         /// <summary>
@@ -1216,7 +1257,6 @@ namespace MvcFront.DB
         partial void OnDoubleValueChanged();
 
         #endregion
-
     
         #region Navigation Properties
     
@@ -1297,7 +1337,218 @@ namespace MvcFront.DB
         }
 
         #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="smqdocModel", Name="DocInMainReportsOrder")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class DocInMainReportsOrder : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new DocInMainReportsOrder object.
+        /// </summary>
+        /// <param name="docinmainreportsorderid">Initial value of the docinmainreportsorderid property.</param>
+        /// <param name="mainDocReport_maindocreportid">Initial value of the MainDocReport_maindocreportid property.</param>
+        /// <param name="docReport_docreportid">Initial value of the DocReport_docreportid property.</param>
+        /// <param name="orderNumber">Initial value of the OrderNumber property.</param>
+        public static DocInMainReportsOrder CreateDocInMainReportsOrder(global::System.Int32 docinmainreportsorderid, global::System.Int32 mainDocReport_maindocreportid, global::System.Int32 docReport_docreportid, global::System.Int32 orderNumber)
+        {
+            DocInMainReportsOrder docInMainReportsOrder = new DocInMainReportsOrder();
+            docInMainReportsOrder.docinmainreportsorderid = docinmainreportsorderid;
+            docInMainReportsOrder.MainDocReport_maindocreportid = mainDocReport_maindocreportid;
+            docInMainReportsOrder.DocReport_docreportid = docReport_docreportid;
+            docInMainReportsOrder.OrderNumber = orderNumber;
+            return docInMainReportsOrder;
+        }
 
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 docinmainreportsorderid
+        {
+            get
+            {
+                return _docinmainreportsorderid;
+            }
+            set
+            {
+                if (_docinmainreportsorderid != value)
+                {
+                    OndocinmainreportsorderidChanging(value);
+                    ReportPropertyChanging("docinmainreportsorderid");
+                    _docinmainreportsorderid = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("docinmainreportsorderid");
+                    OndocinmainreportsorderidChanged();
+                }
+            }
+        }
+        private global::System.Int32 _docinmainreportsorderid;
+        partial void OndocinmainreportsorderidChanging(global::System.Int32 value);
+        partial void OndocinmainreportsorderidChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 MainDocReport_maindocreportid
+        {
+            get
+            {
+                return _MainDocReport_maindocreportid;
+            }
+            set
+            {
+                OnMainDocReport_maindocreportidChanging(value);
+                ReportPropertyChanging("MainDocReport_maindocreportid");
+                _MainDocReport_maindocreportid = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("MainDocReport_maindocreportid");
+                OnMainDocReport_maindocreportidChanged();
+            }
+        }
+        private global::System.Int32 _MainDocReport_maindocreportid;
+        partial void OnMainDocReport_maindocreportidChanging(global::System.Int32 value);
+        partial void OnMainDocReport_maindocreportidChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 DocReport_docreportid
+        {
+            get
+            {
+                return _DocReport_docreportid;
+            }
+            set
+            {
+                OnDocReport_docreportidChanging(value);
+                ReportPropertyChanging("DocReport_docreportid");
+                _DocReport_docreportid = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DocReport_docreportid");
+                OnDocReport_docreportidChanged();
+            }
+        }
+        private global::System.Int32 _DocReport_docreportid;
+        partial void OnDocReport_docreportidChanging(global::System.Int32 value);
+        partial void OnDocReport_docreportidChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 OrderNumber
+        {
+            get
+            {
+                return _OrderNumber;
+            }
+            set
+            {
+                OnOrderNumberChanging(value);
+                ReportPropertyChanging("OrderNumber");
+                _OrderNumber = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("OrderNumber");
+                OnOrderNumberChanged();
+            }
+        }
+        private global::System.Int32 _OrderNumber;
+        partial void OnOrderNumberChanging(global::System.Int32 value);
+        partial void OnOrderNumberChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "FK_DocInMainReportsOrderDocReport", "DocReport")]
+        public DocReport DocReport
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<DocReport>("smqdocModel.FK_DocInMainReportsOrderDocReport", "DocReport").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<DocReport>("smqdocModel.FK_DocInMainReportsOrderDocReport", "DocReport").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<DocReport> DocReportReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<DocReport>("smqdocModel.FK_DocInMainReportsOrderDocReport", "DocReport");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<DocReport>("smqdocModel.FK_DocInMainReportsOrderDocReport", "DocReport", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "FK_DocInMainReportsOrderMainDocReport", "MainDocReport")]
+        public MainDocReport MainDocReport
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<MainDocReport>("smqdocModel.FK_DocInMainReportsOrderMainDocReport", "MainDocReport").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<MainDocReport>("smqdocModel.FK_DocInMainReportsOrderMainDocReport", "MainDocReport").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<MainDocReport> MainDocReportReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<MainDocReport>("smqdocModel.FK_DocInMainReportsOrderMainDocReport", "MainDocReport");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<MainDocReport>("smqdocModel.FK_DocInMainReportsOrderMainDocReport", "MainDocReport", value);
+                }
+            }
+        }
+
+        #endregion
     }
     
     /// <summary>
@@ -1338,7 +1589,6 @@ namespace MvcFront.DB
         }
 
         #endregion
-
         #region Primitive Properties
     
         /// <summary>
@@ -1561,7 +1811,6 @@ namespace MvcFront.DB
         partial void OnLegendChanged();
 
         #endregion
-
     
         #region Navigation Properties
     
@@ -1646,9 +1895,30 @@ namespace MvcFront.DB
                 }
             }
         }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "FK_DocInMainReportsOrderDocReport", "DocInMainReportsOrder")]
+        public EntityCollection<DocInMainReportsOrder> DocInMainReportsOrders
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<DocInMainReportsOrder>("smqdocModel.FK_DocInMainReportsOrderDocReport", "DocInMainReportsOrder");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<DocInMainReportsOrder>("smqdocModel.FK_DocInMainReportsOrderDocReport", "DocInMainReportsOrder", value);
+                }
+            }
+        }
 
         #endregion
-
     }
     
     /// <summary>
@@ -1683,7 +1953,6 @@ namespace MvcFront.DB
         }
 
         #endregion
-
         #region Primitive Properties
     
         /// <summary>
@@ -1834,7 +2103,6 @@ namespace MvcFront.DB
         partial void OnAllowAttachmentChanged();
 
         #endregion
-
     
         #region Navigation Properties
     
@@ -1927,7 +2195,6 @@ namespace MvcFront.DB
         }
 
         #endregion
-
     }
     
     /// <summary>
@@ -1962,7 +2229,6 @@ namespace MvcFront.DB
         }
 
         #endregion
-
         #region Primitive Properties
     
         /// <summary>
@@ -2185,7 +2451,6 @@ namespace MvcFront.DB
         partial void OnStoredFileNameChanged();
 
         #endregion
-
     
         #region Navigation Properties
     
@@ -2288,7 +2553,6 @@ namespace MvcFront.DB
         }
 
         #endregion
-
     }
     
     /// <summary>
@@ -2321,7 +2585,6 @@ namespace MvcFront.DB
         }
 
         #endregion
-
         #region Primitive Properties
     
         /// <summary>
@@ -2592,7 +2855,6 @@ namespace MvcFront.DB
         partial void OnFactFieldTemplate_fieldteplateidChanged();
 
         #endregion
-
     
         #region Navigation Properties
     
@@ -2761,7 +3023,6 @@ namespace MvcFront.DB
         }
 
         #endregion
-
     }
     
     /// <summary>
@@ -2796,7 +3057,6 @@ namespace MvcFront.DB
         }
 
         #endregion
-
         #region Primitive Properties
     
         /// <summary>
@@ -2947,7 +3207,6 @@ namespace MvcFront.DB
         partial void OnFileNameChanged();
 
         #endregion
-
     
         #region Navigation Properties
     
@@ -2990,7 +3249,6 @@ namespace MvcFront.DB
         }
 
         #endregion
-
     }
     
     /// <summary>
@@ -3017,7 +3275,6 @@ namespace MvcFront.DB
         }
 
         #endregion
-
         #region Primitive Properties
     
         /// <summary>
@@ -3096,7 +3353,6 @@ namespace MvcFront.DB
         partial void OnFileLibraryFolder_filelibraryfolderidChanged();
 
         #endregion
-
     
         #region Navigation Properties
     
@@ -3183,7 +3439,112 @@ namespace MvcFront.DB
         }
 
         #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="smqdocModel", Name="MainDocReport")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class MainDocReport : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new MainDocReport object.
+        /// </summary>
+        /// <param name="maindocreportid">Initial value of the maindocreportid property.</param>
+        /// <param name="name">Initial value of the Name property.</param>
+        public static MainDocReport CreateMainDocReport(global::System.Int32 maindocreportid, global::System.String name)
+        {
+            MainDocReport mainDocReport = new MainDocReport();
+            mainDocReport.maindocreportid = maindocreportid;
+            mainDocReport.Name = name;
+            return mainDocReport;
+        }
 
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 maindocreportid
+        {
+            get
+            {
+                return _maindocreportid;
+            }
+            set
+            {
+                if (_maindocreportid != value)
+                {
+                    OnmaindocreportidChanging(value);
+                    ReportPropertyChanging("maindocreportid");
+                    _maindocreportid = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("maindocreportid");
+                    OnmaindocreportidChanged();
+                }
+            }
+        }
+        private global::System.Int32 _maindocreportid;
+        partial void OnmaindocreportidChanging(global::System.Int32 value);
+        partial void OnmaindocreportidChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Name
+        {
+            get
+            {
+                return _Name;
+            }
+            set
+            {
+                OnNameChanging(value);
+                ReportPropertyChanging("Name");
+                _Name = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Name");
+                OnNameChanged();
+            }
+        }
+        private global::System.String _Name;
+        partial void OnNameChanging(global::System.String value);
+        partial void OnNameChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("smqdocModel", "FK_DocInMainReportsOrderMainDocReport", "DocInMainReportsOrder")]
+        public EntityCollection<DocInMainReportsOrder> DocInMainReportsOrders
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<DocInMainReportsOrder>("smqdocModel.FK_DocInMainReportsOrderMainDocReport", "DocInMainReportsOrder");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<DocInMainReportsOrder>("smqdocModel.FK_DocInMainReportsOrderMainDocReport", "DocInMainReportsOrder", value);
+                }
+            }
+        }
+
+        #endregion
     }
     
     /// <summary>
@@ -3212,7 +3573,6 @@ namespace MvcFront.DB
         }
 
         #endregion
-
         #region Primitive Properties
     
         /// <summary>
@@ -3291,7 +3651,6 @@ namespace MvcFront.DB
         partial void OnUserGroup_usergroupidChanged();
 
         #endregion
-
     
         #region Navigation Properties
     
@@ -3372,7 +3731,6 @@ namespace MvcFront.DB
         }
 
         #endregion
-
     }
     
     /// <summary>
@@ -3405,7 +3763,6 @@ namespace MvcFront.DB
         }
 
         #endregion
-
         #region Primitive Properties
     
         /// <summary>
@@ -3532,7 +3889,6 @@ namespace MvcFront.DB
         partial void OnOrderNumberChanged();
 
         #endregion
-
     
         #region Navigation Properties
     
@@ -3613,7 +3969,6 @@ namespace MvcFront.DB
         }
 
         #endregion
-
     }
     
     /// <summary>
@@ -3652,7 +4007,6 @@ namespace MvcFront.DB
         }
 
         #endregion
-
         #region Primitive Properties
     
         /// <summary>
@@ -3899,7 +4253,6 @@ namespace MvcFront.DB
         partial void OnLastAccessProfileCodeChanged();
 
         #endregion
-
     
         #region Navigation Properties
     
@@ -4014,7 +4367,6 @@ namespace MvcFront.DB
         }
 
         #endregion
-
     }
     
     /// <summary>
@@ -4047,7 +4399,6 @@ namespace MvcFront.DB
         }
 
         #endregion
-
         #region Primitive Properties
     
         /// <summary>
@@ -4174,7 +4525,6 @@ namespace MvcFront.DB
         partial void OnStatusChanged();
 
         #endregion
-
     
         #region Navigation Properties
     
@@ -4283,7 +4633,6 @@ namespace MvcFront.DB
         }
 
         #endregion
-
     }
     
     /// <summary>
@@ -4310,7 +4659,6 @@ namespace MvcFront.DB
         }
 
         #endregion
-
         #region Primitive Properties
     
         /// <summary>
@@ -4365,7 +4713,6 @@ namespace MvcFront.DB
         partial void OnNameChanged();
 
         #endregion
-
     
         #region Navigation Properties
     
@@ -4414,10 +4761,8 @@ namespace MvcFront.DB
         }
 
         #endregion
-
     }
 
     #endregion
-
     
 }

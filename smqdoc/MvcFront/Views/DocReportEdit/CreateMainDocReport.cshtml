@@ -1,0 +1,19 @@
+﻿@model MvcFront.Models.MainDocReportEditModel
+
+@{
+    ViewBag.Title = "Создание суммарного отчета";
+}
+
+<h2>Отчет</h2>
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <fieldset>
+        @Html.EditorForModel()
+    </fieldset>
+<p>
+    <input type="submit" value="Создать"/>
+    @Html.ActionLink("Отмена", "Index")
+</p>
+}
+    

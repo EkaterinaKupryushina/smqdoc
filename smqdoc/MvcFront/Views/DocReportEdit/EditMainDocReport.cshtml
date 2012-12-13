@@ -1,0 +1,70 @@
+﻿@using MvcFront.Models
+@using Telerik.Web.Mvc.UI
+@model MvcFront.Models.MainDocReportEditModel
+
+@{
+    ViewBag.Title = "Изменение суммарного отчета";
+}
+
+<h2>Отчет</h2>
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <fieldset>
+        @Html.EditorForModel()
+        
+        
+    @Html.ActionLink("Добавить подотчет", "AddDimReport", new { id = Model.MainDocReportId })
+
+    @(Html.Telerik().Grid<DocInMainReportsOrderListViewModel>()
+            .DataBinding(dataBinding => dataBinding.Ajax().Select("_DimReportList", "DocReportEdit", new { id = Model.MainDocReportId }))
+            .Name("DocInMainReportsOrderListGrid")
+           .ClientEvents(events => events.OnComplete("onComplete"))
+           .Columns(columns =>
+                        {
+                            columns.AutoGenerate(column =>
+                                                     {
+                                                         if (column.Member == "DocInMainReportsOrderId")
+                                                             column.Visible = false;
+                                                     });
+                            columns.Command(command => command.Custom("DeleteDimReportDetails")
+                                                           .Text("Удалить")
+                                                           .DataRouteValues(route => route.Add(o => o.DocInMainReportsOrderId).RouteKey("id"))
+                                                           .Ajax(true)
+                                                           .Action("DeleteDimReport", "DocReportEdit")
+                                                           .HtmlAttributes(new { style = "text-align: center" })).Width(80);
+                            columns.Command(command =>
+                                                {
+                                                    command.Custom("UpDimReportDetails")
+                                                        .Text("Вверх")
+                                                        .DataRouteValues(route => route.Add(o => o.DocInMainReportsOrderId).RouteKey("id"))
+                                                        .Ajax(true)
+                                                        .Action("UpDimReport", "DocReportEdit")
+                                                        .HtmlAttributes(new { style = "text-align: center" });
+                                                    command.Custom("DownDimReportDetails")
+                                                        .Text("Вниз")
+                                                        .DataRouteValues(route => route.Add(o => o.DocInMainReportsOrderId).RouteKey("id"))
+                                                        .Ajax(true)
+                                                        .Action("DownDimReport", "DocReportEdit")
+                                                        .HtmlAttributes(new { style = "text-align: center" });
+                                                }).Width(80);
+                        })
+          )
+    </fieldset>
+<p>
+    <input type="submit" value="Сохранить"/>
+    @Html.ActionLink("Отмена", "Index")
+</p>
+}
+<script type="text/javascript">
+    function onComplete(e) {
+        if (e.name == "DeleteDimReportDetails" || e.name == "DownDimReportDetails" || e.name == "UpDimReportDetails") {
+            var grid = $('#DocInMainReportsOrderListGrid').data("tGrid");
+            if (grid != null) {
+                grid.rebind();
+            }
+        }
+    }
+</script>
+
+    

@@ -4,18 +4,6 @@
     <ReportItems>
       <Subreport Name="SmallSubreport1">
         <ReportName>SmallReport</ReportName>
-        <Top>0.0cm</Top>
-        <Height>10.6cm</Height>
-        <Width>16.51cm</Width>
-        <Style>
-          <Border>
-            <Style>None</Style>
-          </Border>
-        </Style>
-      </Subreport>
-      <Subreport Name="SmallSubreport2">
-        <ReportName>SmallReport</ReportName>
-        <Top>10.6cm</Top>
         <Height>10.6cm</Height>
         <Width>16.51cm</Width>
         <Style>
@@ -25,13 +13,13 @@
         </Style>
       </Subreport>
     </ReportItems>
-    <Height>4.17629in</Height>
+    <Height>4.17979in</Height>
     <Style />
   </Body>
   <Width>6.5in</Width>
   <Page>
     <PageHeader>
-      <Height>2.54cm</Height>
+      <Height>2.00cm</Height>
       <PrintOnFirstPage>true</PrintOnFirstPage>
       <PrintOnLastPage>true</PrintOnLastPage>
       <ReportItems>
@@ -72,7 +60,7 @@
       </Style>
     </PageHeader>
     <PageFooter>
-      <Height>2.54cm</Height>
+      <Height>1.14778cm</Height>
       <PrintOnFirstPage>true</PrintOnFirstPage>
       <PrintOnLastPage>true</PrintOnLastPage>
       <ReportItems>
@@ -91,7 +79,7 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>PageNumber</rd:DefaultName>
-          <Top>1.10278cm</Top>
+          <Top>0.17639cm</Top>
           <Left>6.71195cm</Left>
           <Height>0.6cm</Height>
           <Width>2.5cm</Width>
