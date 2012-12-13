@@ -12,7 +12,23 @@
     @Html.ValidationSummary(true)
     <fieldset>
         @Html.EditorForModel()
-            <div class="display-label">Метки Отчета</div>
+     
+    </fieldset>
+<p>
+    <input type="submit" value="Сохранить"/>
+    @Html.ActionLink("Отмена", "Index")
+    <a href="#" onclick="ShowEditTagWindow()">Редактировать метки</a>
+</p>
+}
+ @(Html.Telerik().Window()
+    .Name("EditUserTagWindow")
+    .Visible(false)
+    .Title("Редактировать метки")
+    .Modal(true)
+    .Width(800)
+    .Content( 
+        @<text>           
+<div class="display-label">Метки Отчета</div>
 
     <a href="#" onclick="ShowAddTagWindow()">Добавить метку</a>
     @(Html.Telerik().Grid<UserTagsListViewModel>()
@@ -34,8 +50,10 @@
                                                             .Action("RemoveUserTag", "DocReportEdit")
                                                             .HtmlAttributes(new { style = "text-align: center" })).Width(40);
                         })
-            ) 
-    @(Html.Telerik().Window()
+          ) 
+          </text>)
+          )
+     @(Html.Telerik().Window()
     .Name("AddUserTagWindow")
     .Visible(false)
     .Title("Добавить метку")
@@ -50,12 +68,7 @@
             </div>
         </text>)
           )
-    </fieldset>
-<p>
-    <input type="submit" value="Сохранить"/>
-    @Html.ActionLink("Отмена", "Index")
-</p>
-}
+
 <script type="text/javascript">
     function onComplete(e) {
         if (e.name == "DeleteTag") {
@@ -70,6 +83,10 @@
             }
         }
 
+    }
+    function ShowEditTagWindow() {
+        var addWindow = $("#EditUserTagWindow").data("tWindow");
+        addWindow.center().open();
     }
     function ShowAddTagWindow() {
         var addWindow = $("#AddUserTagWindow").data("tWindow");
