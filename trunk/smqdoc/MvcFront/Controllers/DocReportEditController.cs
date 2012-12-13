@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web.Mvc;
 using MvcFront.DB;
 using MvcFront.Enums;
+using MvcFront.Infrastructure.Security;
 using MvcFront.Interfaces;
 using MvcFront.Models;
 using NLog;
@@ -11,17 +12,20 @@ using Telerik.Web.Mvc;
 
 namespace MvcFront.Controllers
 {
+    [AdminAuthorize]
     public class DocReportEditController : Controller
     {
         private readonly IDocReportRepository _docReportRepository;
+        private readonly IMainDocReportRepository _mainDocReportRepository;
         private readonly IDocTemplateRepository _docTemplateRepository;
         private readonly IUserTagRepository _userTagRepository;
 
-        public DocReportEditController(IDocReportRepository docReportRepository, IDocTemplateRepository docTemplateRepository, IUserTagRepository userTagRepository)
+        public DocReportEditController(IDocReportRepository docReportRepository, IDocTemplateRepository docTemplateRepository, IUserTagRepository userTagRepository, IMainDocReportRepository mainDocReportRepository)
         {
             _docReportRepository = docReportRepository;
             _docTemplateRepository = docTemplateRepository;
             _userTagRepository = userTagRepository;
+            _mainDocReportRepository = mainDocReportRepository;
         }
 
         #region DocReport
@@ -511,6 +515,294 @@ namespace MvcFront.Controllers
                 return View(new GridModel<UserTagsListViewModel> { Data = new List<UserTagsListViewModel>() });
             }
         }
+
+        #endregion
+
+        #region MainDocReport
+
+        /// <summary>
+        /// Создание Очета
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult CreateMainDocReport()
+        {
+            try
+            {
+                return View(new MainDocReportEditModel());
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocReportEditController.CreateMainDocReport()", ex);
+                return View(new MainDocReportEditModel());
+            }
+        }
+
+        /// <summary>
+        /// Создания отчета
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult CreateMainDocReport(MainDocReportEditModel model)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var mainDocReport = model.Update(new MainDocReport());
+                    _mainDocReportRepository.SaveMainDocReport(mainDocReport);
+                }
+                else
+                {
+                    throw new Exception("Проверьте введенные данные");
+                }
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocReportEditController.CreateMainDocReport()", ex);
+                return View(model);
+            }
+            return RedirectToAction("Index");
+        }
+
+        /// <summary>
+        /// Создание Очета
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActionResult EditMainDocReport(int id)
+        {
+            try
+            {
+                return View(new MainDocReportEditModel(_mainDocReportRepository.GetMainDocReportById(id)));
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocReportEditController.EditMainDocReport()", ex);
+                return View(new MainDocReportEditModel());
+            }
+        }
+
+        /// <summary>
+        /// Создания отчета
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult EditMainDocReport(MainDocReportEditModel model)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var mainDocReport = model.Update(_mainDocReportRepository.GetMainDocReportById(model.MainDocReportId));
+                    _mainDocReportRepository.SaveMainDocReport(mainDocReport);
+                }
+                else
+                {
+                    throw new Exception("Проверьте введенные данные");
+                }
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocReportEditController.EditMainDocReport()", ex);
+                return View(model);
+            }
+            return RedirectToAction("Index");
+        }
+        #region JSon
+
+        /// <summary>
+        /// Удаляем отчет
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public JsonResult DeleteMainDocReport(int id)
+        {
+            try
+            {
+                _mainDocReportRepository.DeleteMainDocReport(id);
+                return Json(new { result = true });
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocReportEditController.DeleteMainDocReport()", ex);
+                return new JsonResult { Data = false };
+            }
+
+        }
+
+        #endregion
+
+        #region Grid Actions
+
+        /// <summary>
+        /// Список всех отчетов системы
+        /// </summary>
+        /// <returns></returns>
+        [GridAction]
+        public ActionResult _MainDocReportList()
+        {
+            try
+            {
+                var data =
+                    _mainDocReportRepository.GetAllMainDocReports().ToList()
+                        .ConvertAll(MainDocReportListViewModel.MainDocReportToModelConverter).ToList();
+                return View(new GridModel<MainDocReportListViewModel> { Data = data });
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocReportEditController._MainDocReportList()", ex);
+                return View(new GridModel<MainDocReportListViewModel> { Data = new List<MainDocReportListViewModel>() });
+            }
+        }
+
+        #endregion
+
+
+        #endregion
+
+        #region DocInMainReportsOrder
+
+        ///<summary>
+        /// страница выбора DocReport для суммарного отчета
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult AddDimReport(int id)
+        {
+            try
+            {
+                return
+                    View(
+                        _docReportRepository.GetAllDocReports().Where(x => x.IsActive).ToList().ConvertAll(
+                                DocReportListViewModel.DocReportToModelConverter).ToList());
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocReportEditController.AddDimReport()", ex);
+                return View(new List<DocReportListViewModel>());
+            }
+        }
+
+        ///<summary>
+        /// страница выбора DocReport для суммарного отчета
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult AddDimReportComplete(int id, int newReportId)
+        {
+            try
+            {
+                var newOrder = _mainDocReportRepository.GetAllDocInMainReportsOrdersByMainReportId(id).Count() + 1;
+                _mainDocReportRepository.SaveDocInMainReportsOrder(
+                    new DocInMainReportsOrder
+                        {
+                            DocReport_docreportid = newReportId, 
+                            MainDocReport_maindocreportid = id, 
+                            OrderNumber = newOrder
+                        });
+                return RedirectToAction("EditMainDocReport", new {id});
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocReportEditController.AddDimReportComplete()", ex);
+                return RedirectToAction("EditMainDocReport", new { id });
+            }
+        }
+
+        #region Json
+
+        /// <summary>
+        /// Ajax  удаление поля
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public JsonResult DeleteDimReport(int id)
+        {
+            try
+            {
+                _mainDocReportRepository.DeleteDocInMainReportsOrder(id);
+                return Json(new { result = true });
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocReportEditController.DeleteDimReport()", ex);
+                return new JsonResult { Data = false };
+            }
+        }
+
+        /// <summary>
+        /// Поднять в списке поле 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public JsonResult UpDimReport(int id)
+        {
+            try
+            {
+                var entity = _mainDocReportRepository.GetDocInMainReportsOrderById(id);
+                if (entity.OrderNumber > 1)
+                {
+                    _mainDocReportRepository.SetDimReportNumber(entity.docinmainreportsorderid, entity.OrderNumber - 1);
+                }
+                return Json(new { result = true });
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocReportEditController.UpDimReport()", ex);
+                return new JsonResult { Data = false };
+            }
+        }
+
+        /// <summary>
+        /// Опустить поле в списке
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public JsonResult DownDimReport(int id)
+        {
+            try
+            {
+                var entity = _mainDocReportRepository.GetDocInMainReportsOrderById(id);
+
+                _mainDocReportRepository.SetDimReportNumber(entity.docinmainreportsorderid, entity.OrderNumber + 1);
+
+                return Json(new { result = true });
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocReportEditController.DownDimReport()", ex);
+                return new JsonResult { Data = false };
+            }
+        }
+        #endregion
+
+        #region GridActions
+
+        [GridAction]
+        public ActionResult _DimReportList(int id)
+        {
+            try
+            {
+                var data = _mainDocReportRepository.GetAllDocInMainReportsOrdersByMainReportId(id).ToList()
+                    .ConvertAll(DocInMainReportsOrderListViewModel.DocReportToModelConverter).ToList();
+
+                return View(new GridModel<DocInMainReportsOrderListViewModel> { Data = data });
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "DocReportEditController._DimReportList()", ex);
+                return View(new GridModel<DocInMainReportsOrderListViewModel> { Data = new List<DocInMainReportsOrderListViewModel>() });
+            }
+        }
+
+        #endregion
 
         #endregion
     }

@@ -55,6 +55,7 @@ namespace MvcFront.Infrastructure
             Bind<IDocAppointmentRepository>().To<DocAppointmentRepository>();
             Bind<IFileLibaryRepository>().To<FileLibraryRepository>();
             Bind<IDocReportRepository>().To<DocReportRepository>();
+            Bind<IMainDocReportRepository>().To<MainDocReportRepository>();
             Bind<IPersonalDocTemplateRepository>().To<PersonalDocTemplateRepository>();
             Bind<IUnitOfWork>().To<UnitOfWork>();
         }

@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 10/30/2012 11:41:36
+-- Date Created: 12/13/2012 17:28:35
 -- Generated from EDMX file: D:\Work\smqdoc\trunk\smqdoc\MvcFront\DB\EntityDBModel.edmx
 -- --------------------------------------------------
 
@@ -25,6 +25,12 @@ IF OBJECT_ID(N'[dbo].[FK_DocFieldDocument]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_DocFieldFieldTemplate]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[DocFields] DROP CONSTRAINT [FK_DocFieldFieldTemplate];
+GO
+IF OBJECT_ID(N'[dbo].[FK_DocInMainReportsOrderDocReport]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[DocInMainReportsOrders] DROP CONSTRAINT [FK_DocInMainReportsOrderDocReport];
+GO
+IF OBJECT_ID(N'[dbo].[FK_DocInMainReportsOrderMainDocReport]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[DocInMainReportsOrders] DROP CONSTRAINT [FK_DocInMainReportsOrderMainDocReport];
 GO
 IF OBJECT_ID(N'[dbo].[FK_DocTemplateDocAppointment]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[DocAppointments] DROP CONSTRAINT [FK_DocTemplateDocAppointment];
@@ -103,6 +109,9 @@ GO
 IF OBJECT_ID(N'[dbo].[DocFields]', 'U') IS NOT NULL
     DROP TABLE [dbo].[DocFields];
 GO
+IF OBJECT_ID(N'[dbo].[DocInMainReportsOrders]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[DocInMainReportsOrders];
+GO
 IF OBJECT_ID(N'[dbo].[DocReports]', 'U') IS NOT NULL
     DROP TABLE [dbo].[DocReports];
 GO
@@ -123,6 +132,9 @@ IF OBJECT_ID(N'[dbo].[FileLibraryFolders]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[GroupUsers]', 'U') IS NOT NULL
     DROP TABLE [dbo].[GroupUsers];
+GO
+IF OBJECT_ID(N'[dbo].[MainDocReports]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[MainDocReports];
 GO
 IF OBJECT_ID(N'[dbo].[PersonalDocTemplates]', 'U') IS NOT NULL
     DROP TABLE [dbo].[PersonalDocTemplates];
@@ -309,6 +321,22 @@ CREATE TABLE [dbo].[PersonalDocTemplates] (
 );
 GO
 
+-- Creating table 'MainDocReports'
+CREATE TABLE [dbo].[MainDocReports] (
+    [maindocreportid] int IDENTITY(1,1) NOT NULL,
+    [Name] nvarchar(max)  NOT NULL
+);
+GO
+
+-- Creating table 'DocInMainReportsOrders'
+CREATE TABLE [dbo].[DocInMainReportsOrders] (
+    [docinmainreportsorderid] int IDENTITY(1,1) NOT NULL,
+    [MainDocReport_maindocreportid] int  NOT NULL,
+    [DocReport_docreportid] int  NOT NULL,
+    [OrderNumber] int  NOT NULL
+);
+GO
+
 -- Creating table 'GroupUsers'
 CREATE TABLE [dbo].[GroupUsers] (
     [MemberGroups_usergroupid] int  NOT NULL,
@@ -416,6 +444,18 @@ GO
 ALTER TABLE [dbo].[PersonalDocTemplates]
 ADD CONSTRAINT [PK_PersonalDocTemplates]
     PRIMARY KEY CLUSTERED ([personaldoctemplateid] ASC);
+GO
+
+-- Creating primary key on [maindocreportid] in table 'MainDocReports'
+ALTER TABLE [dbo].[MainDocReports]
+ADD CONSTRAINT [PK_MainDocReports]
+    PRIMARY KEY CLUSTERED ([maindocreportid] ASC);
+GO
+
+-- Creating primary key on [docinmainreportsorderid] in table 'DocInMainReportsOrders'
+ALTER TABLE [dbo].[DocInMainReportsOrders]
+ADD CONSTRAINT [PK_DocInMainReportsOrders]
+    PRIMARY KEY CLUSTERED ([docinmainreportsorderid] ASC);
 GO
 
 -- Creating primary key on [MemberGroups_usergroupid], [Members_userid] in table 'GroupUsers'
@@ -759,6 +799,34 @@ ADD CONSTRAINT [FK_PersonalDocTemplateUserGroup]
 CREATE INDEX [IX_FK_PersonalDocTemplateUserGroup]
 ON [dbo].[PersonalDocTemplates]
     ([UserGroup_usergroupid]);
+GO
+
+-- Creating foreign key on [DocReport_docreportid] in table 'DocInMainReportsOrders'
+ALTER TABLE [dbo].[DocInMainReportsOrders]
+ADD CONSTRAINT [FK_DocInMainReportsOrderDocReport]
+    FOREIGN KEY ([DocReport_docreportid])
+    REFERENCES [dbo].[DocReports]
+        ([docreportid])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_DocInMainReportsOrderDocReport'
+CREATE INDEX [IX_FK_DocInMainReportsOrderDocReport]
+ON [dbo].[DocInMainReportsOrders]
+    ([DocReport_docreportid]);
+GO
+
+-- Creating foreign key on [MainDocReport_maindocreportid] in table 'DocInMainReportsOrders'
+ALTER TABLE [dbo].[DocInMainReportsOrders]
+ADD CONSTRAINT [FK_DocInMainReportsOrderMainDocReport]
+    FOREIGN KEY ([MainDocReport_maindocreportid])
+    REFERENCES [dbo].[MainDocReports]
+        ([maindocreportid])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_DocInMainReportsOrderMainDocReport'
+CREATE INDEX [IX_FK_DocInMainReportsOrderMainDocReport]
+ON [dbo].[DocInMainReportsOrders]
+    ([MainDocReport_maindocreportid]);
 GO
 
 -- --------------------------------------------------

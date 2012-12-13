@@ -1,0 +1,7 @@
+﻿@model MvcFront.Models.MainDocReportEditModel
+<legend>Суммарный отчет</legend>
+@Html.HiddenFor(model => model.MainDocReportId)
+<div class="display-label">@Html.LabelFor(model => model.Name)</div>
+<div class="display-field">
+    @Html.EditorFor(model => model.Name)
+</div>

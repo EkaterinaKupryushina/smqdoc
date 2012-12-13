@@ -6,7 +6,7 @@
     ViewBag.Title = "Отчеты";
 }
     @Html.ValidationSummary(true)
-<h2>Формы документов</h2>
+<h2>Формы отчетов</h2>
 
 @Html.ActionLink("Добавить Отчет", "SelectDocTemplate")
 @(Html.Telerik().Grid<DocReportListViewModel>()
@@ -43,10 +43,53 @@
                 .Pageable()
 
       ) 
-      <script type="text/javascript">
+      
+<h2>Суммарные отчеты</h2>
+
+@Html.ActionLink("Добавить Отчет", "CreateMainDocReport")
+@(Html.Telerik().Grid<MainDocReportListViewModel>()
+            .DataBinding(dataBinding => dataBinding.Ajax().Select("_MainDocReportList", "DocReportEdit"))
+            .Name("MainDocReportListGrid")
+                .ClientEvents(events => events.OnComplete("onCompleteMain"))
+                   .Columns(columns =>
+                   {
+                       columns.AutoGenerate(column =>
+                       {
+                           column.Width = "550px";
+                           if (column.Member == "MainDocReportId")
+                               column.Visible = false;
+                       });
+                       columns.Command(command =>
+                       {
+                          
+                           command.Custom("EditMainDetails").Text("Редактировать")
+                            .DataRouteValues(route => route.Add(o => o.MainDocReportId).RouteKey("id"))
+                            .Action("EditMainDocReport", "DocReportEdit")
+                            .HtmlAttributes(new { style = "text-align: center" });
+                           command.Custom("DeleteMainDetails").Text("Удалить")
+                            .DataRouteValues(route => route.Add(o => o.MainDocReportId).RouteKey("id"))
+                            .Action("DeleteMainDocReport", "DocReportEdit")
+                            .Ajax(true)
+                            .HtmlAttributes(new { style = "text-align: center" });
+                       }).Width(50);
+                   })
+                 .Sortable()
+                .Pageable()
+
+      ) 
+<script type="text/javascript">
           function onComplete(e) {
               if (e.name == "DeleteDetails") {
                   var grid = $('#DocReportListGrid').data("tGrid");
+                  if (grid != null) {
+                      grid.rebind();
+                  }
+              }
+          }
+          function onCompleteMain(e)
+          {
+               if (e.name == "DeleteMainDetails") {
+                  var grid = $('#MainDocReportListGrid').data("tGrid");
                   if (grid != null) {
                       grid.rebind();
                   }

@@ -164,10 +164,15 @@
     <Compile Include="Helpers\DictionaryHelper.cs" />
     <Compile Include="Helpers\HtmlExtentions.cs" />
     <Compile Include="Helpers\SessionHelper.cs" />
+    <Compile Include="Interfaces\IMainDocReportRepository.cs" />
     <Compile Include="Interfaces\IPersonalDocTemplateRepository.cs" />
     <Compile Include="Models\BoolIntSetting.cs" />
+    <Compile Include="Models\DocInMainReporsOrdertListViewModel.cs" />
+    <Compile Include="Models\MainDocReportEditModel.cs" />
+    <Compile Include="Models\MainDocReportListViewModel.cs" />
     <Compile Include="Models\CustomDocReportModel.cs" />
     <Compile Include="Models\PersonalDocTemplateListViewModel.cs" />
+    <Compile Include="Repositories\MainDocReportRepository.cs" />
     <Compile Include="Repositories\PersonalDocTemplateRepository.cs" />
     <Compile Include="Services\AssetService.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
@@ -677,6 +682,10 @@
     <Content Include="Views\ManagerReport\Index.cshtml" />
     <Content Include="Views\ManagerReport\CustomReport.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\BoolIntSetting.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\MainDocReportEditModel.cshtml" />
+    <Content Include="Views\DocReportEdit\CreateMainDocReport.cshtml" />
+    <Content Include="Views\DocReportEdit\EditMainDocReport.cshtml" />
+    <Content Include="Views\DocReportEdit\AddDimReport.cshtml" />
     <None Include="Views\UserAccountList\ChangeState.cshtml" />
     <Content Include="Views\UserGroupList\Index.cshtml" />
     <Content Include="Views\UserGroupList\Delete.cshtml" />

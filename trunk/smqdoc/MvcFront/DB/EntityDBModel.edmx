@@ -20,6 +20,8 @@
     <EntitySet Name="FileLibraryFolders" EntityType="smqdocModel.Store.FileLibraryFolders" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="FileLibraryAssets" EntityType="smqdocModel.Store.FileLibraryAssets" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="PersonalDocTemplates" EntityType="smqdocModel.Store.PersonalDocTemplates" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="MainDocReports" EntityType="smqdocModel.Store.MainDocReports" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="DocInMainReportsOrders" EntityType="smqdocModel.Store.DocInMainReportsOrders" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="GroupUsers" EntityType="smqdocModel.Store.GroupUsers" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="UserAccountUserTags" EntityType="smqdocModel.Store.UserAccountUserTags" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="ReportUserTags" EntityType="smqdocModel.Store.ReportUserTags" store:Type="Tables" Schema="dbo" />
@@ -118,6 +120,14 @@
     <AssociationSet Name="PersonalDocTemplateUserGroup" Association="smqdocModel.Store.PersonalDocTemplateUserGroup">
       <End Role="PersonalDocTemplate" EntitySet="PersonalDocTemplates" />
       <End Role="UserGroup" EntitySet="UserGroups" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DocInMainReportsOrderDocReport" Association="smqdocModel.Store.FK_DocInMainReportsOrderDocReport">
+      <End Role="DocReport" EntitySet="DocReports" />
+      <End Role="DocInMainReportsOrder" EntitySet="DocInMainReportsOrders" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DocInMainReportsOrderMainDocReport" Association="smqdocModel.Store.FK_DocInMainReportsOrderMainDocReport">
+      <End Role="MainDocReport" EntitySet="MainDocReports" />
+      <End Role="DocInMainReportsOrder" EntitySet="DocInMainReportsOrders" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="UserAccounts">
@@ -278,6 +288,22 @@
     <Property Name="personaldoctemplateid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="DocTemplate_docteplateid" Type="bigint" Nullable="false" />
     <Property Name="UserGroup_usergroupid" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="MainDocReports">
+    <Key>
+      <PropertyRef Name="maindocreportid" />
+    </Key>
+    <Property Name="maindocreportid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="DocInMainReportsOrders">
+    <Key>
+      <PropertyRef Name="docinmainreportsorderid" />
+    </Key>
+    <Property Name="docinmainreportsorderid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="MainDocReport_maindocreportid" Type="int" Nullable="false" />
+    <Property Name="DocReport_docreportid" Type="int" Nullable="false" />
+    <Property Name="OrderNumber" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="GroupUsers">
     <Key>
@@ -519,6 +545,30 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_DocInMainReportsOrderDocReport">
+    <End Role="DocReport" Type="smqdocModel.Store.DocReports" Multiplicity="1" />
+    <End Role="DocInMainReportsOrder" Type="smqdocModel.Store.DocInMainReportsOrders" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DocReport">
+        <PropertyRef Name="docreportid" />
+      </Principal>
+      <Dependent Role="DocInMainReportsOrder">
+        <PropertyRef Name="DocReport_docreportid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DocInMainReportsOrderMainDocReport">
+    <End Role="MainDocReport" Type="smqdocModel.Store.MainDocReports" Multiplicity="1" />
+    <End Role="DocInMainReportsOrder" Type="smqdocModel.Store.DocInMainReportsOrders" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MainDocReport">
+        <PropertyRef Name="maindocreportid" />
+      </Principal>
+      <Dependent Role="DocInMainReportsOrder">
+        <PropertyRef Name="MainDocReport_maindocreportid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_GroupUsers_UserGroup">
     <End Role="UserGroup" Type="smqdocModel.Store.UserGroups" Multiplicity="1" />
     <End Role="GroupUsers" Type="smqdocModel.Store.GroupUsers" Multiplicity="*" />
@@ -693,6 +743,16 @@
           <AssociationSet Name="PersonalDocTemplateUserGroup" Association="smqdocModel.PersonalDocTemplateUserGroup">
             <End Role="PersonalDocTemplate" EntitySet="PersonalDocTemplates" />
             <End Role="UserGroup" EntitySet="UserGroups" />
+          </AssociationSet>
+          <EntitySet Name="MainDocReports" EntityType="smqdocModel.MainDocReport" />
+          <EntitySet Name="DocInMainReportsOrders" EntityType="smqdocModel.DocInMainReportsOrder" />
+          <AssociationSet Name="FK_DocInMainReportsOrderDocReport" Association="smqdocModel.FK_DocInMainReportsOrderDocReport">
+            <End Role="DocReport" EntitySet="DocReports" />
+            <End Role="DocInMainReportsOrder" EntitySet="DocInMainReportsOrders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DocInMainReportsOrderMainDocReport" Association="smqdocModel.FK_DocInMainReportsOrderMainDocReport">
+            <End Role="MainDocReport" EntitySet="MainDocReports" />
+            <End Role="DocInMainReportsOrder" EntitySet="DocInMainReportsOrders" />
           </AssociationSet>
           </EntityContainer>
         <EntityType Name="UserAccount">
@@ -994,6 +1054,7 @@
           <NavigationProperty Name="ReportFields" Relationship="smqdocModel.ReportFieldDocReport" FromRole="DocReport" ToRole="ReportField" />
           <Property Type="Boolean" Name="IsActive" Nullable="false" />
           <Property Type="String" Name="Legend" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="DocInMainReportsOrders" Relationship="smqdocModel.FK_DocInMainReportsOrderDocReport" FromRole="DocReport" ToRole="DocInMainReportsOrder" />
         </EntityType>
         <Association Name="ReportDocTemplate">
           <End Type="smqdocModel.DocReport" Role="Report" Multiplicity="*" />
@@ -1125,6 +1186,49 @@
             </Principal>
             <Dependent Role="PersonalDocTemplate">
               <PropertyRef Name="UserGroup_usergroupid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="MainDocReport">
+          <Key>
+            <PropertyRef Name="maindocreportid" />
+          </Key>
+          <Property Type="Int32" Name="maindocreportid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" />
+          <NavigationProperty Name="DocInMainReportsOrders" Relationship="smqdocModel.FK_DocInMainReportsOrderMainDocReport" FromRole="MainDocReport" ToRole="DocInMainReportsOrder" />
+        </EntityType>
+        <EntityType Name="DocInMainReportsOrder">
+          <Key>
+            <PropertyRef Name="docinmainreportsorderid" />
+          </Key>
+          <Property Type="Int32" Name="docinmainreportsorderid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="MainDocReport_maindocreportid" Nullable="false" />
+          <Property Type="Int32" Name="DocReport_docreportid" Nullable="false" />
+          <Property Type="Int32" Name="OrderNumber" Nullable="false" />
+          <NavigationProperty Name="DocReport" Relationship="smqdocModel.FK_DocInMainReportsOrderDocReport" FromRole="DocInMainReportsOrder" ToRole="DocReport" />
+          <NavigationProperty Name="MainDocReport" Relationship="smqdocModel.FK_DocInMainReportsOrderMainDocReport" FromRole="DocInMainReportsOrder" ToRole="MainDocReport" />
+        </EntityType>
+        <Association Name="FK_DocInMainReportsOrderDocReport">
+          <End Type="smqdocModel.DocReport" Role="DocReport" Multiplicity="1" />
+          <End Type="smqdocModel.DocInMainReportsOrder" Role="DocInMainReportsOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DocReport">
+              <PropertyRef Name="docreportid" />
+            </Principal>
+            <Dependent Role="DocInMainReportsOrder">
+              <PropertyRef Name="DocReport_docreportid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DocInMainReportsOrderMainDocReport">
+          <End Type="smqdocModel.MainDocReport" Role="MainDocReport" Multiplicity="1" />
+          <End Type="smqdocModel.DocInMainReportsOrder" Role="DocInMainReportsOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MainDocReport">
+              <PropertyRef Name="maindocreportid" />
+            </Principal>
+            <Dependent Role="DocInMainReportsOrder">
+              <PropertyRef Name="MainDocReport_maindocreportid" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1307,6 +1411,24 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="MainDocReports">
+      <EntityTypeMapping TypeName="IsTypeOf(smqdocModel.MainDocReport)">
+        <MappingFragment StoreEntitySet="MainDocReports">
+          <ScalarProperty Name="maindocreportid" ColumnName="maindocreportid" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DocInMainReportsOrders">
+      <EntityTypeMapping TypeName="IsTypeOf(smqdocModel.DocInMainReportsOrder)">
+        <MappingFragment StoreEntitySet="DocInMainReportsOrders">
+          <ScalarProperty Name="docinmainreportsorderid" ColumnName="docinmainreportsorderid" />
+          <ScalarProperty Name="MainDocReport_maindocreportid" ColumnName="MainDocReport_maindocreportid" />
+          <ScalarProperty Name="DocReport_docreportid" ColumnName="DocReport_docreportid" />
+          <ScalarProperty Name="OrderNumber" ColumnName="OrderNumber" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <AssociationSetMapping Name="GroupUsers" TypeName="smqdocModel.GroupUsers" StoreEntitySet="GroupUsers">
       <EndProperty Name="UserGroup">
         <ScalarProperty Name="usergroupid" ColumnName="MemberGroups_usergroupid" />
@@ -1443,8 +1565,8 @@
           <ConnectorPoint PointX="4.625" PointY="12.59375" />
         </AssociationConnector>
         <AssociationConnector Association="smqdocModel.ReportFieldDocReport">
-          <ConnectorPoint PointX="14.875" PointY="13.004547526041666" />
-          <ConnectorPoint PointX="15.5" PointY="13.004547526041666" />
+          <ConnectorPoint PointX="14.875" PointY="13.196848958333334" />
+          <ConnectorPoint PointX="15.5" PointY="13.196848958333334" />
         </AssociationConnector>
         <EntityTypeShape EntityType="smqdocModel.FileLibraryFolder" Width="2.75" PointX="19.375" PointY="9.875" Height="2.1725878906249996" />
         <AssociationConnector Association="smqdocModel.FileLibraryFolderFileLibraryFolder">
@@ -1466,6 +1588,18 @@
         <AssociationConnector Association="smqdocModel.PersonalDocTemplateUserGroup">
           <ConnectorPoint PointX="10.34375" PointY="9.75" />
           <ConnectorPoint PointX="10.34375" PointY="3.9994921875" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="smqdocModel.MainDocReport" Width="1.5" PointX="21.375" PointY="3.875" Height="1.4033821614583335" />
+        <EntityTypeShape EntityType="smqdocModel.DocInMainReportsOrder" Width="1.5" PointX="18.125" PointY="6" Height="2.172587890624996" />
+        <AssociationConnector Association="smqdocModel.FK_DocInMainReportsOrderDocReport" >
+          <ConnectorPoint PointX="17.0312525" PointY="10.375" />
+          <ConnectorPoint PointX="17.0312525" PointY="7.086293945312498" />
+          <ConnectorPoint PointX="18.125" PointY="7.086293945312498" />
+        </AssociationConnector>
+        <AssociationConnector Association="smqdocModel.FK_DocInMainReportsOrderMainDocReport" >
+          <ConnectorPoint PointX="21.375" PointY="4.672841796875" />
+          <ConnectorPoint PointX="18.875" PointY="4.672841796875" />
+          <ConnectorPoint PointX="18.875" PointY="6" />
         </AssociationConnector>
         </Diagram>
     </Diagrams>

@@ -1,0 +1,31 @@
+﻿@using MvcFront.Models
+@using Telerik.Web.Mvc.UI
+@model IEnumerable<DocReportListViewModel>
+
+@{
+    ViewBag.Title = "Отчеты";
+}
+    @Html.ValidationSummary(true)
+<h2>Выберите отчет</h2>
+
+@Html.ActionLink("Добавить Отчет", "SelectDocTemplate")
+@(Html.Telerik().Grid(Model)
+            .Name("DocReportListGrid")
+                   .Columns(columns =>
+                   {
+                       columns.AutoGenerate(column =>
+                       {
+                           column.Width = "150px";
+                           if (column.Member == "DocReportId")
+                               column.Visible = false;
+                       });
+                       columns.Command(command => command.Custom("SelectDetails").Text("Выбрать")
+                                                      .DataRouteValues(route => route.Add(o => o.DocReportId).RouteKey("newReportId"))
+                                                      .Action("AddDimReportComplete", "DocReportEdit")
+                                                      .HtmlAttributes(new { style = "text-align: center" })).Width(50);
+                   })
+                 .Sortable()
+                .Pageable()
+
+      ) 
+ 
