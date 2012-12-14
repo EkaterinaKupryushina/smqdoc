@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using MvcFront.Interfaces;
 using MvcFront.DB;
 
@@ -12,6 +13,23 @@ namespace MvcFront.Repositories
             _unitOfWork = unitOfWork;
         }
 
+        public IEnumerable<MainDocReport> GetMainDocReportsAvailableForUser(int userId)
+        {
+            var docReports = _unitOfWork.DbModel.DocReports.Where(
+                    x => x.IsActive && x.DocTemplate.DocAppointments.Any(y => y.Documents.Any(z => z.UserAccount_userid == userId)));
+            var drim = docReports.SelectMany(x => x.DocInMainReportsOrders);
+            var drimLst = drim.ToList();
+            return drim.Select(x => x.MainDocReport).Distinct().ToList().Where(x => x.DocInMainReportsOrders.All(drimLst.Contains));
+        }
+
+        public IEnumerable<MainDocReport> GetMainDocReportsAvailableForGroupManager(int groupId)
+        {
+            var docReports = _unitOfWork.DbModel.DocReports.Where(
+                    x => x.IsActive && x.DocTemplate.DocAppointments.Any(y => y.UserGroup_usergroupid == groupId));
+            var drim = docReports.SelectMany(x => x.DocInMainReportsOrders);
+            var drimLst = drim.ToList();
+            return drim.Select(x => x.MainDocReport).Distinct().ToList().Where(x => x.DocInMainReportsOrders.All(drimLst.Contains));
+        }
 
         public IQueryable<MainDocReport> GetAllMainDocReports()
         {

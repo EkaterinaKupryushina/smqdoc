@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
 using MvcFront.DB;
@@ -157,6 +156,24 @@ namespace MvcFront.Services
             }
             return result;
         }
+
+        /// <summary>
+        /// Создает главный отчет 
+        /// </summary>
+        /// <param name="report"> Суммарный отчет</param>
+        /// <param name="userIds"></param>
+        /// <param name="groupId"></param>
+        /// <returns></returns>
+        public SortedList<int, ReportTableViewModel>  GenerateMainReport(MainDocReport report, List<int> userIds, int groupId)
+        {
+            var retVal = new SortedList<int, ReportTableViewModel>();
+            foreach (var reportsOrder in report.DocInMainReportsOrders)
+            {
+                retVal.Add(reportsOrder.OrderNumber, GenerateReport(reportsOrder.DocReport, userIds, groupId));
+            }
+            return retVal;
+        }
+
         #endregion
 
         #region Misc

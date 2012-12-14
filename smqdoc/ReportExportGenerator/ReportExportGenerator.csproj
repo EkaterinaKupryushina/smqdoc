@@ -49,6 +49,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SmallReport.rdlc">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
