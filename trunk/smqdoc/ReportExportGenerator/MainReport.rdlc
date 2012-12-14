@@ -2,7 +2,7 @@
 <Report xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2008/01/reportdefinition">
   <Body>
     <ReportItems>
-      <Subreport Name="SmallSubreport1">
+      <Subreport Name="SmallSubreport">
         <ReportName>SmallReport</ReportName>
         <Height>10.6cm</Height>
         <Width>16.51cm</Width>

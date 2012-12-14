@@ -38,4 +38,35 @@
                 .Sortable()
                 .Pageable()
                 .Filterable()
+      )
+      
+      
+      <h2>Суммарные Отчеты</h2>
+
+@(Html.Telerik().Grid<MainDocReportListViewModel>()
+            .DataBinding(dataBinding => dataBinding.Ajax().Select("_ManagerMainDocReportsList", "ManagerReport", new { }))
+        .Name("MainDocReportsListGrid")
+
+                      .Columns(columns =>
+                      {
+                          columns.AutoGenerate(column =>
+                          {
+                              column.Width = "550px";
+                              if (column.Member == "MainDocReportId")
+                                  column.Visible = false;
+                          });
+                       columns.Command(command =>
+                                           {
+                                              
+                                               command.Custom("downloadDetails").Text("Скачать")
+                                                   .DataRouteValues(route => route.Add(o => o.MainDocReportId).RouteKey("reportId"))
+                                                   .Action("DownloadMainGroupReport", "ManagerReport")
+                                                   .HtmlAttributes(new { style = "text-align: center", target = "_blank" });
+                                             
+                                           }).Width(50);
+                   })
+
+                .Sortable()
+                .Pageable()
+                .Filterable()
                 )

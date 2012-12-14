@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web.Mvc;
+using System.Xml;
 using Microsoft.Reporting.WebForms;
-using MvcFront.DB;
 using MvcFront.Helpers;
 using MvcFront.Infrastructure.Security;
 using MvcFront.Interfaces;
@@ -20,13 +20,15 @@ namespace MvcFront.Controllers
     {
         private readonly IDocReportRepository _docReportRepository;
         private readonly IUserGroupRepository _userGroupRepository;
+        private readonly IMainDocReportRepository _mainDocReportRepository;
+        private const string SmallReportMatrix = "SmallReport_";
+        private SortedList<int, ReportTableViewModel> MainReportData { get; set; }
 
-        private int rptId = 1;
-
-        public ManagerReportController(IDocReportRepository docReportRepository, IUserGroupRepository userGroupRepository)
+        public ManagerReportController(IDocReportRepository docReportRepository, IUserGroupRepository userGroupRepository, IMainDocReportRepository mainDocReportRepository)
         {
             _docReportRepository = docReportRepository;
             _userGroupRepository = userGroupRepository;
+            _mainDocReportRepository = mainDocReportRepository;
         }
 
         public ActionResult Index()
@@ -34,6 +36,11 @@ namespace MvcFront.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Страница настраиваемого отчета
+        /// </summary>
+        /// <param name="reportId"></param>
+        /// <returns></returns>
         [HttpGet]
         public ActionResult CustomReport(int reportId)
         {
@@ -75,6 +82,11 @@ namespace MvcFront.Controllers
             }
         }
 
+        /// <summary>
+        /// Отдельная страница для просмотра отчета
+        /// </summary>
+        /// <param name="reportId"></param>
+        /// <returns></returns>
         public ActionResult PrintGroupReport(int reportId)
         {
             try
@@ -93,6 +105,11 @@ namespace MvcFront.Controllers
             }
         }
 
+        /// <summary>
+        /// Скачать PDF отчета
+        /// </summary>
+        /// <param name="reportId"></param>
+        /// <returns></returns>
         public ActionResult DownloadGroupReport(int reportId)
         {
             try
@@ -137,78 +154,137 @@ namespace MvcFront.Controllers
           
         }
 
-        //public ActionResult DownloadGroupReport(int reportId)
-        //{
-        //    try
-        //    {
-        //        var reportService = new ReportService();
-        //        var docReport = _docReportRepository.GetDocReportById(reportId);
-        //        var sessData = SessionHelper.GetUserSessionData(Session);
-        //        var report = reportService.GenerateReport(docReport, null, sessData.UserGroupId);
+        /// <summary>
+        /// Скачать PDF отчета
+        /// </summary>
+        /// <param name="reportId"></param>
+        /// <returns></returns>
+        public ActionResult DownloadMainGroupReport(int reportId)
+        {
+            try
+            {
+                var reportService = new ReportService();
+                var mainDocReport = _mainDocReportRepository.GetMainDocReportById(reportId);
+                var sessData = SessionHelper.GetUserSessionData(Session);
+                MainReportData = reportService.GenerateMainReport(mainDocReport, null, sessData.UserGroupId);
 
-        //        var mainReport = new LocalReport { ReportPath = Server.MapPath("~/Content/Reports/MainReport.rdlc") };
-        //        var subReport = new StreamReader(Server.MapPath("~/Content/Reports/SmallReport.rdlc"));
+                var mainReport = new LocalReport();
 
-        //        mainReport.LoadSubreportDefinition("SmallSubreport1", subReport);
-        //        mainReport.LoadSubreportDefinition("SmallSubreport2", subReport);
-        //        mainReport.SubreportProcessing += SetSubDataSource;
+                //Поток для записи отредактирвоанного отчета
+                var mainOutputStream = new MemoryStream();
+
+                //Формирует суммарный отчет на лету
+                var mainXml = new XmlDocument();
+                var ns = "http://schemas.microsoft.com/sqlserver/reporting/2008/01/reportdefinition";
+                var nsmanager = new XmlNamespaceManager(mainXml.NameTable);
+                nsmanager.AddNamespace("ns", ns);
+                mainXml.Load(Server.MapPath("~/Content/Reports/MainReport.rdlc"));
+
+                var subItemsNode = mainXml.SelectSingleNode("/ns:Report/ns:Body/ns:ReportItems", nsmanager);
+                if(subItemsNode == null)
+                {
+                    throw new NullReferenceException("Не удалось найти SmallReport в MainReport");
+                }
+                subItemsNode.RemoveChild(subItemsNode.FirstChild);
 
 
-        //        const string reportType = "PDF";
-        //        string mimeType;
-        //        string encoding;
-        //        string fileNameExtension;
+                var repNumber = 0.0;
+                foreach (var model in MainReportData)
+                {
+                    var smItemNode = mainXml.CreateElement("Subreport", ns);
+                    subItemsNode.AppendChild(smItemNode);
 
-        //        //The DeviceInfo settings should be changed based on the reportType
-        //        //http://msdn2.microsoft.com/en-us/library/ms155397.aspx
-        //        //const string deviceInfo = "<DeviceInfo>" +
-        //        //                          "  <OutputFormat>PDF</OutputFormat>" +
-        //        //                          //"  <PageWidth>2870mm</PageWidth>" +
-        //        //                          //"  <PageHeight>2100mm</PageHeight>" +
-        //        //                          //"  <MarginTop>10mm</MarginTop>" +
-        //        //                          //"  <MarginLeft>20mm</MarginLeft>" +
-        //        //                          //"  <MarginRight>10mm</MarginRight>" +
-        //        //                          //"  <MarginBottom>10mm</MarginBottom>" +
-        //        //                          "</DeviceInfo>";
+                    var smItemNameAttr = mainXml.CreateAttribute("Name");
+                    smItemNameAttr.InnerText = SmallReportMatrix + model.Key;
+                    smItemNode.Attributes.Append(smItemNameAttr);
 
-        //        Warning[] warnings;
-        //        string[] streams;
+                    var smReportNameNode = mainXml.CreateElement("ReportName", ns);
+                    smReportNameNode.InnerText = "SmallReport";
+                    smItemNode.AppendChild(smReportNameNode);
 
-        //        //Render the report
-        //        var renderedBytes = mainReport.Render(
-        //            reportType,
-        //            null,
-        //            out mimeType,
-        //            out encoding,
-        //            out fileNameExtension,
-        //            out streams,
-        //            out warnings);
-        //        //Response.AddHeader("content-disposition", "attachment; filename=NorthWindCustomers." + fileNameExtension);
-        //        return File(renderedBytes, mimeType);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        ModelState.AddModelError(string.Empty, "Произошла ошибка");
-        //        LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "ManagerReportController.DownloadGroupReport()", ex);
-        //        return null;
-        //    }
+                    var smTopNode = mainXml.CreateElement("Top", ns);
+                    smTopNode.InnerText = string.Format("{0}cm", repNumber * 10.6);
+                    smItemNode.AppendChild(smTopNode);
 
-        //}
-        //public void SetSubDataSource(object sender, SubreportProcessingEventArgs e)
-        //{
-        //    //TODO test only
+                    var smHeightNode = mainXml.CreateElement("Height", ns);
+                    smHeightNode.InnerText = "10.6cm";
+                    smItemNode.AppendChild(smHeightNode);
 
-        //    var reportService = new ReportService();
+                    var smWidthNode = mainXml.CreateElement("Width", ns);
+                    smWidthNode.InnerText = "16.51cm";
+                    smItemNode.AppendChild(smWidthNode);
+
+                    var smStyleNode = mainXml.CreateElement("Style", ns);
+                    smItemNode.AppendChild(smStyleNode);
+
+                    var smBorderNode = mainXml.CreateElement("Border", ns);
+                    smStyleNode.AppendChild(smBorderNode);
+
+                    var smBorderStyleNode = mainXml.CreateElement("Style", ns);
+                    smBorderStyleNode.InnerText = "None";
+                    smBorderNode.AppendChild(smBorderStyleNode);
+
+                    
+                    repNumber++;
+                }
+
+                //Пишем результат обраотки в стрим
+                var writer = new XmlTextWriter(mainOutputStream, System.Text.Encoding.UTF8);
+                mainXml.WriteTo(writer);
+
+                mainReport.LoadReportDefinition(mainOutputStream);
+                
+                var subReport = new StreamReader(Server.MapPath("~/Content/Reports/SmallReport.rdlc"));
+
+                foreach (var reportTvm in MainReportData)
+                {
+                    mainReport.LoadSubreportDefinition(SmallReportMatrix + reportTvm.Key, subReport);
+                    mainReport.SubreportProcessing += SetSubDataSource;
+                }
+
+                const string reportType = "PDF";
+                string mimeType;
+                string encoding;
+                string fileNameExtension;
+
+                Warning[] warnings;
+                string[] streams;
+
+                //Render the report
+                var renderedBytes = mainReport.Render(
+                    reportType,
+                    null,
+                    out mimeType,
+                    out encoding,
+                    out fileNameExtension,
+                    out streams,
+                    out warnings);
+                return File(renderedBytes, mimeType);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "ManagerReportController.DownloadGroupReport()", ex);
+                return null;
+            }
+
+        }
+
+
+        public void SetSubDataSource(object sender, SubreportProcessingEventArgs e)
+        {
+          if(MainReportData != null)
+          {
+              var reportService = new ReportService();
+              var rNumber = e.ReportPath.Substring(SmallReportMatrix.Length);
+              ReportTableViewModel report;
+              MainReportData.TryGetValue(int.Parse(rNumber), out report);
+              e.DataSources.Add(new ReportDataSource("MainDataSet", reportService.ConvertReportForRPV(report)));
+          }
             
-        //    var sessData = SessionHelper.GetUserSessionData(Session);
-        //    var docReport = _docReportRepository.GetDocReportById(rptId);
-        //    var report = reportService.GenerateReport(docReport, null, sessData.UserGroupId);
-        //    e.DataSources.Add(new ReportDataSource("MainDataSet", reportService.ConvertReportForRPV(report)));
-        //    rptId = 2;
-        //    //e.Parameters.SetParameters(new ReportParameter("ReportName", report.Name));
-        //    //localReport.SetParameters(new ReportParameter("ReportDescription", report.Legend));
+           
 
-        //}
+        }
 
         #region GridActions
 
@@ -230,10 +306,30 @@ namespace MvcFront.Controllers
             {
                 ModelState.AddModelError(string.Empty, "Произошла ошибка");
                 LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "ManagerReportController._ManagerDocReportsList()", ex);
-                return View(new GridModel<DocReport> { Data = new List<DocReport>() });
+                return View(new GridModel<DocReportListViewModel> { Data = new List<DocReportListViewModel>() });
             }
         }
 
+        /// <summary>
+        /// Список документов пользователя
+        /// </summary>
+        /// <returns></returns>
+        [GridAction]
+        public ActionResult _ManagerMainDocReportsList()
+        {
+            try
+            {
+                var sessData = SessionHelper.GetUserSessionData(Session);
+                var data = _mainDocReportRepository.GetMainDocReportsAvailableForGroupManager(sessData.UserGroupId).ToList().ConvertAll(MainDocReportListViewModel.MainDocReportToModelConverter).ToList();
+                return View(new GridModel<MainDocReportListViewModel> { Data = data });
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, "Произошла ошибка");
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "ManagerReportController._ManagerMainDocReportsList()", ex);
+                return View(new GridModel<MainDocReportListViewModel> { Data = new List<MainDocReportListViewModel>() });
+            }
+        }
         #endregion
     }
 }

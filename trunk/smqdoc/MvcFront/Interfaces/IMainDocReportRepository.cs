@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using MvcFront.DB;
 
 namespace MvcFront.Interfaces
@@ -10,6 +11,20 @@ namespace MvcFront.Interfaces
         /// </summary>
         /// <returns></returns>
         IQueryable<MainDocReport> GetAllMainDocReports();
+
+        /// <summary>
+        /// Возвращает список сумаарных отчетов которые доступны пользователю (те на которые уже созданы назначения)
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        IEnumerable<MainDocReport> GetMainDocReportsAvailableForUser(int userId);
+
+        /// <summary>
+        /// Возвращает список сумарных отчетов которые доступны менеджеру группы (те на которые уже созданы назначения)
+        /// </summary>
+        /// <param name="groupId"></param>
+        /// <returns></returns>
+        IEnumerable<MainDocReport> GetMainDocReportsAvailableForGroupManager(int groupId);
 
         /// <summary>
         /// Получить полный отчет по его ID
