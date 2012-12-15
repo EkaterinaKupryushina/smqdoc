@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Web.Mvc;
@@ -21,7 +22,7 @@ namespace MvcFront.Controllers
         private readonly IDocReportRepository _docReportRepository;
         private readonly IUserGroupRepository _userGroupRepository;
         private readonly IMainDocReportRepository _mainDocReportRepository;
-        private const string SmallReportMatrix = "SmallReport_";
+        private const string SmallReportMatrix = "SmallSubReport_";
         private SortedList<int, ReportTableViewModel> MainReportData { get; set; }
 
         public ManagerReportController(IDocReportRepository docReportRepository, IUserGroupRepository userGroupRepository, IMainDocReportRepository mainDocReportRepository)
@@ -170,70 +171,73 @@ namespace MvcFront.Controllers
 
                 var mainReport = new LocalReport();
 
-                //Поток для записи отредактирвоанного отчета
-                var mainOutputStream = new MemoryStream();
-
                 //Формирует суммарный отчет на лету
                 var mainXml = new XmlDocument();
-                var ns = "http://schemas.microsoft.com/sqlserver/reporting/2008/01/reportdefinition";
+                const string ns = "http://schemas.microsoft.com/sqlserver/reporting/2008/01/reportdefinition";
                 var nsmanager = new XmlNamespaceManager(mainXml.NameTable);
                 nsmanager.AddNamespace("ns", ns);
                 mainXml.Load(Server.MapPath("~/Content/Reports/MainReport.rdlc"));
 
-                var subItemsNode = mainXml.SelectSingleNode("/ns:Report/ns:Body/ns:ReportItems", nsmanager);
-                if(subItemsNode == null)
+                //Поток для записи отредактирвоанного отчета (Размер это апроксимация)
+                using (var mainOutputStream = new MemoryStream(mainXml.OuterXml.Length + 300 * MainReportData.Count))
                 {
-                    throw new NullReferenceException("Не удалось найти SmallReport в MainReport");
+                    var subItemsNode = mainXml.SelectSingleNode("/ns:Report/ns:Body/ns:ReportItems", nsmanager);
+                    if (subItemsNode == null)
+                    {
+                        throw new NullReferenceException("Не удалось найти SmallReport в MainReport");
+                    }
+                    subItemsNode.RemoveChild(subItemsNode.FirstChild);
+
+
+                    var repNumber = 0.0;
+                    foreach (var model in MainReportData)
+                    {
+                        var smItemNode = mainXml.CreateElement("Subreport", ns);
+                        subItemsNode.AppendChild(smItemNode);
+
+                        var smItemNameAttr = mainXml.CreateAttribute("Name");
+                        smItemNameAttr.InnerText = SmallReportMatrix + model.Key;
+                        smItemNode.Attributes.Append(smItemNameAttr);
+
+                        var smReportNameNode = mainXml.CreateElement("ReportName", ns);
+                        smReportNameNode.InnerText = "SmallReport.rdlc";
+                        smItemNode.AppendChild(smReportNameNode);
+
+                        var smTopNode = mainXml.CreateElement("Top", ns);
+                        smTopNode.InnerText = string.Format("{0}cm",
+                                                            (repNumber*10.6).ToString(CultureInfo.InvariantCulture));
+                        smItemNode.AppendChild(smTopNode);
+
+                        var smHeightNode = mainXml.CreateElement("Height", ns);
+                        smHeightNode.InnerText = "10.6cm";
+                        smItemNode.AppendChild(smHeightNode);
+
+                        var smWidthNode = mainXml.CreateElement("Width", ns);
+                        smWidthNode.InnerText = "16.51cm";
+                        smItemNode.AppendChild(smWidthNode);
+
+                        var smStyleNode = mainXml.CreateElement("Style", ns);
+                        smItemNode.AppendChild(smStyleNode);
+
+                        var smBorderNode = mainXml.CreateElement("Border", ns);
+                        smStyleNode.AppendChild(smBorderNode);
+
+                        var smBorderStyleNode = mainXml.CreateElement("Style", ns);
+                        smBorderStyleNode.InnerText = "None";
+                        smBorderNode.AppendChild(smBorderStyleNode);
+
+
+                        repNumber++;
+                    }
+
+                    //Пишем результат обраотки в стрим
+                    mainXml.Save(mainOutputStream);
+
+
+                    mainOutputStream.Position = 0;
+
+                    mainReport.LoadReportDefinition(mainOutputStream);
                 }
-                subItemsNode.RemoveChild(subItemsNode.FirstChild);
-
-
-                var repNumber = 0.0;
-                foreach (var model in MainReportData)
-                {
-                    var smItemNode = mainXml.CreateElement("Subreport", ns);
-                    subItemsNode.AppendChild(smItemNode);
-
-                    var smItemNameAttr = mainXml.CreateAttribute("Name");
-                    smItemNameAttr.InnerText = SmallReportMatrix + model.Key;
-                    smItemNode.Attributes.Append(smItemNameAttr);
-
-                    var smReportNameNode = mainXml.CreateElement("ReportName", ns);
-                    smReportNameNode.InnerText = "SmallReport";
-                    smItemNode.AppendChild(smReportNameNode);
-
-                    var smTopNode = mainXml.CreateElement("Top", ns);
-                    smTopNode.InnerText = string.Format("{0}cm", repNumber * 10.6);
-                    smItemNode.AppendChild(smTopNode);
-
-                    var smHeightNode = mainXml.CreateElement("Height", ns);
-                    smHeightNode.InnerText = "10.6cm";
-                    smItemNode.AppendChild(smHeightNode);
-
-                    var smWidthNode = mainXml.CreateElement("Width", ns);
-                    smWidthNode.InnerText = "16.51cm";
-                    smItemNode.AppendChild(smWidthNode);
-
-                    var smStyleNode = mainXml.CreateElement("Style", ns);
-                    smItemNode.AppendChild(smStyleNode);
-
-                    var smBorderNode = mainXml.CreateElement("Border", ns);
-                    smStyleNode.AppendChild(smBorderNode);
-
-                    var smBorderStyleNode = mainXml.CreateElement("Style", ns);
-                    smBorderStyleNode.InnerText = "None";
-                    smBorderNode.AppendChild(smBorderStyleNode);
-
-                    
-                    repNumber++;
-                }
-
-                //Пишем результат обраотки в стрим
-                var writer = new XmlTextWriter(mainOutputStream, System.Text.Encoding.UTF8);
-                mainXml.WriteTo(writer);
-
-                mainReport.LoadReportDefinition(mainOutputStream);
-                
                 var subReport = new StreamReader(Server.MapPath("~/Content/Reports/SmallReport.rdlc"));
 
                 foreach (var reportTvm in MainReportData)
