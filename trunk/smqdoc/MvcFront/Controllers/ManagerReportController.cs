@@ -200,7 +200,7 @@ namespace MvcFront.Controllers
                         smItemNode.Attributes.Append(smItemNameAttr);
 
                         var smReportNameNode = mainXml.CreateElement("ReportName", ns);
-                        smReportNameNode.InnerText = "SmallReport.rdlc";
+                        smReportNameNode.InnerText = SmallReportMatrix + model.Key;
                         smItemNode.AppendChild(smReportNameNode);
 
                         var smTopNode = mainXml.CreateElement("Top", ns);
@@ -213,7 +213,7 @@ namespace MvcFront.Controllers
                         smItemNode.AppendChild(smHeightNode);
 
                         var smWidthNode = mainXml.CreateElement("Width", ns);
-                        smWidthNode.InnerText = "16.51cm";
+                        smWidthNode.InnerText = "26.7cm";
                         smItemNode.AppendChild(smWidthNode);
 
                         var smStyleNode = mainXml.CreateElement("Style", ns);
@@ -228,23 +228,20 @@ namespace MvcFront.Controllers
 
 
                         repNumber++;
+                        
+                        var subReport = new StreamReader(Server.MapPath("~/Content/Reports/SmallReport.rdlc"));
+                        mainReport.LoadSubreportDefinition(SmallReportMatrix + model.Key, subReport);
+                        mainReport.SubreportProcessing += SetSubDataSource;
+               
                     }
 
                     //Пишем результат обраотки в стрим
                     mainXml.Save(mainOutputStream);
-
-
                     mainOutputStream.Position = 0;
-
                     mainReport.LoadReportDefinition(mainOutputStream);
-                }
-                var subReport = new StreamReader(Server.MapPath("~/Content/Reports/SmallReport.rdlc"));
 
-                foreach (var reportTvm in MainReportData)
-                {
-                    mainReport.LoadSubreportDefinition(SmallReportMatrix + reportTvm.Key, subReport);
-                    mainReport.SubreportProcessing += SetSubDataSource;
                 }
+                
 
                 const string reportType = "PDF";
                 string mimeType;
