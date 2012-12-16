@@ -19,7 +19,7 @@
   <Width>6.5in</Width>
   <Page>
     <PageHeader>
-      <Height>2.00cm</Height>
+      <Height>2cm</Height>
       <PrintOnFirstPage>true</PrintOnFirstPage>
       <PrintOnLastPage>true</PrintOnLastPage>
       <ReportItems>
