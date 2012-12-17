@@ -60,7 +60,7 @@ namespace MvcFront.Services
                 case DocReportGroupType.None:
                     foreach (var documentGroup in docGroups)
                     {
-                        names.Add(documentGroup.EntityId, string.Empty);
+                        names.Add(documentGroup.EntityId, string.Format("Док-т.№{0}", documentGroup.EntityId));
                     }
                     break;
                 case DocReportGroupType.DocAppointment:
@@ -132,7 +132,7 @@ namespace MvcFront.Services
                                         ColumnNumber = col.OrderNumber, 
                                         Value = val.Value, 
                                         RowNumber = rowNumber,
-                                        Row = string.Format("{0:000}. {1}", rowNumber, reportRow.Name),
+                                        Row = reportRow.Name,
                                         Legend = reportTableViewModel.Legend,
                                         ReportName = reportTableViewModel.Name
                                     });
@@ -149,7 +149,7 @@ namespace MvcFront.Services
                                         ColumnNumber = col.OrderNumber, 
                                         Value = val.Value, 
                                         RowNumber = rowNumber,
-                                        Row = string.Format("{0:000}. {1}", rowNumber, reportTableViewModel.TotalRow.Name),
+                                        Row = reportTableViewModel.TotalRow.Name,
                                         Legend = reportTableViewModel.Legend,
                                         ReportName = reportTableViewModel.Name
                                     });
