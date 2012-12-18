@@ -17,7 +17,7 @@ namespace MvcFront.Interfaces
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        IEnumerable<MainDocReport> GetMainDocReportsAvailableForUser(int userId);
+        IEnumerable<MainDocReport> GetMainDocReportsAvailableForUser(int userId, int groupId);
 
         /// <summary>
         /// Возвращает список сумарных отчетов которые доступны менеджеру группы (те на которые уже созданы назначения)

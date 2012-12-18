@@ -138,6 +138,21 @@ namespace MvcFront.Services
                                     });
             }
 
+            if (result.Count == 0)
+            {
+                result.AddRange(reportTableViewModel.DocReport.ReportFields.Select(reportField => new ReportDataFieldForRPV
+                {
+                    Column = string.Format("{0} {1}",
+                    reportField.FieldTemplate.FieldName, DictionaryHelper.GetEnumText(typeof(ReportFieldOperationType), reportField.ReportOperationType)),
+                    ColumnNumber = reportField.OrderNumber,
+                    Value = "-",
+                    RowNumber = rowNumber,
+                    Row = "Нет данных",
+                    Legend = reportTableViewModel.Legend,
+                    ReportName = reportTableViewModel.Name
+                }));
+            }
+
             if(reportTableViewModel.TotalRow != null)
             {
                 rowNumber++;
@@ -154,6 +169,7 @@ namespace MvcFront.Services
                                         ReportName = reportTableViewModel.Name
                                     });
             }
+            
             return result;
         }
 

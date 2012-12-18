@@ -23,7 +23,7 @@ namespace MvcFront.Interfaces
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        IQueryable<DocReport> GetDocReportsAvailableForUser(int userId);
+        IQueryable<DocReport> GetDocReportsAvailableForUser(int userId, int groupId);
 
         /// <summary>
         /// Возвращает список отчетов которые доступны менеджеру группы (те на которые уже созданы назначения)

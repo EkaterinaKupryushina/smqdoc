@@ -677,8 +677,7 @@
       <SubType>Designer</SubType>
     </None>
     <Content Include="Views\GroupDocAppointment\SelectDocTemplateForPersonal.cshtml" />
-    <Content Include="Views\ManagerReport\PrintUserReport.cshtml" />
-    <Content Include="Views\ManagerReport\PrintGroupReport.cshtml" />
+    <Content Include="Views\ManagerReport\ViewGroupReport.cshtml" />
     <Content Include="Views\ManagerReport\Index.cshtml" />
     <Content Include="Views\ManagerReport\CustomReport.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\BoolIntSetting.cshtml" />
@@ -708,7 +707,7 @@
     <Content Include="WebAppSettings.config" />
     <Content Include="Views\UserDocument\SubmitedUserDocuments.cshtml" />
     <Content Include="WebConnectionStrings.config" />
-    <Content Include="Views\UserReport\PrintUserReport.cshtml" />
+    <Content Include="Views\UserReport\ViewUserReport.cshtml" />
     <Content Include="Views\UserGroupList\DetailsForManager.cshtml" />
     <Content Include="Views\UserReport\Index.cshtml" />
   </ItemGroup>

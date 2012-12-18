@@ -88,7 +88,7 @@ namespace MvcFront.Controllers
         /// </summary>
         /// <param name="reportId"></param>
         /// <returns></returns>
-        public ActionResult PrintGroupReport(int reportId)
+        public ActionResult ViewGroupReport(int reportId)
         {
             try
             {
@@ -265,7 +265,7 @@ namespace MvcFront.Controllers
             catch (Exception ex)
             {
                 ModelState.AddModelError(string.Empty, "Произошла ошибка");
-                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "ManagerReportController.DownloadGroupReport()", ex);
+                LogManager.GetCurrentClassLogger().LogException(LogLevel.Fatal, "ManagerReportController.DownloadMainGroupReport()", ex);
                 return null;
             }
 

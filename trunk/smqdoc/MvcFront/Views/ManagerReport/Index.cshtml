@@ -22,7 +22,7 @@
                                            {
                                                command.Custom("viewDetails").Text("Просмотр")
                                                    .DataRouteValues(route => route.Add(o => o.DocReportId).RouteKey("reportId"))
-                                                   .Action("PrintGroupReport", "ManagerReport")
+                                                   .Action("ViewGroupReport", "ManagerReport")
                                                    .HtmlAttributes(new {style = "text-align: center", target = "_blank"});
                                                command.Custom("downloadDetails").Text("Скачать")
                                                    .DataRouteValues(route => route.Add(o => o.DocReportId).RouteKey("reportId"))
@@ -55,15 +55,10 @@
                               if (column.Member == "MainDocReportId")
                                   column.Visible = false;
                           });
-                       columns.Command(command =>
-                                           {
-                                              
-                                               command.Custom("downloadDetails").Text("Скачать")
-                                                   .DataRouteValues(route => route.Add(o => o.MainDocReportId).RouteKey("reportId"))
-                                                   .Action("DownloadMainGroupReport", "ManagerReport")
-                                                   .HtmlAttributes(new { style = "text-align: center", target = "_blank" });
-                                             
-                                           }).Width(50);
+                       columns.Command(command => command.Custom("downloadDetails").Text("Скачать")
+                                                      .DataRouteValues(route => route.Add(o => o.MainDocReportId).RouteKey("reportId"))
+                                                      .Action("DownloadMainGroupReport", "ManagerReport")
+                                                      .HtmlAttributes(new { style = "text-align: center", target = "_blank" })).Width(50);
                    })
 
                 .Sortable()
