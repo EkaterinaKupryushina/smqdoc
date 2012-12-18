@@ -24,11 +24,11 @@ namespace MvcFront.Repositories
         }
 
 
-        public IQueryable<DocReport> GetDocReportsAvailableForUser(int userId)
+        public IQueryable<DocReport> GetDocReportsAvailableForUser(int userId, int groupId)
         {
             return
                 _unitOfWork.DbModel.DocReports.Where(
-                    x => x.IsActive && x.DocTemplate.DocAppointments.Any(y => y.Documents.Any(z => z.UserAccount_userid == userId)));
+                    x => x.IsActive && x.DocTemplate.DocAppointments.Any(y => y.Documents.Any(z => z.UserAccount_userid == userId) && y.UserGroup_usergroupid == groupId));
         }
 
 

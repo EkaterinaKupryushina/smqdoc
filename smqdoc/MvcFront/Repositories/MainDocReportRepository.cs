@@ -13,10 +13,10 @@ namespace MvcFront.Repositories
             _unitOfWork = unitOfWork;
         }
 
-        public IEnumerable<MainDocReport> GetMainDocReportsAvailableForUser(int userId)
+        public IEnumerable<MainDocReport> GetMainDocReportsAvailableForUser(int userId, int groupId)
         {
             var docReports = _unitOfWork.DbModel.DocReports.Where(
-                    x => x.IsActive && x.DocTemplate.DocAppointments.Any(y => y.Documents.Any(z => z.UserAccount_userid == userId)));
+                    x => x.IsActive && x.DocTemplate.DocAppointments.Any(y => y.Documents.Any(z => z.UserAccount_userid == userId) && y.UserGroup_usergroupid == groupId));
             var drim = docReports.SelectMany(x => x.DocInMainReportsOrders);
             var drimLst = drim.ToList();
             return drim.Select(x => x.MainDocReport).Distinct().ToList().Where(x => x.DocInMainReportsOrders.All(drimLst.Contains));

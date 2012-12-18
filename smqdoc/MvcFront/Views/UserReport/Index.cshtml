@@ -22,13 +22,38 @@
                               {
                                   command.Custom("viewDetails").Text("Просмотр")
                                       .DataRouteValues(route => route.Add(o => o.DocReportId).RouteKey("reportId"))
-                                      .Action("PrintUserReport", "UserReport")
+                                      .Action("ViewUserReport", "UserReport")
                                       .HtmlAttributes(new {style = "text-align: center", target = "_blank"});
                                   command.Custom("downloadDetails").Text("Скачать")
                                       .DataRouteValues(route => route.Add(o => o.DocReportId).RouteKey("reportId"))
                                       .Action("DownloadUserReport", "UserReport")
                                       .HtmlAttributes(new {style = "text-align: center", target = "_blank"});
                               }).Width(50);
+                   })
+
+                .Sortable()
+                .Pageable()
+                .Filterable()
+      )
+      
+        <h2>Суммарные Отчеты</h2>
+
+@(Html.Telerik().Grid<MainDocReportListViewModel>()
+            .DataBinding(dataBinding => dataBinding.Ajax().Select("_UserMainDocReportsList", "UserReport", new { }))
+        .Name("MainDocReportsListGrid")
+
+                      .Columns(columns =>
+                      {
+                          columns.AutoGenerate(column =>
+                          {
+                              column.Width = "550px";
+                              if (column.Member == "MainDocReportId")
+                                  column.Visible = false;
+                          });
+                       columns.Command(command => command.Custom("downloadDetails").Text("Скачать")
+                                                      .DataRouteValues(route => route.Add(o => o.MainDocReportId).RouteKey("reportId"))
+                                                      .Action("DownloadMainUserReport", "UserReport")
+                                                      .HtmlAttributes(new { style = "text-align: center", target = "_blank" })).Width(50);
                    })
 
                 .Sortable()
